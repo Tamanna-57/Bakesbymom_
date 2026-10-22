@@ -50,9 +50,9 @@ The packages are npm workspaces in this repo. To use them from another repositor
 - **Shape.** Pills for anything you can tap, 14–40px corners for surfaces, arches, ovals and scallops for photos, and 1.5px cocoa sticker outlines with hard, blur-free shadows.
 - **Patterns.** Stripes, pinstripes, gingham, checkerboard, graph paper and polka dots; scallop, wave, zigzag, torn-paper, awning and half-dot edges, all generated from tokens.
 
-## Storybook on GitHub Pages
+## Storybook on Vercel
 
-[`.github/workflows/storybook-pages.yml`](./.github/workflows/storybook-pages.yml) publishes Storybook on every push to `main`. One-time setup: **Settings → Pages → Build and deployment → Source: GitHub Actions**. Storybook will then be at `https://tamanna-57.github.io/Bakesbymom_/`.
+Storybook is deployed as a static site on Vercel. [`vercel.json`](./vercel.json) holds the build settings (`npm ci`, `npm run build-storybook`, output `storybook-static`), so no dashboard configuration is needed. One-time setup: in Vercel, **Add New → Project**, import `Tamanna-57/Bakesbymom_` and keep the root directory as `./`. After that, every push to `main` updates the production site and every other branch or pull request gets its own preview URL.
 
 [`.github/workflows/ci.yml`](./.github/workflows/ci.yml) runs `npm run check` on every push.
 

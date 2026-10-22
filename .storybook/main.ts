@@ -15,7 +15,7 @@ const config: StorybookConfig = {
   ],
   framework: '@storybook/react-vite',
   // The Pinterest references power the moodboard page. They're served relative to the
-  // Storybook root, so the page also works under a GitHub Pages sub-path.
+  // Storybook root, so the page also works when hosted under a sub-path.
   staticDirs: [{ from: '../pinterest', to: '/pinterest' }],
   typescript: {
     reactDocgen: 'react-docgen-typescript',

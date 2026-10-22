@@ -1,0 +1,71 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { ColorScale, SemanticColors, ToneGrid } from '../blocks/TokenBlocks';
+
+<Meta title="Foundations/Colors" />
+
+# Colors
+
+The palette is named like a pantry. **Components never use primitives directly.** They use the semantic layer (`bg`, `text`, `border`, `action`, `status`, `tone`), so the brand can be re-themed by changing one mapping. Every pairing below is checked against WCAG AA by `packages/tokens/test/tokens.test.mjs`.
+
+## Primitives
+
+### Cream: paper and canvas
+
+<ColorScale family="cream" />
+
+### Cocoa: warm ink (replaces black)
+
+<ColorScale family="cocoa" />
+
+### Cherry: the brand red and the only primary action
+
+<ColorScale family="cherry" />
+
+### Strawberry: strawberry-milk pinks, the main soft surface
+
+<ColorScale family="strawberry" />
+
+### Blueberry: powder blue to navy, the cool partner
+
+<ColorScale family="blueberry" />
+
+### Butter
+
+<ColorScale family="butter" />
+
+### Pistachio
+
+<ColorScale family="pistachio" />
+
+### Caramel
+
+<ColorScale family="caramel" />
+
+### Lavender: a minor accent
+
+<ColorScale family="lavender" />
+
+## Backgrounds
+
+<SemanticColors group="bg" />
+
+## Text
+
+<SemanticColors group="text" />
+
+## Borders
+
+<SemanticColors group="border" />
+
+## Tones
+
+Flavor tones are how Badge, Card, Ticket, PriceTag, Seal, Marquee and the patterns get their color. Each tone has a soft pairing (`fg` on `bg`) and a filled pairing (`on-solid` on `solid`), and both are AA.
+
+<ToneGrid />
+
+## Rules of thumb
+
+- **Canvas is cream-100.** White (`bg.raised`) is only for inputs, polaroid borders and popovers.
+- **One cherry fill per view.** Use `cherry` for the primary button, the announcement bar and one accent band, nothing more.
+- **Pastels are surfaces, not text.** Put cocoa text on pastels; use the `fg` tokens for colored text.
+- **Focus is blue on purpose.** `border.focus` (`blueberry-700`) never gets confused with an error or the brand red.

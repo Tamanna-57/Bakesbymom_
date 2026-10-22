@@ -1,0 +1,96 @@
+.bbm-card {
+  --_card-bg: var(--bbm-color-bg-surface);
+  --_card-fg: var(--bbm-color-text-primary);
+  --_pad: var(--bbm-component-card-padding);
+
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  padding: var(--_pad);
+  border-radius: var(--bbm-component-card-radius);
+  background-color: var(--_card-bg);
+  color: var(--_card-fg);
+  list-style: none;
+}
+
+.bbm-card--soft {
+  --_card-bg: var(--_tone-bg);
+}
+
+.bbm-card--solid {
+  --_card-bg: var(--_tone-solid);
+  --_card-fg: var(--_tone-on-solid);
+}
+
+.bbm-card--pad-none {
+  --_pad: 0;
+}
+
+.bbm-card--pad-sm {
+  --_pad: var(--bbm-space-4);
+}
+
+.bbm-card--pad-lg {
+  --_pad: clamp(var(--bbm-space-6), 4vw, var(--bbm-space-12));
+}
+
+.bbm-card--outline {
+  border: var(--bbm-component-card-border-width) solid var(--bbm-color-border-default);
+}
+
+.bbm-card--outline-brand {
+  border: var(--bbm-border-width-heavy) solid var(--bbm-color-border-brand);
+  border-radius: var(--bbm-radius-xl);
+}
+
+.bbm-card--sticker {
+  box-shadow: var(--bbm-shadow-sticker-md);
+}
+
+/* Scallop: union of an inset rectangle and a grid of circles = cookie edge. */
+.bbm-card-scallop {
+  display: block;
+  list-style: none;
+}
+
+.bbm-card--scallop {
+  --_r: 11px;
+  border-radius: 0;
+  padding: calc(var(--_pad) + var(--_r));
+  -webkit-mask:
+    linear-gradient(#000 0 0) center / calc(100% - 2 * var(--_r)) calc(100% - 2 * var(--_r)) no-repeat,
+    radial-gradient(closest-side, #000 calc(100% - 0.5px), #0000) 0 0 / calc(2 * var(--_r)) calc(2 * var(--_r)) round;
+  mask:
+    linear-gradient(#000 0 0) center / calc(100% - 2 * var(--_r)) calc(100% - 2 * var(--_r)) no-repeat,
+    radial-gradient(closest-side, #000 calc(100% - 0.5px), #0000) 0 0 / calc(2 * var(--_r)) calc(2 * var(--_r)) round;
+}
+
+/* Outlines for masked shapes are drawn on the parent so the mask doesn't clip them. */
+.bbm-card-scallop--outline {
+  filter: drop-shadow(1.5px 0 0 var(--bbm-color-border-default)) drop-shadow(-1.5px 0 0 var(--bbm-color-border-default))
+    drop-shadow(0 1.5px 0 var(--bbm-color-border-default)) drop-shadow(0 -1.5px 0 var(--bbm-color-border-default));
+}
+
+.bbm-card-scallop--sticker {
+  filter: drop-shadow(1.5px 0 0 var(--bbm-color-border-default)) drop-shadow(-1.5px 0 0 var(--bbm-color-border-default))
+    drop-shadow(0 1.5px 0 var(--bbm-color-border-default)) drop-shadow(0 -1.5px 0 var(--bbm-color-border-default))
+    drop-shadow(4px 4px 0 var(--bbm-color-border-default));
+}
+
+/* Airmail frame: candy stripes around a paper panel. */
+.bbm-card-frame {
+  display: block;
+  box-sizing: border-box;
+  padding: var(--bbm-space-3);
+  border-radius: var(--bbm-radius-sm);
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--_tone-solid) 0 var(--bbm-space-3),
+    var(--bbm-color-bg-surface) var(--bbm-space-3) var(--bbm-space-6)
+  );
+  list-style: none;
+}
+
+.bbm-card-frame > .bbm-card {
+  border-radius: var(--bbm-radius-xs);
+}

@@ -1,0 +1,87 @@
+import { Meta, Unstyled } from '@storybook/addon-docs/blocks';
+import { PatternSurface, EdgeDivider, Doodle, PATTERNS, EDGE_SHAPES, DOODLES } from '@bakesbymom/ui';
+
+<Meta title="Foundations/Patterns & Decoration" />
+
+# Patterns & Decoration
+
+The references agree on a small kit of printed patterns and paper edges. They are what make a Bakes by Mom page recognizable. All of them are pure CSS or SVG generated from tokens, so they recolor with any `tone`.
+
+**Rule:** decoration frames content; it never sits behind paragraphs, prices or form fields.
+
+## Patterns
+
+<Unstyled>
+  <div className="sb-grid" style={{ '--sb-min': '15rem' }}>
+    {PATTERNS.map((pattern, i) => (
+      <figure key={pattern} style={{ margin: 0 }}>
+        <PatternSurface
+          pattern={pattern}
+          tone={['strawberry', 'blueberry', 'strawberry', 'cherry', 'strawberry', 'cocoa'][i]}
+          style={{ height: 120, borderRadius: 14, border: '1.5px solid var(--bbm-color-border-default)' }}
+        />
+        <figcaption className="sb-note" style={{ marginTop: 8 }}>
+          pattern="{pattern}"
+        </figcaption>
+      </figure>
+    ))}
+  </div>
+</Unstyled>
+
+| Pattern     | From the references                              | Use for                                  |
+| ----------- | ------------------------------------------------ | ---------------------------------------- |
+| `stripes`   | Cherry Cloud, SugarLace, Pretty OK, Lilli Pilli  | Hero backdrops, packaging, awnings       |
+| `pinstripe` | Sasa Khalisa stripe pack                         | Narrow bands, gift wrap, box sleeves     |
+| `gingham`   | Strawberry poster, Sunday Brunch, cloche collage | Picnic and summer moments, tape, napkins |
+| `checker`   | Strawberry cheesecake, Nectar dividers           | Thin divider strips, social posts        |
+| `grid`      | Nectar hero, Sunday Brunch, Taplink              | Notepad and order-form backgrounds       |
+| `dots`      | Pretty OK polka trims                            | Playful panels, frames                   |
+
+## Edges
+
+<Unstyled>
+  <div style={{ display: 'grid', gap: 28, margin: '20px 0 28px' }}>
+    {EDGE_SHAPES.map((shape) => (
+      <div key={shape}>
+        <div style={{ height: 28, background: 'var(--bbm-color-bg-blush)' }} />
+        <EdgeDivider
+          shape={shape}
+          color="var(--bbm-color-bg-blush)"
+          altColor="var(--bbm-color-bg-surface)"
+          outline={shape === 'scallop'}
+        />
+        <p className="sb-note" style={{ marginTop: 8 }}>
+          shape="{shape}"
+        </p>
+      </div>
+    ))}
+  </div>
+</Unstyled>
+
+Set `color` to the section the edge hangs from and `background` to the section below. Use `flip` for a top edge.
+
+## Doodles
+
+One stroke weight, one cocoa ink, pastel fills. They scatter around headings, sit in seals and separate marquee items.
+
+<Unstyled>
+  <div className="sb-stack" style={{ gap: 32, margin: '16px 0 28px', color: 'var(--bbm-color-cherry-600)' }}>
+    {DOODLES.map((name) => (
+      <figure key={name} style={{ margin: 0, textAlign: 'center' }}>
+        <Doodle name={name} size={name === 'squiggle' ? 96 : 48} />
+        <figcaption className="sb-note">{name}</figcaption>
+      </figure>
+    ))}
+  </div>
+</Unstyled>
+
+## Helpers
+
+| Class                 | Effect                                                                  |
+| --------------------- | ----------------------------------------------------------------------- |
+| `.bbm-script-word`    | Swaps one word into Pinyon Script inside a serif line                   |
+| `.bbm-squiggle`       | Hand-drawn underline in the brand red                                   |
+| `.bbm-text-outline`   | Stroke-only display type (posters, 48px and up)                         |
+| `.bbm-sticker-cutout` | White die-cut halo plus a hard shadow around transparent product photos |
+| `.bbm-seam`           | Places a sticker straddling the top edge of a section                   |
+| `.bbm-font-soft`      | Puffy Cooper-style Fraunces                                             |

@@ -1,0 +1,107 @@
+/* Layout glue for the page mockups only (not part of @bakesbymom/ui). */
+
+.pg-section {
+  position: relative;
+  padding-block: var(--bbm-layout-section-y);
+}
+
+.pg-band {
+  background-color: var(--pg-band, transparent);
+}
+
+.pg-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bbm-space-10);
+}
+
+.pg-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bbm-space-6);
+}
+
+.pg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
+  gap: var(--bbm-space-8) var(--bbm-space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pg-split {
+  display: grid;
+  gap: var(--bbm-space-12);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .pg-split {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.pg-chip {
+  padding: 0;
+  border: 0;
+  background: none;
+  border-radius: var(--bbm-radius-pill);
+  cursor: pointer;
+}
+
+.pg-chip:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: 2px;
+}
+
+.pg-signature {
+  margin: var(--bbm-space-4) 0 0;
+  font-family: var(--bbm-font-family-script);
+  font-size: var(--bbm-text-script-md-size);
+  line-height: 1;
+  color: var(--bbm-color-text-brand);
+}
+
+.pg-day {
+  display: grid;
+  gap: var(--bbm-space-2);
+}
+
+.pg-day p {
+  margin: 0;
+}
+
+/* Social post frames (4:5, Instagram feed) */
+.pg-post {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+  width: 432px;
+  height: 540px;
+  padding: 28px;
+  border-radius: 6px;
+  box-shadow: var(--bbm-shadow-overlay);
+}
+
+.pg-posts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 432px);
+  justify-content: center;
+  gap: 32px;
+  padding: 32px;
+}
+
+.pg-phone {
+  width: 390px;
+  min-height: 844px;
+  margin: 24px auto;
+  overflow: hidden;
+  border: 10px solid var(--bbm-color-cocoa-900);
+  border-radius: 44px;
+  background: var(--bbm-color-bg-canvas);
+}

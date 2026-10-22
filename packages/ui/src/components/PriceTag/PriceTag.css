@@ -1,0 +1,61 @@
+.bbm-price-tag {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: var(--_tag-size);
+  height: var(--_tag-size);
+  padding: calc(var(--_tag-size) * 0.16);
+  color: var(--_tone-on-solid);
+  text-align: center;
+  transform: rotate(var(--_tag-rotate));
+}
+
+.bbm-price-tag__shape {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: var(--_tone-solid);
+  stroke: var(--bbm-color-border-default);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+  filter: drop-shadow(2px 2px 0 var(--bbm-color-border-default));
+}
+
+.bbm-price-tag__amount {
+  position: relative;
+  font-family: var(--bbm-font-family-display);
+  font-variation-settings: var(--bbm-font-variation-soft);
+  font-weight: var(--bbm-font-weight-bold);
+  font-size: calc(var(--_tag-size) * 0.27);
+  line-height: 1;
+  font-variant-numeric: lining-nums;
+}
+
+.bbm-price-tag__label {
+  position: relative;
+  margin-top: 0.3em;
+  font-family: var(--bbm-font-family-mono);
+  font-size: max(0.6875rem, calc(var(--_tag-size) * 0.085));
+  font-weight: var(--bbm-font-weight-medium);
+  line-height: 1.15;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Key tag: wide, text sits right of the hole */
+.bbm-price-tag--tag {
+  width: calc(var(--_tag-size) * 2.04);
+  padding: 0 calc(var(--_tag-size) * 0.2) 0 calc(var(--_tag-size) * 0.5);
+}
+
+.bbm-price-tag__ring {
+  fill: none;
+  stroke: var(--bbm-color-border-default);
+  stroke-width: 2.5;
+}

@@ -1,0 +1,127 @@
+{
+  "color": {
+    "$description": "Primitive palette. Raw ingredients only: components never use these directly, they use the semantic layer.",
+    "white": {
+      "$type": "color",
+      "$value": "#ffffff",
+      "$description": "Pure white. Raised surfaces and sticker halos only, never the page."
+    },
+    "cream": {
+      "$description": "Paper and frosting: the canvas family. Every page sits on cream.",
+      "50": { "$type": "color", "$value": "#fffcf6", "$description": "Paper white: card surface." },
+      "100": { "$type": "color", "$value": "#fdf6e9", "$description": "Canvas: default page background." },
+      "200": { "$type": "color", "$value": "#f8ecd6", "$description": "Sunken: alternate section band." },
+      "300": { "$type": "color", "$value": "#f0debf", "$description": "Kraft: subtle borders, quiet fills." },
+      "400": { "$type": "color", "$value": "#e5cca4", "$description": "Toasted kraft." },
+      "500": { "$type": "color", "$value": "#d4b589", "$description": "Biscuit." }
+    },
+    "cocoa": {
+      "$description": "Warm brown ink. Replaces black everywhere.",
+      "50": { "$type": "color", "$value": "#f7f1ee" },
+      "100": { "$type": "color", "$value": "#ede2dc" },
+      "200": { "$type": "color", "$value": "#dcc9bf" },
+      "300": { "$type": "color", "$value": "#c2a799" },
+      "400": { "$type": "color", "$value": "#a28474" },
+      "500": { "$type": "color", "$value": "#826455", "$description": "Muted text (5.0:1 on canvas)." },
+      "600": { "$type": "color", "$value": "#6a4c3f" },
+      "700": { "$type": "color", "$value": "#553829", "$description": "Secondary text." },
+      "800": { "$type": "color", "$value": "#45281f" },
+      "900": {
+        "$type": "color",
+        "$value": "#3a1e17",
+        "$description": "Primary text, sticker outlines and shadows (14.2:1 on canvas)."
+      }
+    },
+    "cherry": {
+      "$description": "The brand red, from maraschino to black cherry. The only primary-action color.",
+      "50": { "$type": "color", "$value": "#fdf0f0" },
+      "100": { "$type": "color", "$value": "#fadadc" },
+      "200": { "$type": "color", "$value": "#f4b5ba" },
+      "300": { "$type": "color", "$value": "#ea8a93" },
+      "400": { "$type": "color", "$value": "#dc5a66" },
+      "500": { "$type": "color", "$value": "#c8323f", "$description": "Bright cherry for illustration and doodles." },
+      "600": { "$type": "color", "$value": "#a81e31", "$description": "Primary action fill and links." },
+      "700": { "$type": "color", "$value": "#8a1428", "$description": "Brand ink: headings, logo, hover." },
+      "800": { "$type": "color", "$value": "#6b0f1f", "$description": "Pressed state and deep bands." },
+      "900": { "$type": "color", "$value": "#4a0a15" }
+    },
+    "strawberry": {
+      "$description": "Strawberry milk pinks. The main soft surface.",
+      "50": { "$type": "color", "$value": "#fff5f5" },
+      "100": { "$type": "color", "$value": "#fce7e7", "$description": "Blush section background." },
+      "200": { "$type": "color", "$value": "#f7d3d4", "$description": "Soft button and card fill." },
+      "300": { "$type": "color", "$value": "#f2b9c0" },
+      "400": { "$type": "color", "$value": "#ea97a3" },
+      "500": { "$type": "color", "$value": "#dd7385" },
+      "600": { "$type": "color", "$value": "#c4566b" },
+      "700": { "$type": "color", "$value": "#9e3e52" },
+      "800": { "$type": "color", "$value": "#772d3d" },
+      "900": { "$type": "color", "$value": "#511f2a" }
+    },
+    "blueberry": {
+      "$description": "Powder blue to blueberry navy. The cool partner to strawberry.",
+      "50": { "$type": "color", "$value": "#f3f8fb" },
+      "100": { "$type": "color", "$value": "#e4eef5" },
+      "200": { "$type": "color", "$value": "#c9dcea", "$description": "Powder blue stripes and panels." },
+      "300": { "$type": "color", "$value": "#abc6dd" },
+      "400": { "$type": "color", "$value": "#8aabc9" },
+      "500": { "$type": "color", "$value": "#6a8fb3" },
+      "600": { "$type": "color", "$value": "#52749a" },
+      "700": { "$type": "color", "$value": "#3e5a7c", "$description": "Focus ring." },
+      "800": { "$type": "color", "$value": "#2f4560", "$description": "Library navy: optional dark section." },
+      "900": { "$type": "color", "$value": "#213245" }
+    },
+    "butter": {
+      "$description": "Butter, custard and honey.",
+      "50": { "$type": "color", "$value": "#fffcee" },
+      "100": { "$type": "color", "$value": "#fff5cf" },
+      "200": { "$type": "color", "$value": "#fce9a6" },
+      "300": { "$type": "color", "$value": "#f8d878" },
+      "400": { "$type": "color", "$value": "#f2c451" },
+      "500": { "$type": "color", "$value": "#e2a92e" },
+      "600": { "$type": "color", "$value": "#bf8a1c" },
+      "700": { "$type": "color", "$value": "#946914" },
+      "800": { "$type": "color", "$value": "#6c4c10" },
+      "900": { "$type": "color", "$value": "#47320b" }
+    },
+    "pistachio": {
+      "$description": "Pistachio cream to garden-forest green.",
+      "50": { "$type": "color", "$value": "#f5f7ec" },
+      "100": { "$type": "color", "$value": "#e9eed8" },
+      "200": { "$type": "color", "$value": "#d5deb6" },
+      "300": { "$type": "color", "$value": "#bbc88e" },
+      "400": { "$type": "color", "$value": "#9dae6c" },
+      "500": { "$type": "color", "$value": "#7f9356" },
+      "600": { "$type": "color", "$value": "#657946" },
+      "700": { "$type": "color", "$value": "#4d6139", "$description": "Forest panel (Lilli Pilli)." },
+      "800": { "$type": "color", "$value": "#384a2b" },
+      "900": { "$type": "color", "$value": "#25331d" }
+    },
+    "caramel": {
+      "$description": "Apricot glaze to toffee.",
+      "50": { "$type": "color", "$value": "#fff6ee" },
+      "100": { "$type": "color", "$value": "#fce8d6" },
+      "200": { "$type": "color", "$value": "#f6d0ae" },
+      "300": { "$type": "color", "$value": "#edb384" },
+      "400": { "$type": "color", "$value": "#e0955f", "$description": "Apricot section." },
+      "500": { "$type": "color", "$value": "#cc7a43" },
+      "600": { "$type": "color", "$value": "#ad6233", "$description": "Toffee (Hopf Haus)." },
+      "700": { "$type": "color", "$value": "#8a4c28" },
+      "800": { "$type": "color", "$value": "#66381e" },
+      "900": { "$type": "color", "$value": "#462714" }
+    },
+    "lavender": {
+      "$description": "Ube and periwinkle candy. A minor accent.",
+      "50": { "$type": "color", "$value": "#f7f5fd" },
+      "100": { "$type": "color", "$value": "#eeeafb" },
+      "200": { "$type": "color", "$value": "#dcd5f6" },
+      "300": { "$type": "color", "$value": "#c4b9ee" },
+      "400": { "$type": "color", "$value": "#a898e2" },
+      "500": { "$type": "color", "$value": "#8b78d0" },
+      "600": { "$type": "color", "$value": "#705fb3" },
+      "700": { "$type": "color", "$value": "#574990" },
+      "800": { "$type": "color", "$value": "#40366b" },
+      "900": { "$type": "color", "$value": "#2b2448" }
+    }
+  }
+}

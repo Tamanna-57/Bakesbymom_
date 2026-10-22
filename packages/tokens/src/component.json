@@ -1,0 +1,34 @@
+{
+  "component": {
+    "$description": "Component-level decisions that are shared across implementations (web, email, social templates).",
+    "button": {
+      "height": {
+        "sm": { "$type": "dimension", "$value": "2.25rem" },
+        "md": { "$type": "dimension", "$value": "2.75rem" },
+        "lg": { "$type": "dimension", "$value": "3.25rem" }
+      },
+      "padding-x": {
+        "sm": { "$type": "dimension", "$value": "1rem" },
+        "md": { "$type": "dimension", "$value": "1.5rem" },
+        "lg": { "$type": "dimension", "$value": "2rem" }
+      },
+      "radius": { "$type": "dimension", "$value": "{radius.pill}" },
+      "border-width": { "$type": "dimension", "$value": "{border.width.thin}" }
+    },
+    "input": {
+      "height": { "$type": "dimension", "$value": "3rem" },
+      "padding-x": { "$type": "dimension", "$value": "1.25rem" },
+      "radius": { "$type": "dimension", "$value": "{radius.pill}" },
+      "radius-multiline": { "$type": "dimension", "$value": "{radius.lg}" }
+    },
+    "card": {
+      "padding": { "$type": "dimension", "$value": "{space.6}" },
+      "radius": { "$type": "dimension", "$value": "{radius.lg}" },
+      "border-width": { "$type": "dimension", "$value": "{border.width.thin}" }
+    },
+    "badge": {
+      "height": { "$type": "dimension", "$value": "1.75rem" },
+      "padding-x": { "$type": "dimension", "$value": "0.75rem" }
+    }
+  }
+}

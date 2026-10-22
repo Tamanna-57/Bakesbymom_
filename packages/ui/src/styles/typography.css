@@ -1,0 +1,156 @@
+/*
+ * Text styles from the type scale (tokens: --bbm-text-<style>-*).
+ * Display and heading styles use Fraunces with the brand softness preset;
+ * eyebrow is the uppercase "recipe card" label.
+ */
+
+.bbm-text-display-xl {
+  font-family: var(--bbm-text-display-xl-family);
+  font-size: var(--bbm-text-display-xl-size);
+  line-height: var(--bbm-text-display-xl-line-height);
+  letter-spacing: var(--bbm-text-display-xl-tracking);
+  font-weight: var(--bbm-text-display-xl-weight);
+  font-variation-settings: var(--bbm-font-variation-display);
+  font-optical-sizing: auto;
+  text-wrap: balance;
+}
+
+.bbm-text-display-lg {
+  font-family: var(--bbm-text-display-lg-family);
+  font-size: var(--bbm-text-display-lg-size);
+  line-height: var(--bbm-text-display-lg-line-height);
+  letter-spacing: var(--bbm-text-display-lg-tracking);
+  font-weight: var(--bbm-text-display-lg-weight);
+  font-variation-settings: var(--bbm-font-variation-display);
+  font-optical-sizing: auto;
+  text-wrap: balance;
+}
+
+.bbm-text-display-md {
+  font-family: var(--bbm-text-display-md-family);
+  font-size: var(--bbm-text-display-md-size);
+  line-height: var(--bbm-text-display-md-line-height);
+  letter-spacing: var(--bbm-text-display-md-tracking);
+  font-weight: var(--bbm-text-display-md-weight);
+  font-variation-settings: var(--bbm-font-variation-display);
+  font-optical-sizing: auto;
+  text-wrap: balance;
+}
+
+.bbm-text-heading-lg {
+  font-family: var(--bbm-text-heading-lg-family);
+  font-size: var(--bbm-text-heading-lg-size);
+  line-height: var(--bbm-text-heading-lg-line-height);
+  letter-spacing: var(--bbm-text-heading-lg-tracking);
+  font-weight: var(--bbm-text-heading-lg-weight);
+  font-variation-settings: var(--bbm-font-variation-display);
+  font-optical-sizing: auto;
+  text-wrap: balance;
+}
+
+.bbm-text-heading-md {
+  font-family: var(--bbm-text-heading-md-family);
+  font-size: var(--bbm-text-heading-md-size);
+  line-height: var(--bbm-text-heading-md-line-height);
+  letter-spacing: var(--bbm-text-heading-md-tracking);
+  font-weight: var(--bbm-text-heading-md-weight);
+  font-variation-settings: var(--bbm-font-variation-display);
+  font-optical-sizing: auto;
+  text-wrap: balance;
+}
+
+.bbm-text-heading-sm {
+  font-family: var(--bbm-text-heading-sm-family);
+  font-size: var(--bbm-text-heading-sm-size);
+  line-height: var(--bbm-text-heading-sm-line-height);
+  letter-spacing: var(--bbm-text-heading-sm-tracking);
+  font-weight: var(--bbm-text-heading-sm-weight);
+  font-variation-settings: var(--bbm-font-variation-display);
+  font-optical-sizing: auto;
+  text-wrap: balance;
+}
+
+.bbm-text-body-lg {
+  font-family: var(--bbm-text-body-lg-family);
+  font-size: var(--bbm-text-body-lg-size);
+  line-height: var(--bbm-text-body-lg-line-height);
+  letter-spacing: var(--bbm-text-body-lg-tracking);
+  font-weight: var(--bbm-text-body-lg-weight);
+  text-wrap: pretty;
+}
+
+.bbm-text-body-md {
+  font-family: var(--bbm-text-body-md-family);
+  font-size: var(--bbm-text-body-md-size);
+  line-height: var(--bbm-text-body-md-line-height);
+  letter-spacing: var(--bbm-text-body-md-tracking);
+  font-weight: var(--bbm-text-body-md-weight);
+  text-wrap: pretty;
+}
+
+.bbm-text-body-sm {
+  font-family: var(--bbm-text-body-sm-family);
+  font-size: var(--bbm-text-body-sm-size);
+  line-height: var(--bbm-text-body-sm-line-height);
+  letter-spacing: var(--bbm-text-body-sm-tracking);
+  font-weight: var(--bbm-text-body-sm-weight);
+  text-wrap: pretty;
+}
+
+.bbm-text-caption {
+  font-family: var(--bbm-text-caption-family);
+  font-size: var(--bbm-text-caption-size);
+  line-height: var(--bbm-text-caption-line-height);
+  letter-spacing: var(--bbm-text-caption-tracking);
+  font-weight: var(--bbm-text-caption-weight);
+}
+
+.bbm-text-label {
+  font-family: var(--bbm-text-label-family);
+  font-size: var(--bbm-text-label-size);
+  line-height: var(--bbm-text-label-line-height);
+  letter-spacing: var(--bbm-text-label-tracking);
+  font-weight: var(--bbm-text-label-weight);
+}
+
+.bbm-text-eyebrow {
+  font-family: var(--bbm-text-eyebrow-family);
+  font-size: var(--bbm-text-eyebrow-size);
+  line-height: var(--bbm-text-eyebrow-line-height);
+  letter-spacing: var(--bbm-text-eyebrow-tracking);
+  font-weight: var(--bbm-text-eyebrow-weight);
+  text-transform: uppercase;
+}
+
+.bbm-text-price {
+  font-family: var(--bbm-text-price-family);
+  font-size: var(--bbm-text-price-size);
+  line-height: var(--bbm-text-price-line-height);
+  letter-spacing: var(--bbm-text-price-tracking);
+  font-weight: var(--bbm-text-price-weight);
+  font-variant-numeric: tabular-nums;
+}
+
+.bbm-text-script-lg {
+  font-family: var(--bbm-text-script-lg-family);
+  font-size: var(--bbm-text-script-lg-size);
+  line-height: var(--bbm-text-script-lg-line-height);
+  letter-spacing: var(--bbm-text-script-lg-tracking);
+  font-weight: var(--bbm-text-script-lg-weight);
+}
+
+.bbm-text-script-md {
+  font-family: var(--bbm-text-script-md-family);
+  font-size: var(--bbm-text-script-md-size);
+  line-height: var(--bbm-text-script-md-line-height);
+  letter-spacing: var(--bbm-text-script-md-tracking);
+  font-weight: var(--bbm-text-script-md-weight);
+}
+
+.bbm-text-script-sm {
+  font-family: var(--bbm-text-script-sm-family);
+  font-size: var(--bbm-text-script-sm-size);
+  line-height: var(--bbm-text-script-sm-line-height);
+  letter-spacing: var(--bbm-text-script-sm-tracking);
+  font-weight: var(--bbm-text-script-sm-weight);
+}

@@ -1,0 +1,6 @@
+.bbm-doodle {
+  display: inline-block;
+  flex-shrink: 0;
+  overflow: visible;
+  vertical-align: middle;
+}

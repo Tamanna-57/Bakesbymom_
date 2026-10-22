@@ -1,0 +1,80 @@
+.bbm-logo {
+  --_logo-size: 2rem;
+  --_logo-color: var(--bbm-color-text-brand);
+  --_logo-accent: var(--bbm-color-cherry-500);
+
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.18em;
+  color: var(--_logo-color);
+  font-size: var(--_logo-size);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.bbm-logo--sm {
+  --_logo-size: 1.5rem;
+}
+
+.bbm-logo--lg {
+  --_logo-size: 3.25rem;
+}
+
+.bbm-logo--ink {
+  --_logo-color: var(--bbm-color-text-primary);
+}
+
+.bbm-logo--inverse {
+  --_logo-color: var(--bbm-color-text-inverse);
+  --_logo-accent: var(--bbm-color-strawberry-300);
+}
+
+.bbm-logo__bakes {
+  font-family: var(--bbm-font-family-display);
+  font-variation-settings: var(--bbm-font-variation-soft);
+  font-weight: var(--bbm-font-weight-black);
+  font-size: 1em;
+  letter-spacing: -0.02em;
+}
+
+.bbm-logo__by {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.12em;
+  font-family: var(--bbm-font-family-script);
+  font-weight: var(--bbm-font-weight-regular);
+  font-size: 0.82em;
+  letter-spacing: 0;
+}
+
+.bbm-logo__heart {
+  color: var(--_logo-accent);
+  translate: 0 -0.35em;
+}
+
+.bbm-logo--stacked {
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.bbm-logo--stacked .bbm-logo__by {
+  margin-top: -0.18em;
+  padding-inline-start: 0.8em;
+}
+
+.bbm-logo--seal {
+  display: inline-flex;
+}
+
+.bbm-logo__seal-mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 0.9;
+}
+
+.bbm-logo__seal-mark .bbm-logo__by {
+  font-size: 0.8em;
+  font-weight: var(--bbm-font-weight-regular);
+}

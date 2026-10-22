@@ -1,0 +1,154 @@
+.bbm-heading {
+  --_title-color: var(--bbm-color-text-primary);
+  --_accent-color: var(--bbm-color-text-brand);
+  --_lead-color: var(--bbm-color-text-secondary);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--bbm-space-3);
+  max-width: 46rem;
+}
+
+.bbm-heading--center {
+  align-items: center;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.bbm-heading--brand {
+  --_title-color: var(--bbm-color-text-brand);
+}
+
+.bbm-heading--inverse {
+  --_title-color: var(--bbm-color-text-inverse);
+  --_accent-color: var(--bbm-color-strawberry-200);
+  --_lead-color: var(--bbm-color-text-inverse);
+}
+
+.bbm-heading__eyebrow {
+  margin: 0;
+  font-family: var(--bbm-text-eyebrow-family);
+  font-size: var(--bbm-text-eyebrow-size);
+  font-weight: var(--bbm-text-eyebrow-weight);
+  line-height: var(--bbm-text-eyebrow-line-height);
+  letter-spacing: var(--bbm-text-eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--_accent-color);
+}
+
+/* Pill label clipped onto a hairline rule */
+.bbm-heading__eyebrow--pill {
+  position: relative;
+  align-self: stretch;
+  display: flex;
+  justify-content: center;
+}
+
+.bbm-heading--start .bbm-heading__eyebrow--pill {
+  justify-content: flex-start;
+}
+
+.bbm-heading__eyebrow--pill::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  border-top: var(--bbm-border-width-hairline) solid currentColor;
+  opacity: 0.6;
+}
+
+.bbm-heading__eyebrow--pill > span {
+  position: relative;
+  padding: var(--bbm-space-1) var(--bbm-space-4);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-pill);
+  background-color: var(--bbm-heading-pill-bg, var(--bbm-color-bg-surface));
+  color: var(--bbm-color-text-primary);
+}
+
+.bbm-heading__title {
+  margin: 0;
+  font-family: var(--bbm-font-family-display);
+  font-variation-settings: var(--bbm-font-variation-display);
+  font-optical-sizing: auto;
+  color: var(--_title-color);
+  text-wrap: balance;
+}
+
+.bbm-heading--xl {
+  gap: var(--bbm-space-5);
+}
+
+.bbm-heading--xl .bbm-heading__title {
+  font-size: var(--bbm-text-display-xl-size);
+  line-height: var(--bbm-text-display-xl-line-height);
+  letter-spacing: var(--bbm-text-display-xl-tracking);
+  font-weight: var(--bbm-text-display-xl-weight);
+}
+
+.bbm-heading--lg .bbm-heading__title {
+  font-size: var(--bbm-text-display-md-size);
+  line-height: var(--bbm-text-display-md-line-height);
+  letter-spacing: var(--bbm-text-display-md-tracking);
+  font-weight: var(--bbm-text-display-md-weight);
+}
+
+.bbm-heading--md .bbm-heading__title {
+  font-size: var(--bbm-text-heading-lg-size);
+  line-height: var(--bbm-text-heading-lg-line-height);
+  letter-spacing: var(--bbm-text-heading-lg-tracking);
+  font-weight: var(--bbm-text-heading-lg-weight);
+}
+
+.bbm-heading--sm .bbm-heading__title {
+  font-size: var(--bbm-text-heading-md-size);
+  line-height: var(--bbm-text-heading-md-line-height);
+  font-weight: var(--bbm-text-heading-md-weight);
+}
+
+/* <em> inside a title swaps into the copperplate script */
+.bbm-heading__title em {
+  font-family: var(--bbm-font-family-script);
+  font-style: normal;
+  font-weight: var(--bbm-font-weight-regular);
+  font-variation-settings: normal;
+  font-size: 1.22em;
+  line-height: 0;
+  letter-spacing: 0;
+  color: var(--_accent-color);
+  padding-inline: 0.04em;
+}
+
+/* Script second line: larger, tucked under the title */
+.bbm-heading__script {
+  display: block;
+  margin-top: -0.12em;
+  padding-inline-start: 0.6em;
+  font-family: var(--bbm-font-family-script);
+  font-weight: var(--bbm-font-weight-regular);
+  font-variation-settings: normal;
+  font-size: 1.15em;
+  line-height: 1.1;
+  letter-spacing: 0;
+  color: var(--_accent-color);
+}
+
+.bbm-heading--center .bbm-heading__script {
+  padding-inline-start: 0;
+}
+
+.bbm-heading__description {
+  font-family: var(--bbm-font-family-body);
+  font-size: var(--bbm-text-body-lg-size);
+  line-height: var(--bbm-text-body-lg-line-height);
+  color: var(--_lead-color);
+  text-wrap: pretty;
+}
+
+.bbm-heading__description > p {
+  margin: 0;
+}
+
+.bbm-heading__description > p + p {
+  margin-top: var(--bbm-space-3);
+}

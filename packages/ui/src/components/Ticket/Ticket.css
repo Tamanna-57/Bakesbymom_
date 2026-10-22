@@ -1,0 +1,70 @@
+.bbm-ticket {
+  display: block;
+  list-style: none;
+}
+
+.bbm-ticket--outline {
+  filter: drop-shadow(1.5px 0 0 var(--bbm-color-border-default)) drop-shadow(-1.5px 0 0 var(--bbm-color-border-default))
+    drop-shadow(0 1.5px 0 var(--bbm-color-border-default)) drop-shadow(0 -1.5px 0 var(--bbm-color-border-default));
+}
+
+.bbm-ticket__body {
+  display: flex;
+  box-sizing: border-box;
+  background-color: var(--_tone-bg);
+  color: var(--bbm-color-text-primary);
+}
+
+.bbm-ticket__body--solid {
+  background-color: var(--_tone-solid);
+  color: var(--_tone-on-solid);
+}
+
+.bbm-ticket__main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Ticket: rounded corners with semicircle notches on both sides */
+.bbm-ticket--ticket .bbm-ticket__body {
+  --_notch: 14px;
+  padding: var(--bbm-space-6) calc(var(--bbm-space-6) + var(--_notch) * 0.6);
+  border-radius: var(--bbm-radius-sm);
+  -webkit-mask:
+    radial-gradient(circle var(--_notch) at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--_notch) at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat;
+  mask:
+    radial-gradient(circle var(--_notch) at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--_notch) at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat;
+}
+
+.bbm-ticket__stub {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Physical sides: in vertical writing mode "inline-start" would mean the top. */
+  margin-left: var(--bbm-space-5);
+  padding-left: var(--bbm-space-5);
+  border-left: 2px dashed currentColor;
+  writing-mode: vertical-rl;
+  font-family: var(--bbm-font-family-mono);
+  font-size: var(--bbm-text-eyebrow-size);
+  font-weight: var(--bbm-font-weight-medium);
+  letter-spacing: var(--bbm-text-eyebrow-tracking);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Stamp: perforated edges (circles punched along every side) */
+.bbm-ticket--stamp .bbm-ticket__body {
+  --_hole: 6px;
+  padding: calc(var(--_hole) * 2 + var(--bbm-space-4));
+  -webkit-mask:
+    radial-gradient(var(--_hole), #0000 98%, #000) round calc(-1.5 * var(--_hole)) calc(-1.5 * var(--_hole)) /
+      calc(3 * var(--_hole)) calc(3 * var(--_hole)),
+    linear-gradient(#000 0 0) no-repeat 50% / calc(100% - 3 * var(--_hole)) calc(100% - 3 * var(--_hole));
+  mask:
+    radial-gradient(var(--_hole), #0000 98%, #000) round calc(-1.5 * var(--_hole)) calc(-1.5 * var(--_hole)) /
+      calc(3 * var(--_hole)) calc(3 * var(--_hole)),
+    linear-gradient(#000 0 0) no-repeat 50% / calc(100% - 3 * var(--_hole)) calc(100% - 3 * var(--_hole));
+}

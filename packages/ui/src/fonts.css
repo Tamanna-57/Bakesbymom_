@@ -1,0 +1,9 @@
+/*
+ * Bakes by Mom web fonts (Google Fonts, all SIL Open Font License).
+ *   Fraunces      display serif: opsz 9–144, wght 300–900, SOFT 0–100, WONK 0–1
+ *   Pinyon Script copperplate accent
+ *   DM Sans       body and UI
+ *   DM Mono       labels, prices, hours
+ * Prefer self-hosting (e.g. @fontsource-variable/fraunces) for production performance.
+ */
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=Pinyon+Script&display=swap');

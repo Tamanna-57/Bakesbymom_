@@ -1,0 +1,10 @@
+.bbm-edge {
+  display: block;
+  width: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.bbm-edge--flip {
+  transform: scaleY(-1);
+}

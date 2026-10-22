@@ -1,0 +1,40 @@
+/* Storybook-only helpers for docs pages and story layouts. Not shipped. */
+
+.sb-stack {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--bbm-space-4);
+}
+
+.sb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--sb-min, 14rem), 1fr));
+  gap: var(--bbm-space-6);
+  width: 100%;
+}
+
+.sb-frame {
+  width: min(64rem, 92vw);
+}
+
+.sb-note {
+  font-family: var(--bbm-font-family-mono);
+  font-size: 0.75rem;
+  color: var(--bbm-color-text-muted);
+}
+
+/* Docs: let the brand fonts lead on MDX pages */
+.sbdocs.sbdocs-content h1,
+.sbdocs.sbdocs-content h2,
+.sbdocs.sbdocs-content h3 {
+  font-family: var(--bbm-font-family-display) !important;
+  font-variation-settings: var(--bbm-font-variation-display);
+  color: var(--bbm-color-text-primary) !important;
+  letter-spacing: -0.01em;
+}
+
+.sbdocs.sbdocs-content h1 {
+  font-size: 3rem !important;
+  line-height: 1.05 !important;
+}

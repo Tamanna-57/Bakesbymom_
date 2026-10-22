@@ -1,0 +1,44 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { BorderScale, RadiusScale, ShadowScale, SpaceScale, TokenTable } from '../blocks/TokenBlocks';
+
+<Meta title="Foundations/Spacing & Shape" />
+
+# Spacing & Shape
+
+## Spacing
+
+A 4px grid. Token names are multiples of 4: `space-6` is 24px and `space-16` is 64px. In Tailwind v4 the same grid is `--spacing: 0.25rem` (`p-6` = 24px).
+
+<SpaceScale />
+
+### Layout
+
+<TokenTable prefix={['layout']} />
+
+## Radius
+
+Two shape families: **pills** for anything you can tap (buttons, inputs, badges, chips) and **soft corners** for surfaces (14–28px cards). Photos can use the arch (`--bbm-radius-arch`), oval or circle frames.
+
+<RadiusScale />
+
+## Borders
+
+Outlines are the structure of the system. The 1.5px cocoa _sticker_ outline makes cards, buttons and photos look cut from paper.
+
+<BorderScale />
+
+## Elevation
+
+Sticker shadows are hard offsets with no blur, so elements look stuck onto the page rather than floating above it. Use `sm` for buttons and markers, `md` for cards and `lg` for hero moments. The soft `photo` shadow is only for polaroids and cut-out photos; `overlay` is only for menus and popovers.
+
+<ShadowScale />
+
+## Motion
+
+Small, warm and optional. Buttons press in with `bounce`; everything else uses `standard`. Marquees and spinning seals stop entirely under `prefers-reduced-motion`.
+
+<TokenTable prefix={['motion']} />
+
+## Breakpoints
+
+<TokenTable prefix={['breakpoint']} />

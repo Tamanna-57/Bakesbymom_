@@ -1,0 +1,120 @@
+.bbm-marquee {
+  --_marquee-duration: var(--bbm-motion-duration-marquee);
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background-color: var(--_tone-solid);
+  color: var(--_tone-on-solid);
+  font-family: var(--bbm-font-family-display);
+  font-variation-settings: var(--bbm-font-variation-crisp);
+  font-weight: var(--bbm-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.bbm-marquee--sm {
+  padding-block: var(--bbm-space-2);
+  font-family: var(--bbm-font-family-mono);
+  font-size: var(--bbm-text-caption-size);
+  font-weight: var(--bbm-font-weight-medium);
+  letter-spacing: 0.14em;
+}
+
+.bbm-marquee--md {
+  padding-block: var(--bbm-space-3);
+  font-size: var(--bbm-text-body-lg-size);
+}
+
+.bbm-marquee--lg {
+  padding-block: var(--bbm-space-4);
+  font-size: var(--bbm-text-heading-lg-size);
+  letter-spacing: 0.03em;
+}
+
+.bbm-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: bbm-marquee var(--_marquee-duration) linear infinite;
+}
+
+.bbm-marquee--reverse .bbm-marquee__track {
+  animation-direction: reverse;
+}
+
+.bbm-marquee:hover .bbm-marquee__track,
+.bbm-marquee:focus-within .bbm-marquee__track,
+.bbm-marquee--paused .bbm-marquee__track {
+  animation-play-state: paused;
+}
+
+.bbm-marquee__group {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.bbm-marquee__item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.bbm-marquee__sep {
+  display: inline-flex;
+  margin-inline: 0.9em;
+}
+
+@keyframes bbm-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.bbm-marquee__control {
+  position: absolute;
+  inset-inline-end: var(--bbm-space-2);
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: var(--bbm-border-width-thin) solid currentColor;
+  border-radius: 50%;
+  background-color: var(--_tone-solid);
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.85;
+}
+
+.bbm-marquee__control:hover {
+  opacity: 1;
+}
+
+.bbm-marquee__control:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: 1px;
+  opacity: 1;
+}
+
+.bbm-marquee__control svg {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+/* Reduced motion: a still, centered ribbon */
+@media (prefers-reduced-motion: reduce) {
+  .bbm-marquee {
+    justify-content: center;
+  }
+
+  .bbm-marquee__track {
+    animation: none;
+  }
+
+  .bbm-marquee__control {
+    display: none;
+  }
+}

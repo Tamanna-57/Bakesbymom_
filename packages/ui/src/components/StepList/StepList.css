@@ -1,0 +1,159 @@
+.bbm-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--bbm-font-family-body);
+  color: var(--bbm-color-text-primary);
+}
+
+.bbm-steps__title {
+  margin: 0;
+  font-family: var(--bbm-font-family-display);
+  font-variation-settings: var(--bbm-font-variation-display);
+  font-size: var(--bbm-text-heading-sm-size);
+  font-weight: var(--bbm-text-heading-sm-weight);
+  line-height: var(--bbm-text-heading-sm-line-height);
+}
+
+.bbm-steps__description {
+  margin-top: var(--bbm-space-1);
+  font-size: var(--bbm-text-body-sm-size);
+  line-height: var(--bbm-text-body-sm-line-height);
+  color: var(--bbm-color-text-secondary);
+}
+
+.bbm-steps__description > p {
+  margin: 0;
+}
+
+/* Row: check markers joined by a dashed line */
+.bbm-steps--row {
+  display: grid;
+  gap: var(--bbm-space-8);
+}
+
+.bbm-steps--row .bbm-steps__item {
+  position: relative;
+  display: flex;
+  gap: var(--bbm-space-4);
+  align-items: flex-start;
+}
+
+.bbm-steps--row .bbm-steps__marker {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-sm);
+  background-color: var(--_tone-bg);
+  color: var(--_tone-fg);
+  box-shadow: var(--bbm-shadow-sticker-sm);
+}
+
+.bbm-steps--row .bbm-steps__marker svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .bbm-steps--row {
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: var(--bbm-space-6);
+  }
+
+  .bbm-steps--row .bbm-steps__item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .bbm-steps--row .bbm-steps__item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 1.5rem;
+    left: calc(50% + 2.25rem);
+    width: calc(100% - 4.5rem + var(--bbm-space-6));
+    border-top: 2px dashed var(--bbm-color-border-default);
+    opacity: 0.5;
+  }
+}
+
+/* Stack: letters dropped on a table */
+.bbm-steps--stack {
+  display: grid;
+  gap: var(--bbm-space-2);
+}
+
+.bbm-steps--stack .bbm-steps__item {
+  display: flex;
+  align-items: center;
+  gap: var(--bbm-space-4);
+  padding: var(--bbm-space-5) var(--bbm-space-6);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-sm);
+  background-color: var(--_tone-solid);
+  color: var(--_tone-on-solid);
+  box-shadow: var(--bbm-shadow-sticker-sm);
+  rotate: var(--_tilt);
+}
+
+.bbm-steps--stack .bbm-steps__item:nth-child(even) {
+  margin-inline-start: var(--bbm-space-4);
+}
+
+.bbm-steps--stack .bbm-steps__marker {
+  font-family: var(--bbm-font-family-mono);
+  font-size: var(--bbm-text-eyebrow-size);
+  letter-spacing: var(--bbm-text-eyebrow-tracking);
+}
+
+.bbm-steps--stack .bbm-steps__description {
+  color: inherit;
+}
+
+/* Numbered: big number tabs, alternating fills */
+.bbm-steps--numbered {
+  display: grid;
+  gap: var(--bbm-space-2);
+}
+
+.bbm-steps--numbered .bbm-steps__item {
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  border-radius: var(--bbm-radius-lg) var(--bbm-radius-pill) var(--bbm-radius-pill) var(--bbm-radius-lg);
+  background-color: var(--_tone-bg);
+  color: var(--_tone-fg);
+}
+
+.bbm-steps--numbered .bbm-steps__marker {
+  display: grid;
+  flex: 0 0 4.5rem;
+  place-items: center;
+  background-color: var(--_tone-solid);
+  color: var(--_tone-on-solid);
+  font-family: var(--bbm-font-family-display);
+  font-variation-settings: var(--bbm-font-variation-soft);
+  font-size: var(--bbm-text-heading-lg-size);
+  font-weight: var(--bbm-font-weight-bold);
+  border-radius: 0 var(--bbm-radius-pill) var(--bbm-radius-pill) 0;
+}
+
+.bbm-steps--numbered .bbm-steps__content {
+  align-self: center;
+  padding: var(--bbm-space-4) var(--bbm-space-6);
+}
+
+.bbm-steps--numbered .bbm-steps__title {
+  font-family: var(--bbm-font-family-body);
+  font-variation-settings: normal;
+  font-size: var(--bbm-text-body-md-size);
+  font-weight: var(--bbm-font-weight-semibold);
+}
+
+.bbm-steps--numbered .bbm-steps__description {
+  color: inherit;
+}

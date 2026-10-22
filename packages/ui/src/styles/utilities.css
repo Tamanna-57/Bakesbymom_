@@ -1,0 +1,94 @@
+/* Layout helpers ------------------------------------------------------- */
+
+.bbm-container {
+  width: 100%;
+  max-width: calc(var(--bbm-layout-container) + 2 * var(--bbm-layout-gutter));
+  margin-inline: auto;
+  padding-inline: var(--bbm-layout-gutter);
+  box-sizing: border-box;
+}
+
+.bbm-container--narrow {
+  max-width: calc(var(--bbm-layout-container-narrow) + 2 * var(--bbm-layout-gutter));
+}
+
+.bbm-section {
+  padding-block: var(--bbm-layout-section-y);
+}
+
+.bbm-visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Type helpers ---------------------------------------------------------- */
+
+/* Swap a word into script inside a serif headline: <h2>For the <em>nights</em>…</h2> */
+.bbm-script-word {
+  font-family: var(--bbm-font-family-script);
+  font-style: normal;
+  font-weight: var(--bbm-font-weight-regular);
+  font-variation-settings: normal;
+  font-size: 1.25em;
+  line-height: 0;
+  letter-spacing: 0;
+  color: var(--bbm-color-text-brand);
+  padding-inline: 0.06em;
+}
+
+/* Puffy Cooper-style Fraunces for badges, promos and the logo. */
+.bbm-font-soft {
+  font-variation-settings: var(--bbm-font-variation-soft);
+}
+
+/* Hand-drawn squiggle underline in the current text color (or --bbm-squiggle-color). */
+.bbm-squiggle {
+  position: relative;
+  white-space: nowrap;
+}
+
+.bbm-squiggle::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: -0.1em;
+  height: 0.22em;
+  background-color: var(--bbm-squiggle-color, var(--bbm-color-text-brand));
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 8'%3E%3Cpath d='M0 4Q6 0 12 4T24 4' fill='none' stroke='%23000' stroke-width='2.2'/%3E%3C/svg%3E")
+    repeat-x 0 0 / auto 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 8'%3E%3Cpath d='M0 4Q6 0 12 4T24 4' fill='none' stroke='%23000' stroke-width='2.2'/%3E%3C/svg%3E")
+    repeat-x 0 0 / auto 100%;
+  pointer-events: none;
+}
+
+/* Stroke-only display type (poster accents). Use at 48px and above. */
+.bbm-text-outline {
+  color: transparent;
+  -webkit-text-stroke: var(--bbm-outline-width, 2px) var(--bbm-outline-color, var(--bbm-color-text-brand));
+}
+
+/* Decoration helpers -------------------------------------------------- */
+
+/* White die-cut halo around transparent product photos (sticker effect). */
+.bbm-sticker-cutout {
+  filter: drop-shadow(3px 0 0 var(--bbm-color-bg-raised)) drop-shadow(-3px 0 0 var(--bbm-color-bg-raised))
+    drop-shadow(0 3px 0 var(--bbm-color-bg-raised)) drop-shadow(0 -3px 0 var(--bbm-color-bg-raised))
+    drop-shadow(2px 2px 0 var(--bbm-color-border-default));
+}
+
+/* Straddle the top edge of the nearest positioned ancestor (stars on a section seam). */
+.bbm-seam {
+  position: absolute;
+  top: 0;
+  left: var(--bbm-seam-x, 50%);
+  transform: translate(-50%, -50%) rotate(var(--bbm-seam-rotate, 0deg));
+  z-index: var(--bbm-z-raised);
+  pointer-events: none;
+}

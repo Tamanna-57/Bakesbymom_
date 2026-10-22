@@ -1,0 +1,55 @@
+{
+  "space": {
+    "$description": "4px base grid. Names are multiples of 4px (space-6 = 24px).",
+    "0": { "$type": "dimension", "$value": "0rem" },
+    "px": { "$type": "dimension", "$value": "1px" },
+    "0-5": { "$type": "dimension", "$value": "0.125rem" },
+    "1": { "$type": "dimension", "$value": "0.25rem" },
+    "2": { "$type": "dimension", "$value": "0.5rem" },
+    "3": { "$type": "dimension", "$value": "0.75rem" },
+    "4": { "$type": "dimension", "$value": "1rem" },
+    "5": { "$type": "dimension", "$value": "1.25rem" },
+    "6": { "$type": "dimension", "$value": "1.5rem" },
+    "8": { "$type": "dimension", "$value": "2rem" },
+    "10": { "$type": "dimension", "$value": "2.5rem" },
+    "12": { "$type": "dimension", "$value": "3rem" },
+    "16": { "$type": "dimension", "$value": "4rem" },
+    "20": { "$type": "dimension", "$value": "5rem" },
+    "24": { "$type": "dimension", "$value": "6rem" },
+    "32": { "$type": "dimension", "$value": "8rem" }
+  },
+  "layout": {
+    "container": { "$type": "dimension", "$value": "75rem", "$description": "Max content width (1200px)." },
+    "container-narrow": {
+      "$type": "dimension",
+      "$value": "45rem",
+      "$description": "Reading width for stories and recipes (720px)."
+    },
+    "gutter": {
+      "$value": "clamp(1rem, 0.6rem + 2vw, 2rem)",
+      "$description": "Side padding: 16px on phones up to 32px on desktop.",
+      "$extensions": { "bbm.fluid": { "min": "16px", "max": "32px" } }
+    },
+    "section-y": {
+      "$value": "clamp(4rem, 2.8rem + 5vw, 7rem)",
+      "$description": "Vertical padding of a page section.",
+      "$extensions": { "bbm.fluid": { "min": "64px", "max": "112px" } }
+    },
+    "stack": { "$type": "dimension", "$value": "1.5rem", "$description": "Default gap between stacked blocks." },
+    "touch-target": { "$type": "dimension", "$value": "2.75rem", "$description": "Minimum interactive size (44px)." }
+  },
+  "breakpoint": {
+    "$description": "Min-widths for media queries (use the values; CSS variables don't work inside @media).",
+    "sm": { "$type": "dimension", "$value": "640px" },
+    "md": { "$type": "dimension", "$value": "768px" },
+    "lg": { "$type": "dimension", "$value": "1024px" },
+    "xl": { "$type": "dimension", "$value": "1280px" }
+  },
+  "z": {
+    "base": { "$type": "number", "$value": 0 },
+    "raised": { "$type": "number", "$value": 10 },
+    "sticky": { "$type": "number", "$value": 100 },
+    "overlay": { "$type": "number", "$value": 1000 },
+    "toast": { "$type": "number", "$value": 1100 }
+  }
+}

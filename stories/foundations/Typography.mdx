@@ -1,0 +1,52 @@
+import { Meta, Unstyled } from '@storybook/addon-docs/blocks';
+import { FontFamilies, TypeScale } from '../blocks/TokenBlocks';
+
+<Meta title="Foundations/Typography" />
+
+# Typography
+
+Four families, each with one job. All are free Google Fonts (SIL OFL), loaded by `@bakesbymom/ui/fonts.css`.
+
+<FontFamilies />
+
+## Type scale
+
+Display and heading sizes are **fluid**: they scale smoothly between the phone and desktop sizes with `clamp()`. Use the classes (`.bbm-text-display-xl`) or the variables (`--bbm-text-display-xl-size`, `-line-height`, `-tracking`, `-weight`, `-family`).
+
+<TypeScale />
+
+## Fraunces softness
+
+Fraunces is a variable font with `SOFT` and `WONK` axes, so one family covers several looks:
+
+| Token                          | Value                  | Use                                                                     |
+| ------------------------------ | ---------------------- | ----------------------------------------------------------------------- |
+| `--bbm-font-variation-display` | `"SOFT" 50, "WONK" 0`  | Default for headings                                                    |
+| `--bbm-font-variation-soft`    | `"SOFT" 100, "WONK" 1` | Puffy, Cooper-style: logo, price tags, promo posters (`.bbm-font-soft`) |
+| `--bbm-font-variation-crisp`   | `"SOFT" 0, "WONK" 0`   | Sharper patisserie caps: marquees, editorial lines                      |
+
+## Script, sparingly
+
+Pinyon Script is an accent: one word in a headline (`<em>` inside `SectionHeading` and `Hero` titles), a second line under a title, captions on polaroids, and Mom's signature. Never use it for buttons, labels, body copy or anything under 28px.
+
+<Unstyled>
+  <div style={{ display: 'grid', gap: 12, margin: '16px 0' }}>
+    <div className="bbm-text-display-md">
+      For the nights that need <em className="bbm-script-word">something</em> sweet
+    </div>
+    <div className="bbm-text-display-md">
+      Baked with <span className="bbm-squiggle">love</span>, by Mom
+    </div>
+  </div>
+</Unstyled>
+
+## Labels speak "recipe card"
+
+Eyebrows, prices, dates and opening hours use DM Mono, which brings back the typed recipe cards from the Hopf Haus and Book Nook references:
+
+<Unstyled>
+  <p className="bbm-text-eyebrow" style={{ color: 'var(--bbm-color-text-brand)' }}>
+    Recipe no. 04 · baked fresh daily
+  </p>
+  <p className="bbm-text-price">Strawberry layer cake ........ $38.00</p>
+</Unstyled>

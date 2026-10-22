@@ -1,0 +1,67 @@
+import { Meta, Unstyled } from '@storybook/addon-docs/blocks';
+import { Logo, Seal, Doodle, PatternSurface } from '@bakesbymom/ui';
+
+<Meta title="Introduction" />
+
+<Unstyled>
+  <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap', margin: '8px 0 24px' }}>
+    <Logo size="lg" />
+    <Seal text="Design system • Tokens • Components • " size={112} tone="strawberry" spin>
+      <Doodle name="cupcake" size={36} />
+    </Seal>
+  </div>
+</Unstyled>
+
+# Bakes by Mom Design System
+
+**Mom's recipe box meets a retro pastry shop.** Cream paper, cocoa ink, one cherry-red action color, and handmade details (candy stripes, scalloped edges, tickets, polaroids, sticker outlines) around calm, readable content.
+
+This Storybook documents everything needed to build Bakes by Mom's website, social posts and printed pieces consistently:
+
+|     | What                                                                        | Where                                                                 |
+| --- | --------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| 🎨  | **Design tokens**: colors, type, spacing, radius, shadows, motion, patterns | `packages/tokens` → CSS, SCSS, JS/TS, JSON, Tailwind v4, Figma (DTCG) |
+| 🧁  | **Components**: 22 React components built only from tokens                  | `packages/ui`                                                         |
+| 📖  | **Foundations docs**: generated from the built tokens, so they never drift  | _Foundations_ in the sidebar                                          |
+| 🏠  | **Page mockups**: home, menu, link-in-bio and social posts                  | _Pages_ in the sidebar                                                |
+| 📌  | **References**: 24 Pinterest analyses + 9 web style references              | `design/` · _References / Moodboard_                                  |
+
+<Unstyled>
+  <PatternSurface
+    pattern="gingham"
+    tone="strawberry"
+    scale="sm"
+    style={{ height: 18, margin: '32px 0 0', borderRadius: 999 }}
+  />
+</Unstyled>
+
+## Principles
+
+1. **Paper, not screen.** Every page sits on cream (`--bbm-color-bg-canvas`). Ink is warm cocoa, never black. Depth comes from stepping through creams and from hard _sticker_ shadows, never blurred gray ones.
+2. **One cherry action.** `cherry-600` is the only filled action color. One primary button per view; everything else is secondary, soft or ghost.
+3. **Handmade at the edges, calm in the middle.** Stripes, gingham, scallops, awnings and stickers frame sections and photos. Body copy, prices and forms stay on plain surfaces.
+4. **A recipe-card voice.** Fraunces for headlines, DM Sans for reading, DM Mono for labels, prices and hours, and Pinyon Script only for a single word or Mom's signature.
+5. **Sweet for everyone.** Every text pairing passes WCAG AA (tested in CI), touch targets are 44px or more, focus is always visible, and motion stops for people who prefer reduced motion.
+
+## Using the system
+
+```bash
+npm install            # in this repo (npm workspaces)
+npm run storybook      # builds tokens, then opens Storybook on :6006
+npm run check          # build + typecheck + tests + static Storybook
+```
+
+```tsx
+// In an app
+import '@bakesbymom/ui/fonts.css'; // Fraunces, Pinyon Script, DM Sans, DM Mono
+import '@bakesbymom/ui/styles.css'; // tokens + component styles
+import { Button, ProductCard } from '@bakesbymom/ui';
+
+// …and add className="bbm-theme" to <body> for the canvas, ink and body type.
+```
+
+Prefer CSS variables? Import `@bakesbymom/tokens/css` and use `var(--bbm-color-bg-canvas)`. Using Tailwind v4? Import `@bakesbymom/tokens/tailwind.css` for `bg-canvas`, `text-ink`, `font-display` and `shadow-sticker-md`.
+
+## Where the decisions come from
+
+Every token and component traces back to a reference. The 24 Pinterest pins are analysed one by one in [`design/pinterest/`](https://github.com/Tamanna-57/Bakesbymom_/tree/main/design/pinterest), with a synthesis that counts which motifs recur (warm cream canvas in 20 of 23 pins, vertical stripes in 13, deep cherry ink in 12…). The nine web style references live in [`design/`](https://github.com/Tamanna-57/Bakesbymom_/tree/main/design). See **References / Moodboard** for the pins side by side.

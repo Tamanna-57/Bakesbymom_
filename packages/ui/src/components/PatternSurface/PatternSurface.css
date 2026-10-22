@@ -1,0 +1,71 @@
+/*
+ * Pattern classes are attribute-driven so any element (Polaroid frames, Hero
+ * backdrops) can reuse them: class="bbm-pattern" data-pattern="gingham".
+ */
+.bbm-pattern {
+  --_a: var(--_tone-pattern, var(--bbm-color-strawberry-200));
+  --_line: var(--_tone-fg, var(--bbm-color-cherry-700));
+  --_b: var(--bbm-pattern-ground, var(--bbm-color-bg-surface));
+  --_k: 1;
+  background-color: var(--_b);
+}
+
+.bbm-pattern[data-scale='sm'] {
+  --_k: 0.66;
+}
+
+.bbm-pattern[data-scale='lg'] {
+  --_k: 1.66;
+}
+
+/* Cabana stripes: equal bands */
+.bbm-pattern[data-pattern='stripes'] {
+  --_s: calc(var(--bbm-pattern-stripe-base) * var(--_k));
+  background-image: repeating-linear-gradient(90deg, var(--_a) 0 var(--_s), var(--_b) var(--_s) calc(var(--_s) * 2));
+}
+
+/* Pinstripe: band + thin accent line (Sasa Khalisa stripe anatomy) */
+.bbm-pattern[data-pattern='pinstripe'] {
+  --_s: calc(var(--bbm-pattern-stripe-base) * var(--_k));
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--_a) 0 var(--_s),
+    var(--_b) var(--_s) calc(var(--_s) * 1.25),
+    var(--_line) calc(var(--_s) * 1.25) calc(var(--_s) * 1.25 + 1.5px),
+    var(--_b) calc(var(--_s) * 1.25 + 1.5px) calc(var(--_s) * 1.5)
+  );
+}
+
+/* Gingham: two translucent stripe layers; the overlap is the dark check */
+.bbm-pattern[data-pattern='gingham'] {
+  --_s: calc(var(--bbm-pattern-gingham) * var(--_k));
+  --_g: color-mix(in srgb, var(--_tone-border, var(--bbm-color-strawberry-300)) 60%, transparent);
+  background-image: linear-gradient(90deg, var(--_g) 50%, transparent 0), linear-gradient(var(--_g) 50%, transparent 0);
+  background-size: calc(var(--_s) * 2) calc(var(--_s) * 2);
+}
+
+/* Checkerboard */
+.bbm-pattern[data-pattern='checker'] {
+  --_s: calc(var(--bbm-pattern-checker) * var(--_k));
+  background-image: repeating-conic-gradient(var(--_a) 0 25%, var(--_b) 0 50%);
+  background-size: calc(var(--_s) * 2) calc(var(--_s) * 2);
+}
+
+/* Graph paper */
+.bbm-pattern[data-pattern='grid'] {
+  --_s: calc(var(--bbm-pattern-grid) * var(--_k));
+  background-image:
+    linear-gradient(var(--_a) 1px, transparent 1px), linear-gradient(90deg, var(--_a) 1px, transparent 1px);
+  background-size: var(--_s) var(--_s);
+}
+
+/* Polka dots (offset rows) */
+.bbm-pattern[data-pattern='dots'] {
+  --_s: calc(var(--bbm-pattern-dot) * var(--_k));
+  background-image:
+    radial-gradient(circle, var(--_a) 22%, transparent 24%), radial-gradient(circle, var(--_a) 22%, transparent 24%);
+  background-size: calc(var(--_s) * 2) calc(var(--_s) * 2);
+  background-position:
+    0 0,
+    var(--_s) var(--_s);
+}

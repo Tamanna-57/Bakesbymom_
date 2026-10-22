@@ -1,0 +1,36 @@
+/*
+ * Opt-in page base. Add `bbm-theme` to <body> (or any wrapper) to get the
+ * canvas, ink color and body type. Components never depend on it.
+ */
+.bbm-theme {
+  background-color: var(--bbm-color-bg-canvas);
+  color: var(--bbm-color-text-primary);
+  font-family: var(--bbm-font-family-body);
+  font-size: var(--bbm-text-body-md-size);
+  line-height: var(--bbm-text-body-md-line-height);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Base rules use :where() (zero specificity) so any component style overrides them. */
+:where(.bbm-theme) ::selection {
+  background-color: var(--bbm-color-strawberry-200);
+  color: var(--bbm-color-cocoa-900);
+}
+
+:where(.bbm-theme) :where(a:not([class])) {
+  color: var(--bbm-color-text-link);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.18em;
+}
+
+:where(.bbm-theme) :where(a:not([class])):hover {
+  color: var(--bbm-color-text-link-hover);
+}
+
+/* One focus treatment for every interactive element in the system. */
+:where(.bbm-focusable:focus-visible, .bbm-theme :focus-visible) {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: var(--bbm-focus-ring-offset);
+}

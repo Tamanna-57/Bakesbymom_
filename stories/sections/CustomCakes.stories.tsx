@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CustomCakesSection, PackagesSection } from './blocks';
+import { CustomCakesSection, PackagesSection } from '../../apps/web/src/sections/blocks';
 import { fromBoard } from './ref';
 
 const meta = {

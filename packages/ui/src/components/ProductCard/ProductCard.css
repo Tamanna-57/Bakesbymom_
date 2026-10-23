@@ -217,6 +217,55 @@
   gap: var(--bbm-space-2);
 }
 
+/* Menu card, horizontal: with layout="row", and on phones (1 up, photo on the left) */
+.bbm-product--menu.bbm-product--row {
+  align-items: stretch;
+  padding: var(--bbm-space-3);
+  border-bottom-width: var(--bbm-border-width-thin);
+  border-bottom-color: var(--bbm-color-border-default);
+}
+
+.bbm-product--menu.bbm-product--row .bbm-product__media {
+  flex-basis: 7rem;
+  width: 7rem;
+  aspect-ratio: auto;
+  min-height: 7rem;
+}
+
+@media (max-width: 599.98px) {
+  .bbm-product--menu {
+    flex-direction: row;
+    align-items: stretch;
+    padding: var(--bbm-space-3);
+  }
+
+  .bbm-product--menu .bbm-product__media {
+    flex: 0 0 8rem;
+    width: 8rem;
+    aspect-ratio: auto;
+    min-height: 8rem;
+  }
+
+  .bbm-product--menu .bbm-product__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding-inline: 0;
+  }
+
+  .bbm-product--menu .bbm-product__badge {
+    top: var(--bbm-space-1);
+    left: var(--bbm-space-1);
+    font-size: var(--bbm-text-caption-size);
+    white-space: nowrap;
+  }
+
+  .bbm-product--menu .bbm-product__badge > * {
+    padding-inline: var(--bbm-space-2);
+    font-size: inherit;
+  }
+}
+
 /* Sold out: a badge and a quiet price */
 .bbm-product__sold-out {
   display: inline-block;

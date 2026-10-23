@@ -146,7 +146,11 @@ const ART: Record<Exclude<DoodleName, 'cherries-halftone'>, { viewBox: string; b
           {...INK}
           d="M12 10.5C9.6 6.4 4.4 4.6 3 7.2c-1.3 2.5 2 5.6 9 3.3zM12 10.5c2.4-4.1 7.6-5.9 9-3.3 1.3 2.5-2 5.6-9 3.3z"
         />
-        <path fill="var(--_doodle-accent)" {...INK} d="M11 11.4L7.6 20.6l2.6-1 1.2 2.2 1-10.4zM13 11.4l3.4 9.2-2.6-1-1.2 2.2-1-10.4z" />
+        <path
+          fill="var(--_doodle-accent)"
+          {...INK}
+          d="M11 11.4L7.6 20.6l2.6-1 1.2 2.2 1-10.4zM13 11.4l3.4 9.2-2.6-1-1.2 2.2-1-10.4z"
+        />
         <circle cx="12" cy="10.8" r="1.9" fill="currentColor" />
       </>
     ),
@@ -210,8 +214,7 @@ function HalftoneCherries({ id }: { id: string }) {
  */
 export function Doodle({ name, size = 24, color, accent, title, className, style, ...rest }: DoodleProps) {
   const id = `bbm-doodle-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
-  const art =
-    name === 'cherries-halftone' ? { viewBox: '0 0 120 120', body: <HalftoneCherries id={id} /> } : ART[name];
+  const art = name === 'cherries-halftone' ? { viewBox: '0 0 120 120', body: <HalftoneCherries id={id} /> } : ART[name];
   const ratio = RATIO[name] ?? 1;
   const width = typeof size === 'number' ? `${size}px` : size;
   const vars = {

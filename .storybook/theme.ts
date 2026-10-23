@@ -1,12 +1,12 @@
 import { create } from 'storybook/theming/create';
 import {
-  colorCherry600,
+  colorBeige50,
+  colorBeige300,
+  colorBrown600,
+  colorBrown900,
   colorCherry700,
-  colorCocoa500,
-  colorCocoa900,
-  colorCream50,
-  colorCream100,
-  colorCream300,
+  colorCherry800,
+  colorPaper,
 } from '@bakesbymom/tokens';
 
 // Storybook's own chrome, dressed in the brand tokens.
@@ -17,28 +17,28 @@ export default create({
   brandTarget: '_blank',
 
   colorPrimary: colorCherry700,
-  colorSecondary: colorCherry600,
+  colorSecondary: colorCherry700,
 
-  appBg: colorCream100,
-  appContentBg: colorCream50,
-  appPreviewBg: colorCream100,
-  appBorderColor: colorCream300,
+  appBg: colorBeige50,
+  appContentBg: colorPaper,
+  appPreviewBg: colorBeige50,
+  appBorderColor: colorBeige300,
   appBorderRadius: 14,
 
   fontBase: '"DM Sans", ui-sans-serif, system-ui, sans-serif',
-  fontCode: '"DM Mono", ui-monospace, monospace',
+  fontCode: 'ui-monospace, SFMono-Regular, Menlo, monospace',
 
-  textColor: colorCocoa900,
-  textInverseColor: colorCream50,
-  textMutedColor: colorCocoa500,
+  textColor: colorBrown900,
+  textInverseColor: colorPaper,
+  textMutedColor: colorBrown600,
 
-  barTextColor: colorCocoa500,
-  barSelectedColor: colorCherry600,
-  barHoverColor: colorCherry700,
-  barBg: colorCream50,
+  barTextColor: colorBrown600,
+  barSelectedColor: colorCherry700,
+  barHoverColor: colorCherry800,
+  barBg: colorPaper,
 
   inputBg: '#ffffff',
-  inputBorder: colorCream300,
-  inputTextColor: colorCocoa900,
+  inputBorder: colorBeige300,
+  inputTextColor: colorBrown900,
   inputBorderRadius: 999,
 });

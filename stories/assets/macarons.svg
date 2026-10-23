@@ -1,20 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
-  <rect width="400" height="400" fill="#f8ecd6"/>
-  <g stroke="#3a1e17" stroke-width="5" stroke-linejoin="round">
+  <rect width="400" height="400" fill="#f8f1de"/>
+  <g stroke="#32180b" stroke-width="5" stroke-linejoin="round">
     <g transform="rotate(-6 200 294)">
-      <rect x="122" y="280" width="156" height="28" rx="12" fill="#fffcf6"/>
-      <rect x="110" y="250" width="180" height="38" rx="19" fill="#f8d878"/>
-      <rect x="110" y="302" width="180" height="36" rx="18" fill="#f8d878"/>
+      <rect x="122" y="280" width="156" height="28" rx="12" fill="#fffdf6"/>
+      <rect x="110" y="250" width="180" height="38" rx="19" fill="#f2db87"/>
+      <rect x="110" y="302" width="180" height="36" rx="18" fill="#f2db87"/>
     </g>
     <g transform="rotate(4 200 194)">
-      <rect x="122" y="180" width="156" height="28" rx="12" fill="#fffcf6"/>
-      <rect x="110" y="150" width="180" height="38" rx="19" fill="#bbc88e"/>
-      <rect x="110" y="202" width="180" height="36" rx="18" fill="#bbc88e"/>
+      <rect x="122" y="180" width="156" height="28" rx="12" fill="#fffdf6"/>
+      <rect x="110" y="150" width="180" height="38" rx="19" fill="#dcd8a2"/>
+      <rect x="110" y="202" width="180" height="36" rx="18" fill="#dcd8a2"/>
     </g>
     <g transform="rotate(-3 200 94)">
-      <rect x="122" y="80" width="156" height="28" rx="12" fill="#dc5a66"/>
-      <rect x="110" y="50" width="180" height="38" rx="19" fill="#f2b9c0"/>
-      <rect x="110" y="102" width="180" height="36" rx="18" fill="#f2b9c0"/>
+      <rect x="122" y="80" width="156" height="28" rx="12" fill="#e06160"/>
+      <rect x="110" y="50" width="180" height="38" rx="19" fill="#f3c5c8"/>
+      <rect x="110" y="102" width="180" height="36" rx="18" fill="#f3c5c8"/>
     </g>
   </g>
   <g fill="#fff" opacity=".55"><ellipse cx="150" cy="62" rx="18" ry="5"/><ellipse cx="150" cy="162" rx="18" ry="5"/><ellipse cx="150" cy="262" rx="18" ry="5"/></g>

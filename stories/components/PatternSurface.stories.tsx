@@ -1,75 +1,63 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Fragment } from 'react';
-import { PATTERNS, PatternSurface, TONES } from '@bakesbymom/ui';
+import type { CSSProperties } from 'react';
+import { PatternSurface, PATTERNS } from '@bakesbymom/ui';
 
 const meta = {
-  title: 'Components/Surfaces/PatternSurface',
+  title: 'Components/PatternSurface',
   component: PatternSurface,
-  args: { pattern: 'stripes', tone: 'strawberry', scale: 'md' },
-  argTypes: {
-    pattern: { control: 'inline-radio', options: PATTERNS },
-    tone: { control: 'select', options: TONES },
-    scale: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
-    ground: { control: 'color' },
-    as: { control: false },
-  },
   parameters: {
     docs: {
       description: {
         component:
-          'Paints a signature pattern from tokens: cabana stripes, pinstripes, gingham, checkerboard, graph paper or polka dots. Pure CSS, any size, any tone. Use it for backdrops, bands and frames, never behind paragraphs.',
+          "The board's patterns, painted from tokens: stripes (pins 02, 07, 16), pinstripe (15), dotted and wavy stripes (09), gingham (12), checker (05, 15), graph paper (08, 15) and polka dots (05). Pure CSS, so it recolors with `tone` and scales with `scale` (`xl` is pin 02's wide process stripes). Keep patterns behind photos, labels and edges, never behind paragraphs.",
       },
     },
   },
-  render: (args) => (
-    <PatternSurface
-      {...args}
-      style={{ width: 420, height: 220, borderRadius: 20, border: '1.5px solid var(--bbm-color-border-default)' }}
-    />
-  ),
+  args: {
+    pattern: 'stripes',
+    tone: 'blue',
+    style: { width: 320, height: 200, borderRadius: 16, border: '1.5px solid var(--bbm-color-border-default)' },
+  },
 } satisfies Meta<typeof PatternSurface>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const CabanaStripes: Story = { args: { pattern: 'stripes', tone: 'blueberry' } };
-export const Pinstripe: Story = { args: { pattern: 'pinstripe', tone: 'strawberry' } };
-export const Gingham: Story = { args: { pattern: 'gingham', tone: 'cherry' } };
-export const Checkerboard: Story = { args: { pattern: 'checker', tone: 'cherry', scale: 'sm' } };
-export const GraphPaper: Story = { args: { pattern: 'grid', tone: 'strawberry' } };
-export const PolkaDots: Story = { args: { pattern: 'dots', tone: 'cocoa', ground: 'var(--bbm-color-blueberry-200)' } };
+export const Playground: Story = {};
 
-export const Matrix: Story = {
-  parameters: { layout: 'padded' },
+export const All: Story = {
   render: () => (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: `120px repeat(${PATTERNS.length}, 1fr)`,
-        gap: 8,
-        alignItems: 'center',
-      }}
-    >
-      <span />
-      {PATTERNS.map((p) => (
-        <span key={p} className="sb-note">
-          {p}
-        </span>
-      ))}
-      {TONES.map((tone) => (
-        <Fragment key={tone}>
-          <span className="sb-note">{tone}</span>
-          {PATTERNS.map((pattern) => (
-            <PatternSurface
-              key={pattern}
-              pattern={pattern}
-              tone={tone}
-              scale="sm"
-              style={{ height: 64, borderRadius: 10, border: '1px solid var(--bbm-color-border-subtle)' }}
-            />
-          ))}
-        </Fragment>
+    <div className="sb-grid" style={{ width: 'min(960px, 90vw)', '--sb-min': '13rem' } as CSSProperties}>
+      {PATTERNS.map((pattern, i) => (
+        <figure key={pattern} style={{ margin: 0 }}>
+          <PatternSurface
+            pattern={pattern}
+            tone={(['blue', 'pink', 'pink', 'cherry', 'pink', 'pink', 'pink', 'blue'] as const)[i]}
+            style={{ height: 140, borderRadius: 16, border: '1.5px solid var(--bbm-color-border-default)' }}
+          />
+          <figcaption className="sb-note" style={{ marginTop: 8 }}>
+            {pattern}
+          </figcaption>
+        </figure>
       ))}
     </div>
   ),
 };
+
+/** Pin 02's wide stripes for the process section. */
+export const WideStripes: Story = {
+  args: { pattern: 'stripes', tone: 'pink', scale: 'xl', style: { width: 480, height: 240 } },
+};
+
+/** Pin 05's polka-dot ground on baby blue. */
+export const PolkaDots: Story = {
+  args: {
+    pattern: 'dots',
+    tone: 'brown',
+    ground: 'var(--bbm-color-bg-blue)',
+    style: { width: 320, height: 240, border: '1.5px solid var(--bbm-color-border-default)' },
+  },
+};
+
+/** Pin 15's grid paper. */
+export const GridPaper: Story = { args: { pattern: 'grid', tone: 'pink', scale: 'lg' } };

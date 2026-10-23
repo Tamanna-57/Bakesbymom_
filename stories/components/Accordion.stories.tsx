@@ -38,11 +38,11 @@ export const Rows: Story = {
     variant: 'rows',
     items: [
       {
-        title: 'Saturday: strawberry shortcake',
-        content: <p>Vanilla sponge, fresh strawberries, whipped cream. $6 a slice.</p>,
+        title: 'Janmashtami: lotus cake',
+        content: <p>Ivory buttercream, a sugar lotus and a peacock feather. ₹1,450 for 1 kg.</p>,
       },
-      { title: 'Sunday: cinnamon rolls', content: <p>Out of the oven at 9am, until they run out.</p> },
-      { title: 'All weekend: sour cherry pie', content: <p>Whole pies to order, $28.</p> },
+      { title: 'Diwali: dry fruit cookie tins', content: <p>Almonds, cashews and raisins in every one.</p> },
+      { title: 'Raksha Bandhan: jar cakes', content: <p>Rasmalai, Biscoff or chocolate truffle, one jar each.</p> },
     ],
   },
 };

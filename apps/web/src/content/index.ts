@@ -1,28 +1,51 @@
-// Original bakery illustrations in the board palette (drawn for this repo, free to use in stories and mockups).
+// Illustrations in the board palette (drawn for this repo). Treats have no photos yet, so each type gets one.
+import bento from './bento.svg';
+import brownie from './brownie.svg';
 import cherryPie from './cherry-pie.svg';
 import chocolateCake from './chocolate-cake.svg';
 import cinnamonRoll from './cinnamon-roll.svg';
+import combo from './combo.svg';
 import cookies from './cookies.svg';
 import cupcake from './cupcake.svg';
+import jarCake from './jar-cake.svg';
 import kitchen from './kitchen.svg';
 import macarons from './macarons.svg';
 import mixingBowl from './mixing-bowl.svg';
 import mom from './mom.svg';
 import sourdough from './sourdough.svg';
 import strawberryCake from './strawberry-cake.svg';
+import teaCake from './tea-cake.svg';
+import { inr, kgLabel, mostOrdered } from './bakery';
+import { cakes, findOccasion } from './catalog';
 
 export const art = {
+  bento,
+  brownie,
   cherryPie,
   chocolateCake,
   cinnamonRoll,
+  combo,
   cookies,
   cupcake,
+  jarCake,
   kitchen,
   macarons,
   mixingBowl,
   mom,
   sourdough,
   strawberryCake,
+  teaCake,
+};
+
+/** The illustration for each treat type, by its /shop slug. */
+export const treatArt: Record<string, { src: string; alt: string }> = {
+  brownies: { src: brownie, alt: 'Two fudgy brownies with walnuts on a blue plate' },
+  cookies: { src: cookies, alt: 'Three chocolate chip cookies on a blue plate' },
+  'jar-cakes': { src: jarCake, alt: 'A layered chocolate jar cake with a cherry and a spoon' },
+  'dry-cakes': { src: teaCake, alt: 'A loaf tea cake with a marble slice' },
+  cupcakes: { src: cupcake, alt: 'A cupcake with swirled frosting and a cherry' },
+  'bento-cakes': { src: bento, alt: 'A small pink bento cake with a piped heart in its box' },
+  combos: { src: combo, alt: 'A cake with matching cupcakes beside it' },
 };
 
 export interface MenuItem {
@@ -31,77 +54,19 @@ export interface MenuItem {
   alt: string;
   price: string;
   description: string;
-  category: 'Cakes' | 'Cookies' | 'Pies' | 'Breads' | 'Little treats';
-  badge?: 'Bestseller' | 'New' | 'Weekend only';
+  category: string;
+  href: string;
+  badge?: 'Most ordered';
 }
 
-/** Sample menu used across stories and page mockups. */
-export const menu: MenuItem[] = [
-  {
-    name: 'Strawberry layer cake',
-    image: strawberryCake,
-    alt: 'Strawberry layer cake with pink frosting and a cherry on top',
-    price: 'From $38',
-    description: 'Vanilla sponge, fresh strawberry jam, whipped buttercream.',
-    category: 'Cakes',
-    badge: 'Bestseller',
-  },
-  {
-    name: 'Chocolate fudge cake',
-    image: chocolateCake,
-    alt: 'Chocolate cake with ganache drips and strawberries',
-    price: 'From $42',
-    description: 'Cocoa sponge, salted caramel layer, dark ganache drip.',
-    category: 'Cakes',
-  },
-  {
-    name: 'Brown butter cookies',
-    image: cookies,
-    alt: 'Three chocolate chip cookies on a blue plate',
-    price: '$14 / dozen',
-    description: 'Crisp edges, chewy middles, two kinds of chocolate.',
-    category: 'Cookies',
-    badge: 'New',
-  },
-  {
-    name: 'Sour cherry pie',
-    image: cherryPie,
-    alt: 'Lattice-topped cherry pie seen from above',
-    price: '$28',
-    description: 'All-butter crust, sour cherries, a little almond.',
-    category: 'Pies',
-    badge: 'Weekend only',
-  },
-  {
-    name: 'Birthday cupcakes',
-    image: cupcake,
-    alt: 'Pink cupcake with swirled frosting, sprinkles and a cherry',
-    price: '$24 / six',
-    description: 'Vanilla bean cupcakes with rainbow sprinkles.',
-    category: 'Little treats',
-  },
-  {
-    name: 'Cinnamon rolls',
-    image: cinnamonRoll,
-    alt: 'Cinnamon roll with a white icing drizzle',
-    price: '$18 / four',
-    description: 'Brioche dough, brown sugar swirl, cream cheese glaze.',
-    category: 'Little treats',
-  },
-  {
-    name: 'Macaron box',
-    image: macarons,
-    alt: 'Stack of pink, pistachio and lemon macarons',
-    price: '$16 / eight',
-    description: 'Raspberry, pistachio and lemon curd.',
-    category: 'Little treats',
-  },
-  {
-    name: 'Sunday sourdough',
-    image: sourdough,
-    alt: 'Round sourdough loaf with scored crust',
-    price: '$9',
-    description: '48-hour ferment, crackly crust, open crumb.',
-    category: 'Breads',
-  },
-];
+/** Real cakes from the catalog in menu-card form, for stories and teasers. */
+export const menu: MenuItem[] = cakes.map((cake) => ({
+  name: cake.name,
+  image: cake.photos[0]?.src ?? strawberryCake,
+  alt: cake.name,
+  price: `${inr(cake.price)} · ${kgLabel(cake.weightKg)}`,
+  description: cake.description,
+  category: findOccasion(cake.occasion)?.name ?? '',
+  href: `/catalog/${cake.slug}`,
+  badge: mostOrdered.includes(cake.slug) ? 'Most ordered' : undefined,
+}));

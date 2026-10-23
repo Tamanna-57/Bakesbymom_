@@ -1,0 +1,281 @@
+import { Meta, Unstyled } from '@storybook/addon-docs/blocks';
+import {
+  Badge,
+  Button,
+  Card,
+  Doodle,
+  EdgeDivider,
+  Logo,
+  PatternSurface,
+  Polaroid,
+  PriceTag,
+  Seal,
+  Ticket,
+} from '@bakesbymom/ui';
+import { art } from '../assets';
+
+<Meta title="Brand kit/Overview" />
+
+# Brand kit
+
+Everything here comes from the 16 pins on the bakesbymom board. The written version, with every rule linked to its pins, is [`design/board/brand-kit.md`](https://github.com/Tamanna-57/Bakesbymom_/blob/main/design/board/brand-kit.md).
+
+## The idea
+
+> **"Mom's recipe notebook, open on the counter of a little pink-and-blue bake shop."**
+
+Three words to check every design against: **warm, handmade, clear.** The board keeps returning to handmade details (doodles, handwriting, tape, stickers), nostalgic paper (tickets, stamps, seals, polaroids), pastels held together by cocoa outlines and cherry accents, and a founder who signs her name.
+
+## Logo
+
+<Unstyled>
+  <div className="sb-grid" style={{ '--sb-min': '15rem', margin: '16px 0 8px' }}>
+    <Card outline padding="lg" style={{ display: 'grid', placeItems: 'center', minHeight: 180 }}>
+      <Logo size="lg" />
+    </Card>
+    <Card outline padding="lg" style={{ display: 'grid', placeItems: 'center', minHeight: 180 }}>
+      <Logo variant="stacked" size="lg" />
+    </Card>
+    <Card outline padding="lg" style={{ display: 'grid', placeItems: 'center', minHeight: 180 }}>
+      <Logo variant="seal" size="md" />
+    </Card>
+    <Card outline padding="lg" style={{ display: 'grid', placeItems: 'center', minHeight: 180 }}>
+      <Logo variant="monogram" size="lg" />
+    </Card>
+    <Card tone="brown" fill="solid" padding="lg" style={{ display: 'grid', placeItems: 'center', minHeight: 180 }}>
+      <Logo tone="inverse" variant="stacked" size="lg" />
+    </Card>
+    <Card tone="blue" padding="lg" style={{ display: 'grid', placeItems: 'center', minHeight: 180 }}>
+      <Logo size="md" />
+    </Card>
+  </div>
+</Unstyled>
+
+| Lockup         | Construction                                                                   | Use                                   |
+| -------------- | ------------------------------------------------------------------------------ | ------------------------------------- |
+| **Horizontal** | "Bakes" in Fraunces 700 (SOFT 100), "by Mom" in Pinyon Script, a heart; cherry | Nav, documents, packaging             |
+| **Stacked**    | "by Mom" tucked under "Bakes", overlapping it, like pins 10 and 16             | Footer, square spaces, social avatars |
+| **Seal**       | Inside ring text "Bakes by Mom • Baked with love •", like pins 03 and 10       | Box stickers, the chat launcher       |
+| **Monogram**   | "BM" on a cherry circle, like pin 12's footer mark                             | Favicon, tiny avatars                 |
+
+Clear space is the height of the "B" all round. Minimum size: horizontal 120px wide, stacked 64px. Cherry on canvas, beige, pink or blue; canvas on cocoa or cherry. Don't stretch, outline or recolor it, or swap the script.
+
+## Color
+
+<Unstyled>
+  <div
+    style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(10rem, 1fr))', gap: 12, margin: '16px 0' }}
+  >
+    {[
+      ['Baby Blue', '#c4d7e8', 'blue-200', '#32180b'],
+      ['Baby Pink', '#f3c5c8', 'pink-300', '#32180b'],
+      ['Beige', '#ece3c6', 'beige-200', '#32180b'],
+      ['Cherry Red', '#941939', 'cherry-700', '#fffdf6'],
+      ['Cocoa Brown', '#32180b', 'brown-900', '#fffdf6'],
+    ].map(([name, hex, token, fg]) => (
+      <div
+        key={name}
+        style={{
+          background: hex,
+          color: fg,
+          borderRadius: 18,
+          border: '1.5px solid #32180b',
+          boxShadow: '4px 4px 0 #32180b',
+          padding: '64px 14px 14px',
+        }}
+      >
+        <div style={{ fontFamily: 'var(--bbm-font-family-display)', fontSize: 22, fontWeight: 600 }}>{name}</div>
+        <div style={{ fontSize: 13 }}>
+          {hex} · {token}
+        </div>
+      </div>
+    ))}
+  </div>
+  <div
+    style={{
+      display: 'flex',
+      height: 44,
+      borderRadius: 999,
+      overflow: 'hidden',
+      border: '1.5px solid #32180b',
+      margin: '0 0 8px',
+      fontSize: 13,
+      fontWeight: 700,
+    }}
+  >
+    <div style={{ flex: 60, background: '#f8f1de', display: 'flex', alignItems: 'center', paddingLeft: 16 }}>
+      60% beige
+    </div>
+    <div style={{ flex: 13, background: '#c4d7e8', display: 'flex', alignItems: 'center', paddingLeft: 10 }}>
+      13% blue
+    </div>
+    <div style={{ flex: 12, background: '#f3c5c8', display: 'flex', alignItems: 'center', paddingLeft: 10 }}>
+      12% pink
+    </div>
+    <div
+      style={{
+        flex: 10,
+        background: '#32180b',
+        color: '#fffdf6',
+        display: 'flex',
+        alignItems: 'center',
+        paddingLeft: 10,
+      }}
+    >
+      10%
+    </div>
+    <div style={{ flex: 5, background: '#941939' }} />
+  </div>
+</Unstyled>
+
+Helpers, used sparingly: **Butter** `#f0e1b6` and **Matcha** `#cfc06f`. Full scales and contrast checks are on **Foundations / Colors**.
+
+## Typography
+
+<Unstyled>
+  <div style={{ display: 'grid', gap: 18, margin: '16px 0' }}>
+    <div className="bbm-text-display-lg">
+      Homemade cakes, <em className="bbm-script-word">still warm</em>
+    </div>
+    <div className="bbm-text-heavy">About us</div>
+    <div className="bbm-text-body-lg" style={{ maxWidth: 560 }}>
+      Cakes, cookies and pies baked to order every week, ready for Saturday pick-up. Most bakes can be made gluten-free.
+    </div>
+    <div className="bbm-text-script-sm" style={{ color: 'var(--bbm-color-text-brand)' }}>
+      with love, Mom
+    </div>
+    <div
+      className="bbm-text-hand-md"
+      style={{ color: 'var(--bbm-color-text-brand)', rotate: '-4deg', width: 'fit-content' }}
+    >
+      made with real butter!
+    </div>
+    <div className="bbm-text-bubble">Yum</div>
+  </div>
+</Unstyled>
+
+**Fraunces** for headlines and prices · **DM Sans** for everything you read and tap (800–900 for one heavy title) · **Pinyon Script** for one accent word and signatures · **Caveat** for handwritten notes · **Cherry Bomb One** for one bubble word per page.
+
+## Shapes and the sticker rule
+
+<Unstyled>
+  <div className="sb-stack" style={{ gap: 24, margin: '16px 0', alignItems: 'flex-start' }}>
+    <Button>Pill button</Button>
+    <Card outline sticker padding="md" style={{ width: 160 }}>
+      Rounded card
+    </Card>
+    <Card shape="scallop" tone="pink" sticker padding="md" style={{ width: 170 }}>
+      Scallop
+    </Card>
+    <Card shape="cloud" tone="blue" outline padding="md" style={{ width: 190 }}>
+      Cloud
+    </Card>
+    <PriceTag shape="flower" tone="cherry" amount="$4" label="each" size={104} />
+    <Ticket tone="butter" stub="Admit one" style={{ width: 240 }}>
+      Ticket
+    </Ticket>
+    <Ticket variant="stamp" tone="beige" style={{ width: 160 }}>
+      Stamp
+    </Ticket>
+  </div>
+</Unstyled>
+
+Anything that's an object gets a **1.5px cocoa outline** and, when it should feel lifted, a **hard cocoa offset shadow** with no blur. That's how pins 01, 02 and 05 hold their pastels together. Objects may tilt up to 3°; text-heavy ones stay within 2°.
+
+## Patterns and edges
+
+<Unstyled>
+  <div className="sb-grid" style={{ '--sb-min': '9rem', margin: '16px 0' }}>
+    {[
+      ['stripes', 'blue'],
+      ['pinstripe', 'pink'],
+      ['grid', 'pink'],
+      ['dots', 'brown'],
+      ['gingham', 'pink'],
+      ['checker', 'cherry'],
+    ].map(([pattern, tone]) => (
+      <PatternSurface
+        key={pattern}
+        pattern={pattern}
+        tone={tone}
+        style={{ height: 90, borderRadius: 14, border: '1.5px solid #32180b' }}
+      />
+    ))}
+  </div>
+  <div style={{ margin: '8px 0 16px' }}>
+    <div style={{ height: 24, background: 'var(--bbm-color-bg-pink)' }} />
+    <EdgeDivider shape="scallop" color="var(--bbm-color-bg-pink)" outline />
+  </div>
+</Unstyled>
+
+Patterns sit behind photos, labels and edges, never behind paragraphs.
+
+## Doodles
+
+<Unstyled>
+  <div className="sb-stack" style={{ gap: 24, margin: '16px 0', color: 'var(--bbm-color-cherry-700)' }}>
+    <Doodle name="cherry" size={48} />
+    <Doodle name="heart" size={44} />
+    <Doodle name="sparkle" size={44} />
+    <Doodle name="cupcake" size={48} />
+    <Doodle name="whisk" size={48} />
+    <Doodle name="bow" size={48} />
+    <Doodle name="arrow" size={88} />
+    <Doodle name="cherries-halftone" size={80} />
+  </div>
+</Unstyled>
+
+## Photography
+
+<Unstyled>
+  <div className="sb-stack" style={{ gap: 20, margin: '16px 0', alignItems: 'flex-start' }}>
+    <Polaroid src={art.mom} alt="Mom in her apron" tape caption="Mom, mid-task" rotate={-3} width={200} />
+    <Polaroid src={art.kitchen} alt="Mom's kitchen" frame="scallop" rotate={0} width={200} />
+    <Polaroid
+      src={art.strawberryCake}
+      alt="Strawberry layer cake"
+      frame="pattern"
+      pattern="gingham"
+      rotate={2}
+      width={200}
+    />
+  </div>
+</Unstyled>
+
+Warm daylight, cream and wood surfaces, a little flour. Cutouts for heroes and stickers; cross-sections that show what's inside; Mom's hands and Mom herself. Frame photos as objects: scallop, arch, oval, taped polaroid or a patterned border. No cold studio white, heavy filters or text over busy photos.
+
+## Voice
+
+Mom talks like Mom: warm, plain, a little funny, never salesy.
+
+| Say                                             | Not                                                     |
+| ----------------------------------------------- | ------------------------------------------------------- |
+| "Baked this morning."                           | "Artisanal, freshly crafted daily."                     |
+| "Order by Wednesday for Saturday."              | "Orders subject to availability windows."               |
+| "Most bakes can be made gluten-free. Just ask." | "Dietary accommodations may be available upon request." |
+| "Sold out this week, back next Saturday."       | "Out of stock."                                         |
+| "with love, Mom"                                | "Best regards, the Bakes by Mom team"                   |
+
+## Applications
+
+<Unstyled>
+  <div className="sb-stack" style={{ gap: 28, margin: '16px 0', alignItems: 'center' }}>
+    <Seal text="Bakes by Mom • Baked with love • " size={150} tone="cherry">
+      <Doodle name="heart" size={34} color="var(--bbm-color-pink-300)" />
+    </Seal>
+    <Ticket tone="pink" stub="with love" style={{ width: 320 }}>
+      <p className="bbm-text-eyebrow" style={{ margin: 0 }}>
+        Thank you
+      </p>
+      <p className="bbm-text-script-sm" style={{ margin: '4px 0', color: 'var(--bbm-color-text-brand)' }}>
+        for eating my cake
+      </p>
+      <p style={{ margin: 0, fontSize: 14 }}>Share a slice: @bakesbymom</p>
+    </Ticket>
+    <Badge shape="tape" tone="butter" variant="solid">
+      Baked this morning
+    </Badge>
+  </div>
+</Unstyled>
+
+The box sticker (the seal lockup), a thank-you card (a ticket with a stub, pin 10) and tape labels. The website lives under **Sections** and **Pages**; the link-in-bio page and Instagram templates are under **Pages**.

@@ -46,6 +46,13 @@
   right: calc(var(--bbm-space-6) * -1);
 }
 
+/* Hang less on phones so the tag stays inside the 16px page gutter */
+@media (max-width: 599.98px) {
+  .bbm-pricing__tag {
+    right: calc(var(--bbm-space-2) * -1);
+  }
+}
+
 .bbm-pricing__tag .bbm-price-tag__amount {
   font-size: 1.15rem;
 }

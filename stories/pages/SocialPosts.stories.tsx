@@ -13,7 +13,13 @@ import {
   Ticket,
 } from '@bakesbymom/ui';
 import { art } from '../../apps/web/src/content';
+import { bakery, inr, timeSlots } from '../../apps/web/src/content/bakery';
+import { findCake } from '../../apps/web/src/content/catalog';
+import { reviews } from '../../apps/web/src/content/site';
 import { fromBoard } from '../sections/ref';
+
+const featuredCake = findCake('cake-choco-drip')!;
+const review = reviews[0]!;
 import './pages.css';
 
 /** Pin 16: a menu card on baby blue stripes, under the ribbon title. */
@@ -25,48 +31,46 @@ function ThisWeek() {
       ground="var(--bbm-color-bg-canvas)"
       className="pg-post pg-post--center"
     >
-      <SectionHeading variant="ribbon" size="md" title="Menu" ribbonText="fresh this week" level={2} />
+      <SectionHeading variant="ribbon" size="md" title="Cakes" ribbonText="baked to order" level={2} />
       <ProductCard
         as="div"
         variant="menu"
-        name="Strawberry layer cake"
-        image={{ src: art.strawberryCake, alt: 'Strawberry layer cake with pink frosting and a cherry on top' }}
-        description="Vanilla sponge, fresh strawberry jam, whipped buttercream."
-        price="From $38"
+        className="site-cake-card"
+        name={featuredCake.name}
+        image={{ src: featuredCake.photos[0]!.src, alt: featuredCake.name }}
+        description={featuredCake.description}
+        price={inr(featuredCake.price)}
         style={{ width: 250 }}
       />
-      <p className="pg-post__note">Order by Wednesday · @bakesbymom</p>
+      <p className="pg-post__note">Order on WhatsApp · {bakery.instagramHandle}</p>
     </PatternSurface>
   );
 }
 
-/** Pin 15: the week's stops on grid paper, one cherry row for today. */
+/** Pin 15's schedule rows on grid paper: the order time slots, one highlighted. */
 function FindUs() {
-  const days = [
-    ['Thu', 'Oak Street market', '8–1'],
-    ['Fri', 'Riverside school fair', '3–6'],
-    ['Sat', 'Kitchen door pick-up', '9–12'],
-    ['Sun', 'Closed, Mom is resting', ''],
-  ];
   return (
     <PatternSurface pattern="grid" tone="pink" ground="var(--bbm-color-bg-surface)" className="pg-post">
       <p className="bbm-text-eyebrow" style={{ margin: 0, color: 'var(--bbm-color-text-brand)' }}>
-        Where to find us
+        Order on WhatsApp
       </p>
       <p className="bbm-text-heavy" style={{ margin: '4px 0 18px' }}>
-        This week
+        Pick a time
       </p>
       <ul className="pg-post__days">
-        {days.map(([day, place, time]) => (
-          <li key={day} data-today={day === 'Sat' || undefined}>
-            <span className="pg-post__day">{day}</span>
-            <span>{place}</span>
-            <span>{time}</span>
-          </li>
-        ))}
+        {timeSlots.map((slot, i) => {
+          const [name, hours] = slot.replace(')', '').split(' (');
+          return (
+            <li key={slot} data-today={i === 2 || undefined}>
+              <span className="pg-post__day">{name}</span>
+              <span />
+              <span>{hours}</span>
+            </li>
+          );
+        })}
       </ul>
       <Doodle name="arrow" size={76} color="var(--bbm-color-cherry-700)" className="pg-post__arrow" />
-      <p className="bbm-text-hand-md pg-post__hand">see you Saturday!</p>
+      <p className="bbm-text-hand-md pg-post__hand">a day's notice helps!</p>
     </PatternSurface>
   );
 }
@@ -76,48 +80,48 @@ function NewBake() {
   return (
     <div className="pg-post" style={{ background: 'var(--bbm-color-bg-canvas)' }}>
       <p className="pg-post__arrows">
-        Real butter <span aria-hidden="true">→</span>
+        Pick your flour <span aria-hidden="true">→</span>
         <br />
-        brown sugar <span aria-hidden="true">→</span>
+        ragi or jowar <span aria-hidden="true">→</span>
         <br />
-        <em>perfect cookie</em>
+        <em>your cookie</em>
       </p>
       <div className="pg-post__sticker-stage">
-        <img src={art.cookies} alt="Three brown butter cookies on a blue plate" width={260} height={260} />
+        <img src={art.cookies} alt="Three chocolate chip cookies on a blue plate" width={260} height={260} />
         <Ticket variant="stamp" tone="butter" rotate={-8} className="pg-post__s1">
-          no margarine
+          100% eggless
         </Ticket>
-        <Seal text="Baked this morning • Baked this morning • " size={96} tone="pink" className="pg-post__s2">
+        <Seal text="Baked to order • Baked to order • " size={96} tone="pink" className="pg-post__s2">
           <Doodle name="heart" size={22} color="var(--bbm-color-cherry-700)" />
         </Seal>
         <Badge tone="cherry" variant="solid" shape="tape" className="pg-post__s3">
           New!
         </Badge>
       </div>
-      <p className="pg-post__note">Brown butter cookies · $14 a dozen</p>
+      <p className="pg-post__note">Choco chip cookies · from 250 g</p>
     </div>
   );
 }
 
-/** Pin 10: the Bake Club as a ticket, heavy title with a script word on top. */
-function BakeClub() {
+/** Pin 10's ticket for gifting, heavy title with a script word on top. */
+function GiftTicket() {
   return (
     <div className="pg-post" style={{ background: 'var(--bbm-color-bg-pink)', justifyContent: 'center' }}>
-      <Ticket tone="beige" stub="Admit one" className="pg-post__ticket">
+      <Ticket tone="beige" stub="With love" className="pg-post__ticket">
         <div className="pg-post__lockup">
           <p className="bbm-text-heavy" style={{ margin: 0 }}>
-            The Bake Club
+            Send a cake
           </p>
-          <p className="bbm-text-script-sm pg-post__script">every month</p>
+          <p className="bbm-text-script-sm pg-post__script">as a gift</p>
         </div>
         <p className="bbm-text-body-sm" style={{ margin: '8px 0 0' }}>
-          Four seasonal treats and Mom's recipe card, at your door on the first Saturday.
+          Gift wrapping, a gift box and a greeting card note, with a message piped on top.
         </p>
         <Badge tone="blue" variant="solid" style={{ marginTop: 14 }}>
-          Sign me up · link in bio
+          Order on WhatsApp · link in bio
         </Badge>
       </Ticket>
-      <Seal text="Bakes by Mom • Bake Club • " size={104} tone="cherry" className="pg-post__seal">
+      <Seal text="Bakes by Mom • 100% eggless • " size={104} tone="cherry" className="pg-post__seal">
         <Doodle name="cherry" size={30} color="var(--bbm-color-pink-300)" />
       </Seal>
     </div>
@@ -136,10 +140,10 @@ function Review() {
         shape="scallop"
         tone="pink"
         sticker
-        author="Priya S."
-        detail="birthday cake, June"
-        rating={5}
-        quote="The strawberry cake tasted exactly like the ones my grandmother made. Not a crumb left."
+        author={review.author}
+        detail={review.detail}
+        rating={review.rating}
+        quote={review.quote}
         style={{ width: 320 }}
       />
       <Logo size="sm" />
@@ -157,7 +161,7 @@ function MeetMom() {
           Hi, I'm Mom.
         </p>
         <p className="bbm-text-body-sm" style={{ margin: '6px 0 0' }}>
-          Thirty years of birthday cakes. Now I bake for yours too.
+          I baked for the people I love. Now I bake for yours too.
         </p>
         <p className="pg-signature" style={{ fontSize: 34 }}>
           with love, Mom
@@ -173,7 +177,7 @@ function SocialPosts() {
       <ThisWeek />
       <FindUs />
       <NewBake />
-      <BakeClub />
+      <GiftTicket />
       <Review />
       <MeetMom />
     </div>
@@ -189,7 +193,7 @@ const meta = {
     docs: {
       description: {
         component: fromBoard(
-          "Instagram feed templates (4:5, 1080 × 1350 at 2.5×), each one a board section turned into a post: the **menu card** on blue stripes (16), the **week's stops** on grid paper (15), a **sticker-covered** new bake (07), the **Bake Club ticket** (10), a **scalloped review** (01) and **Meet Mom** on dots (05). One idea per post, the logo or handle once.",
+          'Instagram feed templates (4:5, 1080 × 1350 at 2.5×), each one a board section turned into a post: the **menu card** on blue stripes (16), the **order time slots** on grid paper (15), a **sticker-covered** cookie post (07), a **gifting ticket** (10), a **scalloped review** (01) and **Meet Mom** on dots (05). One idea per post, the logo or handle once.',
           ['16', '15', '07', '10', '01', '05'],
         ),
       },

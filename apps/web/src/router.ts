@@ -46,3 +46,17 @@ export function useLinkInterception() {
     return () => document.removeEventListener('click', onClick);
   }, []);
 }
+
+/** Matches "/shop/:category" against "/shop/cookies" → { category: "cookies" }, or null. */
+export function matchPath(pattern: string, path: string): Record<string, string> | null {
+  const want = pattern.split('/').filter(Boolean);
+  const got = path.split('/').filter(Boolean);
+  if (want.length !== got.length) return null;
+  const params: Record<string, string> = {};
+  for (let i = 0; i < want.length; i++) {
+    const part = want[i]!;
+    if (part.startsWith(':')) params[part.slice(1)] = decodeURIComponent(got[i]!);
+    else if (part !== got[i]) return null;
+  }
+  return params;
+}

@@ -9,7 +9,7 @@ Built from one source: the 16 pins on the [bakesbymom Pinterest board](https://i
 | 📌 | [`design/board/`](./design/board/README.md) | **The board, analysed.** One file per pin (layout, sections, components, colors, type), the [palette](./design/board/palette.md), one spec per website section and the [brand kit](./design/board/brand-kit.md) |
 | 🎨 | [`packages/tokens`](./packages/tokens) | **Token library.** W3C DTCG source → CSS variables, SCSS, JS/TS, JSON, a Tailwind v4 theme and a DTCG file for Figma. WCAG contrast is tested in CI |
 | 🧁 | [`packages/ui`](./packages/ui) | **Component library.** 28 React components, from buttons and menu cards to the gallery, week schedule, Bake Club ticket and Ask Mom chat |
-| 🌐 | [`apps/web`](./apps/web) | **The website.** Landing page, menu, about and link-in-bio pages, built from the components and the board's section picks |
+| 🌐 | [`apps/web`](./apps/web) | **The website.** The eggless home bakery in Panipat: cakes by occasion, treats by type, WhatsApp ordering, our story and a link-in-bio page. The design comes from the board; the content and categories from the old site |
 | 📖 | [`stories/`](./stories) + [`.storybook/`](./.storybook) | **Storybook.** Foundations generated from the tokens, the brand kit, the board moodboard, every section with its source pins, every component with controls and an a11y panel, and full pages (landing, menu, about, link in bio, Instagram templates) |
 | 🖼️ | [`pinterest/board/`](./pinterest/board) | The 16 board images (third-party work, for reference only) |
 

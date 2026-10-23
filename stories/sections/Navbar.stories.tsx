@@ -19,7 +19,7 @@ const meta = {
     },
   },
   args: {
-    links: navLinksFor('/menu'),
+    links: navLinksFor('/catalog'),
     actions: headerActions,
     mobileCta,
     announcement,

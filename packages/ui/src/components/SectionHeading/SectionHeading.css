@@ -21,10 +21,11 @@
 
 .bbm-heading--inverse {
   --_title-color: var(--bbm-color-text-inverse);
-  --_accent-color: var(--bbm-color-strawberry-200);
+  --_accent-color: var(--bbm-color-pink-300);
   --_lead-color: var(--bbm-color-text-inverse);
 }
 
+/* Eyebrows */
 .bbm-heading__eyebrow {
   margin: 0;
   font-family: var(--bbm-text-eyebrow-family);
@@ -36,36 +37,36 @@
   color: var(--_accent-color);
 }
 
-/* Pill label clipped onto a hairline rule */
-.bbm-heading__eyebrow--pill {
-  position: relative;
-  align-self: stretch;
-  display: flex;
-  justify-content: center;
+.bbm-heading__eyebrow--bracket > span::before {
+  content: '(';
 }
 
-.bbm-heading--start .bbm-heading__eyebrow--pill {
-  justify-content: flex-start;
+.bbm-heading__eyebrow--bracket > span::after {
+  content: ')';
 }
 
-.bbm-heading__eyebrow--pill::before {
-  content: '';
-  position: absolute;
-  inset-inline: 0;
-  top: 50%;
-  border-top: var(--bbm-border-width-hairline) solid currentColor;
-  opacity: 0.6;
-}
-
+/* A handwritten word in an outlined oval: every section eyebrow on pin 01 */
 .bbm-heading__eyebrow--pill > span {
-  position: relative;
-  padding: var(--bbm-space-1) var(--bbm-space-4);
+  display: inline-block;
+  padding: 0.05em 0.9em 0.15em;
   border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
-  border-radius: var(--bbm-radius-pill);
+  border-radius: 50%;
   background-color: var(--bbm-heading-pill-bg, var(--bbm-color-bg-surface));
+  box-shadow: var(--bbm-shadow-sticker-sm);
+  font-family: var(--bbm-text-hand-md-family);
+  font-size: var(--bbm-text-hand-md-size);
+  font-weight: var(--bbm-text-hand-md-weight);
+  line-height: var(--bbm-text-hand-md-line-height);
+  letter-spacing: 0;
+  text-transform: none;
   color: var(--bbm-color-text-primary);
 }
 
+.bbm-heading--inverse .bbm-heading__eyebrow--pill > span {
+  border-color: var(--bbm-color-border-inverse);
+}
+
+/* Title */
 .bbm-heading__title {
   margin: 0;
   font-family: var(--bbm-font-family-display);
@@ -106,7 +107,7 @@
   font-weight: var(--bbm-text-heading-md-weight);
 }
 
-/* <em> inside a title swaps into the copperplate script */
+/* <em> inside a title swaps into the formal script */
 .bbm-heading__title em {
   font-family: var(--bbm-font-family-script);
   font-style: normal;
@@ -137,6 +138,108 @@
   padding-inline-start: 0;
 }
 
+/* Bubble: one outlined word with a hard cocoa shadow (pin 01) */
+.bbm-heading--bubble {
+  max-width: none;
+}
+
+.bbm-heading--bubble .bbm-heading__title {
+  font-family: var(--bbm-text-bubble-family);
+  font-size: var(--bbm-text-bubble-size);
+  line-height: var(--bbm-text-bubble-line-height);
+  letter-spacing: var(--bbm-text-bubble-tracking);
+  font-weight: var(--bbm-text-bubble-weight);
+  font-variation-settings: normal;
+  color: var(--bbm-heading-bubble-fill, var(--bbm-color-bg-surface));
+  -webkit-text-stroke: 6px var(--bbm-color-border-default);
+  paint-order: stroke fill;
+  text-shadow: 0.05em 0.05em 0 var(--bbm-color-border-default);
+}
+
+/* Ribbon: script title between two cherry ribbons (pin 16) */
+.bbm-heading--ribbon {
+  max-width: none;
+  align-self: stretch;
+}
+
+.bbm-heading__ribbon-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--bbm-space-4);
+  width: 100%;
+}
+
+.bbm-heading__ribbon {
+  display: flex;
+  gap: 0.6em;
+  overflow: hidden;
+  padding: 0.35em 0.8em;
+  background-color: var(--bbm-heading-ribbon-bg, var(--bbm-color-bg-brand-deep));
+  color: var(--bbm-color-text-inverse);
+  font-family: var(--bbm-text-eyebrow-family);
+  font-size: var(--bbm-text-caption-size);
+  font-weight: var(--bbm-font-weight-semibold);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.bbm-heading__ribbon:first-child {
+  justify-content: flex-end;
+}
+
+.bbm-heading--ribbon .bbm-heading__title {
+  font-family: var(--bbm-text-script-lg-family);
+  font-size: var(--bbm-text-script-lg-size);
+  line-height: var(--bbm-text-script-lg-line-height);
+  font-weight: var(--bbm-text-script-lg-weight);
+  font-variation-settings: normal;
+  color: var(--_accent-color);
+  padding-inline: 0.1em;
+}
+
+@media (max-width: 640px) {
+  .bbm-heading__ribbon-row {
+    grid-template-columns: auto;
+  }
+
+  .bbm-heading__ribbon {
+    display: none;
+  }
+}
+
+/* Stamp: heavy title with the same words in script laid over it (pin 16) */
+.bbm-heading--stamp .bbm-heading__title {
+  position: relative;
+  display: inline-block;
+  font-family: var(--bbm-text-heavy-family);
+  font-size: var(--bbm-text-heavy-size);
+  line-height: var(--bbm-text-heavy-line-height);
+  letter-spacing: var(--bbm-text-heavy-tracking);
+  font-weight: var(--bbm-text-heavy-weight);
+  font-variation-settings: normal;
+}
+
+.bbm-heading__overlay {
+  position: absolute;
+  left: 0.35em;
+  top: 0.38em;
+  font-family: var(--bbm-font-family-script);
+  font-weight: var(--bbm-font-weight-regular);
+  font-size: 0.92em;
+  letter-spacing: 0;
+  white-space: nowrap;
+  color: var(--_accent-color);
+  rotate: -4deg;
+  pointer-events: none;
+}
+
+.bbm-heading--center .bbm-heading__overlay {
+  left: 50%;
+  translate: -45% 0;
+}
+
+/* Lead */
 .bbm-heading__description {
   font-family: var(--bbm-font-family-body);
   font-size: var(--bbm-text-body-lg-size);

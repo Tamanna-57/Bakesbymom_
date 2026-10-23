@@ -7,9 +7,9 @@
 }
 
 .bbm-field__label {
-  font-size: var(--bbm-text-label-size);
-  font-weight: var(--bbm-text-label-weight);
-  line-height: var(--bbm-text-label-line-height);
+  font-size: var(--bbm-text-body-sm-size);
+  font-weight: var(--bbm-font-weight-semibold);
+  line-height: 1.3;
   color: inherit;
 }
 
@@ -51,7 +51,7 @@
 }
 
 .bbm-field__control:disabled {
-  background-color: var(--bbm-color-bg-kraft);
+  background-color: var(--bbm-color-bg-beige);
   color: var(--bbm-color-text-muted);
   cursor: not-allowed;
 }

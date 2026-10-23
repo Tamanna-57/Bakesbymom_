@@ -41,6 +41,12 @@
   .bbm-footer__newsletter {
     grid-area: news;
   }
+
+  /* Without a newsletter: links on the left, the logo block on the right */
+  .bbm-footer__grid--no-newsletter {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    grid-template-areas: 'links brand';
+  }
 }
 
 .bbm-footer__brand {
@@ -62,6 +68,8 @@
 .bbm-footer__socials a {
   display: grid;
   place-items: center;
+  /* .bbm-footer a below makes links inline-flex; keep the icon centered either way */
+  justify-content: center;
   width: var(--bbm-layout-touch-target);
   height: var(--bbm-layout-touch-target);
   border: var(--bbm-border-width-thin) solid var(--bbm-color-border-inverse);

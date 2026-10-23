@@ -14,7 +14,7 @@ const meta = {
     },
   },
   args: {
-    items: ['Baked this morning', "Made in Mom's kitchen", 'Real butter, real eggs', 'Order by Wednesday'],
+    items: ['Baked to order', "Made in Mom's kitchen", '100% eggless', 'Panipat, Haryana'],
     label: 'What Mom bakes',
     caps: false,
     separator: <Doodle name="heart" size="0.95em" />,

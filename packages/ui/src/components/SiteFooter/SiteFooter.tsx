@@ -50,7 +50,7 @@ export function SiteFooter({
         <EdgeDivider shape={edge} flip color="var(--bbm-color-bg-inverse)" className="bbm-footer__edge" />
       )}
       <div className="bbm-footer__body">
-        <div className="bbm-footer__grid">
+        <div className={cx('bbm-footer__grid', !newsletter && 'bbm-footer__grid--no-newsletter')}>
           <div className="bbm-footer__brand">
             {logo}
             {socials.length > 0 && (

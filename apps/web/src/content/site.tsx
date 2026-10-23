@@ -1,4 +1,5 @@
-// Site content (sample copy for now), shared by the website and the Storybook section stories.
+// Site content, shared by the website and the Storybook section stories. Facts, reviews and copy
+// come from the old site (bakesbymom.vercel.app).
 import {
   Button,
   Doodle,
@@ -7,21 +8,29 @@ import {
   type FooterSocial,
   type GalleryItem,
   type NavLink,
-  type ScheduleDay,
 } from '@bakesbymom/ui';
-import { art, menu } from './index';
+import { bakery, whatsappLink } from './bakery';
+import { cakes, findOccasion } from './catalog';
+import { treatCategories } from './treats';
 import '../sections/sections.css';
 
 export const navLinks: NavLink[] = [
-  { label: 'Menu', href: '/menu' },
-  { label: 'Custom cakes', href: '/#custom' },
-  { label: 'Find us', href: '/#find-us' },
-  { label: 'Bake Club', href: '/#club' },
+  { label: 'Cakes', href: '/catalog' },
+  { label: 'Treats', href: '/shop' },
+  { label: 'Our story', href: '/about' },
+  { label: 'How to order', href: '/#order' },
 ];
 
-/** The nav with the link for the current page marked (`aria-current`). */
+/** The nav with the link for the current section marked (`aria-current`). */
 export const navLinksFor = (path: string): NavLink[] =>
-  navLinks.map((link) => ({ ...link, current: link.href === path }));
+  navLinks.map((link) => ({
+    ...link,
+    current: !link.href.includes('#') && (path === link.href || path.startsWith(`${link.href}/`)),
+  }));
+
+/** The opening line of every WhatsApp chat started from the site. */
+export const helloMessage = "Hello Bakes by Mom! I'd like to place an order 🎂";
+export const orderLink = whatsappLink(helloMessage);
 
 const Icon = ({ d }: { d: string }) => (
   <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
@@ -29,253 +38,230 @@ const Icon = ({ d }: { d: string }) => (
   </svg>
 );
 
-/** Search and the order box with a count, as on pins 13 and 15. */
+const instagramIcon = (
+  <Icon d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM17.5 6.5h0" />
+);
+const whatsappIcon = (
+  <Icon d="M4 20l1.3-4A8 8 0 1 1 8 18.7zM9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.5-2-1-1 .8a4.5 4.5 0 0 1-2.3-2.3l.8-1-1-2z" />
+);
+
+/** Instagram and WhatsApp, where the bakery actually lives. */
 export const headerActions = (
   <>
-    <Button variant="secondary" shape="circle" size="sm" aria-label="Search" href="#search">
-      <Icon d="M10.5 17a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13zM20 20l-4.8-4.8" />
+    <Button
+      variant="secondary"
+      shape="circle"
+      size="sm"
+      aria-label="Instagram (opens in a new tab)"
+      href={bakery.instagram}
+      target="_blank"
+      rel="noreferrer"
+    >
+      {instagramIcon}
     </Button>
-    <span className="site-order-box">
-      <Button variant="secondary" shape="circle" size="sm" aria-label="Order box, 2 items" href="#order">
-        <Icon d="M4 9h16l-1.5 10.5a1.5 1.5 0 0 1-1.5 1.3H7a1.5 1.5 0 0 1-1.5-1.3zM8.5 9V7.5a3.5 3.5 0 0 1 7 0V9" />
-      </Button>
-      <span className="site-order-box__count" aria-hidden="true">
-        2
-      </span>
-    </span>
+    <Button
+      variant="secondary"
+      shape="circle"
+      size="sm"
+      aria-label="Order on WhatsApp (opens WhatsApp)"
+      href={orderLink}
+      target="_blank"
+      rel="noreferrer"
+    >
+      {whatsappIcon}
+    </Button>
   </>
 );
 
 export const mobileCta = (
-  <Button fullWidth href="/#custom">
-    Order a cake
+  <Button fullWidth href={orderLink} target="_blank" rel="noreferrer">
+    Order on WhatsApp
   </Button>
 );
 
 export const announcement = (
   <>
-    Order by Wednesday for Saturday pick-up. <a href="/menu">See this week's menu →</a>
+    Order your cakes and cookies now · 100% eggless, baked to order in Panipat. <a href="/catalog">See the cakes →</a>
   </>
 );
 
 export const footerColumns: FooterColumn[] = [
   {
-    title: 'Shop',
+    title: 'Cakes & treats',
     links: [
-      { label: "This week's menu", href: '/menu' },
-      { label: 'Custom cakes', href: '/#custom' },
-      { label: 'Bake Club', href: '/#club' },
-      { label: 'Find us', href: '/#find-us' },
+      { label: 'Cakes by occasion', href: '/catalog' },
+      ...treatCategories.map((category) => ({ label: category.name, href: `/shop/${category.slug}` })),
     ],
   },
   {
-    title: 'Hello',
+    title: 'Bakes by Mom',
     links: [
       { label: 'Our story', href: '/about' },
-      { label: 'Allergens', href: '/#faq' },
+      { label: 'How to order', href: '/#order' },
       { label: 'FAQ', href: '/#faq' },
-      { label: 'Contact', href: 'mailto:hello@bakesbymom.com' },
+      { label: 'Link in bio', href: '/links' },
     ],
   },
 ];
 
 export const footerSocials: FooterSocial[] = [
-  {
-    label: 'Instagram',
-    href: '#instagram',
-    icon: (
-      <Icon d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM17.5 6.5h0" />
-    ),
-  },
-  {
-    label: 'Facebook',
-    href: '#facebook',
-    icon: <Icon d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z" />,
-  },
-  { label: 'TikTok', href: '#tiktok', icon: <Icon d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5M14 3c.5 2.8 2.5 4.6 5 4.8" /> },
+  { label: 'Instagram', href: bakery.instagram, icon: instagramIcon },
+  { label: 'WhatsApp', href: orderLink, icon: whatsappIcon },
 ];
 
 export const footerContact = (
   <>
-    <p>(512) 555-0134</p>
-    <p>hello@bakesbymom.com</p>
+    <p>
+      WhatsApp <a href={orderLink}>{bakery.whatsappDisplay}</a>
+    </p>
+    <p>{bakery.place}</p>
   </>
 );
 
 export const footerBottom = (
-  <p>
-    © 2026 Bakes by Mom · Baked in a home kitchen that also handles nuts, dairy, eggs and wheat. Made with real butter.
-  </p>
+  <p>© 2026 Bakes by Mom · {bakery.place} · Everything eggless, baked to order. Pure vegetarian (FSSAI green dot).</p>
 );
 
-export const footerNewsletter = {
-  title: "Mom's letter",
-  description: 'One email every Monday: the menu and where to find Mom.',
-  buttonLabel: 'Sign up',
-  onSubmit: () => new Promise<void>((resolve) => setTimeout(resolve, 600)),
-};
-
-/** Photos for the gallery: the illustrations stand in for real photos. */
-export const galleryItems: GalleryItem[] = [
-  {
-    src: art.kitchen,
-    alt: "Mom's kitchen with jars on a shelf and a cake on a stand",
-    caption: "Mom's kitchen, Saturday 6am",
-  },
-  { src: art.cookies, alt: 'Brown butter cookies on a blue plate', caption: 'Brown butter cookies' },
-  { src: art.cherryPie, alt: 'Lattice-topped cherry pie', caption: 'Sour cherry pie, out of the oven' },
-  { src: art.mom, alt: 'Mom in her apron, smiling', caption: 'Mom, apron on' },
-  {
-    src: art.strawberryCake,
-    alt: 'Strawberry layer cake with a cherry on top',
-    caption: "Saturday's strawberry layer cake",
-  },
-  { src: art.cupcake, alt: 'Pink cupcake with sprinkles', caption: 'Birthday cupcakes' },
-  { src: art.macarons, alt: 'A stack of macarons', caption: 'The macaron box' },
-  { src: art.sourdough, alt: 'Round sourdough loaf', caption: 'Sunday sourdough' },
-  { src: art.cinnamonRoll, alt: 'Cinnamon roll with icing', caption: 'Cinnamon rolls' },
-];
-
-export const scheduleDays: ScheduleDay[] = [
-  { date: 'Mon 12', label: 'Monday 12 May', closed: true },
-  {
-    date: 'Tue 13',
-    label: 'Tuesday 13 May',
-    place: 'Cookie drop at Bean & Co.',
-    href: '#map',
-    time: '4–6pm',
-    icon: <Doodle name="heart" size={28} color="var(--bbm-color-cherry-500)" />,
-  },
-  {
-    date: 'Wed 14',
-    label: 'Wednesday 14 May',
-    place: 'Porch pick-up',
-    href: '#map',
-    time: '3–7pm',
-    icon: <Doodle name="cupcake" size={32} />,
-    today: true,
-  },
-  {
-    date: 'Thu 15',
-    label: 'Thursday 15 May',
-    place: 'Library bake sale',
-    href: '#map',
-    time: '10am–2pm',
-    icon: <Doodle name="star" size={28} color="var(--bbm-color-butter-400)" />,
-  },
-  {
-    date: 'Fri 16',
-    label: 'Friday 16 May',
-    place: 'Baking day',
-    time: 'Orders only',
-    icon: <Doodle name="whisk" size={30} />,
-  },
-  {
-    date: 'Sat 17',
-    label: 'Saturday 17 May',
-    place: "Farmers' market",
-    href: '#map',
-    time: '8am–1pm',
-    icon: <Doodle name="cherry" size={30} color="var(--bbm-color-cherry-500)" />,
-  },
-  { date: 'Sun 18', label: 'Sunday 18 May', closed: true },
-];
+/** One photo per cake, captioned with its name and occasion. */
+export const galleryItems: GalleryItem[] = cakes
+  .filter((cake) => cake.photos.length)
+  .map((cake) => ({
+    src: cake.photos[0]!.src,
+    alt: cake.name,
+    caption: `${cake.name} · ${findOccasion(cake.occasion)?.name ?? ''}`,
+  }));
 
 export const faqItems: AccordionItem[] = [
   {
     icon: <Doodle name="star" size={28} color="var(--bbm-color-butter-400)" />,
-    title: 'How far ahead should I order?',
-    content: <p>Order by Wednesday for Saturday. Custom cakes need a week.</p>,
-  },
-  {
-    icon: <Doodle name="daisy" size={28} />,
-    title: 'Do you do gluten-free?',
-    content: <p>Most bakes can be made gluten-free, dairy-free or nut-free. Just add a note.</p>,
-  },
-  {
-    icon: <Doodle name="heart" size={28} color="var(--bbm-color-cherry-500)" />,
-    title: 'Is the kitchen allergen-free?',
-    content: <p>No: it's a home kitchen that also handles nuts, dairy, eggs and wheat.</p>,
+    title: 'Is everything really eggless?',
+    content: (
+      <p>Yes. Every single thing we bake is 100% eggless and pure vegetarian, and carries the FSSAI green dot.</p>
+    ),
   },
   {
     icon: <Doodle name="cupcake" size={28} />,
-    title: 'Do you deliver?',
-    content: <p>Within 5 miles for $8; free on orders over $60.</p>,
-  },
-  {
-    icon: <Doodle name="bow" size={28} />,
-    title: 'Can I get a custom design?',
-    content: <p>Yes. Send a photo or describe it and Mom will sketch it with you.</p>,
-  },
-  {
-    icon: <Doodle name="cherry" size={28} color="var(--bbm-color-cherry-500)" />,
-    title: 'How do I pay?',
-    content: <p>A 50% deposit holds your date; the rest at pick-up.</p>,
+    title: 'How do I order?',
+    content: (
+      <p>
+        Open a cake or a treat, pick the size, flavour and extras, and tap <strong>Order on WhatsApp</strong>. The order
+        opens in WhatsApp already typed out: read it, change anything, and send it yourself.
+      </p>
+    ),
   },
   {
     icon: <Doodle name="whisk" size={28} />,
-    title: 'Can I cancel?',
-    content: <p>Up to 72 hours before pick-up for a full refund of the deposit.</p>,
+    title: 'How much notice do you need?',
+    content: <p>{bakery.notice}</p>,
+  },
+  {
+    icon: <Doodle name="heart" size={28} color="var(--bbm-color-cherry-500)" />,
+    title: 'What sizes do the cakes come in?',
+    content: (
+      <p>
+        ½ kg (about 4–6 slices), 1 kg (about 8–10), 1½ kg, 2 kg (a two-tier for a proper crowd) and 3 kg. Each cake's
+        price is for its listed weight; other sizes are priced off its per-pound rate.
+      </p>
+    ),
+  },
+  {
+    icon: <Doodle name="daisy" size={28} />,
+    title: 'How are prices worked out?',
+    content: (
+      <p>
+        Cakes show a price for their listed weight, and the page works out other sizes as you choose. Mom confirms the
+        final price on WhatsApp before she bakes.
+      </p>
+    ),
+  },
+  {
+    icon: <Doodle name="bow" size={28} color="var(--bbm-color-cherry-500)" />,
+    title: "What's the smallest order?",
+    content: (
+      <p>
+        Brownies come by 9 pieces, cookies from 250 g, cupcakes by 6 and dry cakes from 500 g. Jar cakes, bento cakes
+        and combos start at one.
+      </p>
+    ),
   },
   {
     icon: <Doodle name="sparkle" size={28} color="var(--bbm-color-cherry-500)" />,
-    title: 'Can I pause the Bake Club?',
-    content: <p>Any time, from the link in every Bake Club email.</p>,
+    title: 'Can I choose the flour for cookies?',
+    content: <p>Yes: maida, wheat flour, ragi, oats or jowar. Any flavour can be baked in any of them.</p>,
+  },
+  {
+    icon: <Doodle name="cherry" size={28} color="var(--bbm-color-cherry-500)" />,
+    title: 'Pickup or delivery?',
+    content: (
+      <p>
+        Pick up from the kitchen in Panipat, or choose delivery when you order and Mom sorts out the details with you on
+        WhatsApp.
+      </p>
+    ),
   },
 ];
 
+/** Reviews from the old site, as customers wrote them. */
 export const reviews = [
   {
-    author: 'Priya S.',
-    quote: 'The strawberry cake tasted exactly like the one my grandmother used to make. Not a crumb left.',
-    detail: 'Strawberry layer cake',
+    author: 'Ritika S.',
+    quote:
+      'Absolutely love this bakery! Everything is always fresh, delicious, and made with care. The perfect spot for a sweet treat!',
+    detail: 'Model Town · birthday cake',
     rating: 5,
     tone: 'pink' as const,
   },
   {
-    author: 'Marcus T.',
-    quote: "Ordered cupcakes for my son's class. Twenty-four kids, zero leftovers.",
-    detail: 'Birthday cupcakes',
+    author: 'Aman K.',
+    quote: 'The fudgy brownies are the real thing — gooey middle, crackled top. They never last the evening here.',
+    detail: 'Sector 11 · regular since 2022',
     rating: 5,
     tone: 'blue' as const,
   },
   {
-    author: 'Ana & Luis',
-    quote: 'The cinnamon rolls are dangerous. We pre-order every Saturday now.',
-    detail: 'Cinnamon rolls',
+    author: 'Neha & Varun',
+    quote:
+      "Ordered a tres leches on a day's notice and it still turned up soft, cold and perfect. Packed beautifully too.",
+    detail: 'Anniversary order',
     rating: 5,
     tone: 'butter' as const,
   },
   {
-    author: 'Hannah R.',
-    quote: 'She made a gluten-free version of my wedding cake and nobody could tell.',
-    detail: 'Custom cake',
+    author: 'Pooja M.',
+    quote:
+      "You can taste that it's a home kitchen — nothing over-sweet, nothing from a packet. My kids ask for it by name.",
+    detail: 'Tea-time cookie boxes',
     rating: 5,
     tone: 'pink' as const,
+  },
+  {
+    author: 'Sahil G.',
+    quote: 'Cake was lovely and reached us on time. Would have loved a couple more eggless choices on the menu.',
+    detail: 'Office celebration',
+    rating: 4,
+    tone: 'blue' as const,
   },
 ];
 
 export const howToOrder = [
   {
+    title: 'Pick a cake or a treat',
+    description: 'Browse cakes by occasion, or brownies, cookies, jar cakes and more.',
     icon: <Doodle name="cupcake" size={32} />,
-    title: 'Pick your bake',
-    description: 'Choose from this week’s menu, or ask Mom for something special.',
   },
   {
-    icon: <Doodle name="sparkle" size={30} color="var(--bbm-color-butter-300)" />,
-    title: 'Choose a date',
-    description: 'Order by Wednesday for Saturday; custom cakes need a week.',
+    title: 'Make it yours',
+    description: 'Choose the size, flavour, extras and the day you need it.',
+    icon: <Doodle name="sparkle" size={30} color="var(--bbm-color-butter-400)" />,
   },
   {
+    title: 'Send it on WhatsApp',
+    description: 'Your order opens in WhatsApp already typed out. Read it, change anything, send.',
     icon: <Doodle name="heart" size={30} color="var(--bbm-color-cherry-500)" />,
-    title: 'Pick it up warm',
-    description: 'Saturday 9am–1pm from the porch, or at the market.',
   },
   {
+    title: 'Baked to order',
+    description: "Mom confirms the price and bakes it fresh. A day's notice helps.",
     icon: <Doodle name="cherry" size={30} color="var(--bbm-color-cherry-500)" />,
-    title: 'Share a slice',
-    description: 'Tag @bakesbymom so Mom can see.',
   },
 ];
-
-export const menuTeaser = menu.slice(0, 8);

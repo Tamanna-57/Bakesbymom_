@@ -12,6 +12,7 @@
 
 .site-section > .site-container {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--bbm-space-10);
 }
 
@@ -75,7 +76,7 @@
 /* Category tiles (pin 16) */
 .site-tiles {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
   gap: var(--bbm-space-4);
   margin: 0;
   padding: 0;
@@ -93,20 +94,28 @@
   text-decoration: none;
 }
 
+/* The illustration sits in the corner as a tilted sticker */
 .site-tile img {
   position: absolute;
-  right: -18%;
-  bottom: -14%;
-  width: 82%;
-  opacity: 0.35;
-  filter: grayscale(1) brightness(0.5) sepia(1) hue-rotate(-30deg) saturate(3);
+  right: -6%;
+  bottom: -6%;
+  width: 62%;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-lg);
+  box-shadow: var(--bbm-shadow-sticker-md);
+  rotate: -6deg;
+  transition: rotate var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard);
+}
+
+.site-tile:hover img {
+  rotate: -2deg;
 }
 
 .site-tile__label {
   position: absolute;
+  top: var(--bbm-space-5);
   left: var(--bbm-space-5);
-  bottom: var(--bbm-space-5);
-  max-width: 70%;
+  max-width: 65%;
   font-family: var(--bbm-text-heavy-family);
   font-size: 1.75rem;
   font-weight: var(--bbm-font-weight-black);
@@ -319,7 +328,7 @@
 /* Reviews */
 .site-reviews {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
   gap: var(--bbm-space-6);
   margin: 0;
   padding: 0;
@@ -455,4 +464,216 @@
   font: 700 11px/17px var(--bbm-font-family-body);
   text-align: center;
   pointer-events: none;
+}
+
+/* Cake cards: the photos are cut-outs, so show the whole cake on the card's tone */
+.site-cake-card .bbm-product__media {
+  aspect-ratio: 4 / 5;
+}
+
+.site-cake-card .bbm-product__image {
+  box-sizing: border-box;
+  padding: var(--bbm-space-3);
+  object-fit: contain;
+}
+
+.site-cake-card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bbm-space-1);
+}
+
+@media (max-width: 599.98px) {
+  .site-cake-card .bbm-product__media {
+    aspect-ratio: auto;
+  }
+}
+
+/* Cut-out photos in frames sit on the frame's paper, not on a crop */
+.site-cutout .bbm-polaroid__photo {
+  object-fit: contain;
+}
+
+/* The FSSAI green dot: a green square with a dot, used for "100% eggless" */
+.site-veg-dot {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 1.1em;
+  height: 1.1em;
+  border: 2px solid #1f7a3a;
+  border-radius: 3px;
+  background: var(--bbm-color-bg-surface);
+}
+
+.site-veg-dot::after {
+  content: '';
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: #1f7a3a;
+}
+
+.site-veg-dot--lg {
+  font-size: 2.5rem;
+}
+
+/* Order on WhatsApp band */
+.site-order-band {
+  display: grid;
+  gap: var(--bbm-space-8);
+  padding: var(--bbm-space-10);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-xl);
+  background: var(--bbm-color-bg-surface);
+  box-shadow: var(--bbm-shadow-sticker-lg);
+}
+
+@media (min-width: 900px) {
+  .site-order-band {
+    grid-template-columns: 1.2fr 1fr;
+    align-items: start;
+  }
+
+  .site-order-band__cta {
+    grid-column: 1 / -1;
+  }
+}
+
+.site-order-band__slots {
+  display: grid;
+  gap: var(--bbm-space-3);
+}
+
+.site-order-band__slots > p {
+  margin: 0;
+}
+
+.site-order-band__slots ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--bbm-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-order-band__slots li {
+  display: grid;
+  gap: 2px;
+  padding: var(--bbm-space-3) var(--bbm-space-4);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-md);
+  background: var(--bbm-color-bg-pink);
+}
+
+.site-order-band__slots li span {
+  font-size: var(--bbm-text-body-sm-size);
+  color: var(--bbm-color-text-secondary);
+}
+
+.site-order-band__cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--bbm-space-4);
+}
+
+.site-order-band__cta p {
+  margin: 0;
+  font-weight: var(--bbm-font-weight-bold);
+}
+
+/* Gallery filters */
+.site-gallery__filters {
+  justify-content: center;
+}
+
+/* How it started */
+.site-narrow-band > .site-container {
+  max-width: 60rem;
+}
+
+/* Answers in the chat */
+.site-chat__list {
+  margin: var(--bbm-space-2) 0 0;
+  padding-inline-start: var(--bbm-space-5);
+}
+
+.site-chat__list li + li {
+  margin-top: var(--bbm-space-1);
+}
+
+/* The hero's cut-out cake photo */
+.site-hero-photo {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 32rem;
+  margin-inline: auto;
+  object-fit: contain;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-tile img {
+    transition: none;
+  }
+}
+
+/* Instagram grid: cut-out cakes on pastel squares */
+.site-insta .bbm-gallery__grid {
+  gap: var(--bbm-space-2);
+}
+
+.site-insta .bbm-gallery__grid li:nth-child(4n + 1) img {
+  background: var(--bbm-color-bg-pink);
+}
+
+.site-insta .bbm-gallery__grid li:nth-child(4n + 2) img {
+  background: var(--bbm-color-bg-blue);
+}
+
+.site-insta .bbm-gallery__grid li:nth-child(4n + 3) img {
+  background: var(--bbm-color-bg-beige);
+}
+
+.site-insta .bbm-gallery__grid li:nth-child(4n + 4) img {
+  background: var(--bbm-color-bg-butter);
+}
+
+.site-insta .bbm-gallery__grid img {
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--bbm-space-2);
+  border-radius: var(--bbm-radius-md);
+  object-fit: contain;
+}
+
+/* Gallery strips: a soft ground behind the cut-out photos */
+.site-gallery .bbm-gallery__strip {
+  background: var(--bbm-color-bg-pink);
+}
+
+/* Phones: the occasion chips scroll sideways in one row instead of filling the screen */
+@media (max-width: 599.98px) {
+  .site-menu__filters {
+    display: block;
+  }
+
+  .site-menu__filters .bbm-chips,
+  .site-gallery__filters {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    margin-inline: calc(-1 * var(--bbm-layout-gutter));
+    padding: var(--bbm-space-1) var(--bbm-layout-gutter) var(--bbm-space-2);
+    scroll-padding-inline: var(--bbm-layout-gutter);
+    scrollbar-width: none;
+  }
+
+  .site-menu__filters .bbm-chips__chip,
+  .site-gallery__filters .bbm-chips__chip {
+    flex: none;
+  }
 }

@@ -1,68 +1,75 @@
 import { Button, EdgeDivider, Hero } from '@bakesbymom/ui';
-import { art } from '../content';
+import { findCake } from '../content/catalog';
+import { orderLink } from '../content/site';
 import {
-  BakeClubSection,
   CustomCakesSection,
   DoubleRibbon,
   FaqSection,
-  FindUsSection,
   GallerySection,
+  GiftSection,
+  InstagramSection,
   MeetMomSection,
   MenuSection,
-  NewsletterSection,
+  OrderBandSection,
   ProcessSection,
   ReviewsSection,
+  TreatsSection,
 } from '../sections/blocks';
 import { Layout } from './Layout';
 
+const heroCake = findCake('cake-choco-drip')!;
+
 /**
- * The home page, in the order of pin 15 (Nectar): hero, this week, find us,
- * custom cakes, club. See design/board/sections/landing-page.md.
+ * The home page, in the order of pin 15 (Nectar): hero, the cakes, how to order, the order band,
+ * custom cakes, Mom, the gallery and the rest. See design/board/sections/landing-page.md.
  */
 export function LandingPage() {
+  const photo = heroCake.photos[0]!;
   return (
     <Layout path="/" withAnnouncement>
       <Hero
-        eyebrow="Baked in Mom's kitchen"
+        eyebrow="Home bakery · Panipat"
         title={
           <>
             Homemade cakes, <em>still warm</em> from Mom's oven.
           </>
         }
-        description="Cakes, cookies and pies baked to order every week, ready for Saturday pick-up."
+        description="Cakes, brownies, cookies, cupcakes and breads, baked to order in Mom's kitchen. Everything is 100% eggless."
         actions={
           <>
-            <Button size="lg" href="#custom">
-              Order a cake
+            <Button size="lg" href="/catalog">
+              See the cakes
             </Button>
-            <Button size="lg" variant="secondary" href="/menu">
-              See the menu
+            <Button size="lg" variant="secondary" href={orderLink} target="_blank" rel="noreferrer">
+              Order on WhatsApp
             </Button>
           </>
         }
         media={
           <img
-            src={art.strawberryCake}
-            alt="Strawberry layer cake with pink buttercream and a cherry on top"
-            width={440}
-            height={440}
+            className="site-hero-photo"
+            src={photo.src}
+            alt={`${heroCake.name}: ${heroCake.description}`}
+            width={photo.width}
+            height={photo.height}
           />
         }
-        note="made with real butter!"
+        note="100% eggless!"
       />
       <DoubleRibbon />
-      <MenuSection />
+      <MenuSection limit={8} />
       <EdgeDivider shape="dots" color="var(--bbm-color-brown-900)" background="var(--bbm-color-bg-blue)" />
+      <TreatsSection />
       <ProcessSection />
-      <FindUsSection />
+      <OrderBandSection />
       <CustomCakesSection />
       <EdgeDivider shape="checker" color="var(--bbm-color-cherry-700)" altColor="var(--bbm-color-pink-300)" size="sm" />
       <MeetMomSection />
       <GallerySection />
       <ReviewsSection />
-      <BakeClubSection />
+      <GiftSection />
       <FaqSection />
-      <NewsletterSection />
+      <InstagramSection />
     </Layout>
   );
 }

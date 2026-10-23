@@ -125,8 +125,8 @@
 }
 
 .bbm-hero__doodle--2 {
-  bottom: 14%;
-  left: 4%;
+  bottom: 7%;
+  left: 40%;
   color: var(--bbm-color-pink-400);
 }
 
@@ -151,6 +151,11 @@
 
   .bbm-hero__arrow {
     display: none;
+  }
+
+  .bbm-hero__doodle--2 {
+    bottom: 14%;
+    left: 4%;
   }
 
   .bbm-hero__doodle--3,

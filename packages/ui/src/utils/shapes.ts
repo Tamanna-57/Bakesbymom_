@@ -103,7 +103,12 @@ export function edgeTile(shape: EdgeShape, unit: number): EdgeTile {
       return {
         width: w,
         height: w,
-        fills: [{ d: `M0 0H${u}V${u}H0Z` }, { d: `M${u} ${u}H${w}V${w}H${u}Z` }, { d: `M${u} 0H${w}V${u}H${u}Z`, alt: true }, { d: `M0 ${u}H${u}V${w}H0Z`, alt: true }],
+        fills: [
+          { d: `M0 0H${u}V${u}H0Z` },
+          { d: `M${u} ${u}H${w}V${w}H${u}Z` },
+          { d: `M${u} 0H${w}V${u}H${u}Z`, alt: true },
+          { d: `M0 ${u}H${u}V${w}H0Z`, alt: true },
+        ],
         edge: `M0 ${w}H${w}`,
       };
     }

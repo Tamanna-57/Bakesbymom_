@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Badge, Ticket, TONES } from '@bakesbymom/ui';
+import { Ticket, TONES } from '@bakesbymom/ui';
 
 const meta = {
-  title: 'Components/Ephemera/Ticket',
+  title: 'Components/Ticket',
   component: Ticket,
-  args: { variant: 'ticket', tone: 'blueberry', fill: 'soft', outline: true },
+  args: { variant: 'ticket', tone: 'blue', fill: 'soft', outline: true },
   argTypes: {
     variant: { control: 'inline-radio', options: ['ticket', 'stamp'] },
     tone: { control: 'select', options: TONES },
@@ -16,86 +16,74 @@ const meta = {
     docs: {
       description: {
         component:
-          'Paper ephemera from the Book Nook, SugarLace and Spring Bouquet references. `ticket` has side notches and an optional tear-off stub (gift cards, class seats, order summaries). `stamp` has a perforated postage edge (order steps, dates, "secure your seat").',
+          "Paper ephemera. `ticket` is pin 10's membership ticket: side notches and a tear-off stub with vertical text (the Bake Club perks, gift cards, thank-you cards). `stamp` is the perforated edge of pin 08's notes and pin 16's \"How do I place an order?\" card (and the chat's opening card).",
       },
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ width: 460 }}>
-        <Story />
-      </div>
-    ),
-  ],
+  decorators: [(Story) => <div style={{ width: 460 }}>{Story()}</div>],
 } satisfies Meta<typeof Ticket>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const GiftCard: Story = {
+/** Pin 10. */
+export const ClubPerks: Story = {
   args: {
-    stub: 'Admit one · Nov ’26',
+    stub: 'June ’26',
     children: (
       <div style={{ display: 'grid', gap: 8 }}>
         <p className="bbm-text-eyebrow" style={{ margin: 0 }}>
-          Gift card
+          Bake Club · member perks
         </p>
-        <p className="bbm-text-heading-md" style={{ margin: 0 }}>
-          A dozen cookies, on Mom
-        </p>
-        <p className="bbm-text-body-sm" style={{ margin: 0 }}>
-          Redeem online or at the Saturday market stall.
-        </p>
-        <p className="bbm-text-price" style={{ margin: 0 }}>
-          $14.00
-        </p>
-      </div>
-    ),
-  },
-};
-
-export const BakingClassSeat: Story = {
-  args: {
-    tone: 'strawberry',
-    stub: 'Sun 8 Mar · 10am',
-    children: (
-      <div style={{ display: 'grid', gap: 6 }}>
-        <p className="bbm-text-heading-md" style={{ margin: 0 }}>
-          Cupcake <em className="bbm-script-word">workshop</em>
-        </p>
-        <ul className="bbm-text-body-sm" style={{ margin: 0, paddingInlineStart: 18 }}>
-          <li>All ingredients and tools provided</li>
-          <li>Take home a box of six</li>
+        <ul style={{ margin: 0, paddingInlineStart: 20, lineHeight: 1.6 }}>
+          <li>A box of 4 seasonal treats</li>
+          <li>First pick of holiday orders</li>
+          <li>Mom's recipe card every month</li>
         </ul>
       </div>
     ),
   },
 };
 
-export const Stamp: Story = {
+export const GiftCard: Story = {
+  args: {
+    tone: 'pink',
+    stub: 'Gift · on Mom',
+    children: (
+      <div style={{ display: 'grid', gap: 6 }}>
+        <p className="bbm-text-eyebrow" style={{ margin: 0 }}>
+          Gift card
+        </p>
+        <p className="bbm-text-heading-md" style={{ margin: 0 }}>
+          A dozen cookies, on Mom
+        </p>
+        <p className="bbm-text-price" style={{ margin: 0 }}>
+          $14
+        </p>
+      </div>
+    ),
+  },
+};
+
+/** Pin 16's order card. */
+export const OrderSteps: Story = {
   args: {
     variant: 'stamp',
-    tone: 'caramel',
-    rotate: -3,
+    tone: 'beige',
     children: (
       <div style={{ display: 'grid', gap: 8 }}>
         <p className="bbm-text-script-sm" style={{ margin: 0, color: 'var(--bbm-color-text-brand)' }}>
-          How to order
+          How do I order?
         </p>
-        <ol className="bbm-text-body-sm" style={{ margin: 0, paddingInlineStart: 18, display: 'grid', gap: 4 }}>
-          <li>
-            <strong>Pick a cake</strong> from the menu, or ask for something custom.
-          </li>
-          <li>
-            <strong>Choose a date</strong> at least 3 days ahead.
-          </li>
-          <li>
-            <strong>Collect it warm</strong> on Saturday morning.
-          </li>
-        </ol>
-        <Badge shape="tape" variant="solid" tone="cherry" size="sm">
-          Order by Wednesday
-        </Badge>
+        <p style={{ margin: 0 }}>
+          <strong>Step 1:</strong> Pick the cake and filling, or ask for a custom design.
+        </p>
+        <p style={{ margin: 0 }}>
+          <strong>Step 2:</strong> Choose the date and how many people.
+        </p>
+        <p style={{ margin: 0 }}>
+          <strong>Step 3:</strong> Mom confirms by email with the pick-up time.
+        </p>
       </div>
     ),
   },

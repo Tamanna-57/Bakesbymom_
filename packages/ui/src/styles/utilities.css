@@ -43,12 +43,12 @@
   padding-inline: 0.06em;
 }
 
-/* Puffy Cooper-style Fraunces for badges, promos and the logo. */
+/* Puffy retro Fraunces for the logo and playful moments (pin 11). */
 .bbm-font-soft {
   font-variation-settings: var(--bbm-font-variation-soft);
 }
 
-/* Hand-drawn squiggle underline in the current text color (or --bbm-squiggle-color). */
+/* Hand-drawn underline, like "never" on pin 03, in the brand color (or --bbm-squiggle-color). */
 .bbm-squiggle {
   position: relative;
   white-space: nowrap;
@@ -68,22 +68,16 @@
   pointer-events: none;
 }
 
-/* Stroke-only display type (poster accents). Use at 48px and above. */
-.bbm-text-outline {
-  color: transparent;
-  -webkit-text-stroke: var(--bbm-outline-width, 2px) var(--bbm-outline-color, var(--bbm-color-text-brand));
-}
-
 /* Decoration helpers -------------------------------------------------- */
 
-/* White die-cut halo around transparent product photos (sticker effect). */
+/* White die-cut halo around transparent product photos (the stickers on pin 07). */
 .bbm-sticker-cutout {
   filter: drop-shadow(3px 0 0 var(--bbm-color-bg-raised)) drop-shadow(-3px 0 0 var(--bbm-color-bg-raised))
     drop-shadow(0 3px 0 var(--bbm-color-bg-raised)) drop-shadow(0 -3px 0 var(--bbm-color-bg-raised))
     drop-shadow(2px 2px 0 var(--bbm-color-border-default));
 }
 
-/* Straddle the top edge of the nearest positioned ancestor (stars on a section seam). */
+/* Straddle the top edge of the nearest positioned ancestor (the star seam on pin 11). */
 .bbm-seam {
   position: absolute;
   top: 0;

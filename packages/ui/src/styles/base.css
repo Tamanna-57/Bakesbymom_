@@ -15,8 +15,8 @@
 
 /* Base rules use :where() (zero specificity) so any component style overrides them. */
 :where(.bbm-theme) ::selection {
-  background-color: var(--bbm-color-strawberry-200);
-  color: var(--bbm-color-cocoa-900);
+  background-color: var(--bbm-color-pink-200);
+  color: var(--bbm-color-brown-900);
 }
 
 :where(.bbm-theme) :where(a:not([class])) {

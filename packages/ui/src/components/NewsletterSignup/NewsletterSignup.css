@@ -1,0 +1,167 @@
+.bbm-newsletter {
+  position: relative;
+  font-family: var(--bbm-font-family-body);
+  color: var(--bbm-color-text-primary);
+}
+
+.bbm-newsletter__title {
+  margin: 0;
+  font-family: var(--bbm-font-family-display);
+  font-variation-settings: var(--bbm-font-variation-display);
+  font-size: var(--bbm-text-heading-lg-size);
+  font-weight: var(--bbm-text-heading-lg-weight);
+  line-height: var(--bbm-text-heading-lg-line-height);
+}
+
+.bbm-newsletter__description {
+  margin: var(--bbm-space-2) 0 0;
+  font-size: var(--bbm-text-body-md-size);
+  line-height: var(--bbm-text-body-md-line-height);
+  color: var(--bbm-color-text-secondary);
+}
+
+.bbm-newsletter__form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--bbm-space-3);
+}
+
+.bbm-newsletter__form .bbm-field {
+  flex: 1 1 12rem;
+}
+
+.bbm-newsletter__form .bbm-button {
+  flex: 0 0 auto;
+}
+
+/* Align the button with the input when the fields have visible labels */
+.bbm-newsletter--card .bbm-newsletter__form .bbm-button,
+.bbm-newsletter--inline .bbm-newsletter__form .bbm-button {
+  margin-top: calc(var(--bbm-text-body-sm-size) * 1.3 + var(--bbm-space-2));
+}
+
+.bbm-newsletter__done {
+  display: flex;
+  align-items: center;
+  gap: var(--bbm-space-2);
+  margin: 0;
+  font-family: var(--bbm-text-hand-md-family);
+  font-size: var(--bbm-text-hand-md-size);
+  font-weight: var(--bbm-text-hand-md-weight);
+  color: var(--bbm-color-text-brand);
+}
+
+.bbm-newsletter__done .bbm-doodle {
+  color: var(--bbm-color-cherry-500);
+}
+
+/* Card (pin 03): paper card with a tilted sticker on its corner */
+.bbm-newsletter--card {
+  display: grid;
+  gap: var(--bbm-space-6);
+  box-sizing: border-box;
+  max-width: 35rem;
+  margin-inline: auto;
+  padding: clamp(var(--bbm-space-6), 5vw, var(--bbm-space-10));
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-xl);
+  background-color: var(--bbm-color-bg-surface);
+  box-shadow: var(--bbm-shadow-sticker-md);
+  text-align: center;
+}
+
+.bbm-newsletter--card .bbm-newsletter__form {
+  text-align: start;
+}
+
+.bbm-newsletter__sticker {
+  position: absolute;
+  top: -1.25rem;
+  left: -1.25rem;
+  rotate: -8deg;
+}
+
+.bbm-newsletter__sparkle {
+  position: absolute;
+  top: var(--bbm-space-5);
+  right: var(--bbm-space-5);
+  color: var(--bbm-color-cherry-500);
+}
+
+/* Bar (pin 15): one pill-shaped line */
+.bbm-newsletter--bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bbm-space-3) var(--bbm-space-6);
+  padding: var(--bbm-space-3) var(--bbm-space-3) var(--bbm-space-3) var(--bbm-space-6);
+  border-radius: 2.5rem;
+  background-color: var(--bbm-color-bg-pink-strong);
+}
+
+.bbm-newsletter--bar .bbm-newsletter__title {
+  font-family: var(--bbm-text-eyebrow-family);
+  font-variation-settings: normal;
+  font-size: var(--bbm-text-eyebrow-size);
+  font-weight: var(--bbm-text-eyebrow-weight);
+  letter-spacing: var(--bbm-text-eyebrow-tracking);
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.bbm-newsletter--bar .bbm-newsletter__description {
+  display: none;
+}
+
+.bbm-newsletter--bar .bbm-newsletter__form {
+  flex: 1 1 22rem;
+  flex-wrap: nowrap;
+  max-width: 28rem;
+}
+
+.bbm-newsletter--bar .bbm-field__control {
+  min-height: var(--bbm-component-button-height-md);
+}
+
+@media (max-width: 639.98px) {
+  .bbm-newsletter--bar {
+    border-radius: var(--bbm-radius-xl);
+    padding: var(--bbm-space-4);
+    text-align: center;
+  }
+
+  .bbm-newsletter--bar .bbm-newsletter__form {
+    flex-wrap: wrap;
+  }
+}
+
+/* Inline (footer): compact, on cocoa */
+.bbm-newsletter--inline {
+  display: grid;
+  gap: var(--bbm-space-4);
+  color: inherit;
+}
+
+.bbm-newsletter--inline .bbm-newsletter__title {
+  font-family: var(--bbm-text-eyebrow-family);
+  font-variation-settings: normal;
+  font-size: var(--bbm-text-eyebrow-size);
+  font-weight: var(--bbm-text-eyebrow-weight);
+  letter-spacing: var(--bbm-text-eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--bbm-color-pink-300);
+}
+
+.bbm-newsletter--inline .bbm-newsletter__description {
+  color: inherit;
+}
+
+.bbm-newsletter--inline .bbm-newsletter__done {
+  color: var(--bbm-color-pink-300);
+}
+
+.bbm-newsletter--inline .bbm-field__error {
+  color: var(--bbm-color-pink-200);
+}

@@ -1,0 +1,245 @@
+.bbm-gallery {
+  font-family: var(--bbm-font-family-body);
+  color: var(--bbm-color-text-primary);
+}
+
+.bbm-gallery img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Strips (pin 01) */
+.bbm-gallery__row {
+  display: flex;
+  gap: var(--bbm-space-3);
+  height: clamp(20rem, 38vw, 30rem);
+  touch-action: pan-y;
+}
+
+.bbm-gallery__strip {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-lg);
+  background-color: var(--bbm-color-bg-sunken);
+  cursor: pointer;
+  transition: flex-grow var(--bbm-motion-duration-slow) var(--bbm-motion-easing-out);
+}
+
+.bbm-gallery__strip img {
+  filter: grayscale(1);
+  transition: filter var(--bbm-motion-duration-base) var(--bbm-motion-easing-standard);
+  pointer-events: none;
+  user-select: none;
+}
+
+.bbm-gallery__strip:hover img,
+.bbm-gallery__strip:focus-visible img,
+.bbm-gallery__strip--open img {
+  filter: none;
+}
+
+.bbm-gallery__strip:hover:not(.bbm-gallery__strip--open),
+.bbm-gallery__strip:focus-visible:not(.bbm-gallery__strip--open) {
+  flex-grow: 1.6;
+}
+
+.bbm-gallery__strip--open {
+  flex-grow: 11;
+  box-shadow: var(--bbm-shadow-sticker-md);
+}
+
+.bbm-gallery__strip:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: var(--bbm-focus-ring-offset);
+}
+
+.bbm-gallery__chip {
+  position: absolute;
+  right: var(--bbm-space-4);
+  bottom: var(--bbm-space-4);
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: 50%;
+  background-color: var(--bbm-color-pink-300);
+  color: var(--bbm-color-text-primary);
+  font-size: var(--bbm-text-caption-size);
+  font-weight: var(--bbm-font-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.bbm-gallery__chip-swipe {
+  display: none;
+}
+
+.bbm-gallery__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bbm-space-4);
+  margin-top: var(--bbm-space-4);
+}
+
+.bbm-gallery__caption {
+  margin: 0;
+  min-height: 1.5em;
+  font-family: var(--bbm-text-hand-md-family);
+  font-size: var(--bbm-text-hand-md-size);
+  font-weight: var(--bbm-text-hand-md-weight);
+  line-height: var(--bbm-text-hand-md-line-height);
+  color: var(--bbm-color-text-brand);
+}
+
+.bbm-gallery__controls {
+  display: flex;
+  gap: var(--bbm-space-2);
+}
+
+.bbm-gallery__nav {
+  display: grid;
+  place-items: center;
+  width: var(--bbm-layout-touch-target);
+  height: var(--bbm-layout-touch-target);
+  padding: 0;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: 50%;
+  background-color: var(--bbm-color-bg-surface);
+  color: var(--bbm-color-text-primary);
+  cursor: pointer;
+}
+
+.bbm-gallery__nav:hover {
+  background-color: var(--bbm-color-bg-pink);
+}
+
+.bbm-gallery__nav:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: var(--bbm-focus-ring-offset);
+}
+
+.bbm-gallery__nav svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Phones: a swipe row with every photo in color */
+@media (max-width: 767.98px) {
+  .bbm-gallery__row {
+    height: 22rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    touch-action: auto;
+  }
+
+  .bbm-gallery__strip,
+  .bbm-gallery__strip--open,
+  .bbm-gallery__strip:hover:not(.bbm-gallery__strip--open) {
+    flex: 0 0 82%;
+    scroll-snap-align: center;
+  }
+
+  .bbm-gallery__strip img {
+    filter: none;
+  }
+
+  .bbm-gallery__chip-drag {
+    display: none;
+  }
+
+  .bbm-gallery__chip-swipe {
+    display: inline;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bbm-gallery__strip,
+  .bbm-gallery__strip img {
+    transition: none;
+  }
+}
+
+/* Trio on cocoa (pin 11) */
+.bbm-gallery--trio {
+  padding-block: var(--bbm-space-6) var(--bbm-space-12);
+  border-radius: var(--bbm-radius-xl);
+  background-color: var(--bbm-color-bg-inverse);
+  color: var(--bbm-color-text-inverse);
+  overflow: hidden;
+}
+
+.bbm-gallery__trio {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr 1fr;
+  align-items: center;
+  gap: clamp(var(--bbm-space-4), 4vw, var(--bbm-space-10));
+  margin: var(--bbm-space-6) 0 0;
+  padding: 0 clamp(var(--bbm-space-5), 8vw, var(--bbm-space-20));
+  list-style: none;
+}
+
+.bbm-gallery__trio figure {
+  margin: 0;
+}
+
+.bbm-gallery__trio img {
+  aspect-ratio: 3 / 4;
+  border-radius: var(--bbm-radius-sm);
+}
+
+.bbm-gallery__trio li:nth-child(2) img {
+  aspect-ratio: 4 / 5;
+}
+
+.bbm-gallery__trio figcaption {
+  margin-top: var(--bbm-space-2);
+  font-family: var(--bbm-text-hand-sm-family);
+  font-size: var(--bbm-text-hand-sm-size);
+  font-weight: var(--bbm-text-hand-sm-weight);
+  text-align: center;
+  color: var(--bbm-color-pink-300);
+}
+
+@media (max-width: 639.98px) {
+  .bbm-gallery__trio {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Instagram grid (pin 12) */
+.bbm-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bbm-gallery__grid img {
+  aspect-ratio: 1;
+}
+
+@media (max-width: 639.98px) {
+  .bbm-gallery__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.bbm-gallery__follow {
+  display: block;
+  width: fit-content;
+  margin: var(--bbm-space-4) auto 0;
+  color: var(--bbm-color-text-link);
+  font-family: var(--bbm-text-hand-md-family);
+  font-size: var(--bbm-text-hand-md-size);
+  font-weight: var(--bbm-text-hand-md-weight);
+}

@@ -21,17 +21,18 @@ const AA = 4.5;
 const UI = 3;
 
 describe('color contrast (WCAG 2.2)', () => {
+  // Every light ground a section can sit on (design/board/palette.md, "Roles").
   const surfaces = [
     'canvas',
     'surface',
     'raised',
     'sunken',
-    'blush',
-    'sky',
+    'beige',
+    'blue',
+    'blue-subtle',
+    'pink',
+    'pink-strong',
     'butter',
-    'pistachio',
-    'caramel',
-    'lavender',
   ];
 
   it.each(surfaces)('primary, secondary and muted text are AA on bg.%s', (surface) => {
@@ -49,9 +50,23 @@ describe('color contrast (WCAG 2.2)', () => {
     }
   });
 
-  it('inverse text is AA on inverse and brand bands', () => {
-    expect(contrast(color.text.inverse, color.bg.inverse)).toBeGreaterThanOrEqual(AA);
-    expect(contrast(color.text.inverse, color.bg.brand)).toBeGreaterThanOrEqual(AA);
+  it.each(['inverse', 'brand', 'brand-deep', 'navy'])('inverse text is AA on the %s band', (band) => {
+    expect(contrast(color.text.inverse, color.bg[band])).toBeGreaterThanOrEqual(AA);
+  });
+
+  it('the approved pairings in palette.md hold', () => {
+    const pairs = [
+      [color.text.primary, color.bg.canvas, 15],
+      [color.text.brand, color.bg.canvas, 7.5],
+      [color.action.primary.fg, color.action.primary.bg, 8],
+      [color.white, color.cherry[500], 5],
+      [color.text.primary, color.blue[200], 11],
+      [color.text.primary, color.pink[300], 10.5],
+      [color.text.primary, color.beige[200], 12.5],
+      [color.blue[700], color.blue[100], 6.5],
+      [color.cherry[800], color.pink[200], 7.5],
+    ];
+    for (const [fg, bg, min] of pairs) expect(contrast(fg, bg), `${fg} on ${bg}`).toBeGreaterThanOrEqual(min);
   });
 
   it.each(['primary', 'secondary', 'soft'])('%s action label is AA in every state', (kind) => {
@@ -80,17 +95,7 @@ describe('color contrast (WCAG 2.2)', () => {
 });
 
 describe('palette structure', () => {
-  const families = [
-    'cream',
-    'cocoa',
-    'cherry',
-    'strawberry',
-    'blueberry',
-    'butter',
-    'pistachio',
-    'caramel',
-    'lavender',
-  ];
+  const families = ['blue', 'pink', 'beige', 'cherry', 'brown', 'butter', 'matcha'];
 
   it.each(families)('%s scale gets strictly darker step by step', (family) => {
     const steps = Object.keys(color[family])
@@ -98,6 +103,15 @@ describe('palette structure', () => {
       .sort((a, b) => a - b);
     const lums = steps.map((step) => luminance(color[family][step]));
     lums.slice(1).forEach((lum, i) => expect(lum).toBeLessThan(lums[i]));
+  });
+
+  it('keeps the values measured from the board pins', () => {
+    expect(color.blue[200]).toBe('#c4d7e8');
+    expect(color.pink[300]).toBe('#f3c5c8');
+    expect(color.beige[200]).toBe('#ece3c6');
+    expect(color.cherry[700]).toBe('#941939');
+    expect(color.cherry[500]).toBe('#d02b2f');
+    expect(color.brown[900]).toBe('#32180b');
   });
 
   it('every color resolves to a hex value', () => {
@@ -116,15 +130,18 @@ describe('build outputs', () => {
 
   it('semantic CSS variables keep references to primitives', () => {
     const css = read('css/tokens.css');
-    expect(css).toContain('--bbm-color-text-primary: var(--bbm-color-cocoa-900)');
-    expect(css).toContain('--bbm-color-action-primary-bg: var(--bbm-color-cherry-600)');
+    expect(css).toContain('--bbm-color-text-primary: var(--bbm-color-brown-900)');
+    expect(css).toContain('--bbm-color-action-primary-bg: var(--bbm-color-cherry-700)');
   });
 
   it('Tailwind theme maps onto v4 namespaces', () => {
     const theme = read('tailwind/theme.css');
     expect(theme).toMatch(/^@theme \{/m);
     for (const name of [
-      '--color-cherry-600',
+      '--color-cherry-700',
+      '--color-blue-200',
+      '--font-hand',
+      '--font-bubble',
       '--color-canvas',
       '--color-ink',
       '--color-line',
@@ -143,7 +160,7 @@ describe('build outputs', () => {
 
   it('JS exports are named constants', () => {
     const js = read('js/tokens.js');
-    expect(js).toContain('export const colorCherry600 = "#a81e31"');
-    expect(read('js/tokens.d.ts')).toContain('export const colorCherry600: string;');
+    expect(js).toContain('export const colorCherry700 = "#941939"');
+    expect(read('js/tokens.d.ts')).toContain('export const colorCherry700: string;');
   });
 });

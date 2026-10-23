@@ -1,0 +1,397 @@
+.bbm-chat {
+  position: fixed;
+  right: var(--bbm-space-6);
+  bottom: var(--bbm-space-6);
+  z-index: var(--bbm-z-overlay);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--bbm-space-4);
+  font-family: var(--bbm-font-family-body);
+  color: var(--bbm-color-text-primary);
+}
+
+.bbm-chat--inline {
+  position: relative;
+  right: auto;
+  bottom: auto;
+  z-index: auto;
+}
+
+/* Launcher: a spinning seal (pin 10) */
+.bbm-chat__launcher {
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  filter: drop-shadow(3px 3px 0 var(--bbm-color-border-default));
+  transition: transform var(--bbm-motion-duration-fast) var(--bbm-motion-easing-bounce);
+}
+
+.bbm-chat__launcher:hover {
+  transform: scale(1.04);
+}
+
+.bbm-chat__launcher:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: 4px;
+}
+
+.bbm-chat__launcher .bbm-seal__center {
+  color: var(--bbm-color-pink-300);
+}
+
+/* Panel */
+.bbm-chat__panel {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: min(23.75rem, calc(100vw - 2 * var(--bbm-space-6)));
+  max-height: min(37.5rem, calc(100vh - 9rem));
+  overflow: hidden;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-xl);
+  background-color: var(--bbm-color-bg-surface);
+  box-shadow: var(--bbm-shadow-sticker-lg);
+}
+
+.bbm-chat__header {
+  flex-shrink: 0;
+}
+
+.bbm-chat__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--bbm-space-3);
+  padding: var(--bbm-space-3) var(--bbm-space-3) var(--bbm-space-1) var(--bbm-space-4);
+  background-color: var(--bbm-color-bg-pink);
+}
+
+.bbm-chat__header .bbm-edge {
+  display: block;
+}
+
+.bbm-chat__avatar {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: 50%;
+  background-color: var(--bbm-color-bg-surface);
+  color: var(--bbm-color-cherry-500);
+}
+
+.bbm-chat__title {
+  flex: 1;
+  margin: 0;
+  font-family: var(--bbm-font-family-display);
+  font-variation-settings: var(--bbm-font-variation-display);
+  font-size: var(--bbm-text-heading-sm-size);
+  font-weight: var(--bbm-font-weight-semibold);
+}
+
+.bbm-chat__close {
+  display: grid;
+  place-items: center;
+  width: var(--bbm-layout-touch-target);
+  height: var(--bbm-layout-touch-target);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.bbm-chat__close:hover {
+  background-color: var(--bbm-color-bg-pink-strong);
+}
+
+.bbm-chat__close svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.bbm-chat button:focus-visible,
+.bbm-chat a:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: 2px;
+}
+
+.bbm-chat__log {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--bbm-space-3);
+  min-height: 12rem;
+  overflow-y: auto;
+  padding: var(--bbm-space-3) var(--bbm-space-4) var(--bbm-space-4);
+  overscroll-behavior: contain;
+}
+
+/* Opening card: stamp edge, like the support card on pin 08 */
+.bbm-chat__intro {
+  --_r: 6px;
+  padding: calc(var(--bbm-space-4) + var(--_r));
+  background-color: var(--bbm-color-bg-sunken);
+  font-size: var(--bbm-text-body-sm-size);
+  line-height: var(--bbm-text-body-sm-line-height);
+  -webkit-mask:
+    linear-gradient(#000 0 0) center / calc(100% - 2 * var(--_r)) calc(100% - 2 * var(--_r)) no-repeat,
+    radial-gradient(circle var(--_r), #0000 98%, #000) 0 0 / calc(var(--_r) * 3) calc(var(--_r) * 3) round;
+  mask:
+    linear-gradient(#000 0 0) center / calc(100% - 2 * var(--_r)) calc(100% - 2 * var(--_r)) no-repeat,
+    radial-gradient(circle var(--_r), #0000 98%, #000) 0 0 / calc(var(--_r) * 3) calc(var(--_r) * 3) round;
+}
+
+.bbm-chat__intro p {
+  margin: 0;
+}
+
+.bbm-chat__intro p + p {
+  margin-top: var(--bbm-space-2);
+}
+
+/* Quick questions: blue pills with an arrow circle (pin 08) */
+.bbm-chat__suggestions {
+  display: grid;
+  gap: var(--bbm-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bbm-chat__suggestions button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bbm-space-3);
+  width: 100%;
+  min-height: var(--bbm-layout-touch-target);
+  padding: var(--bbm-space-1) var(--bbm-space-1) var(--bbm-space-1) var(--bbm-space-4);
+  border: 0;
+  border-radius: var(--bbm-radius-pill);
+  background-color: var(--bbm-color-bg-blue);
+  color: var(--bbm-color-blue-900);
+  font: inherit;
+  font-size: var(--bbm-text-body-sm-size);
+  font-weight: var(--bbm-font-weight-medium);
+  text-align: start;
+  cursor: pointer;
+}
+
+.bbm-chat__suggestions button:hover {
+  background-color: var(--bbm-color-blue-300);
+}
+
+.bbm-chat__suggestion-arrow {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: var(--bbm-color-bg-surface);
+  color: var(--bbm-color-text-primary);
+}
+
+.bbm-chat__suggestion-arrow svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+/* Messages */
+.bbm-chat__message {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 85%;
+}
+
+.bbm-chat__message--mom {
+  align-self: flex-start;
+}
+
+.bbm-chat__message--you {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.bbm-chat__from {
+  font-family: var(--bbm-text-hand-sm-family);
+  font-size: 1.125rem;
+  font-weight: var(--bbm-text-hand-sm-weight);
+  line-height: 1;
+  color: var(--bbm-color-text-brand);
+}
+
+.bbm-chat__message--you .bbm-chat__from {
+  color: var(--bbm-color-text-secondary);
+}
+
+.bbm-chat__bubble {
+  padding: var(--bbm-space-3) var(--bbm-space-4);
+  font-size: var(--bbm-text-body-sm-size);
+  line-height: var(--bbm-text-body-sm-line-height);
+}
+
+.bbm-chat__bubble p {
+  margin: 0;
+}
+
+.bbm-chat__bubble p + p {
+  margin-top: var(--bbm-space-2);
+}
+
+/* Mom: paper with outline and offset shadow (pin 01) */
+.bbm-chat__message--mom .bbm-chat__bubble {
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-lg) var(--bbm-radius-lg) var(--bbm-radius-lg) var(--bbm-radius-xs);
+  background-color: var(--bbm-color-bg-surface);
+  box-shadow: var(--bbm-shadow-sticker-sm);
+}
+
+.bbm-chat__message--mom .bbm-chat__bubble a {
+  color: var(--bbm-color-text-link);
+}
+
+/* You: a cherry pill */
+.bbm-chat__message--you .bbm-chat__bubble {
+  border-radius: var(--bbm-radius-lg) var(--bbm-radius-lg) var(--bbm-radius-xs) var(--bbm-radius-lg);
+  background-color: var(--bbm-color-action-primary-bg);
+  color: var(--bbm-color-action-primary-fg);
+}
+
+.bbm-chat__typing {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+  min-height: 1.4em;
+}
+
+.bbm-chat__typing > span[aria-hidden] {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background-color: var(--bbm-color-text-muted);
+  animation: bbm-chat-typing 1.2s var(--bbm-motion-easing-standard) infinite;
+}
+
+.bbm-chat__typing > span[aria-hidden]:nth-of-type(3) {
+  animation-delay: 0.15s;
+}
+
+.bbm-chat__typing > span[aria-hidden]:nth-of-type(4) {
+  animation-delay: 0.3s;
+}
+
+@keyframes bbm-chat-typing {
+  0%,
+  80%,
+  100% {
+    opacity: 0.35;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+/* Composer */
+.bbm-chat__composer {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--bbm-space-2);
+  padding: var(--bbm-space-3) var(--bbm-space-3) var(--bbm-space-2);
+  border-top: var(--bbm-border-width-hairline) solid var(--bbm-color-border-subtle);
+}
+
+.bbm-chat__input {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--bbm-layout-touch-target);
+  padding: 0 var(--bbm-space-4);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-muted);
+  border-radius: var(--bbm-radius-pill);
+  background-color: var(--bbm-color-bg-raised);
+  color: var(--bbm-color-text-primary);
+  font: inherit;
+  font-size: var(--bbm-text-body-sm-size);
+}
+
+.bbm-chat__input::placeholder {
+  color: var(--bbm-color-text-muted);
+  opacity: 1;
+}
+
+.bbm-chat__input:focus-visible {
+  border-color: var(--bbm-color-border-default);
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: 1px;
+}
+
+.bbm-chat__send {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: var(--bbm-layout-touch-target);
+  height: var(--bbm-layout-touch-target);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background-color: var(--bbm-color-action-primary-bg);
+  color: var(--bbm-color-action-primary-fg);
+  cursor: pointer;
+}
+
+.bbm-chat__send:hover {
+  background-color: var(--bbm-color-action-primary-bg-hover);
+}
+
+.bbm-chat__send svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.bbm-chat__handoff {
+  display: block;
+  padding: 0 var(--bbm-space-4) var(--bbm-space-3);
+  color: var(--bbm-color-text-link);
+  font-size: var(--bbm-text-caption-size);
+  text-align: center;
+}
+
+/* Phones: the panel opens as a sheet from the bottom */
+@media (max-width: 639.98px) {
+  .bbm-chat:not(.bbm-chat--inline) {
+    right: var(--bbm-space-4);
+    bottom: var(--bbm-space-4);
+  }
+
+  .bbm-chat:not(.bbm-chat--inline) .bbm-chat__panel {
+    position: fixed;
+    inset: auto 0 0 0;
+    width: 100%;
+    max-height: 90vh;
+    border-radius: var(--bbm-radius-xl) var(--bbm-radius-xl) 0 0;
+  }
+
+  .bbm-chat:not(.bbm-chat--inline) .bbm-chat__launcher .bbm-seal {
+    --_seal-size: 64px !important;
+  }
+
+  .bbm-chat--open:not(.bbm-chat--inline) .bbm-chat__launcher {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bbm-chat__launcher {
+    transition: none;
+  }
+
+  .bbm-chat__typing > span[aria-hidden] {
+    animation: none;
+  }
+}

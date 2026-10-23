@@ -1,7 +1,7 @@
 /*
- * Text styles from the type scale (tokens: --bbm-text-<style>-*).
- * Display and heading styles use Fraunces with the brand softness preset;
- * eyebrow is the uppercase "recipe card" label.
+ * Text styles from the brand-kit type scale (tokens: --bbm-text-<style>-*).
+ * Serif styles use Fraunces at full softness; label and eyebrow are uppercase;
+ * bubble is always outlined with a hard cocoa shadow (pin 01).
  */
 
 .bbm-text-display-xl {
@@ -65,9 +65,6 @@
   line-height: var(--bbm-text-heading-sm-line-height);
   letter-spacing: var(--bbm-text-heading-sm-tracking);
   font-weight: var(--bbm-text-heading-sm-weight);
-  font-variation-settings: var(--bbm-font-variation-display);
-  font-optical-sizing: auto;
-  text-wrap: balance;
 }
 
 .bbm-text-body-lg {
@@ -76,7 +73,6 @@
   line-height: var(--bbm-text-body-lg-line-height);
   letter-spacing: var(--bbm-text-body-lg-tracking);
   font-weight: var(--bbm-text-body-lg-weight);
-  text-wrap: pretty;
 }
 
 .bbm-text-body-md {
@@ -85,7 +81,6 @@
   line-height: var(--bbm-text-body-md-line-height);
   letter-spacing: var(--bbm-text-body-md-tracking);
   font-weight: var(--bbm-text-body-md-weight);
-  text-wrap: pretty;
 }
 
 .bbm-text-body-sm {
@@ -94,7 +89,6 @@
   line-height: var(--bbm-text-body-sm-line-height);
   letter-spacing: var(--bbm-text-body-sm-tracking);
   font-weight: var(--bbm-text-body-sm-weight);
-  text-wrap: pretty;
 }
 
 .bbm-text-caption {
@@ -111,6 +105,7 @@
   line-height: var(--bbm-text-label-line-height);
   letter-spacing: var(--bbm-text-label-tracking);
   font-weight: var(--bbm-text-label-weight);
+  text-transform: uppercase;
 }
 
 .bbm-text-eyebrow {
@@ -129,6 +124,14 @@
   letter-spacing: var(--bbm-text-price-tracking);
   font-weight: var(--bbm-text-price-weight);
   font-variant-numeric: tabular-nums;
+}
+
+.bbm-text-heavy {
+  font-family: var(--bbm-text-heavy-family);
+  font-size: var(--bbm-text-heavy-size);
+  line-height: var(--bbm-text-heavy-line-height);
+  letter-spacing: var(--bbm-text-heavy-tracking);
+  font-weight: var(--bbm-text-heavy-weight);
 }
 
 .bbm-text-script-lg {
@@ -153,4 +156,32 @@
   line-height: var(--bbm-text-script-sm-line-height);
   letter-spacing: var(--bbm-text-script-sm-tracking);
   font-weight: var(--bbm-text-script-sm-weight);
+}
+
+.bbm-text-hand-md {
+  font-family: var(--bbm-text-hand-md-family);
+  font-size: var(--bbm-text-hand-md-size);
+  line-height: var(--bbm-text-hand-md-line-height);
+  letter-spacing: var(--bbm-text-hand-md-tracking);
+  font-weight: var(--bbm-text-hand-md-weight);
+}
+
+.bbm-text-hand-sm {
+  font-family: var(--bbm-text-hand-sm-family);
+  font-size: var(--bbm-text-hand-sm-size);
+  line-height: var(--bbm-text-hand-sm-line-height);
+  letter-spacing: var(--bbm-text-hand-sm-tracking);
+  font-weight: var(--bbm-text-hand-sm-weight);
+}
+
+.bbm-text-bubble {
+  font-family: var(--bbm-text-bubble-family);
+  font-size: var(--bbm-text-bubble-size);
+  line-height: var(--bbm-text-bubble-line-height);
+  letter-spacing: var(--bbm-text-bubble-tracking);
+  font-weight: var(--bbm-text-bubble-weight);
+  color: var(--bbm-color-bg-surface);
+  -webkit-text-stroke: 6px var(--bbm-color-border-default);
+  paint-order: stroke fill;
+  text-shadow: 0.05em 0.05em 0 var(--bbm-color-border-default);
 }

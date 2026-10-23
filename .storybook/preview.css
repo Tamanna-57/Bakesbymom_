@@ -38,36 +38,3 @@
   font-size: 3rem !important;
   line-height: 1.05 !important;
 }
-
-/* Order box icon button with a count (header stories) */
-.sb-order-box {
-  position: relative;
-  display: inline-flex;
-}
-
-.sb-order-box__count {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 4px;
-  box-sizing: border-box;
-  border: 1.5px solid var(--bbm-color-border-default);
-  border-radius: 999px;
-  background: var(--bbm-color-action-primary-bg);
-  color: var(--bbm-color-action-primary-fg);
-  font: 700 11px/17px var(--bbm-font-family-body);
-  text-align: center;
-  pointer-events: none;
-}
-
-/* Section stories: a full-width band with the standard container */
-.sb-band {
-  padding: var(--bbm-layout-section-y) var(--bbm-layout-gutter);
-}
-
-.sb-container {
-  max-width: var(--bbm-layout-container);
-  margin-inline: auto;
-}

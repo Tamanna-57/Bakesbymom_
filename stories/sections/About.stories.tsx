@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { MeetMomSection, OrbitSection, ValuesRow, AboutCardSection } from './blocks';
+import { MeetMomSection, OrbitSection, ValuesRow, AboutCardSection } from '../../apps/web/src/sections/blocks';
 import { fromBoard } from './ref';
 
 const meta = {
@@ -30,8 +30,8 @@ export const OurStory: Story = { render: () => <OrbitSection /> };
 /** Pin 05's two value cards. */
 export const Values: Story = {
   render: () => (
-    <div className="sb-section">
-      <div className="sb-container">
+    <div className="site-section">
+      <div className="site-container">
         <ValuesRow />
       </div>
     </div>

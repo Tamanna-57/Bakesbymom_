@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Polaroid } from '@bakesbymom/ui';
-import { art } from '../assets';
+import { art } from '../../apps/web/src/content';
 
 const meta = {
   title: 'Components/Polaroid',

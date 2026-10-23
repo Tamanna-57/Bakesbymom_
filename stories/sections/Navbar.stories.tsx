@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { SiteHeader } from '@bakesbymom/ui';
-import { announcement, headerActions, mobileCta, navLinks } from '../assets/site';
+import { announcement, headerActions, mobileCta, navLinksFor } from '../../apps/web/src/content/site';
 import { fromBoard } from './ref';
 
 const meta = {
@@ -19,7 +19,7 @@ const meta = {
     },
   },
   args: {
-    links: navLinks,
+    links: navLinksFor('/menu'),
     actions: headerActions,
     mobileCta,
     announcement,

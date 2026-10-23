@@ -119,7 +119,7 @@ export const AsLink: Story = {
 };
 
 export const FullWidth: Story = {
-  args: { fullWidth: true, size: 'lg', children: 'Order for Saturday pick-up' },
+  args: { fullWidth: true, size: 'lg', children: 'Order on WhatsApp' },
   decorators: [
     (Story) => (
       <div style={{ width: 320 }}>

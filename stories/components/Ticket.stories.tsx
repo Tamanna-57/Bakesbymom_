@@ -16,7 +16,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Paper ephemera. `ticket` is pin 10's membership ticket: side notches and a tear-off stub with vertical text (the Bake Club perks, gift cards, thank-you cards). `stamp` is the perforated edge of pin 08's notes and pin 16's \"How do I place an order?\" card (and the chat's opening card).",
+          "Paper ephemera. `ticket` is pin 10's membership ticket: side notches and a tear-off stub with vertical text (the gifting add-ons, gift cards, thank-you cards). `stamp` is the perforated edge of pin 08's notes and pin 16's \"How do I place an order?\" card (and the chat's opening card).",
       },
     },
   },
@@ -27,18 +27,18 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /** Pin 10. */
-export const ClubPerks: Story = {
+export const GiftPerks: Story = {
   args: {
-    stub: 'June ’26',
+    stub: 'with love',
     children: (
       <div style={{ display: 'grid', gap: 8 }}>
         <p className="bbm-text-eyebrow" style={{ margin: 0 }}>
-          Bake Club · member perks
+          Add to any order
         </p>
         <ul style={{ margin: 0, paddingInlineStart: 20, lineHeight: 1.6 }}>
-          <li>A box of 4 seasonal treats</li>
-          <li>First pick of holiday orders</li>
-          <li>Mom's recipe card every month</li>
+          <li>Gift wrapping</li>
+          <li>Gift box</li>
+          <li>Greeting card note</li>
         </ul>
       </div>
     ),
@@ -55,10 +55,10 @@ export const GiftCard: Story = {
           Gift card
         </p>
         <p className="bbm-text-heading-md" style={{ margin: 0 }}>
-          A dozen cookies, on Mom
+          A bento cake, on Mom
         </p>
         <p className="bbm-text-price" style={{ margin: 0 }}>
-          $14
+          Your message on top
         </p>
       </div>
     ),

@@ -21,7 +21,7 @@ const meta = {
     image: { src: item.image, alt: item.alt },
     description: item.description,
     price: item.price,
-    href: '#strawberry-layer-cake',
+    href: item.href,
     tone: 'pink',
   },
   decorators: [(Story) => <div style={{ width: 280 }}>{Story()}</div>],

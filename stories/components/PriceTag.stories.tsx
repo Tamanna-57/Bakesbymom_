@@ -12,7 +12,7 @@ const meta = {
       },
     },
   },
-  args: { amount: '$45', label: '6-inch cake', shape: 'scallop', tone: 'pink', size: 128 },
+  args: { amount: '₹1,050', label: 'cakes from', shape: 'scallop', tone: 'pink', size: 128 },
 } satisfies Meta<typeof PriceTag>;
 
 export default meta;
@@ -24,9 +24,9 @@ export const Playground: Story = {};
 export const EventPricing: Story = {
   render: () => (
     <div className="sb-stack">
-      <PriceTag shape="scallop" tone="pink" amount="$45" label="6-inch cake" size={128} rotate={-4} />
-      <PriceTag shape="flower" tone="cherry" amount="$4" label="per cupcake" size={128} rotate={3} />
-      <PriceTag shape="cloud" tone="blue" amount="$15" label="custom message" size={128} rotate={-2} />
+      <PriceTag shape="scallop" tone="pink" amount="₹1,050" label="cakes from" size={128} rotate={-4} />
+      <PriceTag shape="flower" tone="cherry" amount="½–3 kg" label="any size" size={128} rotate={3} />
+      <PriceTag shape="cloud" tone="blue" amount="₹700" label="per pound from" size={128} rotate={-2} />
     </div>
   ),
 };
@@ -35,8 +35,8 @@ export const EventPricing: Story = {
 export const KeyTags: Story = {
   render: () => (
     <div className="sb-stack">
-      <PriceTag shape="tag" tone="blue" amount="$45" size={56} />
-      <PriceTag shape="tag" tone="cherry" amount="$140" size={56} rotate={-8} />
+      <PriceTag shape="tag" tone="blue" amount="₹1,350" size={56} />
+      <PriceTag shape="tag" tone="cherry" amount="₹3,200" size={56} rotate={-8} />
     </div>
   ),
 };
@@ -46,10 +46,10 @@ export const PackageCard: Story = {
   render: () => (
     <div style={{ width: 320, paddingTop: 24 }}>
       <PricingCard
-        title="Party cake"
-        price="$70"
-        features={['8-inch, 3 layers', 'Serves 16–20', 'Piped flowers or sprinkles']}
-        action={<Button fullWidth>Choose this cake</Button>}
+        title="1 kg · 2 pound"
+        price="from ₹1,350"
+        features={['About 8–10 slices', 'The usual birthday size', 'Photo print or name plaque']}
+        action={<Button fullWidth>See the cakes</Button>}
       />
     </div>
   ),

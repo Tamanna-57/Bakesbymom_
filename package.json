@@ -15,7 +15,7 @@
     "web": "npm run build && npm run dev -w @bakesbymom/web",
     "build:tokens": "npm run build -w @bakesbymom/tokens",
     "typecheck": "npm run typecheck -w @bakesbymom/ui && npm run typecheck -w @bakesbymom/web && tsc -p .storybook/tsconfig.json",
-    "test": "npm run test -w @bakesbymom/tokens && npm run test -w @bakesbymom/ui",
+    "test": "npm run test -w @bakesbymom/tokens && npm run test -w @bakesbymom/ui && npm run test -w @bakesbymom/web",
     "storybook": "npm run build:tokens && storybook dev -p 6006",
     "build-storybook": "npm run build:tokens && storybook build -o storybook-static",
     "format": "prettier --write \"packages/**/*.{ts,tsx,mjs,css,json,md}\" \"apps/**/*.{ts,tsx,css,json,html}\" \"stories/**/*.{ts,tsx,css,mdx}\" \".storybook/**/*.{ts,tsx,css}\"",

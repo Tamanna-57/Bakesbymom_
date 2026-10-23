@@ -55,7 +55,7 @@ export const Multiline: Story = {
 export const Disabled: Story = {
   args: {
     disabled: true,
-    value: 'Saturday 9am – 1pm',
+    value: 'Morning (9am – 12pm)',
     label: 'Pick-up window',
     hint: 'Set by the order date.',
     readOnly: true,

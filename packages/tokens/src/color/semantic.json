@@ -1,207 +1,476 @@
 {
   "color": {
     "bg": {
-      "$description": "Surfaces. Depth comes from stepping through creams, not from shadows.",
-      "canvas": { "$type": "color", "$value": "{color.cream.100}", "$description": "Default page background." },
-      "surface": { "$type": "color", "$value": "{color.cream.50}", "$description": "Cards and panels on the canvas." },
+      "$description": "Section and surface grounds. Cream does most of the work; blue and pink take turns as section colors.",
+      "canvas": {
+        "$type": "color",
+        "$value": "{color.beige.50}",
+        "$description": "Default page background."
+      },
+      "surface": {
+        "$type": "color",
+        "$value": "{color.paper}",
+        "$description": "Cards and panels on the canvas."
+      },
       "raised": {
         "$type": "color",
         "$value": "{color.white}",
-        "$description": "Highest lift: inputs, polaroid borders, popovers."
+        "$description": "Inputs, photo borders, popovers."
       },
-      "sunken": { "$type": "color", "$value": "{color.cream.200}", "$description": "Alternate section band." },
-      "kraft": {
+      "sunken": {
         "$type": "color",
-        "$value": "{color.cream.300}",
-        "$description": "Quiet fills such as disabled controls and table headers."
+        "$value": "{color.beige.100}",
+        "$description": "Quiet alternate band."
+      },
+      "beige": {
+        "$type": "color",
+        "$value": "{color.beige.200}",
+        "$description": "Biscuit band (Hopf Haus)."
+      },
+      "blue": {
+        "$type": "color",
+        "$value": "{color.blue.200}",
+        "$description": "Baby blue band: the menu, values, info."
+      },
+      "blue-subtle": {
+        "$type": "color",
+        "$value": "{color.blue.100}",
+        "$description": "Pale blue band (category row)."
+      },
+      "pink": {
+        "$type": "color",
+        "$value": "{color.pink.200}",
+        "$description": "Baby pink band: Bake Club, nav."
+      },
+      "pink-strong": {
+        "$type": "color",
+        "$value": "{color.pink.300}",
+        "$description": "Stronger pink for cards and FAQ rows."
+      },
+      "butter": {
+        "$type": "color",
+        "$value": "{color.butter.200}",
+        "$description": "Butter band (newsletter). Helper color."
+      },
+      "navy": {
+        "$type": "color",
+        "$value": "{color.blue.700}",
+        "$description": "The one dark blue band (Book Nook)."
       },
       "inverse": {
         "$type": "color",
-        "$value": "{color.cocoa.900}",
-        "$description": "Dark cocoa band (footer, marquee)."
+        "$value": "{color.brown.900}",
+        "$description": "Cocoa band: footer, ribbons."
       },
       "brand": {
         "$type": "color",
-        "$value": "{color.cherry.700}",
-        "$description": "Full cherry band. Use once per page at most."
+        "$value": "{color.cherry.500}",
+        "$description": "Bright cherry band. Once per page."
       },
-      "brand-subtle": { "$type": "color", "$value": "{color.cherry.50}" },
-      "blush": { "$type": "color", "$value": "{color.strawberry.100}", "$description": "Strawberry-milk section." },
-      "sky": { "$type": "color", "$value": "{color.blueberry.100}", "$description": "Powder-blue section." },
-      "butter": { "$type": "color", "$value": "{color.butter.100}", "$description": "Custard section." },
-      "pistachio": { "$type": "color", "$value": "{color.pistachio.100}", "$description": "Pistachio section." },
-      "caramel": { "$type": "color", "$value": "{color.caramel.100}", "$description": "Apricot section." },
-      "lavender": { "$type": "color", "$value": "{color.lavender.100}", "$description": "Ube section (minor accent)." }
+      "brand-deep": {
+        "$type": "color",
+        "$value": "{color.cherry.700}",
+        "$description": "Deep cherry tiles and panels."
+      },
+      "brand-subtle": {
+        "$type": "color",
+        "$value": "{color.cherry.50}",
+        "$description": "Faint cherry wash."
+      }
     },
     "text": {
       "primary": {
         "$type": "color",
-        "$value": "{color.cocoa.900}",
-        "$description": "Body and headings. 14.2:1 on canvas."
+        "$value": "{color.brown.900}",
+        "$description": "Body and headings. 15.5:1 on canvas."
       },
       "secondary": {
         "$type": "color",
-        "$value": "{color.cocoa.700}",
-        "$description": "Supporting copy. 9.9:1 on canvas."
+        "$value": "{color.brown.700}",
+        "$description": "Supporting copy."
       },
       "muted": {
         "$type": "color",
-        "$value": "{color.cocoa.500}",
-        "$description": "Captions and metadata. 5.0:1 on canvas, 4.6:1 on sunken."
+        "$value": "{color.brown.600}",
+        "$description": "Captions and metadata."
       },
       "disabled": {
         "$type": "color",
-        "$value": "{color.cocoa.300}",
+        "$value": "{color.beige.500}",
         "$description": "Disabled labels (exempt from contrast minimums)."
       },
-      "inverse": { "$type": "color", "$value": "{color.cream.50}", "$description": "Text on cocoa, cherry or forest." },
+      "inverse": {
+        "$type": "color",
+        "$value": "{color.beige.50}",
+        "$description": "Text on cocoa, cherry and navy bands."
+      },
       "brand": {
         "$type": "color",
         "$value": "{color.cherry.700}",
-        "$description": "Brand headings, logo and script accents."
+        "$description": "Brand headings, script accents, prices. 8.0:1 on canvas."
       },
-      "link": { "$type": "color", "$value": "{color.cherry.600}" },
-      "link-hover": { "$type": "color", "$value": "{color.cherry.800}" }
+      "link": {
+        "$type": "color",
+        "$value": "{color.cherry.700}"
+      },
+      "link-hover": {
+        "$type": "color",
+        "$value": "{color.cherry.800}"
+      }
     },
     "border": {
       "default": {
         "$type": "color",
-        "$value": "{color.cocoa.900}",
-        "$description": "Sticker outline. The structural line of the system."
+        "$value": "{color.brown.900}",
+        "$description": "The sticker outline. The structural line of the system."
       },
-      "subtle": { "$type": "color", "$value": "{color.cream.300}", "$description": "Hairline rules and dividers." },
-      "muted": { "$type": "color", "$value": "{color.cocoa.200}", "$description": "Input borders at rest." },
-      "brand": { "$type": "color", "$value": "{color.cherry.600}", "$description": "Brand frames (SugarLace-style)." },
+      "subtle": {
+        "$type": "color",
+        "$value": "{color.beige.300}",
+        "$description": "Hairline rules and dividers."
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{color.beige.500}",
+        "$description": "Quiet outlines on decorative frames."
+      },
+      "brand": {
+        "$type": "color",
+        "$value": "{color.cherry.700}",
+        "$description": "Cherry frames (SugarLace about card)."
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{color.beige.50}",
+        "$description": "Outlines on dark bands."
+      },
       "focus": {
         "$type": "color",
-        "$value": "{color.blueberry.700}",
-        "$description": "Focus ring. A cool blue so it never reads as an error."
+        "$value": "{color.blue.700}",
+        "$description": "Focus ring. A cool navy so it never reads as an error."
       }
     },
     "action": {
       "primary": {
-        "bg": { "$type": "color", "$value": "{color.cherry.600}" },
-        "bg-hover": { "$type": "color", "$value": "{color.cherry.700}" },
-        "bg-active": { "$type": "color", "$value": "{color.cherry.800}" },
-        "fg": { "$type": "color", "$value": "{color.cream.50}" }
+        "bg": {
+          "$type": "color",
+          "$value": "{color.cherry.700}"
+        },
+        "bg-hover": {
+          "$type": "color",
+          "$value": "{color.cherry.800}"
+        },
+        "bg-active": {
+          "$type": "color",
+          "$value": "{color.cherry.900}"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{color.paper}"
+        }
       },
       "secondary": {
-        "bg": { "$type": "color", "$value": "{color.cream.50}" },
-        "bg-hover": { "$type": "color", "$value": "{color.strawberry.100}" },
-        "bg-active": { "$type": "color", "$value": "{color.strawberry.200}" },
-        "fg": { "$type": "color", "$value": "{color.cocoa.900}" },
-        "border": { "$type": "color", "$value": "{color.cocoa.900}" }
+        "bg": {
+          "$type": "color",
+          "$value": "{color.paper}"
+        },
+        "bg-hover": {
+          "$type": "color",
+          "$value": "{color.pink.100}"
+        },
+        "bg-active": {
+          "$type": "color",
+          "$value": "{color.pink.200}"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{color.brown.900}"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{color.brown.900}"
+        }
       },
       "soft": {
-        "bg": { "$type": "color", "$value": "{color.strawberry.200}" },
-        "bg-hover": { "$type": "color", "$value": "{color.strawberry.300}" },
-        "bg-active": { "$type": "color", "$value": "{color.strawberry.400}" },
-        "fg": { "$type": "color", "$value": "{color.cocoa.900}" }
+        "bg": {
+          "$type": "color",
+          "$value": "{color.pink.300}"
+        },
+        "bg-hover": {
+          "$type": "color",
+          "$value": "{color.pink.400}"
+        },
+        "bg-active": {
+          "$type": "color",
+          "$value": "{color.pink.500}"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{color.brown.900}"
+        }
       },
       "ghost": {
-        "bg-hover": { "$type": "color", "$value": "{color.cocoa.50}" },
-        "fg": { "$type": "color", "$value": "{color.cherry.700}" }
+        "bg-hover": {
+          "$type": "color",
+          "$value": "{color.beige.100}"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{color.cherry.700}"
+        }
       },
       "disabled": {
-        "bg": { "$type": "color", "$value": "{color.cream.300}" },
-        "fg": { "$type": "color", "$value": "{color.cocoa.400}" }
+        "bg": {
+          "$type": "color",
+          "$value": "{color.beige.200}"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{color.beige.600}"
+        }
       }
     },
     "status": {
       "success": {
-        "bg": { "$type": "color", "$value": "{color.pistachio.100}" },
-        "fg": { "$type": "color", "$value": "{color.pistachio.800}" },
-        "solid": { "$type": "color", "$value": "{color.pistachio.700}" }
+        "bg": {
+          "$type": "color",
+          "$value": "{color.matcha.100}"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{color.matcha.800}"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{color.matcha.700}"
+        }
       },
       "warning": {
-        "bg": { "$type": "color", "$value": "{color.butter.100}" },
-        "fg": { "$type": "color", "$value": "{color.butter.800}" },
-        "solid": { "$type": "color", "$value": "{color.butter.400}" }
+        "bg": {
+          "$type": "color",
+          "$value": "{color.butter.100}"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{color.butter.800}"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{color.butter.300}"
+        }
       },
       "danger": {
-        "bg": { "$type": "color", "$value": "{color.cherry.50}" },
-        "fg": { "$type": "color", "$value": "{color.cherry.800}" },
-        "solid": { "$type": "color", "$value": "{color.cherry.600}" }
+        "bg": {
+          "$type": "color",
+          "$value": "{color.cherry.50}"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{color.cherry.800}"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{color.cherry.700}"
+        }
       },
       "info": {
-        "bg": { "$type": "color", "$value": "{color.blueberry.100}" },
-        "fg": { "$type": "color", "$value": "{color.blueberry.800}" },
-        "solid": { "$type": "color", "$value": "{color.blueberry.700}" }
+        "bg": {
+          "$type": "color",
+          "$value": "{color.blue.100}"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{color.blue.800}"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{color.blue.700}"
+        }
       }
     },
     "tone": {
-      "$description": "Flavor tones shared by Badge, Card, Marquee, PriceTag and patterns. bg/fg is the soft pairing; solid/on-solid is the filled pairing. Every pair is at least AA.",
+      "$description": "Flavor tones shared by Badge, Card, Marquee, PriceTag, StepList and patterns. bg/fg is the soft pairing, solid/on-solid the filled pairing; border is a visible outline; pattern is the stripe or dot color. Every text pair is at least AA.",
+      "blue": {
+        "bg": {
+          "$type": "color",
+          "$value": "{color.blue.200}"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{color.blue.600}"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{color.blue.900}"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{color.blue.700}"
+        },
+        "on-solid": {
+          "$type": "color",
+          "$value": "{color.beige.50}"
+        },
+        "pattern": {
+          "$type": "color",
+          "$value": "{color.blue.200}"
+        }
+      },
+      "pink": {
+        "bg": {
+          "$type": "color",
+          "$value": "{color.pink.200}"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{color.pink.600}"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{color.cherry.800}"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{color.pink.300}"
+        },
+        "on-solid": {
+          "$type": "color",
+          "$value": "{color.brown.900}"
+        },
+        "pattern": {
+          "$type": "color",
+          "$value": "{color.pink.300}"
+        }
+      },
+      "beige": {
+        "bg": {
+          "$type": "color",
+          "$value": "{color.beige.200}"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{color.beige.600}"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{color.brown.900}"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{color.beige.300}"
+        },
+        "on-solid": {
+          "$type": "color",
+          "$value": "{color.brown.900}"
+        },
+        "pattern": {
+          "$type": "color",
+          "$value": "{color.beige.200}"
+        }
+      },
       "cherry": {
-        "bg": { "$type": "color", "$value": "{color.cherry.50}" },
-        "border": { "$type": "color", "$value": "{color.cherry.200}" },
-        "fg": { "$type": "color", "$value": "{color.cherry.700}" },
-        "solid": { "$type": "color", "$value": "{color.cherry.600}" },
-        "on-solid": { "$type": "color", "$value": "{color.cream.50}" },
-        "pattern": { "$type": "color", "$value": "{color.cherry.500}" }
+        "bg": {
+          "$type": "color",
+          "$value": "{color.cherry.100}"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{color.cherry.500}"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{color.cherry.800}"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{color.cherry.700}"
+        },
+        "on-solid": {
+          "$type": "color",
+          "$value": "{color.paper}"
+        },
+        "pattern": {
+          "$type": "color",
+          "$value": "{color.cherry.500}"
+        }
       },
-      "strawberry": {
-        "bg": { "$type": "color", "$value": "{color.strawberry.100}" },
-        "border": { "$type": "color", "$value": "{color.strawberry.300}" },
-        "fg": { "$type": "color", "$value": "{color.strawberry.800}" },
-        "solid": { "$type": "color", "$value": "{color.strawberry.300}" },
-        "on-solid": { "$type": "color", "$value": "{color.cocoa.900}" },
-        "pattern": { "$type": "color", "$value": "{color.strawberry.200}" }
-      },
-      "blueberry": {
-        "bg": { "$type": "color", "$value": "{color.blueberry.100}" },
-        "border": { "$type": "color", "$value": "{color.blueberry.300}" },
-        "fg": { "$type": "color", "$value": "{color.blueberry.800}" },
-        "solid": { "$type": "color", "$value": "{color.blueberry.200}" },
-        "on-solid": { "$type": "color", "$value": "{color.cocoa.900}" },
-        "pattern": { "$type": "color", "$value": "{color.blueberry.200}" }
+      "brown": {
+        "bg": {
+          "$type": "color",
+          "$value": "{color.brown.100}"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{color.brown.400}"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{color.brown.900}"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{color.brown.900}"
+        },
+        "on-solid": {
+          "$type": "color",
+          "$value": "{color.beige.50}"
+        },
+        "pattern": {
+          "$type": "color",
+          "$value": "{color.brown.900}"
+        }
       },
       "butter": {
-        "bg": { "$type": "color", "$value": "{color.butter.100}" },
-        "border": { "$type": "color", "$value": "{color.butter.300}" },
-        "fg": { "$type": "color", "$value": "{color.butter.800}" },
-        "solid": { "$type": "color", "$value": "{color.butter.300}" },
-        "on-solid": { "$type": "color", "$value": "{color.cocoa.900}" },
-        "pattern": { "$type": "color", "$value": "{color.butter.200}" }
+        "bg": {
+          "$type": "color",
+          "$value": "{color.butter.200}"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{color.butter.600}"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{color.brown.900}"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{color.butter.300}"
+        },
+        "on-solid": {
+          "$type": "color",
+          "$value": "{color.brown.900}"
+        },
+        "pattern": {
+          "$type": "color",
+          "$value": "{color.butter.300}"
+        }
       },
-      "pistachio": {
-        "bg": { "$type": "color", "$value": "{color.pistachio.100}" },
-        "border": { "$type": "color", "$value": "{color.pistachio.300}" },
-        "fg": { "$type": "color", "$value": "{color.pistachio.800}" },
-        "solid": { "$type": "color", "$value": "{color.pistachio.700}" },
-        "on-solid": { "$type": "color", "$value": "{color.cream.50}" },
-        "pattern": { "$type": "color", "$value": "{color.pistachio.200}" }
-      },
-      "caramel": {
-        "bg": { "$type": "color", "$value": "{color.caramel.100}" },
-        "border": { "$type": "color", "$value": "{color.caramel.300}" },
-        "fg": { "$type": "color", "$value": "{color.caramel.800}" },
-        "solid": { "$type": "color", "$value": "{color.caramel.300}" },
-        "on-solid": { "$type": "color", "$value": "{color.cocoa.900}" },
-        "pattern": { "$type": "color", "$value": "{color.caramel.200}" }
-      },
-      "lavender": {
-        "bg": { "$type": "color", "$value": "{color.lavender.100}" },
-        "border": { "$type": "color", "$value": "{color.lavender.300}" },
-        "fg": { "$type": "color", "$value": "{color.lavender.800}" },
-        "solid": { "$type": "color", "$value": "{color.lavender.200}" },
-        "on-solid": { "$type": "color", "$value": "{color.cocoa.900}" },
-        "pattern": { "$type": "color", "$value": "{color.lavender.200}" }
-      },
-      "cocoa": {
-        "bg": { "$type": "color", "$value": "{color.cocoa.100}" },
-        "border": { "$type": "color", "$value": "{color.cocoa.300}" },
-        "fg": { "$type": "color", "$value": "{color.cocoa.900}" },
-        "solid": { "$type": "color", "$value": "{color.cocoa.900}" },
-        "on-solid": { "$type": "color", "$value": "{color.cream.50}" },
-        "pattern": { "$type": "color", "$value": "{color.cocoa.900}" }
-      },
-      "cream": {
-        "bg": { "$type": "color", "$value": "{color.cream.200}" },
-        "border": { "$type": "color", "$value": "{color.cream.400}" },
-        "fg": { "$type": "color", "$value": "{color.cocoa.900}" },
-        "solid": { "$type": "color", "$value": "{color.cream.300}" },
-        "on-solid": { "$type": "color", "$value": "{color.cocoa.900}" },
-        "pattern": { "$type": "color", "$value": "{color.cream.300}" }
+      "matcha": {
+        "bg": {
+          "$type": "color",
+          "$value": "{color.matcha.200}"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{color.matcha.600}"
+        },
+        "fg": {
+          "$type": "color",
+          "$value": "{color.matcha.900}"
+        },
+        "solid": {
+          "$type": "color",
+          "$value": "{color.matcha.300}"
+        },
+        "on-solid": {
+          "$type": "color",
+          "$value": "{color.brown.900}"
+        },
+        "pattern": {
+          "$type": "color",
+          "$value": "{color.matcha.300}"
+        }
       }
     }
   }

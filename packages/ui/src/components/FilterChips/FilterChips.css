@@ -1,0 +1,49 @@
+.bbm-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bbm-space-2);
+}
+
+.bbm-chips__chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--bbm-component-button-height-sm);
+  padding: 0 var(--bbm-space-4);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-pill);
+  background-color: var(--bbm-color-bg-surface);
+  color: var(--bbm-color-text-primary);
+  font-family: var(--bbm-font-family-body);
+  font-size: var(--bbm-text-body-sm-size);
+  font-weight: var(--bbm-font-weight-semibold);
+  cursor: pointer;
+  transition:
+    background-color var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard),
+    color var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard);
+}
+
+.bbm-chips__chip[data-bbm-tone] {
+  background-color: var(--_tone-bg);
+  color: var(--_tone-fg);
+}
+
+.bbm-chips__chip:hover {
+  background-color: var(--bbm-color-bg-pink);
+}
+
+.bbm-chips__chip[aria-pressed='true'] {
+  border-color: var(--bbm-color-action-primary-bg);
+  background-color: var(--bbm-color-action-primary-bg);
+  color: var(--bbm-color-action-primary-fg);
+}
+
+.bbm-chips__chip:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: var(--bbm-focus-ring-offset);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bbm-chips__chip {
+    transition: none;
+  }
+}

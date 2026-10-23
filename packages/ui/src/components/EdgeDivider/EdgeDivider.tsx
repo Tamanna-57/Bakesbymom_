@@ -4,7 +4,7 @@ import { edgeTile, type EdgeShape } from '../../utils/shapes';
 
 export type { EdgeShape };
 
-export const EDGE_SHAPES: readonly EdgeShape[] = ['scallop', 'wave', 'zigzag', 'torn', 'awning', 'dots'];
+export const EDGE_SHAPES: readonly EdgeShape[] = ['scallop', 'wave', 'torn', 'dots', 'checker'];
 
 const UNITS = { sm: 8, md: 14, lg: 22 } as const;
 
@@ -12,7 +12,7 @@ export interface EdgeDividerProps extends Omit<SVGAttributes<SVGSVGElement>, 'co
   shape?: EdgeShape;
   /** Fill of the shape: normally the color of the section it hangs from. Any CSS color or token var. */
   color?: string;
-  /** Second color for the awning stripes. */
+  /** Second color for the checker strip. */
   altColor?: string;
   /** What shows between the shapes: normally the next section's color. */
   background?: string;
@@ -24,9 +24,10 @@ export interface EdgeDividerProps extends Omit<SVGAttributes<SVGSVGElement>, 'co
 }
 
 /**
- * A decorative section edge (scallops, waves, zigzags, torn paper, an awning,
- * or half-dot trim) drawn as a repeating SVG pattern. Always decorative,
- * so it is hidden from assistive technology.
+ * A decorative section edge from the board: scallops (pins 01, 03, 04, 15),
+ * waves (06), torn paper (08), half-dot trim (02, 05) or a checker strip
+ * (05, 15), drawn as a repeating SVG pattern. Always decorative, so it is
+ * hidden from assistive technology.
  */
 export function EdgeDivider({
   shape = 'scallop',

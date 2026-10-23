@@ -30,7 +30,7 @@
 
 .bbm-seal__text {
   fill: currentColor;
-  font-family: var(--bbm-font-family-mono);
+  font-family: var(--bbm-font-family-body);
   font-size: 8.6px;
   font-weight: var(--bbm-font-weight-medium);
   letter-spacing: 0.06em;

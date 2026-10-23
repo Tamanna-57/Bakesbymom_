@@ -3,7 +3,7 @@
  * backdrops) can reuse them: class="bbm-pattern" data-pattern="gingham".
  */
 .bbm-pattern {
-  --_a: var(--_tone-pattern, var(--bbm-color-strawberry-200));
+  --_a: var(--_tone-pattern, var(--bbm-color-pink-200));
   --_line: var(--_tone-fg, var(--bbm-color-cherry-700));
   --_b: var(--bbm-pattern-ground, var(--bbm-color-bg-surface));
   --_k: 1;
@@ -18,13 +18,17 @@
   --_k: 1.66;
 }
 
-/* Cabana stripes: equal bands */
+.bbm-pattern[data-scale='xl'] {
+  --_k: 2.66;
+}
+
+/* Stripes: equal bands */
 .bbm-pattern[data-pattern='stripes'] {
   --_s: calc(var(--bbm-pattern-stripe-base) * var(--_k));
   background-image: repeating-linear-gradient(90deg, var(--_a) 0 var(--_s), var(--_b) var(--_s) calc(var(--_s) * 2));
 }
 
-/* Pinstripe: band + thin accent line (Sasa Khalisa stripe anatomy) */
+/* Pinstripe: band + thin accent line (pin 09 anatomy, pin 15 panel) */
 .bbm-pattern[data-pattern='pinstripe'] {
   --_s: calc(var(--bbm-pattern-stripe-base) * var(--_k));
   background-image: repeating-linear-gradient(
@@ -36,10 +40,43 @@
   );
 }
 
+/* Dotted stripes: equal bands with a dotted rule down the middle of the ground band (pin 09) */
+.bbm-pattern[data-pattern='stripes-dotted'] {
+  --_s: calc(var(--bbm-pattern-stripe-base) * var(--_k));
+  background-image:
+    radial-gradient(circle, var(--_line) 1.5px, transparent 2px),
+    repeating-linear-gradient(90deg, var(--_a) 0 var(--_s), var(--_b) var(--_s) calc(var(--_s) * 2));
+  background-size:
+    calc(var(--_s) * 2) calc(var(--_s) * 0.5),
+    auto;
+  background-position:
+    calc(var(--_s) * 0.5) 0,
+    0 0;
+}
+
+/* Wavy stripes: bands with a sine edge (pin 09). The band is a masked layer so it keeps the tone color. */
+.bbm-pattern[data-pattern='stripes-wavy'] {
+  --_s: calc(var(--bbm-pattern-stripe-base) * var(--_k));
+  position: relative;
+  isolation: isolate;
+}
+
+.bbm-pattern[data-pattern='stripes-wavy']::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--_a);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='32' viewBox='0 0 48 32'%3E%3Cpath d='M6 0C10 4 10 12 6 16C2 20 2 28 6 32H22C26 28 26 20 22 16C18 12 18 4 22 0Z'/%3E%3C/svg%3E")
+    0 0 / calc(var(--_s) * 2) calc(var(--_s) * 1.33) repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='32' viewBox='0 0 48 32'%3E%3Cpath d='M6 0C10 4 10 12 6 16C2 20 2 28 6 32H22C26 28 26 20 22 16C18 12 18 4 22 0Z'/%3E%3C/svg%3E")
+    0 0 / calc(var(--_s) * 2) calc(var(--_s) * 1.33) repeat;
+}
+
 /* Gingham: two translucent stripe layers; the overlap is the dark check */
 .bbm-pattern[data-pattern='gingham'] {
   --_s: calc(var(--bbm-pattern-gingham) * var(--_k));
-  --_g: color-mix(in srgb, var(--_tone-border, var(--bbm-color-strawberry-300)) 60%, transparent);
+  --_g: color-mix(in srgb, var(--_tone-border, var(--bbm-color-pink-300)) 60%, transparent);
   background-image: linear-gradient(90deg, var(--_g) 50%, transparent 0), linear-gradient(var(--_g) 50%, transparent 0);
   background-size: calc(var(--_s) * 2) calc(var(--_s) * 2);
 }

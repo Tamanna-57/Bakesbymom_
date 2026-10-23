@@ -1,0 +1,37 @@
+/* Page-level styles for the website. Section layout lives in sections/sections.css. */
+
+html {
+  scroll-padding-top: 6rem; /* anchors land below the sticky header */
+}
+
+body {
+  margin: 0;
+}
+
+#main:focus {
+  outline: none;
+}
+
+/* Skip link: hidden until focused */
+.site-skip {
+  position: absolute;
+  top: var(--bbm-space-2);
+  left: var(--bbm-space-2);
+  z-index: 1000;
+  padding: var(--bbm-space-2) var(--bbm-space-4);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-pill);
+  background: var(--bbm-color-bg-surface);
+  color: var(--bbm-color-text-primary);
+  font-weight: var(--bbm-font-weight-bold);
+  translate: 0 -200%;
+}
+
+.site-skip:focus {
+  translate: 0 0;
+}
+
+/* Room under the footer so the floating Ask Mom launcher never covers its last links and buttons */
+.bbm-footer__bottom {
+  padding-bottom: calc(var(--bbm-space-8) + 6rem);
+}

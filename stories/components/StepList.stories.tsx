@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StepList } from '@bakesbymom/ui';
-import { howToOrder } from '../assets/site';
+import { howToOrder } from '../../apps/web/src/content/site';
 
 const meta = {
   title: 'Components/StepList',

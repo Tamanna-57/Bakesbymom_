@@ -1,0 +1,107 @@
+/* Link in bio (/links), after pin 08. One column, centered on wider screens. */
+.bio {
+  display: block;
+  width: 100%;
+  max-width: 30rem;
+  min-height: 100vh;
+  margin-inline: auto;
+  overflow: hidden;
+  background: var(--bbm-color-bg-canvas);
+}
+
+.bio__logo {
+  margin: 0;
+  font-size: inherit;
+  line-height: 1;
+}
+
+.bio__hero {
+  display: grid;
+  gap: 20px;
+  padding: 28px 20px 24px;
+}
+
+.bio__stamp {
+  text-align: center;
+}
+
+.bio__photo {
+  position: relative;
+  justify-self: center;
+}
+
+.bio__pill {
+  position: absolute;
+  box-shadow: var(--bbm-shadow-sticker-sm);
+}
+
+.bio__pill--a {
+  top: 18%;
+  left: -34px;
+  rotate: -6deg;
+}
+
+.bio__pill--b {
+  top: 46%;
+  right: -40px;
+  rotate: 5deg;
+}
+
+.bio__pill--c {
+  bottom: 16%;
+  left: -24px;
+  rotate: 3deg;
+}
+
+.bio__band {
+  display: grid;
+  gap: 12px;
+  padding: 12px 20px;
+  background: var(--bbm-color-bg-brand-deep);
+}
+
+.bio__stats {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  text-align: center;
+}
+
+.bio__stats strong {
+  display: block;
+  font-family: var(--bbm-font-family-display);
+  font-size: 28px;
+  line-height: 1;
+  color: var(--bbm-color-text-brand);
+}
+
+.bio__section {
+  display: grid;
+  gap: 16px;
+  padding: 28px 20px;
+}
+
+.bio__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.bio__club {
+  position: relative;
+  padding: 20px 88px 20px 20px;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-lg);
+  background: var(--bbm-color-bg-pink);
+}
+
+.bio__key {
+  position: absolute;
+  top: -10px;
+  right: 14px;
+}

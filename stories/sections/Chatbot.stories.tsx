@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ChatWidget } from '@bakesbymom/ui';
-import { ChatDemo } from './blocks';
+import { ChatDemo } from '../../apps/web/src/sections/blocks';
 import { fromBoard } from './ref';
 
 const meta = {

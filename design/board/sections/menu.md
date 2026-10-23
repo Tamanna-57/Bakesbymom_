@@ -53,7 +53,7 @@ SugarLace is a cake shop, its menu cards hold exactly what a bake needs (photo, 
 
 ## Responsive
 
-4 up at desktop, 2 up at tablet, 1 up with a horizontal photo at phone (`layout="row"`).
+4 up at desktop, 2 up at tablet, 1 up with the photo on the left at phone (automatic below 600px).
 
 ## Category tiles (home page teaser)
 
@@ -61,4 +61,4 @@ From [16](../pins/16-sugarlace-bakery.md): cherry tiles (cherry-700) with a dark
 
 ## Component
 
-`ProductCard variant="menu" | "stack" | "row"`, `FilterChips`, `SectionHeading variant="ribbon"`. See Storybook `Sections / Menu`.
+`ProductCard variant="menu"` (it turns horizontal by itself on phones; `layout="row"` forces it), `FilterChips`, `SectionHeading variant="ribbon"`. See Storybook `Sections / Menu` and `Pages / Menu`.

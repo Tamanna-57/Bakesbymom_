@@ -1,18 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
-  <rect width="400" height="400" fill="#fff5cf"/>
-  <g stroke="#3a1e17" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
-    <ellipse cx="200" cy="314" rx="152" ry="34" fill="#fffcf6"/>
-    <rect x="95" y="186" width="210" height="122" rx="14" fill="#8a4c28"/>
-    <path d="M97.5 238h205v16h-205z" fill="#f6d0ae" stroke="none"/>
+  <rect width="400" height="400" fill="#fcf9ea"/>
+  <g stroke="#32180b" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+    <ellipse cx="200" cy="314" rx="152" ry="34" fill="#fffdf6"/>
+    <rect x="95" y="186" width="210" height="122" rx="14" fill="#7a492e"/>
+    <path d="M97.5 238h205v16h-205z" fill="#f0e1b6" stroke="none"/>
     <path d="M96 238h208M96 254h208" fill="none" stroke-width="3.5"/>
-    <path d="M95 204c0-18 10-30 28-30h154c18 0 28 12 28 30v8a13.1 13.1 0 0 1-26.3 0a13.1 13.1 0 0 1-26.3 0a13.1 13.1 0 0 1-26.3 0a13.1 13.1 0 0 1-26.3 0a13.1 13.1 0 0 1-26.3 0a13.1 13.1 0 0 1-26.3 0a13.1 13.1 0 0 1-26.3 0a13.1 13.1 0 0 1-26.3 0z" fill="#553829"/>
-    <path d="M122 212v34a9 9 0 0 0 18 0v-34M200 212v22a9 9 0 0 0 18 0v-22M262 212v30a9 9 0 0 0 18 0v-30" fill="#553829"/>
-    <path d="M150 176c2-16 16-24 26-14 10-12 28-6 26 14z" fill="#c8323f"/>
-    <path d="M198 176c2-16 16-24 26-14 10-12 28-6 26 14z" fill="#c8323f"/>
-    <path d="M176 160l-6-12 12 2 6-10 4 12" fill="#9dae6c"/>
-    <path d="M224 160l-6-12 12 2 6-10 4 12" fill="#9dae6c"/>
+    <path d="M95 204c0-18 10-30 28-30h154c18 0 28 12 28 30v8a13.1 13.1 0 0 1-26.3 0a13.1 13.1 0 0 1-26.3 0a13.1 13.1 0 0 1-26.3 0a13.1 13.1 0 0 1-26.3 0a13.1 13.1 0 0 1-26.3 0a13.1 13.1 0 0 1-26.3 0a13.1 13.1 0 0 1-26.3 0a13.1 13.1 0 0 1-26.3 0z" fill="#643725"/>
+    <path d="M122 212v34a9 9 0 0 0 18 0v-34M200 212v22a9 9 0 0 0 18 0v-22M262 212v30a9 9 0 0 0 18 0v-30" fill="#643725"/>
+    <path d="M150 176c2-16 16-24 26-14 10-12 28-6 26 14z" fill="#d02b2f"/>
+    <path d="M198 176c2-16 16-24 26-14 10-12 28-6 26 14z" fill="#d02b2f"/>
+    <path d="M176 160l-6-12 12 2 6-10 4 12" fill="#aea65e"/>
+    <path d="M224 160l-6-12 12 2 6-10 4 12" fill="#aea65e"/>
   </g>
-  <g fill="#f8d878">
+  <g fill="#f2db87">
     <circle cx="160" cy="168" r="1.8"/><circle cx="170" cy="172" r="1.8"/><circle cx="210" cy="168" r="1.8"/><circle cx="236" cy="170" r="1.8"/>
   </g>
 </svg>

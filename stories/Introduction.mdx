@@ -1,67 +1,77 @@
 import { Meta, Unstyled } from '@storybook/addon-docs/blocks';
-import { Logo, Seal, Doodle, PatternSurface } from '@bakesbymom/ui';
+import { Doodle, EdgeDivider, Logo, Seal } from '@bakesbymom/ui';
 
 <Meta title="Introduction" />
 
 <Unstyled>
   <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap', margin: '8px 0 24px' }}>
     <Logo size="lg" />
-    <Seal text="Design system • Tokens • Components • " size={112} tone="strawberry" spin>
-      <Doodle name="cupcake" size={36} />
+    <Seal text="Bakes by Mom • Baked with love • " size={112} tone="cherry" spin>
+      <Doodle name="heart" size={30} color="var(--bbm-color-pink-300)" />
     </Seal>
   </div>
 </Unstyled>
 
 # Bakes by Mom Design System
 
-**Mom's recipe box meets a retro pastry shop.** Cream paper, cocoa ink, one cherry-red action color, and handmade details (candy stripes, scalloped edges, tickets, polaroids, sticker outlines) around calm, readable content.
+> **"Mom's recipe notebook, open on the counter of a little pink-and-blue bake shop."**
 
-This Storybook documents everything needed to build Bakes by Mom's website, social posts and printed pieces consistently:
+Everything in this Storybook comes from one place: the 16 pins on the [bakesbymom Pinterest board](https://in.pinterest.com/nuttychip/bakesbymom/). The palette was measured from the pins, every section was picked from the pin that does it best, and each story links back to its pins.
 
-|     | What                                                                        | Where                                                                 |
-| --- | --------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| 🎨  | **Design tokens**: colors, type, spacing, radius, shadows, motion, patterns | `packages/tokens` → CSS, SCSS, JS/TS, JSON, Tailwind v4, Figma (DTCG) |
-| 🧁  | **Components**: 22 React components built only from tokens                  | `packages/ui`                                                         |
-| 📖  | **Foundations docs**: generated from the built tokens, so they never drift  | _Foundations_ in the sidebar                                          |
-| 🏠  | **Page mockups**: home, menu, link-in-bio and social posts                  | _Pages_ in the sidebar                                                |
-| 📌  | **References**: 24 Pinterest analyses + 9 web style references              | `design/` · _References / Moodboard_                                  |
+|     | What                                                                                                                                            | Where                                                                                                                      |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| 📌  | **The board**: all 16 pins, each analysed for layout, sections, components, color and type                                                      | _Board / Moodboard_ · [`design/board/pins/`](https://github.com/Tamanna-57/Bakesbymom_/tree/main/design/board/pins)        |
+| 🎨  | **Palette and tokens**: baby blue, baby pink, beige, cherry red and cocoa brown, with butter and matcha helpers                                 | _Foundations_ · `packages/tokens` (CSS, SCSS, JS/TS, JSON, Tailwind v4, DTCG for Figma)                                    |
+| 🎀  | **Brand kit**: logo lockups, type, shapes, patterns, doodles, photography and voice                                                             | _Brand kit_ · [`design/board/brand-kit.md`](https://github.com/Tamanna-57/Bakesbymom_/blob/main/design/board/brand-kit.md) |
+| 🧁  | **Components**: 28 React components built only from tokens                                                                                      | _Components_ · `packages/ui`                                                                                               |
+| 🧩  | **Sections**: nav, hero, menu, process, find us, custom cakes, about, gallery, reviews, Bake Club, FAQ, newsletter, chatbot, journal and footer | _Sections_ · [`design/board/sections/`](https://github.com/Tamanna-57/Bakesbymom_/tree/main/design/board/sections)         |
+| 🏠  | **Pages**: the landing page, menu, about, link in bio and Instagram templates                                                                   | _Pages_                                                                                                                    |
 
 <Unstyled>
-  <PatternSurface
-    pattern="gingham"
-    tone="strawberry"
-    scale="sm"
-    style={{ height: 18, margin: '32px 0 0', borderRadius: 999 }}
-  />
+  <div style={{ margin: '32px 0 0' }}>
+    <EdgeDivider shape="scallop" color="var(--bbm-color-bg-pink)" outline />
+  </div>
 </Unstyled>
+
+## Which pin does what
+
+| Section                                          | From                                                                    |
+| ------------------------------------------------ | ----------------------------------------------------------------------- |
+| Landing page order, hero, find us, custom cakes  | **15** Nectar candy cart                                                |
+| Menu cards and category tiles                    | **16** SugarLace bakery, filters from **13**                            |
+| Process, marquee ribbons, FAQ                    | **02** Pretty OK mail club                                              |
+| About / Meet Mom                                 | **05** Pretty OK studios, story orbit from **01**                       |
+| Gallery strips, reviews, Bake Club band, journal | **01** Berloga coffeeshop                                               |
+| Bake Club ticket                                 | **10** Book Nook Society                                                |
+| Newsletter card and footer                       | **03** Emily Jane                                                       |
+| Chatbot                                          | composed from **08**, **10**, **01** and **15** (the board has no chat) |
+
+The reasoning for each pick, with alternates, is in [`design/board/README.md`](https://github.com/Tamanna-57/Bakesbymom_/blob/main/design/board/README.md).
 
 ## Principles
 
-1. **Paper, not screen.** Every page sits on cream (`--bbm-color-bg-canvas`). Ink is warm cocoa, never black. Depth comes from stepping through creams and from hard _sticker_ shadows, never blurred gray ones.
-2. **One cherry action.** `cherry-600` is the only filled action color. One primary button per view; everything else is secondary, soft or ghost.
-3. **Handmade at the edges, calm in the middle.** Stripes, gingham, scallops, awnings and stickers frame sections and photos. Body copy, prices and forms stay on plain surfaces.
-4. **A recipe-card voice.** Fraunces for headlines, DM Sans for reading, DM Mono for labels, prices and hours, and Pinyon Script only for a single word or Mom's signature.
-5. **Sweet for everyone.** Every text pairing passes WCAG AA (tested in CI), touch targets are 44px or more, focus is always visible, and motion stops for people who prefer reduced motion.
+1. **Beige paper, cocoa ink.** Pages sit on beige (`--bbm-color-bg-canvas`) and text is cocoa brown, never black. Baby blue and baby pink carry the bands; cherry is the accent.
+2. **One cherry action.** Deep cherry (`cherry-700`) is the filled button color. The bright cherry band (`cherry-500`) appears once per page.
+3. **Stickers hold the pastels together.** Objects get a 1.5px cocoa outline and, when lifted, a hard offset shadow with no blur, like pins 01, 02 and 05.
+4. **Handmade at the edges, calm in the middle.** Stripes, grid paper, gingham, dots, scallops and torn edges frame sections and photos. Paragraphs, prices and forms stay on plain paper.
+5. **A notebook voice.** Fraunces for headlines and prices, DM Sans for reading, Pinyon Script for one word or Mom's signature, Caveat for handwritten notes, Cherry Bomb One for one bubble word.
+6. **Sweet for everyone.** Approved text pairings pass WCAG AA (tested in CI), targets are 44px or more, focus is always visible, and motion stops for people who prefer reduced motion.
 
 ## Using the system
 
 ```bash
 npm install            # in this repo (npm workspaces)
 npm run storybook      # builds tokens, then opens Storybook on :6006
-npm run check          # build + typecheck + tests + static Storybook
+npm run check          # format, build, typecheck, tests, static Storybook
 ```
 
 ```tsx
 // In an app
-import '@bakesbymom/ui/fonts.css'; // Fraunces, Pinyon Script, DM Sans, DM Mono
+import '@bakesbymom/ui/fonts.css'; // Fraunces, DM Sans, Pinyon Script, Caveat, Cherry Bomb One
 import '@bakesbymom/ui/styles.css'; // tokens + component styles
 import { Button, ProductCard } from '@bakesbymom/ui';
 
 // …and add className="bbm-theme" to <body> for the canvas, ink and body type.
 ```
 
-Prefer CSS variables? Import `@bakesbymom/tokens/css` and use `var(--bbm-color-bg-canvas)`. Using Tailwind v4? Import `@bakesbymom/tokens/tailwind.css` for `bg-canvas`, `text-ink`, `font-display` and `shadow-sticker-md`.
-
-## Where the decisions come from
-
-Every token and component traces back to a reference. The 24 Pinterest pins are analysed one by one in [`design/pinterest/`](https://github.com/Tamanna-57/Bakesbymom_/tree/main/design/pinterest), with a synthesis that counts which motifs recur (warm cream canvas in 20 of 23 pins, vertical stripes in 13, deep cherry ink in 12…). The nine web style references live in [`design/`](https://github.com/Tamanna-57/Bakesbymom_/tree/main/design). See **References / Moodboard** for the pins side by side.
+Prefer CSS variables? Import `@bakesbymom/tokens/css` and use `var(--bbm-color-bg-canvas)`. Using Tailwind v4? Import `@bakesbymom/tokens/tailwind.css` for `bg-canvas`, `bg-blue-200`, `text-cherry-700`, `font-display`, `font-hand` and `shadow-sticker-md`.

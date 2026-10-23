@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Logo } from '@bakesbymom/ui';
 
 const meta = {
-  title: 'Brand/Logo',
+  title: 'Brand kit/Logo',
   component: Logo,
   args: { variant: 'horizontal', size: 'md', tone: 'brand' },
   argTypes: {
-    variant: { control: 'inline-radio', options: ['horizontal', 'stacked', 'seal'] },
+    variant: { control: 'inline-radio', options: ['horizontal', 'stacked', 'seal', 'monogram'] },
     size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
     tone: { control: 'inline-radio', options: ['brand', 'ink', 'inverse'] },
   },
@@ -14,7 +14,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'The wordmark: **Bakes** in puffy Fraunces (`SOFT 100`) and **by Mom** in a copperplate signature, plus a heart. Use `horizontal` in headers, `stacked` in square spaces (social avatars) and `seal` on stickers, boxes and packaging. The logo is announced once as "Bakes by Mom".',
+          'The wordmark from the brand kit: **Bakes** in Fraunces 700 with `SOFT 100`, **by Mom** in Pinyon Script, and a heart, all cherry. `horizontal` is the primary lockup (nav, documents); `stacked` overlaps the two words like the heavy + script lockups of pins 10 and 16 (footer, avatars); `seal` puts it inside ring text like the seals of pins 03 and 10 (box stickers, the chat launcher); `monogram` is "BM" on a cherry circle like pin 12\'s footer mark (favicons). Announced once as "Bakes by Mom".',
       },
     },
   },
@@ -26,6 +26,7 @@ type Story = StoryObj<typeof meta>;
 export const Horizontal: Story = {};
 export const Stacked: Story = { args: { variant: 'stacked', size: 'lg' } };
 export const SealMark: Story = { args: { variant: 'seal', size: 'lg' } };
+export const Monogram: Story = { args: { variant: 'monogram', size: 'lg' } };
 export const OnCocoa: Story = { args: { tone: 'inverse' }, globals: { backgrounds: { value: 'cocoa' } } };
 export const Sizes: Story = {
   render: (args) => (

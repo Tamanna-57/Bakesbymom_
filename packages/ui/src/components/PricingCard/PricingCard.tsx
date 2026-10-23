@@ -35,7 +35,15 @@ export function PricingCard({
   return (
     <article {...rest} className={cx('bbm-pricing', featured && 'bbm-pricing--featured', className)}>
       <Heading className="bbm-pricing__title">{title}</Heading>
-      <PriceTag className="bbm-pricing__tag" shape="tag" amount={price} tone={tagTone} size={44} rotate={62} aria-hidden="true" />
+      <PriceTag
+        className="bbm-pricing__tag"
+        shape="tag"
+        amount={price}
+        tone={tagTone}
+        size={44}
+        rotate={62}
+        aria-hidden="true"
+      />
       <p className="bbm-visually-hidden">Price: {price}</p>
       <ul className="bbm-pricing__features">
         {features.map((feature, i) => (

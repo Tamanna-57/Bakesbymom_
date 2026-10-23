@@ -1,11 +1,13 @@
-// Brand-style bakery illustrations (drawn for this repo, free to use in stories and mockups).
+// Original bakery illustrations in the board palette (drawn for this repo, free to use in stories and mockups).
 import cherryPie from './cherry-pie.svg';
 import chocolateCake from './chocolate-cake.svg';
 import cinnamonRoll from './cinnamon-roll.svg';
 import cookies from './cookies.svg';
 import cupcake from './cupcake.svg';
+import kitchen from './kitchen.svg';
 import macarons from './macarons.svg';
 import mixingBowl from './mixing-bowl.svg';
+import mom from './mom.svg';
 import sourdough from './sourdough.svg';
 import strawberryCake from './strawberry-cake.svg';
 
@@ -15,8 +17,10 @@ export const art = {
   cinnamonRoll,
   cookies,
   cupcake,
+  kitchen,
   macarons,
   mixingBowl,
+  mom,
   sourdough,
   strawberryCake,
 };

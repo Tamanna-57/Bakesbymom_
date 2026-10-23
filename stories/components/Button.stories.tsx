@@ -22,7 +22,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Pill buttons in four variants. **Primary (cherry) is the only filled action color, so use one per view.** `sticker` adds the cocoa outline and a hard shadow that presses in. Pass `href` to render a link.',
+          'Pill buttons, as on every pin. Bold sentence case, like pin 16\'s "Order a cake". **Primary (deep cherry, pins 08 and 16) is the one filled action color: use one per view.** `sticker` adds the cocoa outline and a hard shadow that presses in (pin 01). Pass `href` to render a link.',
       },
     },
   },
@@ -73,7 +73,7 @@ export const Sticker: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Hover lifts the sticker, and a press pushes it into the page (Berloga and Ko-fi references).',
+        story: 'Hover lifts the sticker, and a press pushes it into the page (pin 01).',
       },
     },
   },

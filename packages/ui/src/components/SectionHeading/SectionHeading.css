@@ -212,6 +212,7 @@
 .bbm-heading--stamp .bbm-heading__title {
   position: relative;
   display: inline-block;
+  margin-bottom: 0.4em;
   font-family: var(--bbm-text-heavy-family);
   font-size: var(--bbm-text-heavy-size);
   line-height: var(--bbm-text-heavy-line-height);
@@ -221,15 +222,24 @@
 }
 
 .bbm-heading__overlay {
+  --_halo: var(--bbm-heading-overlay-halo, var(--bbm-color-bg-surface));
   position: absolute;
-  left: 0.35em;
-  top: 0.38em;
+  left: 0.3em;
+  top: 0.5em;
   font-family: var(--bbm-font-family-script);
   font-weight: var(--bbm-font-weight-regular);
-  font-size: 0.92em;
+  font-size: 1.05em;
   letter-spacing: 0;
   white-space: nowrap;
   color: var(--_accent-color);
+  /* A paper halo keeps the script readable where it crosses the heavy letters */
+  text-shadow:
+    0.03em 0.03em 0 var(--_halo),
+    -0.03em -0.03em 0 var(--_halo),
+    0.03em -0.03em 0 var(--_halo),
+    -0.03em 0.03em 0 var(--_halo),
+    0 0.04em 0 var(--_halo),
+    0 -0.04em 0 var(--_halo);
   rotate: -4deg;
   pointer-events: none;
 }

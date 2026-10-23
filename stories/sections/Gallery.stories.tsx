@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Gallery } from '@bakesbymom/ui';
-import { galleryItems } from '../assets/site';
-import { GallerySection } from './blocks';
+import { galleryItems } from '../../apps/web/src/content/site';
+import { GallerySection } from '../../apps/web/src/sections/blocks';
 import { fromBoard } from './ref';
 
 const meta = {
@@ -22,8 +22,8 @@ const meta = {
   args: { items: galleryItems, label: "Photos from Mom's kitchen" },
   decorators: [
     (Story) => (
-      <div className="sb-section">
-        <div className="sb-container">
+      <div className="site-section">
+        <div className="site-container">
           <Story />
         </div>
       </div>

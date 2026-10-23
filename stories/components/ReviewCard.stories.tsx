@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ReviewCard } from '@bakesbymom/ui';
-import { reviews } from '../assets/site';
+import { reviews } from '../../apps/web/src/content/site';
 
 const meta = {
   title: 'Components/ReviewCard',

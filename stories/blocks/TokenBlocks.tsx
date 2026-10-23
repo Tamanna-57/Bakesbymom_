@@ -214,7 +214,7 @@ const TEXT_STYLES = [
   ['caption', 'Baked in a home kitchen that also handles nuts, dairy, eggs and wheat.'],
   ['label', 'Custom cakes'],
   ['eyebrow', 'Where to find Mom'],
-  ['price', '$38'],
+  ['price', '₹1,450'],
   ['heavy', 'About us'],
   ['script-lg', 'Menu'],
   ['script-md', 'this week'],

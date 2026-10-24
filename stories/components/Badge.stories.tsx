@@ -46,7 +46,7 @@ export const Shapes: Story = {
         Baked this morning
       </Badge>
       <Badge tone="blue" shape="tab">
-        Order by Wednesday
+        A day's notice
       </Badge>
     </div>
   ),

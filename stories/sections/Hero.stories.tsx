@@ -25,7 +25,8 @@ const meta = {
         Homemade cakes, <em>still warm</em> from Mom's oven.
       </>
     ),
-    description: 'Cakes, cookies and pies baked to order every week, ready for Saturday pick-up.',
+    description:
+      "Cakes, brownies, cookies, cupcakes and breads, baked to order in Mom's kitchen. Everything is 100% eggless.",
     actions: (
       <>
         <Button size="lg">Order a cake</Button>

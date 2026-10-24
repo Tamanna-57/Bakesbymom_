@@ -5,9 +5,9 @@ import { PatternSurface, EdgeDivider, Doodle, PATTERNS, EDGE_SHAPES, DOODLES } f
 
 # Patterns & Decoration
 
-The references agree on a small kit of printed patterns and paper edges. They are what make a Bakes by Mom page recognizable. All of them are pure CSS or SVG generated from tokens, so they recolor with any `tone`.
+The board's printed patterns, paper edges and doodles. They are what make a Bakes by Mom page recognizable. All of them are pure CSS or SVG generated from tokens, so they recolor with any `tone`.
 
-**Rule:** decoration frames content; it never sits behind paragraphs, prices or form fields.
+**Rule:** decoration frames content. Patterns sit behind photos, labels and edges, never behind paragraphs.
 
 ## Patterns
 
@@ -17,7 +17,7 @@ The references agree on a small kit of printed patterns and paper edges. They ar
       <figure key={pattern} style={{ margin: 0 }}>
         <PatternSurface
           pattern={pattern}
-          tone={['strawberry', 'blueberry', 'strawberry', 'cherry', 'strawberry', 'cocoa'][i]}
+          tone={['blue', 'pink', 'pink', 'cherry', 'pink', 'pink', 'pink', 'blue'][i]}
           style={{ height: 120, borderRadius: 14, border: '1.5px solid var(--bbm-color-border-default)' }}
         />
         <figcaption className="sb-note" style={{ marginTop: 8 }}>
@@ -28,14 +28,16 @@ The references agree on a small kit of printed patterns and paper edges. They ar
   </div>
 </Unstyled>
 
-| Pattern     | From the references                              | Use for                                  |
-| ----------- | ------------------------------------------------ | ---------------------------------------- |
-| `stripes`   | Cherry Cloud, SugarLace, Pretty OK, Lilli Pilli  | Hero backdrops, packaging, awnings       |
-| `pinstripe` | Sasa Khalisa stripe pack                         | Narrow bands, gift wrap, box sleeves     |
-| `gingham`   | Strawberry poster, Sunday Brunch, cloche collage | Picnic and summer moments, tape, napkins |
-| `checker`   | Strawberry cheesecake, Nectar dividers           | Thin divider strips, social posts        |
-| `grid`      | Nectar hero, Sunday Brunch, Taplink              | Notepad and order-form backgrounds       |
-| `dots`      | Pretty OK polka trims                            | Playful panels, frames                   |
+| Pattern          | From the board                                          | Use for                                |
+| ---------------- | ------------------------------------------------------- | -------------------------------------- |
+| `stripes`        | Blue stripes on 07 and 16, wide stripes on 02           | Process section, hero bands, packaging |
+| `pinstripe`      | The pink panel behind Nectar's event photo (15), pin 09 | Photo panels                           |
+| `stripes-dotted` | Pin 09                                                  | Frames, gift wrap                      |
+| `stripes-wavy`   | Pin 09                                                  | Edges and ribbons only                 |
+| `gingham`        | The patterned frames of pin 12                          | Category frames                        |
+| `checker`        | Checker strips on 05 and 15                             | Thin dividers                          |
+| `grid`           | Nectar's hero (15), Digital Wave's workbook pages (08)  | The hero, order forms                  |
+| `dots`           | The polka-dot ground behind "Meet Elia" (05)            | Photo grounds, the newsletter band     |
 
 ## Edges
 
@@ -43,11 +45,12 @@ The references agree on a small kit of printed patterns and paper edges. They ar
   <div style={{ display: 'grid', gap: 28, margin: '20px 0 28px' }}>
     {EDGE_SHAPES.map((shape) => (
       <div key={shape}>
-        <div style={{ height: 28, background: 'var(--bbm-color-bg-blush)' }} />
+        <div style={{ height: 28, background: 'var(--bbm-color-bg-pink)' }} />
         <EdgeDivider
           shape={shape}
-          color="var(--bbm-color-bg-blush)"
+          color={shape === 'dots' ? 'var(--bbm-color-brown-900)' : 'var(--bbm-color-bg-pink)'}
           altColor="var(--bbm-color-bg-surface)"
+          background={shape === 'dots' ? 'var(--bbm-color-bg-blue)' : undefined}
           outline={shape === 'scallop'}
         />
         <p className="sb-note" style={{ marginTop: 8 }}>
@@ -58,17 +61,28 @@ The references agree on a small kit of printed patterns and paper edges. They ar
   </div>
 </Unstyled>
 
+| Edge      | From the board                               |
+| --------- | -------------------------------------------- |
+| `scallop` | 01 (with outline), 03, 04, Nectar's nav (15) |
+| `wave`    | The bestseller band of 06                    |
+| `torn`    | Between the bands of 08                      |
+| `dots`    | The half-dot trims of 02 and 05              |
+| `checker` | The checker strips of 05 and 15              |
+
 Set `color` to the section the edge hangs from and `background` to the section below. Use `flip` for a top edge.
 
 ## Doodles
 
-One stroke weight, one cocoa ink, pastel fills. They scatter around headings, sit in seals and separate marquee items.
+One cocoa line, flat palette fills, round caps. From the candy doodles of 15, the sparkles of 01 and 11, the line icons of 06 and 07, and the halftone cherries of 16.
 
 <Unstyled>
-  <div className="sb-stack" style={{ gap: 32, margin: '16px 0 28px', color: 'var(--bbm-color-cherry-600)' }}>
+  <div className="sb-stack" style={{ gap: 32, margin: '16px 0 28px', color: 'var(--bbm-color-cherry-700)' }}>
     {DOODLES.map((name) => (
       <figure key={name} style={{ margin: 0, textAlign: 'center' }}>
-        <Doodle name={name} size={name === 'squiggle' ? 96 : 48} />
+        <Doodle
+          name={name}
+          size={name === 'squiggle' ? 96 : name === 'arrow' ? 88 : name === 'cherries-halftone' ? 72 : 48}
+        />
         <figcaption className="sb-note">{name}</figcaption>
       </figure>
     ))}
@@ -77,11 +91,10 @@ One stroke weight, one cocoa ink, pastel fills. They scatter around headings, si
 
 ## Helpers
 
-| Class                 | Effect                                                                  |
-| --------------------- | ----------------------------------------------------------------------- |
-| `.bbm-script-word`    | Swaps one word into Pinyon Script inside a serif line                   |
-| `.bbm-squiggle`       | Hand-drawn underline in the brand red                                   |
-| `.bbm-text-outline`   | Stroke-only display type (posters, 48px and up)                         |
-| `.bbm-sticker-cutout` | White die-cut halo plus a hard shadow around transparent product photos |
-| `.bbm-seam`           | Places a sticker straddling the top edge of a section                   |
-| `.bbm-font-soft`      | Puffy Cooper-style Fraunces                                             |
+| Class                 | Effect                                                                   |
+| --------------------- | ------------------------------------------------------------------------ |
+| `.bbm-script-word`    | Swaps one word into Pinyon Script inside a serif line                    |
+| `.bbm-squiggle`       | Hand-drawn underline in the brand color (pin 03)                         |
+| `.bbm-sticker-cutout` | White die-cut halo plus a hard shadow around transparent photos (pin 07) |
+| `.bbm-seam`           | Places a sticker straddling the top edge of a section (pin 11)           |
+| `.bbm-font-soft`      | Puffy retro Fraunces for the logo and playful moments                    |

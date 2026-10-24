@@ -3,7 +3,8 @@ import { cx } from '../../utils/cx';
 import type { Tone } from '../../utils/types';
 
 /** Patterns seen on the bakesbymom board (stripe kinds from pin 09). */
-export type Pattern = 'stripes' | 'pinstripe' | 'stripes-dotted' | 'stripes-wavy' | 'gingham' | 'checker' | 'grid' | 'dots';
+export type Pattern =
+  'stripes' | 'pinstripe' | 'stripes-dotted' | 'stripes-wavy' | 'gingham' | 'checker' | 'grid' | 'dots';
 
 export const PATTERNS: readonly Pattern[] = [
   'stripes',

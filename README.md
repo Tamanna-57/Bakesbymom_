@@ -57,7 +57,9 @@ The packages are npm workspaces in this repo. To use them from another repositor
 
 | Section | From |
 |---|---|
-| Landing page order, hero, find us, custom cakes | 15 Nectar candy cart |
+| Home page: hero stripes, about us card, flavours, order card and cherry tiles | 16 SugarLace bakery |
+| Home page: ribbon, shop by the box, occasion row, Mom's kitchen | 13 Puzzle Pantry |
+| Find us, custom cakes, the scalloped nav | 15 Nectar candy cart |
 | Menu cards and category tiles | 16 SugarLace bakery (filters from 13) |
 | Process, marquee ribbons, FAQ | 02 Pretty OK mail club |
 | About / Meet Mom | 05 Pretty OK studios (story orbit from 01) |

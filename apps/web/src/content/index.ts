@@ -1,12 +1,14 @@
 // Illustrations in the board palette (drawn for this repo). Treats have no photos yet, so each type gets one.
 import bento from './bento.svg';
 import brownie from './brownie.svg';
+import cherryCake from './cherry-cake.svg';
 import cherryPie from './cherry-pie.svg';
 import chocolateCake from './chocolate-cake.svg';
 import cinnamonRoll from './cinnamon-roll.svg';
 import combo from './combo.svg';
 import cookies from './cookies.svg';
 import cupcake from './cupcake.svg';
+import heroCake from './hero-cake.svg';
 import jarCake from './jar-cake.svg';
 import kitchen from './kitchen.svg';
 import macarons from './macarons.svg';
@@ -21,12 +23,14 @@ import { cakes, findOccasion } from './catalog';
 export const art = {
   bento,
   brownie,
+  cherryCake,
   cherryPie,
   chocolateCake,
   cinnamonRoll,
   combo,
   cookies,
   cupcake,
+  heroCake,
   jarCake,
   kitchen,
   macarons,

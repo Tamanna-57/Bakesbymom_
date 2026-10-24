@@ -58,7 +58,10 @@ export function Card({
           className,
         )}
       >
-        <div className={cx(surface, 'bbm-card--scallop', shape === 'cloud' && 'bbm-card--cloud')} data-bbm-tone={toneAttr}>
+        <div
+          className={cx(surface, 'bbm-card--scallop', shape === 'cloud' && 'bbm-card--cloud')}
+          data-bbm-tone={toneAttr}
+        >
           {children}
         </div>
       </Element>

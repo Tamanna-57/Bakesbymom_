@@ -27,7 +27,7 @@ Questions as separate, friendly cards are easier to scan than one long list, and
 | Part | Spec | Tokens |
 |---|---|---|
 | Title | Fraunces 600 40px, centered, one `<em>` word in script | — |
-| Row | `pink-300` fill, 1.5px cocoa outline, 16px radius, 20px × 24px padding, 12px gap | `tone.pink` |
+| Row | `pink-200` fill (the pink tone), 1.5px cocoa outline, 16px radius, 20px × 24px padding, 12px gap | `tone.pink` |
 | Icon | 32px doodle on the left | `Doodle` |
 | Question | DM Sans 600 17px | `text.primary` |
 | Toggle | Plus / minus, 24px, right | — |

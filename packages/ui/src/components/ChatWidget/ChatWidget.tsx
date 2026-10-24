@@ -46,7 +46,14 @@ export interface ChatWidgetProps extends Omit<HTMLAttributes<HTMLDivElement>, 't
 function SendIcon() {
   return (
     <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-      <path d="M3 10h12M10 4.5 15.5 10 10 15.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M3 10h12M10 4.5 15.5 10 10 15.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -126,13 +133,7 @@ export function ChatWidget({
   return (
     <div {...rest} className={cx('bbm-chat', inline && 'bbm-chat--inline', open && 'bbm-chat--open', className)}>
       {open && (
-        <div
-          id={panelId}
-          role="dialog"
-          aria-labelledby={titleId}
-          className="bbm-chat__panel"
-          onKeyDown={onKeyDown}
-        >
+        <div id={panelId} role="dialog" aria-labelledby={titleId} className="bbm-chat__panel" onKeyDown={onKeyDown}>
           <div className="bbm-chat__header">
             <div className="bbm-chat__bar">
               <span className="bbm-chat__avatar" aria-hidden="true">
@@ -143,7 +144,13 @@ export function ChatWidget({
               </p>
               <button type="button" className="bbm-chat__close" aria-label="Close chat" onClick={close}>
                 <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-                  <path d="M5 5l10 10M15 5 5 15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  <path
+                    d="M5 5l10 10M15 5 5 15"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
                 </svg>
               </button>
             </div>

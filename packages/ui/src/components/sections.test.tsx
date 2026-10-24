@@ -53,7 +53,13 @@ describe('WeekSchedule', () => {
   const days = [
     { date: 'Mon 12', label: 'Monday 12 May', closed: true },
     { date: 'Wed 14', label: 'Wednesday 14 May', place: 'Porch pick-up', time: '4–6pm', today: true },
-    { date: 'Sat 17', label: 'Saturday 17 May', place: "Farmers' market", href: 'https://maps.example', time: '8am–1pm' },
+    {
+      date: 'Sat 17',
+      label: 'Saturday 17 May',
+      place: "Farmers' market",
+      href: 'https://maps.example',
+      time: '8am–1pm',
+    },
   ];
 
   it('is a list of days, each with a full-date heading', () => {
@@ -109,7 +115,9 @@ describe('NewsletterSignup', () => {
   });
 
   it('shows a linked error when sending fails', async () => {
-    render(<NewsletterSignup variant="bar" title="Get the schedule" onSubmit={() => Promise.reject(new Error('no'))} />);
+    render(
+      <NewsletterSignup variant="bar" title="Get the schedule" onSubmit={() => Promise.reject(new Error('no'))} />,
+    );
     const email = screen.getByLabelText('Email address');
     fireEvent.change(email, { target: { value: 'bad@example.com' } });
     fireEvent.submit(email.closest('form')!);

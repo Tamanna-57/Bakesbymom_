@@ -42,6 +42,14 @@ describe('content components', () => {
     expect(screen.getByText('Cart fee')).toBeTruthy();
   });
 
+  it('PriceTag draws the starburst as a closed 32-point path', () => {
+    const { container } = render(<PriceTag shape="burst" amount="100%" label="eggless" />);
+    const d = container.querySelector('path')?.getAttribute('d') ?? '';
+    expect(d.match(/[ML]/g)).toHaveLength(32);
+    expect(d.endsWith('Z')).toBe(true);
+    expect(screen.getByText('100%')).toBeTruthy();
+  });
+
   it('EdgeDivider is decorative and uses a unique pattern id per instance', () => {
     const { container } = render(
       <>

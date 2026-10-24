@@ -7,12 +7,12 @@ const meta = {
   args: {
     label: 'Cake size',
     placeholder: 'Choose a size',
-    hint: 'Prices include a handwritten message.',
+    hint: 'A message piped on top is included.',
     options: [
-      { value: '6', label: '6 inch · serves 8 · $38' },
-      { value: '8', label: '8 inch · serves 14 · $54' },
-      { value: '10', label: '10 inch · serves 22 · $72' },
-      { value: 'tier', label: 'Two tiers · ask Mom', disabled: true },
+      { value: '0.5', label: '½ kg · about 4–6 slices' },
+      { value: '1', label: '1 kg · about 8–10 slices' },
+      { value: '2', label: '2 kg · a two-tier for a crowd' },
+      { value: '3', label: '3 kg · ask Mom', disabled: true },
     ],
   },
   parameters: {

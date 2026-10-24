@@ -8,7 +8,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Prices as playful shapes. Pin 15 prices its events with a **scalloped square**, a **flower** and a **cloud**; pin 08 hangs **key tags** off its pricing cards. The amount is real text, so it's read normally.",
+          "Prices as playful shapes. Pin 15 prices its events with a **scalloped square**, a **flower** and a **cloud**; pin 08 hangs **key tags** off its pricing cards; the **starburst** is the sticker from the joe & dough site. The amount is real text, so it's read normally.",
       },
     },
   },
@@ -27,6 +27,16 @@ export const EventPricing: Story = {
       <PriceTag shape="scallop" tone="pink" amount="₹1,050" label="cakes from" size={128} rotate={-4} />
       <PriceTag shape="flower" tone="cherry" amount="½–3 kg" label="any size" size={128} rotate={3} />
       <PriceTag shape="cloud" tone="blue" amount="₹700" label="per pound from" size={128} rotate={-2} />
+    </div>
+  ),
+};
+
+/** The starburst sticker on the home page hero. */
+export const Starburst: Story = {
+  render: () => (
+    <div className="sb-stack">
+      <PriceTag shape="burst" tone="butter" amount="100%" label="eggless" size={118} rotate={-12} />
+      <PriceTag shape="burst" tone="pink" amount="9 pcs" label="brownie box" size={118} rotate={8} />
     </div>
   ),
 };

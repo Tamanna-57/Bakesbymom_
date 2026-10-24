@@ -1,83 +1,48 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Accordion, Doodle, TONES } from '@bakesbymom/ui';
-
-const faq = [
-  {
-    title: 'How far ahead should I order?',
-    content: (
-      <p>Three days for menu items, two weeks for custom celebration cakes. Order by Wednesday for Saturday pick-up.</p>
-    ),
-    icon: <Doodle name="cupcake" />,
-  },
-  {
-    title: 'Do you have gluten-free or vegan options?',
-    content: (
-      <p>
-        Most cakes and cookies can be made gluten-free. Vegan on request. Everything is baked in a home kitchen that
-        also handles nuts, dairy and eggs.
-      </p>
-    ),
-    icon: <Doodle name="daisy" />,
-  },
-  {
-    title: 'Do you deliver?',
-    content: (
-      <p>Yes, within 10 miles for orders over $40. Otherwise pick up from the porch or the Saturday market stall.</p>
-    ),
-    icon: <Doodle name="heart" color="var(--bbm-color-cherry-500)" />,
-  },
-  {
-    title: 'Can I gift a bake club subscription?',
-    content: <p>Of course. Choose “gift” at checkout and Mom will tuck a handwritten card in the first box.</p>,
-    icon: <Doodle name="star" color="var(--bbm-color-butter-500)" />,
-  },
-];
+import { Accordion } from '@bakesbymom/ui';
+import { faqItems } from '../../apps/web/src/content/site';
 
 const meta = {
-  title: 'Components/Content/Accordion',
+  title: 'Components/Accordion',
   component: Accordion,
-  args: { items: faq, variant: 'pills', tone: 'strawberry', exclusive: false, defaultOpen: [0] },
-  argTypes: {
-    variant: { control: 'inline-radio', options: ['pills', 'rows'] },
-    tone: { control: 'select', options: TONES },
-  },
   parameters: {
+    layout: 'padded',
     docs: {
       description: {
         component:
-          'Built on native `<details>`/`<summary>`, so it works with keyboards, screen readers, find-in-page and even without JavaScript. `pills` are tinted sticker rows (Pretty OK FAQ); `rows` is the hairline specials list (Berloga). `exclusive` keeps one item open.',
+          "Disclosure list on native `<details>`/`<summary>`: keyboard and screen-reader accessible, works without JavaScript. **`cards`** are pin 02's outlined question cards with stickers (the FAQ lead); **`pills`** are pin 08's rounded rows with an arrow in a circle; **`rows`** are pin 01's hairline list. `columns={2}` splits the list so an open card only pushes its own column; `exclusive` keeps one open per column.",
       },
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ width: 'min(620px, 92vw)' }}>
-        <Story />
-      </div>
-    ),
-  ],
+  args: { items: faqItems.slice(0, 4), defaultOpen: [0] },
+  decorators: [(Story) => <div style={{ maxWidth: 960 }}>{Story()}</div>],
 } satisfies Meta<typeof Accordion>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const FAQ: Story = {};
+/** Pin 02: cards with stickers. */
+export const Cards: Story = {};
 
-export const Specials: Story = {
+/** Pin 02's two columns. */
+export const TwoColumns: Story = { args: { items: faqItems, columns: 2, exclusive: true } };
+
+/** Pin 08: blue pills with an arrow in a circle. */
+export const Pills: Story = {
+  args: { variant: 'pills', items: faqItems.slice(0, 4).map(({ title, content }) => ({ title, content })) },
+};
+
+/** Pin 01: a hairline list for "This week's specials". */
+export const Rows: Story = {
   args: {
     variant: 'rows',
-    exclusive: true,
-    defaultOpen: [1],
     items: [
-      { title: 'Dessert hour', content: <p>Every Friday 3–5pm: half-price slices with any coffee.</p> },
       {
-        title: 'Happy Sundays',
-        content: <p>Last Sunday of the month: 20% off a dozen cookies, because we love you.</p>,
+        title: 'Janmashtami: lotus cake',
+        content: <p>Ivory buttercream, a sugar lotus and a peacock feather. ₹1,450 for 1 kg.</p>,
       },
-      {
-        title: 'Morning bun club',
-        content: <p>Pre-order cinnamon rolls by Thursday and they’re still warm at pick-up.</p>,
-      },
+      { title: 'Diwali: dry fruit cookie tins', content: <p>Almonds, cashews and raisins in every one.</p> },
+      { title: 'Raksha Bandhan: jar cakes', content: <p>Rasmalai, Biscoff or chocolate truffle, one jar each.</p> },
     ],
   },
 };

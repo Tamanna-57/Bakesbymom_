@@ -42,7 +42,7 @@
 /* Tape: a stamped rectangular label in the mono "recipe card" voice */
 .bbm-badge--tape {
   border-radius: var(--bbm-radius-xs);
-  font-family: var(--bbm-font-family-mono);
+  font-family: var(--bbm-font-family-body);
   font-weight: var(--bbm-font-weight-medium);
   text-transform: uppercase;
   letter-spacing: 0.1em;

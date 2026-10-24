@@ -20,18 +20,7 @@ const distDir = path.join(root, 'dist');
 const PREFIX = 'bbm';
 const VALUE_TRANSFORMS = ['color/css', 'fontFamily/css', 'cubicBezier/css', 'shadow/css/shorthand'];
 
-const PRIMITIVE_FAMILIES = new Set([
-  'white',
-  'cream',
-  'cocoa',
-  'cherry',
-  'strawberry',
-  'blueberry',
-  'butter',
-  'pistachio',
-  'caramel',
-  'lavender',
-]);
+const PRIMITIVE_FAMILIES = new Set(['white', 'paper', 'blue', 'pink', 'beige', 'cherry', 'brown', 'butter', 'matcha']);
 
 // Maps a token path onto Tailwind v4 theme namespaces (https://tailwindcss.com/docs/theme).
 // Returns null for tokens that have no Tailwind equivalent.

@@ -2,22 +2,25 @@
   "name": "bakesbymom-design-system",
   "version": "0.1.0",
   "private": true,
-  "description": "Bakes by Mom design system: design tokens, React component library and Storybook.",
+  "description": "Bakes by Mom: design tokens, React component library, Storybook and the website.",
   "type": "module",
   "workspaces": [
     "packages/tokens",
-    "packages/ui"
+    "packages/ui",
+    "apps/web"
   ],
   "scripts": {
     "build": "npm run build -w @bakesbymom/tokens && npm run build -w @bakesbymom/ui",
+    "build:web": "npm run build && npm run build -w @bakesbymom/web",
+    "web": "npm run build && npm run dev -w @bakesbymom/web",
     "build:tokens": "npm run build -w @bakesbymom/tokens",
-    "typecheck": "npm run typecheck -w @bakesbymom/ui && tsc -p .storybook/tsconfig.json",
-    "test": "npm run test -w @bakesbymom/tokens && npm run test -w @bakesbymom/ui",
+    "typecheck": "npm run typecheck -w @bakesbymom/ui && npm run typecheck -w @bakesbymom/web && tsc -p .storybook/tsconfig.json",
+    "test": "npm run test -w @bakesbymom/tokens && npm run test -w @bakesbymom/ui && npm run test -w @bakesbymom/web",
     "storybook": "npm run build:tokens && storybook dev -p 6006",
     "build-storybook": "npm run build:tokens && storybook build -o storybook-static",
-    "format": "prettier --write \"packages/**/*.{ts,tsx,mjs,css,json,md}\" \"stories/**/*.{ts,tsx,css,mdx}\" \".storybook/**/*.{ts,tsx,css}\"",
-    "format:check": "prettier --check \"packages/**/*.{ts,tsx,mjs,css,json,md}\" \"stories/**/*.{ts,tsx,css,mdx}\" \".storybook/**/*.{ts,tsx,css}\"",
-    "check": "npm run format:check && npm run build && npm run typecheck && npm run test && npm run build-storybook"
+    "format": "prettier --write \"packages/**/*.{ts,tsx,mjs,css,json,md}\" \"apps/**/*.{ts,tsx,css,json,html}\" \"stories/**/*.{ts,tsx,css,mdx}\" \".storybook/**/*.{ts,tsx,css}\"",
+    "format:check": "prettier --check \"packages/**/*.{ts,tsx,mjs,css,json,md}\" \"apps/**/*.{ts,tsx,css,json,html}\" \"stories/**/*.{ts,tsx,css,mdx}\" \".storybook/**/*.{ts,tsx,css}\"",
+    "check": "npm run format:check && npm run build && npm run build -w @bakesbymom/web && npm run typecheck && npm run test && npm run build-storybook"
   },
   "engines": {
     "node": ">=22.12"

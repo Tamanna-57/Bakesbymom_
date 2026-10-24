@@ -70,8 +70,7 @@
 
 .bbm-product__name {
   margin: 0;
-  font-family: var(--bbm-font-family-display);
-  font-variation-settings: var(--bbm-font-variation-display);
+  font-family: var(--bbm-text-heading-sm-family);
   font-size: var(--bbm-text-heading-sm-size);
   font-weight: var(--bbm-text-heading-sm-weight);
   line-height: var(--bbm-text-heading-sm-line-height);
@@ -121,14 +120,15 @@
 .bbm-product__footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: var(--bbm-space-3);
   margin-top: auto;
   padding-top: var(--bbm-space-1);
 }
 
 .bbm-product__price {
-  margin: 0;
+  order: -1;
+  margin: 0 auto 0 0;
   font-family: var(--bbm-text-price-family);
   font-size: var(--bbm-text-price-size);
   font-weight: var(--bbm-text-price-weight);
@@ -138,6 +138,8 @@
 }
 
 .bbm-product__price--pill {
+  order: 0;
+  margin: 0;
   padding: var(--bbm-space-1) var(--bbm-space-3);
   border-radius: var(--bbm-radius-pill);
   background-color: var(--bbm-color-action-primary-bg);
@@ -155,7 +157,6 @@
   place-items: center;
   width: 2rem;
   height: 2rem;
-  margin-inline-start: auto;
   border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
   border-radius: 50%;
   color: var(--bbm-color-text-primary);
@@ -173,6 +174,118 @@
   background-color: var(--bbm-color-action-primary-bg);
   border-color: var(--bbm-color-action-primary-bg);
   color: var(--bbm-color-action-primary-fg);
+}
+
+/* Menu card (pin 16): paper card, outline, photo inside, price pill bottom-right */
+.bbm-product--menu {
+  gap: var(--bbm-space-3);
+  padding: var(--bbm-space-3) var(--bbm-space-3) var(--bbm-space-4);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-lg);
+  background-color: var(--bbm-color-bg-surface);
+  transition:
+    box-shadow var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard),
+    translate var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard);
+}
+
+.bbm-product--menu.bbm-product--linked:hover {
+  box-shadow: var(--bbm-shadow-sticker-md);
+  translate: -2px -2px;
+}
+
+.bbm-product--menu .bbm-product__media {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--bbm-radius-md);
+}
+
+.bbm-product--menu .bbm-product__body {
+  padding-inline: var(--bbm-space-2);
+}
+
+.bbm-product--menu .bbm-product__description {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.bbm-product--menu .bbm-product__link::after {
+  border-radius: var(--bbm-radius-lg);
+}
+
+.bbm-product--menu .bbm-product__footer {
+  gap: var(--bbm-space-2);
+}
+
+/* Menu card, horizontal: with layout="row", and on phones (1 up, photo on the left) */
+.bbm-product--menu.bbm-product--row {
+  align-items: stretch;
+  padding: var(--bbm-space-3);
+  border-bottom-width: var(--bbm-border-width-thin);
+  border-bottom-color: var(--bbm-color-border-default);
+}
+
+.bbm-product--menu.bbm-product--row .bbm-product__media {
+  flex-basis: 7rem;
+  width: 7rem;
+  aspect-ratio: auto;
+  min-height: 7rem;
+}
+
+@media (max-width: 599.98px) {
+  .bbm-product--menu {
+    flex-direction: row;
+    align-items: stretch;
+    padding: var(--bbm-space-3);
+  }
+
+  .bbm-product--menu .bbm-product__media {
+    flex: 0 0 8rem;
+    width: 8rem;
+    aspect-ratio: auto;
+    min-height: 8rem;
+  }
+
+  .bbm-product--menu .bbm-product__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding-inline: 0;
+  }
+
+  .bbm-product--menu .bbm-product__badge {
+    top: var(--bbm-space-1);
+    left: var(--bbm-space-1);
+    font-size: var(--bbm-text-caption-size);
+    white-space: nowrap;
+  }
+
+  .bbm-product--menu .bbm-product__badge > * {
+    padding-inline: var(--bbm-space-2);
+    font-size: inherit;
+  }
+}
+
+/* Sold out: a badge and a quiet price */
+.bbm-product__sold-out {
+  display: inline-block;
+  padding: var(--bbm-space-1) var(--bbm-space-3);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-pill);
+  background-color: var(--bbm-color-bg-surface);
+  font-family: var(--bbm-font-family-body);
+  font-size: var(--bbm-text-caption-size);
+  font-weight: var(--bbm-font-weight-bold);
+}
+
+.bbm-product--sold-out .bbm-product__image {
+  filter: saturate(0.4);
+  opacity: 0.8;
+}
+
+.bbm-product--sold-out .bbm-product__price--pill {
+  background-color: var(--bbm-color-action-disabled-bg);
+  color: var(--bbm-color-text-primary);
 }
 
 /* Row layout: compact list (menus on phones, the guide table of contents) */

@@ -1,0 +1,84 @@
+.bbm-pricing {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--bbm-space-5);
+  box-sizing: border-box;
+  padding: var(--bbm-space-10) var(--bbm-space-6) var(--bbm-space-6);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-xl);
+  background-color: var(--bbm-color-bg-surface);
+  color: var(--bbm-color-text-primary);
+  font-family: var(--bbm-font-family-body);
+}
+
+.bbm-pricing--featured {
+  background-color: var(--bbm-color-bg-blue);
+}
+
+/* Pill tab on the top border */
+.bbm-pricing__title {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  translate: -50% -50%;
+  margin: 0;
+  padding: var(--bbm-space-2) var(--bbm-space-6);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-pill);
+  background-color: inherit;
+  font-family: var(--bbm-font-family-display);
+  font-variation-settings: var(--bbm-font-variation-display);
+  font-size: var(--bbm-text-heading-md-size);
+  font-weight: var(--bbm-text-heading-md-weight);
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.bbm-pricing--featured .bbm-pricing__title {
+  background-color: var(--bbm-color-bg-blue);
+}
+
+/* Key tag hanging off the top-right corner */
+.bbm-pricing__tag {
+  position: absolute;
+  top: var(--bbm-space-5);
+  right: calc(var(--bbm-space-6) * -1);
+}
+
+/* Hang less on phones so the tag stays inside the 16px page gutter */
+@media (max-width: 599.98px) {
+  .bbm-pricing__tag {
+    right: calc(var(--bbm-space-2) * -1);
+  }
+}
+
+.bbm-pricing__tag .bbm-price-tag__amount {
+  font-size: 1.15rem;
+}
+
+.bbm-pricing__features {
+  display: grid;
+  gap: var(--bbm-space-2);
+  margin: 0;
+  padding: 0 var(--bbm-space-10) 0 0;
+  list-style: none;
+  font-size: var(--bbm-text-body-md-size);
+  line-height: 1.45;
+}
+
+.bbm-pricing__features li {
+  position: relative;
+  padding-inline-start: 1.5rem;
+}
+
+.bbm-pricing__features li::before {
+  content: '✱';
+  position: absolute;
+  left: 0;
+  color: var(--bbm-color-text-brand);
+}
+
+.bbm-pricing__action {
+  margin-top: auto;
+}

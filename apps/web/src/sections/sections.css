@@ -1,0 +1,679 @@
+/* Layout for the website sections in blocks.tsx, built only from tokens. Storybook shows the same sections. */
+
+.site-container {
+  max-width: var(--bbm-layout-container);
+  margin-inline: auto;
+}
+
+.site-section {
+  padding: var(--bbm-layout-section-y) var(--bbm-layout-gutter);
+  color: var(--bbm-color-text-primary);
+}
+
+.site-section > .site-container {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--bbm-space-10);
+}
+
+.site-narrow {
+  max-width: 44rem;
+}
+
+.site-center {
+  display: flex;
+  justify-content: center;
+}
+
+.site-section--blue {
+  background-color: var(--bbm-color-bg-blue);
+}
+
+.site-section--beige {
+  background-color: var(--bbm-color-bg-beige);
+}
+
+.site-section--cherry {
+  background-color: var(--bbm-color-bg-brand);
+}
+
+/* Menu */
+.site-menu__filters {
+  display: flex;
+  justify-content: center;
+}
+
+.site-menu__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: var(--bbm-space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-menu__grid > li {
+  display: flex;
+}
+
+.site-menu__grid > li > * {
+  flex: 1;
+}
+
+.site-menu__note {
+  display: flex;
+  align-items: center;
+  gap: var(--bbm-space-2);
+  justify-self: center;
+  margin: 0;
+  padding: var(--bbm-space-2) var(--bbm-space-5);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-pill);
+  background-color: var(--bbm-color-bg-surface);
+  font-size: var(--bbm-text-body-sm-size);
+}
+
+/* Category tiles (pin 16) */
+.site-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
+  gap: var(--bbm-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-tile {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 1;
+  border-radius: var(--bbm-radius-xl);
+  background-color: var(--bbm-color-bg-brand-deep);
+  color: var(--bbm-color-text-inverse);
+  text-decoration: none;
+}
+
+/* The illustration sits in the corner as a tilted sticker */
+.site-tile img {
+  position: absolute;
+  right: -6%;
+  bottom: -6%;
+  width: 62%;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-lg);
+  box-shadow: var(--bbm-shadow-sticker-md);
+  rotate: -6deg;
+  transition: rotate var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard);
+}
+
+.site-tile:hover img {
+  rotate: -2deg;
+}
+
+.site-tile__label {
+  position: absolute;
+  top: var(--bbm-space-5);
+  left: var(--bbm-space-5);
+  max-width: 65%;
+  font-family: var(--bbm-text-heavy-family);
+  font-size: 1.75rem;
+  font-weight: var(--bbm-font-weight-black);
+  line-height: 1;
+}
+
+.site-tile__arrow {
+  position: absolute;
+  top: var(--bbm-space-4);
+  right: var(--bbm-space-4);
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background-color: var(--bbm-color-bg-surface);
+  color: var(--bbm-color-text-primary);
+}
+
+.site-tile:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: var(--bbm-focus-ring-offset);
+}
+
+/* Process */
+.site-process__card {
+  display: grid;
+  gap: var(--bbm-space-8);
+}
+
+.site-process__card .bbm-heading__title {
+  display: inline-block;
+  padding: 0.1em 0.5em;
+  background-color: var(--bbm-color-bg-canvas);
+}
+
+/* Find us */
+.site-find__bar {
+  margin-top: var(--bbm-space-6);
+}
+
+/* Custom cakes */
+.site-custom > .site-container {
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+
+@media (min-width: 960px) {
+  .site-custom > .site-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.site-custom__copy {
+  display: grid;
+  justify-items: start;
+  gap: var(--bbm-space-8);
+}
+
+.site-custom__prices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bbm-space-4);
+}
+
+/* Keep the three price stickers on one row on phones */
+@media (max-width: 599.98px) {
+  .site-custom__prices {
+    gap: var(--bbm-space-2);
+  }
+
+  .site-custom__prices > * {
+    --_tag-size: 100px !important;
+  }
+}
+
+.site-custom__panel {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 28rem;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-2xl);
+}
+
+.site-custom__seal {
+  position: absolute;
+  top: var(--bbm-space-6);
+  left: var(--bbm-space-6);
+  rotate: -10deg;
+}
+
+.site-custom__tag {
+  position: absolute;
+  right: var(--bbm-space-8);
+  bottom: var(--bbm-space-8);
+}
+
+.site-packages {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--bbm-space-12) var(--bbm-space-8);
+  padding-top: var(--bbm-space-6);
+}
+
+/* Meet Mom (pin 05) */
+.site-meet > .site-container {
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: var(--bbm-space-12);
+}
+
+@media (min-width: 960px) {
+  .site-meet > .site-container {
+    grid-template-columns: 1fr 1.05fr;
+  }
+}
+
+.site-meet__photo {
+  position: relative;
+  padding: var(--bbm-space-8);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+}
+
+.site-meet__photo .bbm-polaroid {
+  max-width: 26rem;
+  margin-inline: auto;
+}
+
+.site-meet__spark {
+  position: absolute;
+}
+
+.site-meet__spark--a {
+  top: -1.5rem;
+  right: -1rem;
+}
+
+.site-meet__spark--b {
+  bottom: -1rem;
+  left: -0.75rem;
+}
+
+.site-meet__note .bbm-card {
+  display: grid;
+  gap: var(--bbm-space-5);
+  justify-items: start;
+}
+
+.site-signature {
+  margin: 0;
+  font-family: var(--bbm-text-script-sm-family);
+  font-size: var(--bbm-text-script-sm-size);
+  line-height: 1;
+  color: var(--bbm-color-text-brand);
+}
+
+/* Orbit */
+.site-orbit__text {
+  max-width: 34rem;
+  margin: 0 auto;
+  font-size: var(--bbm-text-body-lg-size);
+  line-height: var(--bbm-text-body-lg-line-height);
+  text-align: center;
+  color: var(--bbm-color-text-secondary);
+}
+
+/* Values (pin 05) */
+.site-values {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--bbm-space-5);
+}
+
+.site-values .bbm-card {
+  display: grid;
+  justify-items: center;
+  gap: var(--bbm-space-2);
+  text-align: center;
+}
+
+.site-values p {
+  margin: 0;
+}
+
+/* About card (pin 16) */
+.site-about-card {
+  display: grid;
+  gap: var(--bbm-space-4);
+  overflow: hidden;
+  padding-inline-start: clamp(var(--bbm-space-6), 16vw, 12rem) !important;
+}
+
+.site-about-card__cherries {
+  position: absolute;
+  left: -3rem;
+  bottom: -2rem;
+}
+
+.site-about-card p {
+  margin: 0;
+}
+
+.site-about-card__quote {
+  max-width: 34rem;
+  font-size: var(--bbm-text-body-lg-size);
+  line-height: var(--bbm-text-body-lg-line-height);
+}
+
+/* Reviews */
+.site-reviews {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+  gap: var(--bbm-space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Bake Club (pin 01) */
+.site-club {
+  position: relative;
+  padding-top: var(--bbm-space-12);
+}
+
+.site-club .bbm-edge {
+  display: block;
+}
+
+.site-club__mascot {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 7.5rem;
+  height: 7.5rem;
+  translate: -50% 0;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: 50%;
+  background-color: var(--bbm-color-bg-surface);
+}
+
+.site-club__band {
+  padding: var(--bbm-space-12) var(--bbm-layout-gutter) var(--bbm-space-16);
+  background-color: var(--bbm-color-bg-pink);
+}
+
+.site-club__band .site-container {
+  display: grid;
+  gap: var(--bbm-space-6);
+  justify-items: center;
+}
+
+.site-club__letter {
+  max-width: 34rem;
+  margin: 0;
+  font-size: var(--bbm-text-body-lg-size);
+  line-height: var(--bbm-text-body-lg-line-height);
+  text-align: center;
+}
+
+.site-club__ticket {
+  width: min(100%, 32rem);
+}
+
+.site-club__perks-title {
+  margin: 0 0 var(--bbm-space-2);
+  font-size: var(--bbm-text-eyebrow-size);
+  font-weight: var(--bbm-text-eyebrow-weight);
+  letter-spacing: var(--bbm-text-eyebrow-tracking);
+  text-transform: uppercase;
+}
+
+.site-club__perks {
+  margin: 0;
+  padding-inline-start: 1.25rem;
+  line-height: 1.6;
+}
+
+.site-club__cta {
+  display: grid;
+  justify-items: center;
+  gap: var(--bbm-space-3);
+}
+
+.site-club__cta p {
+  margin: 0;
+}
+
+/* FAQ */
+.site-faq {
+  width: 100%;
+}
+
+/* Newsletter */
+.site-news .bbm-edge {
+  display: block;
+  margin-bottom: -1px;
+}
+
+.site-news__band {
+  padding: var(--bbm-space-16) var(--bbm-layout-gutter) var(--bbm-space-20);
+}
+
+/* Journal */
+.site-journal {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: var(--bbm-space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-journal .bbm-product__media {
+  box-shadow: var(--bbm-shadow-sticker-md);
+}
+
+.site-journal__kicker {
+  font-weight: var(--bbm-font-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bbm-color-text-brand);
+}
+
+/* Order box icon button with a count (site header) */
+.site-order-box {
+  position: relative;
+  display: inline-flex;
+}
+
+.site-order-box__count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  box-sizing: border-box;
+  border: 1.5px solid var(--bbm-color-border-default);
+  border-radius: 999px;
+  background: var(--bbm-color-action-primary-bg);
+  color: var(--bbm-color-action-primary-fg);
+  font: 700 11px/17px var(--bbm-font-family-body);
+  text-align: center;
+  pointer-events: none;
+}
+
+/* Cake cards: the photos are cut-outs, so show the whole cake on the card's tone */
+.site-cake-card .bbm-product__media {
+  aspect-ratio: 4 / 5;
+}
+
+.site-cake-card .bbm-product__image {
+  box-sizing: border-box;
+  padding: var(--bbm-space-3);
+  object-fit: contain;
+}
+
+.site-cake-card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bbm-space-1);
+}
+
+@media (max-width: 599.98px) {
+  .site-cake-card .bbm-product__media {
+    aspect-ratio: auto;
+  }
+}
+
+/* Cut-out photos in frames sit on the frame's paper, not on a crop */
+.site-cutout .bbm-polaroid__photo {
+  object-fit: contain;
+}
+
+/* The FSSAI green dot: a green square with a dot, used for "100% eggless" */
+.site-veg-dot {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 1.1em;
+  height: 1.1em;
+  border: 2px solid #1f7a3a;
+  border-radius: 3px;
+  background: var(--bbm-color-bg-surface);
+}
+
+.site-veg-dot::after {
+  content: '';
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: #1f7a3a;
+}
+
+.site-veg-dot--lg {
+  font-size: 2.5rem;
+}
+
+/* Order on WhatsApp band */
+.site-order-band {
+  display: grid;
+  gap: var(--bbm-space-8);
+  padding: var(--bbm-space-10);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-xl);
+  background: var(--bbm-color-bg-surface);
+  box-shadow: var(--bbm-shadow-sticker-lg);
+}
+
+@media (min-width: 900px) {
+  .site-order-band {
+    grid-template-columns: 1.2fr 1fr;
+    align-items: start;
+  }
+
+  .site-order-band__cta {
+    grid-column: 1 / -1;
+  }
+}
+
+.site-order-band__slots {
+  display: grid;
+  gap: var(--bbm-space-3);
+}
+
+.site-order-band__slots > p {
+  margin: 0;
+}
+
+.site-order-band__slots ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--bbm-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-order-band__slots li {
+  display: grid;
+  gap: 2px;
+  padding: var(--bbm-space-3) var(--bbm-space-4);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-md);
+  background: var(--bbm-color-bg-pink);
+}
+
+.site-order-band__slots li span {
+  font-size: var(--bbm-text-body-sm-size);
+  color: var(--bbm-color-text-secondary);
+}
+
+.site-order-band__cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--bbm-space-4);
+}
+
+.site-order-band__cta p {
+  margin: 0;
+  font-weight: var(--bbm-font-weight-bold);
+}
+
+/* Gallery filters */
+.site-gallery__filters {
+  justify-content: center;
+}
+
+/* How it started */
+.site-narrow-band > .site-container {
+  max-width: 60rem;
+}
+
+/* Answers in the chat */
+.site-chat__list {
+  margin: var(--bbm-space-2) 0 0;
+  padding-inline-start: var(--bbm-space-5);
+}
+
+.site-chat__list li + li {
+  margin-top: var(--bbm-space-1);
+}
+
+/* The hero's cut-out cake photo */
+.site-hero-photo {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 32rem;
+  margin-inline: auto;
+  object-fit: contain;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-tile img {
+    transition: none;
+  }
+}
+
+/* Instagram grid: cut-out cakes on pastel squares */
+.site-insta .bbm-gallery__grid {
+  gap: var(--bbm-space-2);
+}
+
+.site-insta .bbm-gallery__grid li:nth-child(4n + 1) img {
+  background: var(--bbm-color-bg-pink);
+}
+
+.site-insta .bbm-gallery__grid li:nth-child(4n + 2) img {
+  background: var(--bbm-color-bg-blue);
+}
+
+.site-insta .bbm-gallery__grid li:nth-child(4n + 3) img {
+  background: var(--bbm-color-bg-beige);
+}
+
+.site-insta .bbm-gallery__grid li:nth-child(4n + 4) img {
+  background: var(--bbm-color-bg-butter);
+}
+
+.site-insta .bbm-gallery__grid img {
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--bbm-space-2);
+  border-radius: var(--bbm-radius-md);
+  object-fit: contain;
+}
+
+/* Gallery strips: a soft ground behind the cut-out photos */
+.site-gallery .bbm-gallery__strip {
+  background: var(--bbm-color-bg-pink);
+}
+
+/* Phones: the occasion chips scroll sideways in one row instead of filling the screen */
+@media (max-width: 599.98px) {
+  .site-menu__filters {
+    display: block;
+  }
+
+  .site-menu__filters .bbm-chips,
+  .site-gallery__filters {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    margin-inline: calc(-1 * var(--bbm-layout-gutter));
+    padding: var(--bbm-space-1) var(--bbm-layout-gutter) var(--bbm-space-2);
+    scroll-padding-inline: var(--bbm-layout-gutter);
+    scrollbar-width: none;
+  }
+
+  .site-menu__filters .bbm-chips__chip,
+  .site-gallery__filters .bbm-chips__chip {
+    flex: none;
+  }
+}

@@ -1,91 +1,57 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { PATTERNS, Polaroid, TONES } from '@bakesbymom/ui';
-import { art } from '../assets';
+import { Polaroid } from '@bakesbymom/ui';
+import { art } from '../../apps/web/src/content';
 
 const meta = {
-  title: 'Components/Ephemera/Polaroid',
+  title: 'Components/Polaroid',
   component: Polaroid,
-  args: {
-    src: art.strawberryCake,
-    alt: 'Strawberry layer cake',
-    caption: 'June’s 7th birthday',
-    tape: 'plain',
-    rotate: -2,
-    frame: 'polaroid',
-    aspect: '1/1',
-    width: 260,
-  },
-  argTypes: {
-    tape: { control: 'select', options: [false, 'plain', 'gingham', 'cherry'] },
-    frame: { control: 'inline-radio', options: ['polaroid', 'scallop', 'pattern'] },
-    pattern: { control: 'select', options: PATTERNS },
-    tone: { control: 'select', options: TONES },
-    aspect: { control: 'inline-radio', options: ['1/1', '4/5', '3/4', '4/3'] },
-    rotate: { control: { type: 'range', min: -8, max: 8, step: 0.5 } },
-  },
   parameters: {
     docs: {
       description: {
         component:
-          'Photos as physical objects: an instant photo with tape and a handwritten caption (Book Nook, Stevie Kay, Spring Bouquet), a scalloped frame (Pretty OK) or a printed pattern frame (September Sun). Keep tilts within ±3° for anything people need to read.',
+          "Photos as physical objects. `polaroid` is the taped instant photo of pins 10 and 11; `scallop` cuts the photo with a scalloped edge like Meet Elia (pin 05); `pattern` is pin 12's printed border; `flower` is pin 07's avatar; `cartouche` is pin 13's ornate frame. Captions are handwritten.",
       },
     },
   },
+  args: { src: art.mom, alt: 'Mom in her apron, smiling', width: 260 },
 } satisfies Meta<typeof Polaroid>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const InstantPhoto: Story = {};
+export const InstantPhoto: Story = { args: { tape: true, caption: 'Mom, apron on', rotate: -3 } };
 
-export const GinghamTape: Story = {
-  args: { tape: 'gingham', rotate: 3, src: art.cherryPie, alt: 'Cherry pie', caption: 'Sunday pie club' },
-};
+export const Scallop: Story = { args: { frame: 'scallop', rotate: 0 } };
 
-export const ScallopFrame: Story = {
-  args: {
-    frame: 'scallop',
-    tone: 'blueberry',
-    tape: false,
-    rotate: 0,
-    src: art.mixingBowl,
-    alt: 'Mixing bowl and whisk',
-    caption: 'with love, Mom',
-  },
-};
-
-export const PatternFrame: Story = {
+export const Pattern: Story = {
   args: {
     frame: 'pattern',
     pattern: 'gingham',
-    tone: 'cherry',
-    tape: false,
+    tone: 'pink',
+    src: art.strawberryCake,
+    alt: 'Strawberry layer cake',
     rotate: 0,
-    src: art.cookies,
-    alt: 'Chocolate chip cookies',
-    caption: undefined,
   },
 };
 
-export const Stack: Story = {
+export const Flower: Story = { args: { frame: 'flower', tone: 'blue', rotate: 0, width: 160 } };
+
+export const Cartouche: Story = {
+  args: { frame: 'cartouche', tone: 'pink', src: art.kitchen, alt: "Mom's kitchen", rotate: 0 },
+};
+
+/** Pin 11: two taped photos overlapping. */
+export const Cluster: Story = {
   render: () => (
-    <div style={{ position: 'relative', width: 420, height: 340 }}>
+    <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+      <Polaroid src={art.cupcake} alt="Pink cupcake" tape="gingham" rotate={-5} width={220} caption="Birthday batch" />
       <Polaroid
-        src={art.macarons}
-        alt="Macarons"
-        rotate={-6}
-        width={220}
+        src={art.cherryPie}
+        alt="Cherry pie"
         tape="cherry"
-        style={{ position: 'absolute', left: 0, top: 30 }}
-      />
-      <Polaroid
-        src={art.cupcake}
-        alt="Cupcake"
-        rotate={5}
+        rotate={4}
         width={220}
-        tape="gingham"
-        caption="xoxo"
-        style={{ position: 'absolute', right: 0, top: 0 }}
+        style={{ marginLeft: -40, marginTop: 48 }}
       />
     </div>
   ),

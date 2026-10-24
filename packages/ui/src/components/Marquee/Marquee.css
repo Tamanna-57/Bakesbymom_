@@ -2,35 +2,58 @@
   --_marquee-duration: var(--bbm-motion-duration-marquee);
   position: relative;
   display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: var(--bbm-font-family-body);
+  font-weight: var(--bbm-font-weight-semibold);
+  white-space: nowrap;
+}
+
+.bbm-marquee--caps {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.bbm-marquee__row {
+  display: flex;
   align-items: center;
   overflow: hidden;
   background-color: var(--_tone-solid);
   color: var(--_tone-on-solid);
-  font-family: var(--bbm-font-family-display);
-  font-variation-settings: var(--bbm-font-variation-crisp);
-  font-weight: var(--bbm-font-weight-semibold);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
 }
 
-.bbm-marquee--sm {
+.bbm-marquee--sm .bbm-marquee__row {
   padding-block: var(--bbm-space-2);
-  font-family: var(--bbm-font-family-mono);
   font-size: var(--bbm-text-caption-size);
-  font-weight: var(--bbm-font-weight-medium);
-  letter-spacing: 0.14em;
 }
 
-.bbm-marquee--md {
+.bbm-marquee--md .bbm-marquee__row {
   padding-block: var(--bbm-space-3);
+  font-size: var(--bbm-text-body-sm-size);
+}
+
+.bbm-marquee--lg .bbm-marquee__row {
+  padding-block: var(--bbm-space-4);
   font-size: var(--bbm-text-body-lg-size);
 }
 
-.bbm-marquee--lg {
-  padding-block: var(--bbm-space-4);
-  font-size: var(--bbm-text-heading-lg-size);
-  letter-spacing: 0.03em;
+/* Tilted ribbon crossing a section edge (pin 07): overhang so the corners never show */
+.bbm-marquee--tilt {
+  margin-inline: -4%;
+  overflow: visible;
+  z-index: 1;
+}
+
+/* Bubble words, no band (pin 11) */
+.bbm-marquee--bubble .bbm-marquee__row {
+  padding-block: var(--bbm-space-2);
+  background: none;
+  color: var(--bbm-marquee-bubble-color, var(--bbm-color-pink-300));
+  font-family: var(--bbm-text-bubble-family);
+  font-weight: var(--bbm-text-bubble-weight);
+  font-size: clamp(2.5rem, 1.6rem + 4vw, 5rem);
+  letter-spacing: 0.01em;
+  text-transform: none;
 }
 
 .bbm-marquee__track {
@@ -39,7 +62,7 @@
   animation: bbm-marquee var(--_marquee-duration) linear infinite;
 }
 
-.bbm-marquee--reverse .bbm-marquee__track {
+.bbm-marquee__row--reverse .bbm-marquee__track {
   animation-direction: reverse;
 }
 
@@ -73,8 +96,26 @@
   }
 }
 
+/* Center badge (pin 04) */
+.bbm-marquee__badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: 50%;
+  background-color: var(--bbm-color-bg-beige);
+  color: var(--bbm-color-text-primary);
+  box-shadow: var(--bbm-shadow-sticker-sm);
+}
+
 .bbm-marquee__control {
   position: absolute;
+  top: var(--bbm-space-2);
   inset-inline-end: var(--bbm-space-2);
   display: grid;
   place-items: center;
@@ -83,10 +124,21 @@
   padding: 0;
   border: var(--bbm-border-width-thin) solid currentColor;
   border-radius: 50%;
-  background-color: var(--_tone-solid);
-  color: inherit;
+  background-color: var(--bbm-color-bg-surface);
+  color: var(--bbm-color-text-primary);
   cursor: pointer;
-  opacity: 0.85;
+  opacity: 0.9;
+}
+
+.bbm-marquee--md .bbm-marquee__control,
+.bbm-marquee--lg .bbm-marquee__control {
+  top: 50%;
+  translate: 0 -50%;
+}
+
+.bbm-marquee:has(.bbm-marquee__row + .bbm-marquee__row) .bbm-marquee__control {
+  top: var(--bbm-space-2);
+  translate: none;
 }
 
 .bbm-marquee__control:hover {
@@ -106,7 +158,7 @@
 
 /* Reduced motion: a still, centered ribbon */
 @media (prefers-reduced-motion: reduce) {
-  .bbm-marquee {
+  .bbm-marquee__row {
     justify-content: center;
   }
 

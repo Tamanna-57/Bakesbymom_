@@ -7,6 +7,12 @@ import theme from './theme';
 // The page base (canvas, ink, body type) for every story and docs page.
 document.body.classList.add('bbm-theme');
 
+// Website links (/menu, /#custom) point at pages of apps/web; inside Storybook they'd load a missing page.
+document.addEventListener('click', (event) => {
+  const link = event.target instanceof Element ? event.target.closest('a[href^="/"]') : null;
+  if (link) event.preventDefault();
+});
+
 const preview: Preview = {
   tags: ['autodocs'],
   parameters: {
@@ -18,12 +24,12 @@ const preview: Preview = {
     },
     backgrounds: {
       options: {
-        canvas: { name: 'Canvas (cream-100)', value: '#fdf6e9' },
-        surface: { name: 'Surface (cream-50)', value: '#fffcf6' },
-        blush: { name: 'Blush (strawberry-100)', value: '#fce7e7' },
-        sky: { name: 'Sky (blueberry-100)', value: '#e4eef5' },
-        butter: { name: 'Butter (butter-100)', value: '#fff5cf' },
-        cocoa: { name: 'Cocoa (inverse)', value: '#3a1e17' },
+        canvas: { name: 'Canvas (beige-50)', value: '#fbf7ef' },
+        surface: { name: 'Paper', value: '#fffdf6' },
+        beige: { name: 'Beige (beige-200)', value: '#ece3c6' },
+        blue: { name: 'Baby blue (blue-200)', value: '#c4d7e8' },
+        pink: { name: 'Baby pink (pink-200)', value: '#f5d7d5' },
+        cocoa: { name: 'Cocoa (brown-900)', value: '#32180b' },
       },
     },
     docs: { theme, toc: { headingSelector: 'h2, h3' } },
@@ -32,12 +38,13 @@ const preview: Preview = {
       storySort: {
         order: [
           'Introduction',
+          'Brand kit',
           'Foundations',
           ['Colors', 'Typography', 'Spacing & Shape', 'Patterns & Decoration'],
-          'Brand',
+          'Board',
+          'Sections',
           'Components',
           'Pages',
-          'References',
         ],
       },
     },

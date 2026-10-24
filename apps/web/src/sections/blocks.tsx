@@ -1,6 +1,6 @@
 /**
- * Section compositions from design/board/sections/, built only from library
- * components. Used by the Sections stories and assembled into Pages / Landing page.
+ * Page sections, built only from library components and filled with the bakery's real content
+ * (src/content). The website assembles them into pages; Storybook's Sections stories show the same files.
  */
 import { useMemo, useState, type ReactNode } from 'react';
 import {
@@ -29,20 +29,25 @@ import {
   Ticket,
   WeekSchedule,
   type ChatMessage,
+  type GalleryItem,
+  type HeadingLevel,
 } from '@bakesbymom/ui';
-import { art, menu } from '../content';
+import { art, treatArt } from '../content';
+import { answer, starterChips, type Answer } from '../content/assistant';
+import { bakery, chefsPicks, giftAddons, inr, kgLabel, mostOrdered, timeSlots, whatsappLink } from '../content/bakery';
+import { cakes, findCake, occasions, type Cake } from '../content/catalog';
+import { journalPosts, scheduleDays } from '../content/samples';
 import {
   faqItems,
   footerBottom,
   footerColumns,
   footerContact,
-  footerNewsletter,
   footerSocials,
-  galleryItems,
   howToOrder,
+  orderLink,
   reviews,
-  scheduleDays,
 } from '../content/site';
+import { treatCategories } from '../content/treats';
 import './sections.css';
 
 const Band = ({ children, className, id }: { children: ReactNode; className?: string; id?: string }) => (
@@ -51,6 +56,18 @@ const Band = ({ children, className, id }: { children: ReactNode; className?: st
   </section>
 );
 
+const TONES = ['pink', 'blue', 'beige', 'butter'] as const;
+const external = { target: '_blank', rel: 'noreferrer' } as const;
+
+/** Most-ordered first, then the chef's picks, then the rest of the catalog. */
+const featured = [
+  ...mostOrdered,
+  ...chefsPicks,
+  ...cakes.map((cake) => cake.slug).filter((slug) => !mostOrdered.includes(slug) && !chefsPicks.includes(slug)),
+]
+  .map(findCake)
+  .filter(Boolean) as Cake[];
+
 /* Marquee (pin 02) -------------------------------------------------- */
 
 export function DoubleRibbon() {
@@ -58,79 +75,109 @@ export function DoubleRibbon() {
     <Marquee
       rows={2}
       caps={false}
-      label="What Mom bakes"
-      items={['Baked this morning', "Made in Mom's kitchen", 'Real butter, real eggs', 'Order by Wednesday']}
+      label="About the bakery"
+      items={['Baked to order', '100% eggless', "Made in Mom's kitchen", bakery.place]}
       separator={<Doodle name="heart" size="0.95em" />}
     />
   );
 }
 
-/* Menu (pin 16, filters from pin 13) --------------------------------- */
+/* Cakes by occasion (pin 16 menu cards, filters from pin 13) ---------- */
 
-const CATEGORIES = ['All', 'Cakes', 'Cookies', 'Pies', 'Breads', 'Little treats'] as const;
-
-export function MenuSection({ level = 2 }: { level?: 1 | 2 }) {
-  const [filter, setFilter] = useState<string[]>(['All']);
-  const items = useMemo(() => menu.filter((item) => filter[0] === 'All' || item.category === filter[0]), [filter]);
+export function CakeCard({
+  cake,
+  index = 0,
+  headingLevel = 3,
+}: {
+  cake: Cake;
+  index?: number;
+  headingLevel?: HeadingLevel;
+}) {
   return (
-    <Band id="menu" className="site-section--blue">
-      <SectionHeading variant="ribbon" level={level} title="Menu" ribbonText="fresh this week" />
+    <ProductCard
+      as="div"
+      variant="menu"
+      className="site-cake-card"
+      name={cake.name}
+      image={{ src: cake.photos[0]?.src ?? art.strawberryCake, alt: '' }}
+      description={cake.description}
+      price={inr(cake.price)}
+      href={`/catalog/${cake.slug}`}
+      tone={TONES[index % TONES.length]}
+      headingLevel={headingLevel}
+      badge={
+        <span className="site-cake-card__badges">
+          <Badge tone="beige" variant="solid" size="sm">
+            {kgLabel(cake.weightKg)}
+          </Badge>
+          {mostOrdered.includes(cake.slug) && (
+            <Badge tone="cherry" variant="solid" size="sm">
+              Most ordered
+            </Badge>
+          )}
+        </span>
+      }
+    />
+  );
+}
+
+export const occasionOptions = [
+  { value: 'all', label: 'All' },
+  ...occasions.map((occasion) => ({ value: occasion.slug, label: occasion.name })),
+];
+
+/** The cake shelf, filterable by occasion. On the home page it shows the first few with a link to the rest. */
+export function MenuSection({ level = 2, limit }: { level?: 1 | 2; limit?: number }) {
+  const [filter, setFilter] = useState<string[]>(['all']);
+  const slug = filter[0] ?? 'all';
+  const list = useMemo(() => (slug === 'all' ? featured : cakes.filter((cake) => cake.occasion === slug)), [slug]);
+  const shown = limit ? list.slice(0, limit) : list;
+  return (
+    <Band id="cakes" className="site-section--blue">
+      <SectionHeading variant="ribbon" level={level} title="Cakes" ribbonText="baked to order" />
       <div className="site-menu__filters">
-        <FilterChips
-          label="Filter the menu"
-          options={CATEGORIES.map((c) => ({ value: c, label: c }))}
-          value={filter}
-          onChange={setFilter}
-        />
+        <FilterChips label="Filter cakes by occasion" options={occasionOptions} value={filter} onChange={setFilter} />
         <p className="bbm-visually-hidden" aria-live="polite">
-          Showing {items.length} bakes
+          Showing {shown.length} of {list.length} cakes
         </p>
       </div>
       <ul className="site-menu__grid">
-        {items.map((item, i) => (
-          <li key={item.name}>
-            <ProductCard
-              as="div"
-              variant="menu"
-              name={item.name}
-              image={{ src: item.image, alt: item.alt }}
-              description={item.description}
-              price={item.price}
-              href="#item"
-              tone={(['pink', 'blue', 'beige', 'butter'] as const)[i % 4]}
-              badge={
-                item.badge && (
-                  <Badge tone={item.badge === 'New' ? 'blue' : 'cherry'} variant="solid">
-                    {item.badge}
-                  </Badge>
-                )
-              }
-              soldOut={item.name === 'Macaron box'}
-            />
+        {shown.map((cake, i) => (
+          <li key={cake.slug}>
+            <CakeCard cake={cake} index={i} headingLevel={level === 1 ? 2 : 3} />
           </li>
         ))}
       </ul>
+      {limit && list.length > shown.length && (
+        <div className="site-center">
+          <Button size="lg" variant="secondary" href={slug === 'all' ? '/catalog' : `/catalog?occasion=${slug}`}>
+            See all {list.length} cakes
+          </Button>
+        </div>
+      )}
       <p className="site-menu__note">
-        <Doodle name="sparkle" size={18} color="var(--bbm-color-cherry-500)" />
-        Most bakes can be made gluten-, dairy- or nut-free. Just ask Mom.
+        <span className="site-veg-dot" aria-hidden="true" />
+        Everything is 100% eggless. Prices are for the listed weight, and Mom confirms on WhatsApp.
       </p>
     </Band>
   );
 }
 
-/** Cherry category tiles (pin 16). */
+/** Cherry tiles for every kind of bake (pin 16). */
 export function CategoryTiles() {
   const tiles = [
-    { label: 'Celebration cakes', image: art.strawberryCake },
-    { label: 'Cookie boxes', image: art.cookies },
-    { label: 'Pies', image: art.cherryPie },
-    { label: 'Bread', image: art.sourdough },
+    { label: 'Cakes', href: '/catalog', image: art.strawberryCake },
+    ...treatCategories.map((category) => ({
+      label: category.name,
+      href: `/shop/${category.slug}`,
+      image: treatArt[category.slug]?.src ?? art.cupcake,
+    })),
   ];
   return (
     <ul className="site-tiles">
       {tiles.map((tile) => (
         <li key={tile.label}>
-          <a className="site-tile" href="#menu">
+          <a className="site-tile" href={tile.href}>
             <img src={tile.image} alt="" />
             <span className="site-tile__label">{tile.label}</span>
             <span className="site-tile__arrow" aria-hidden="true">
@@ -143,12 +190,32 @@ export function CategoryTiles() {
   );
 }
 
+export function TreatsSection() {
+  return (
+    <Band id="treats">
+      <SectionHeading
+        align="center"
+        eyebrow="what we bake"
+        eyebrowStyle="pill"
+        title={
+          <>
+            A whole <em>dessert table</em>
+          </>
+        }
+        description="Cakes for every occasion, and brownies, cookies, jar cakes, tea cakes, cupcakes, bentos and combos by the box."
+      />
+      <CategoryTiles />
+    </Band>
+  );
+}
+
 /* Process (pin 02) --------------------------------------------------- */
 
 export function ProcessSection() {
   return (
     <PatternSurface
       as="section"
+      id="order"
       pattern="stripes"
       tone="pink"
       scale="xl"
@@ -165,17 +232,68 @@ export function ProcessSection() {
   );
 }
 
-/* Find us (pin 15) --------------------------------------------------- */
+/* Order on WhatsApp (pin 15's cherry band) --------------------------- */
 
+export function OrderBandSection() {
+  return (
+    <section id="whatsapp" className="site-section site-section--cherry">
+      <div className="site-container">
+        <div className="site-order-band">
+          <SectionHeading
+            eyebrow="order on whatsapp"
+            title={
+              <>
+                Tell Mom what you'd like, <em>she'll bake it</em>
+              </>
+            }
+            description="Every order on this site opens in WhatsApp already typed out. Read it, change anything, and send it yourself: nothing leaves the page on its own."
+          />
+          <div className="site-order-band__slots">
+            <p className="bbm-text-eyebrow">Pick a time</p>
+            <ul>
+              {timeSlots.map((slot) => {
+                const [name, hours] = slot.replace(')', '').split(' (');
+                return (
+                  <li key={slot}>
+                    <strong>{name}</strong>
+                    <span>{hours}</span>
+                  </li>
+                );
+              })}
+            </ul>
+            <p>
+              Pick up from the kitchen in {bakery.place}, or ask for delivery when you order. {bakery.notice}
+            </p>
+          </div>
+          <div className="site-order-band__cta">
+            <Button size="lg" href={orderLink} {...external}>
+              Order on WhatsApp
+            </Button>
+            <p>WhatsApp {bakery.whatsappDisplay}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Storybook demo of pin 15's week schedule (sample content; not on the website). */
 export function FindUsSection() {
   return (
     <section id="find-us" className="site-section site-section--cherry">
       <div className="site-container">
-        <WeekSchedule days={scheduleDays} action={<Button>Get directions</Button>} />
+        <WeekSchedule
+          days={scheduleDays}
+          action={
+            <Button href={orderLink} {...external}>
+              Order on WhatsApp
+            </Button>
+          }
+        />
         <NewsletterSignup
           variant="bar"
           className="site-find__bar"
-          title="Psst! Get Mom's schedule every Monday"
+          title="Psst! Get this week's bakes first"
           buttonLabel="Sign up"
           onSubmit={() => new Promise((resolve) => setTimeout(resolve, 600))}
         />
@@ -184,42 +302,45 @@ export function FindUsSection() {
   );
 }
 
-/* Custom cakes (pin 15, packages from pin 08) ------------------------ */
+/* Custom cakes (pin 15) and sizes (pin 08 packages) ------------------- */
+
+const cheapest = Math.min(...cakes.map((cake) => cake.price));
+const lowestRate = Math.min(...cakes.map((cake) => cake.perPound));
 
 export function CustomCakesSection() {
+  const showcase = findCake('cake-anniversary-50') ?? cakes[0]!;
   return (
     <Band id="custom" className="site-custom">
       <div className="site-custom__copy">
         <SectionHeading
-          eyebrow="Birthdays · Weddings · Showers"
+          eyebrow="Birthdays · Anniversaries · Festivals"
           title={
             <>
               Your party called. It wants <em>cake!</em>
             </>
           }
-          description="Custom cakes in any flavor on the menu, decorated your way."
+          description="Any cake in the catalog, in the flavour, size and finish you want: a message piped on top, a name plaque, fresh flowers or a photo print."
         />
         <div className="site-custom__prices">
-          <PriceTag shape="scallop" tone="pink" amount="$45" label="6-inch cake" size={128} rotate={-4} />
-          <PriceTag shape="flower" tone="cherry" amount="$4" label="per cupcake" size={128} rotate={3} />
-          <PriceTag shape="cloud" tone="blue" amount="$15" label="custom message" size={128} rotate={-2} />
+          <PriceTag shape="scallop" tone="pink" amount={inr(cheapest)} label="cakes from" size={128} rotate={-4} />
+          <PriceTag shape="flower" tone="cherry" amount="½–3 kg" label="any size" size={128} rotate={3} />
+          <PriceTag shape="cloud" tone="blue" amount={inr(lowestRate)} label="per pound from" size={128} rotate={-2} />
         </div>
-        <Button size="lg">Plan your cake</Button>
+        <Button size="lg" href={whatsappLink("Hello Bakes by Mom! I'd like to plan a custom cake 🎂")} {...external}>
+          Plan your cake
+        </Button>
       </div>
       <PatternSurface pattern="pinstripe" tone="pink" className="site-custom__panel">
         <Polaroid
-          src={art.chocolateCake}
-          alt="Chocolate cake with ganache drip and strawberries"
+          src={showcase.photos[0]!.src}
+          alt={`${showcase.name}: ${showcase.description}`}
           tape="cherry"
           rotate={4}
           width={300}
+          aspect="4/5"
+          className="site-cutout"
         />
-        <Seal
-          className="site-custom__seal"
-          text="Designed to delight • Designed to delight • "
-          size={104}
-          tone="cherry"
-        >
+        <Seal className="site-custom__seal" text="Baked to order • 100% eggless • " size={104} tone="cherry">
           <Doodle name="heart" size={24} color="var(--bbm-color-pink-300)" />
         </Seal>
         <PriceTag
@@ -236,36 +357,51 @@ export function CustomCakesSection() {
   );
 }
 
+const fromPrice = (kg: number) => {
+  const prices = cakes.filter((cake) => cake.weightKg === kg).map((cake) => cake.price);
+  return prices.length ? `from ${inr(Math.min(...prices))}` : 'ask';
+};
+
 export function PackagesSection() {
+  const action = (
+    <Button fullWidth href="/catalog">
+      See the cakes
+    </Button>
+  );
   return (
     <Band className="site-section--beige">
       <SectionHeading
         align="center"
         title={
           <>
-            Pick your <em>cake</em>
+            Pick your <em>size</em>
           </>
         }
+        description="Prices are for the sizes the cakes are listed in. Any cake can be baked bigger or smaller, priced off its per-pound rate."
       />
       <div className="site-packages">
         <PricingCard
-          title="Little cake"
-          price="$45"
-          features={['6-inch, 2 layers', 'Serves 8–10', 'Message in buttercream']}
-          action={<Button fullWidth>Choose this cake</Button>}
+          title="½ kg · 1 pound"
+          price={fromPrice(0.5)}
+          features={['About 4–6 slices', 'A message piped on top', 'Any flavour on the menu']}
+          action={action}
         />
         <PricingCard
-          title="Party cake"
-          price="$70"
-          features={['8-inch, 3 layers', 'Serves 16–20', 'Piped flowers or sprinkles']}
-          action={<Button fullWidth>Choose this cake</Button>}
+          title="1 kg · 2 pound"
+          price={fromPrice(1)}
+          features={['About 8–10 slices', 'The usual birthday size', 'Photo print or name plaque']}
+          action={action}
         />
         <PricingCard
           featured
-          title="Celebration tier"
-          price="$140"
-          features={['Two tiers', 'Serves 40', 'A design sketched with Mom', 'Delivery included']}
-          action={<Button fullWidth>Choose this cake</Button>}
+          title="2 kg · 4 pound"
+          price={fromPrice(2)}
+          features={[
+            'A two-tier for a proper crowd',
+            'Anniversaries and big birthdays',
+            'Fresh flowers or gold toppers',
+          ]}
+          action={action}
         />
       </div>
     </Band>
@@ -300,40 +436,50 @@ export function MeetMomSection() {
           description={
             <>
               <p>
-                I've been baking for our family for thirty years. Birthday cakes, Sunday bread, cookies for every bake
-                sale. Now I bake for yours too.
+                I never set out to run a bakery. I baked for the people I love, a birthday cake here, a tray of brownies
+                there, and the kitchen quietly learned my hands.
               </p>
-              <p>Everything is made to order in my kitchen, with real butter and fruit from the market.</p>
+              <p>
+                One order became two, two became a weekend booked out. Everything is still mixed, baked to order and
+                finished by hand, in batches small enough to taste the care.
+              </p>
             </>
           }
         />
         <p className="site-signature">with love, Mom</p>
-        <Button variant="secondary">Read our story</Button>
+        <Button variant="secondary" href="/about">
+          Read our story
+        </Button>
       </Card>
     </Band>
   );
 }
 
 export function OrbitSection() {
+  const satellites = [
+    'cake-spiderman',
+    'cake-mom-flowerpot',
+    'cake-heart-pearl',
+    'cake-janmashtami',
+    'cake-choco-drip',
+    'cake-hbd-wifey',
+  ]
+    .map(findCake)
+    .filter(Boolean)
+    .map((cake) => ({ src: cake!.photos[0]!.src, alt: cake!.name }));
   return (
     <Band className="site-orbit">
       <Orbit
         center={{ src: art.kitchen, alt: "Mom's kitchen with jars on the shelf and a cake on a stand" }}
-        satellites={[
-          { src: art.cookies, alt: 'Cookies' },
-          { src: art.cherryPie, alt: 'Cherry pie' },
-          { src: art.cupcake, alt: 'A cupcake' },
-          { src: art.sourdough, alt: 'Sourdough' },
-          { src: art.macarons, alt: 'Macarons' },
-          { src: art.cinnamonRoll, alt: 'A cinnamon roll' },
-        ]}
-        arcText="Every bake is a little bit of home"
+        satellites={satellites}
+        arcText="Every cake, cookie and brownie on this table"
       />
       <p className="site-orbit__text">
-        Bakes by Mom started at our kitchen table. Every order is still baked there, one cake at a time.
+        What began as a hobby in a home kitchen is now every cake, cookie and brownie on this table, still mixed, baked
+        to order and finished by hand.
       </p>
       <div className="site-center">
-        <Button>Find us this week</Button>
+        <Button href="/catalog">Explore the catalog</Button>
       </div>
     </Band>
   );
@@ -342,15 +488,20 @@ export function OrbitSection() {
 export function ValuesRow() {
   return (
     <div className="site-values">
+      <Card tone="matcha" outline padding="lg">
+        <span className="site-veg-dot site-veg-dot--lg" aria-hidden="true" />
+        <p className="bbm-text-heading-md">100% eggless</p>
+        <p>Pure vegetarian. Everything this kitchen bakes carries the FSSAI green dot.</p>
+      </Card>
       <Card tone="blue" outline padding="lg">
         <Doodle name="whisk" size={56} />
-        <p className="bbm-text-heading-md">Made from scratch</p>
-        <p>No mixes, no shortcuts: flour, butter, sugar, time.</p>
+        <p className="bbm-text-heading-md">Baked to order</p>
+        <p>Never off a shelf. Small batches, mixed and baked for your date.</p>
       </Card>
       <Card tone="pink" outline padding="lg">
         <Doodle name="heart" size={56} color="var(--bbm-color-cherry-500)" />
-        <p className="bbm-text-heading-md">Real butter, real eggs</p>
-        <p>The same ingredients Mom uses at home.</p>
+        <p className="bbm-text-heading-md">Iced by hand</p>
+        <p>Finished the morning it goes out, with whatever the occasion asks for.</p>
       </Card>
     </div>
   );
@@ -367,23 +518,110 @@ export function AboutCardSection() {
           className="site-about-card__cherries"
         />
         <SectionHeading variant="stamp" align="start" title="About us" overlay="About us" />
-        <p className="bbm-text-heading-sm">What makes it different?</p>
+        <p className="bbm-text-heading-sm">Passion, patience, perfection</p>
         <p className="site-about-card__quote">
-          “Cakes are more than dessert. They're the part of the party people remember. I bake every one like it's for my
-          own family, because for thirty years it was.”
+          “Three things go into every box that leaves this kitchen. We pour the passion in at the mixing bowl, give the
+          batter the patience it asks for, and keep fussing over the piping until the last rose sits right.”
         </p>
       </Card>
     </Band>
   );
 }
 
+/** How the bakery grew, in three chapters. */
+export function StoryChaptersSection() {
+  return (
+    <Band className="site-narrow-band">
+      <SectionHeading align="center" title="How it started" />
+      <StepList
+        variant="row"
+        steps={[
+          {
+            title: 'A hobby at home',
+            description:
+              'Birthday cakes for the people she loves: weekend bakes, one oven, and the joy of watching someone cut the first slice.',
+          },
+          {
+            title: 'Cakes, perfected',
+            description:
+              'Batch after batch the sponge got softer and the buttercream steadier, until the cakes people asked for became the cakes they came back for.',
+          },
+          {
+            title: 'A whole dessert table',
+            description:
+              'Cookies, brownies, cupcakes, bento and jar cakes and every kind of cake: one kitchen, and a table that keeps growing.',
+          },
+        ]}
+      />
+    </Band>
+  );
+}
+
+/** "From flour to the first warm bite": the cookie ritual. */
+export function RitualSection() {
+  return (
+    <Band id="ritual" className="site-section--beige">
+      <SectionHeading
+        align="center"
+        eyebrow="Chapter I · before the bell"
+        title={
+          <>
+            From flour to the <em>first warm bite</em>
+          </>
+        }
+        description="Every cookie is a small journey. Butter and sugar are creamed to silk, the dough is shaped by hand, the oven turns it gold, and it lands on the plate still warm."
+      />
+      <StepList
+        variant="cards"
+        steps={[
+          { title: 'Mix', description: 'Butter, sugar and flour folded into silky dough.' },
+          { title: 'Shape', description: 'Rolled and pressed into soft, raw rounds.' },
+          { title: 'Pipe', description: 'Buttercream roses piped on by hand.' },
+          { title: 'Done', description: 'Crispy edges, gooey centre, melting chips.' },
+        ]}
+      />
+    </Band>
+  );
+}
+
 /* Gallery (pin 01) ---------------------------------------------------- */
 
+const photoItems = (list: Cake[], firstOnly = false): GalleryItem[] =>
+  list.flatMap((cake) =>
+    (firstOnly ? cake.photos.slice(0, 1) : cake.photos).map((photo, i) => ({
+      src: photo.src,
+      alt: i === 0 ? `${cake.name}: ${cake.description}` : `${cake.name}, another view`,
+      caption: (
+        <>
+          {cake.name} · <a href={`/catalog/${cake.slug}`}>Order this cake</a>
+        </>
+      ),
+    })),
+  );
+
+/** Photos of real cakes, filterable by occasion. */
 export function GallerySection() {
+  const withPhotos = occasionOptions.filter(
+    (option) => option.value === 'all' || cakes.some((cake) => cake.occasion === option.value && cake.photos.length),
+  );
+  const [filter, setFilter] = useState<string[]>(['all']);
+  const slug = filter[0] ?? 'all';
+  const items = useMemo(
+    () =>
+      slug === 'all' ? photoItems(featured.slice(0, 9), true) : photoItems(cakes.filter((c) => c.occasion === slug)),
+    [slug],
+  );
   return (
-    <Band>
+    <Band id="gallery" className="site-gallery">
       <SectionHeading variant="bubble" title="Gallery" />
-      <Gallery items={galleryItems} label="Photos from Mom's kitchen" />
+      <FilterChips
+        label="Show cakes for"
+        options={withPhotos}
+        value={filter}
+        onChange={setFilter}
+        className="site-gallery__filters"
+      />
+      <Gallery key={slug} items={items} label="Photos of cakes from Mom's kitchen" />
     </Band>
   );
 }
@@ -393,7 +631,13 @@ export function GallerySection() {
 export function ReviewsSection() {
   return (
     <Band>
-      <SectionHeading eyebrow="reviews" eyebrowStyle="pill" title="Kind words" align="center" />
+      <SectionHeading
+        eyebrow="kind words"
+        eyebrowStyle="pill"
+        title="What the neighbourhood says"
+        description="Every box leaves the kitchen warm and comes back as a message on the phone. A few of the ones we kept."
+        align="center"
+      />
       <ul className="site-reviews">
         {reviews.map((review) => (
           <li key={review.author}>
@@ -405,35 +649,39 @@ export function ReviewsSection() {
   );
 }
 
-/* Bake Club (pin 01 band, pin 10 ticket) ------------------------------ */
+/* Gifting (pin 01 band, pin 10 ticket) -------------------------------- */
 
-export function BakeClubSection() {
+export function GiftSection() {
   return (
-    <section id="club" className="site-club">
+    <section id="gifts" className="site-club">
       <div className="site-club__mascot" aria-hidden="true">
-        <Doodle name="cupcake" size={96} />
+        <Doodle name="bow" size={96} color="var(--bbm-color-cherry-500)" />
       </div>
       <EdgeDivider shape="scallop" flip color="var(--bbm-color-bg-pink)" outline size="lg" />
       <div className="site-club__band">
         <div className="site-container site-narrow">
-          <SectionHeading eyebrow="bake club" eyebrowStyle="pill" title="Dear neighbors," align="center" />
+          <SectionHeading eyebrow="gifting" eyebrowStyle="pill" title="Sending it to someone?" align="center" />
           <p className="site-club__letter">
-            Every month I bake a box of four seasonal treats, just for the Bake Club. You get first pick of holiday
-            orders too, and a recipe card from my kitchen.
+            Any cake or box can go out wrapped and ready to hand over, with a note in your words and a message piped on
+            top.
           </p>
-          <Ticket tone="blue" stub={<span>June ’26</span>} className="site-club__ticket">
-            <p className="site-club__perks-title">Bake Club · member perks</p>
+          <Ticket tone="blue" stub={<span>with love</span>} className="site-club__ticket">
+            <p className="site-club__perks-title">Add to any order</p>
             <ul className="site-club__perks">
-              <li>A box of 4 seasonal treats</li>
-              <li>First pick of holiday orders</li>
-              <li>Mom's recipe card every month</li>
+              {giftAddons.map((addon) => (
+                <li key={addon}>{addon}</li>
+              ))}
+              <li>A message piped on the cake</li>
             </ul>
           </Ticket>
           <div className="site-club__cta">
-            <p>
-              <strong>$28 a month</strong> · skip or pause anytime
-            </p>
-            <Button size="lg">Join the club</Button>
+            <Button
+              size="lg"
+              href={whatsappLink("Hello Bakes by Mom! I'd like to send a cake as a gift 🎁")}
+              {...external}
+            >
+              Send a gift on WhatsApp
+            </Button>
           </div>
         </div>
       </div>
@@ -460,8 +708,33 @@ export function FaqSection() {
   );
 }
 
-/* Newsletter (pin 03) -------------------------------------------------- */
+/* Instagram (pin 12's grid) -------------------------------------------- */
 
+export function InstagramSection() {
+  return (
+    <Band className="site-insta">
+      <SectionHeading
+        align="center"
+        eyebrow={bakery.instagramHandle}
+        eyebrowStyle="pill"
+        title={
+          <>
+            See this week's <em>bakes</em>
+          </>
+        }
+        description="New cakes go up on Instagram as they leave the kitchen."
+      />
+      <Gallery
+        variant="grid"
+        items={photoItems(featured.slice(0, 6), true)}
+        label="Recent cakes"
+        follow={{ label: `Follow ${bakery.instagramHandle}`, href: bakery.instagram }}
+      />
+    </Band>
+  );
+}
+
+/** Storybook demo of pin 03's newsletter card (sample content; not on the website). */
 export function NewsletterSection() {
   return (
     <section className="site-news">
@@ -474,11 +747,11 @@ export function NewsletterSection() {
         scale="sm"
       >
         <NewsletterSignup
-          title="Mom's Monday letter"
-          description="This week's menu, the market schedule and one recipe card, every Monday."
+          title="Mom's letter"
+          description="New cakes, festival boxes and the odd recipe, once a week."
           sticker={
             <Badge shape="tape" tone="cherry" variant="solid">
-              Bake Club news
+              New bakes
             </Badge>
           }
           onSubmit={() => new Promise((resolve) => setTimeout(resolve, 700))}
@@ -490,23 +763,20 @@ export function NewsletterSection() {
 
 /* Journal (pin 01) ----------------------------------------------------- */
 
+/** Storybook demo of pin 01's journal row (sample content; not on the website). */
 export function JournalSection() {
-  const posts = [
-    { kicker: 'Recipe', title: "Mom's brown butter cookies", date: '12 May', image: art.cookies },
-    { kicker: 'News', title: "We're at the Saturday market", date: '8 May', image: art.kitchen },
-    { kicker: 'Recipe', title: 'The 3-ingredient shortbread', date: '1 May', image: art.macarons },
-  ];
+  const images = [art.cookies, art.teaCake, art.jarCake];
   return (
     <Band>
       <SectionHeading eyebrow="journal" eyebrowStyle="pill" title="From Mom's notebook" align="center" />
       <ul className="site-journal">
-        {posts.map((post) => (
+        {journalPosts.map((post, i) => (
           <li key={post.title}>
             <ProductCard
               as="div"
               name={post.title}
               imageShape="arch"
-              image={{ src: post.image, alt: '' }}
+              image={{ src: images[i % images.length]!, alt: '' }}
               href="#journal"
               description={
                 <>
@@ -524,53 +794,60 @@ export function JournalSection() {
 /* Footer (pin 03) ------------------------------------------------------ */
 
 export function Footer() {
+  return <SiteFooter columns={footerColumns} socials={footerSocials} contact={footerContact} bottom={footerBottom} />;
+}
+
+/* Cake assistant (pins 08, 10, 01, 15) --------------------------------- */
+
+function AnswerBody({ reply }: { reply: Answer }) {
   return (
-    <SiteFooter
-      columns={footerColumns}
-      socials={footerSocials}
-      contact={footerContact}
-      newsletter={footerNewsletter}
-      bottom={footerBottom}
-    />
+    <>
+      {reply.text.map((line) => (
+        <p key={line}>{line}</p>
+      ))}
+      {reply.cakes && reply.cakes.length > 0 && (
+        <ul className="site-chat__list">
+          {reply.cakes.map((cake) => (
+            <li key={cake.slug}>
+              <a href={`/catalog/${cake.slug}`}>{cake.name}</a> · {inr(cake.price)} · {kgLabel(cake.weightKg)}
+            </li>
+          ))}
+        </ul>
+      )}
+      {reply.treats && (
+        <ul className="site-chat__list">
+          {reply.treats.map((category) => (
+            <li key={category.slug}>
+              <a href={`/shop/${category.slug}`}>See all {category.name.toLowerCase()}</a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
   );
 }
 
-/* Chatbot (pins 08, 10, 01, 15) ---------------------------------------- */
-
-const ANSWERS: Array<[RegExp, string]> = [
-  [/ahead|when|order by|how long/i, 'Order by Wednesday for Saturday pick-up. Custom cakes need about a week.'],
-  [
-    /gluten|dairy|nut|vegan|allerg/i,
-    'Most bakes can be made gluten-, dairy- or nut-free. My kitchen also handles nuts, dairy, eggs and wheat, so I can’t promise it’s allergen-free.',
-  ],
-  [
-    /deliver|ship|pick/i,
-    'I deliver within 5 miles for $8, free over $60. Or pick up from the porch on Saturday, 9am–1pm.',
-  ],
-  [
-    /custom|design|wedding|birthday/i,
-    'Yes! Tell me the date, how many people and a photo or idea. I’ll sketch it with you. Prices start at $45.',
-  ],
-  [/club|subscri/i, 'The Bake Club is $28 a month for a box of four seasonal treats. Skip or pause any time.'],
-];
-
-/** A demo bot that answers from the FAQ, so the chat can be tried in Storybook. */
+/** "Ask Mom": the old site's cake assistant, answering from the catalog. */
 export function ChatDemo({ inline = true, defaultOpen = true }: { inline?: boolean; defaultOpen?: boolean }) {
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { id: 'hello', from: 'mom', text: 'Hi! I’m Mom. What can I help you with?' },
+    {
+      id: 'hello',
+      from: 'mom',
+      text: 'Hi! I know every cake on the shelf: prices, sizes, flavours and who each one is for. What are you baking for?',
+    },
   ]);
+  const [chips, setChips] = useState<string[]>(starterChips);
   const [typing, setTyping] = useState(false);
 
   const onSend = (text: string) => {
     setMessages((m) => [...m, { id: `you-${m.length}`, from: 'you', text }]);
     setTyping(true);
-    const answer =
-      ANSWERS.find(([pattern]) => pattern.test(text))?.[1] ??
-      "Good question! I'll get back to you by email, or you can call me on (512) 555-0134.";
+    const reply = answer(text);
     setTimeout(() => {
       setTyping(false);
-      setMessages((m) => [...m, { id: `mom-${m.length}`, from: 'mom', text: answer }]);
-    }, 700);
+      setMessages((m) => [...m, { id: `mom-${m.length}`, from: 'mom', text: <AnswerBody reply={reply} /> }]);
+      if (reply.chips) setChips(reply.chips);
+    }, 500);
   };
 
   return (
@@ -583,13 +860,14 @@ export function ChatDemo({ inline = true, defaultOpen = true }: { inline?: boole
       intro={
         <>
           <p>
-            <strong>Not sure what to order?</strong>
+            <strong>Not sure which cake?</strong>
           </p>
-          <p>Ask Mom anything about cakes, dates, allergies or delivery.</p>
+          <p>Ask about sizes, flavours, prices or what to gift.</p>
         </>
       }
-      suggestions={['How far ahead should I order?', 'Do you do gluten-free?', 'Can I order a custom cake?']}
-      handoff={{ label: 'Talk to a real person', href: '#contact' }}
+      placeholder="Ask about a cake…"
+      suggestions={chips}
+      handoff={{ label: 'Order on WhatsApp', href: orderLink }}
     />
   );
 }

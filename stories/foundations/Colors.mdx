@@ -1,49 +1,69 @@
-import { Meta } from '@storybook/addon-docs/blocks';
+import { Meta, Unstyled } from '@storybook/addon-docs/blocks';
 import { ColorScale, SemanticColors, ToneGrid } from '../blocks/TokenBlocks';
+import paletteSheet from '../../design/board/assets/palette.png';
 
 <Meta title="Foundations/Colors" />
 
 # Colors
 
-The palette is named like a pantry. **Components never use primitives directly.** They use the semantic layer (`bg`, `text`, `border`, `action`, `status`, `tone`), so the brand can be re-themed by changing one mapping. Every pairing below is checked against WCAG AA by `packages/tokens/test/tokens.test.mjs`.
+Measured from the 16 pins on the bakesbymom board, and nothing else. Five core colors (**baby blue, baby pink, beige, cherry red and cocoa brown**) plus two small helpers (butter and matcha). Steps marked ★ were measured directly from a pin; the rest are interpolated in OKLCH between those anchors. The full write-up is [`design/board/palette.md`](https://github.com/Tamanna-57/Bakesbymom_/blob/main/design/board/palette.md).
 
-## Primitives
+**Components never use primitives directly.** They use the semantic layer (`bg`, `text`, `border`, `action`, `status`, `tone`). Every pairing is checked against WCAG AA by `packages/tokens/test/tokens.test.mjs`.
 
-### Cream: paper and canvas
+<Unstyled>
+  <img
+    src={paletteSheet}
+    alt="The Bakes by Mom palette sheet: five core colors with crops of the pins they were measured from, a proportion bar, the full scales and approved pairings"
+    style={{
+      width: '100%',
+      border: '1.5px solid var(--bbm-color-border-default)',
+      borderRadius: 16,
+      margin: '8px 0 24px',
+    }}
+  />
+</Unstyled>
 
-<ColorScale family="cream" />
+## Core five
 
-### Cocoa: warm ink (replaces black)
+### Baby Blue: section fills, stripes, the menu band
 
-<ColorScale family="cocoa" />
+From the cards and menu band of pins 02, 05 and 16, the dusty blue bands of 03 and 08, the navy of 10.
 
-### Cherry: the brand red and the only primary action
+<ColorScale family="blue" />
+
+### Baby Pink: cards, scalloped bands, reviews
+
+From Berloga's loyalty band (01), the step and FAQ cards of 02 and 05, and the rose ribbon of 13.
+
+<ColorScale family="pink" />
+
+### Beige: the page itself
+
+The page background in 15 of the 16 pins: Berloga cream (01), the Hopf Haus biscuit band (04), the grounds of 02, 15 and 16.
+
+<ColorScale family="beige" />
+
+### Cherry Red: buttons, links, prices, stickers
+
+Deep cherry from the tabs and buttons of 08 and 16; bright cherry from Nectar's schedule band (15).
 
 <ColorScale family="cherry" />
 
-### Strawberry: strawberry-milk pinks, the main soft surface
+### Cocoa Brown: all text, outlines, dark bands
 
-<ColorScale family="strawberry" />
+Espresso ink from the dark cards of 02, 05 and 13; cocoa display type from 07 and 11; caramel from the Hopf Haus nav (04).
 
-### Blueberry: powder blue to navy, the cool partner
+<ColorScale family="brown" />
 
-<ColorScale family="blueberry" />
+## Helpers
 
-### Butter
+### Butter: highlights and warning states
 
 <ColorScale family="butter" />
 
-### Pistachio
+### Matcha: success states
 
-<ColorScale family="pistachio" />
-
-### Caramel
-
-<ColorScale family="caramel" />
-
-### Lavender: a minor accent
-
-<ColorScale family="lavender" />
+<ColorScale family="matcha" />
 
 ## Backgrounds
 
@@ -59,13 +79,15 @@ The palette is named like a pantry. **Components never use primitives directly.*
 
 ## Tones
 
-Flavor tones are how Badge, Card, Ticket, PriceTag, Seal, Marquee and the patterns get their color. Each tone has a soft pairing (`fg` on `bg`) and a filled pairing (`on-solid` on `solid`), and both are AA.
+Tones are how Badge, Card, StepList, Accordion, PriceTag, Seal, Marquee and the patterns get their color. Each has a soft pairing (`fg` on `bg`) and a filled pairing (`on-solid` on `solid`), and both are AA.
 
 <ToneGrid />
 
 ## Rules of thumb
 
-- **Canvas is cream-100.** White (`bg.raised`) is only for inputs, polaroid borders and popovers.
-- **One cherry fill per view.** Use `cherry` for the primary button, the announcement bar and one accent band, nothing more.
-- **Pastels are surfaces, not text.** Put cocoa text on pastels; use the `fg` tokens for colored text.
-- **Focus is blue on purpose.** `border.focus` (`blueberry-700`) never gets confused with an error or the brand red.
+- **About 60% beige, 25% blue and pink, 10% cocoa, 5% cherry.** Cream does most of the work.
+- **Bright cherry once per page.** `bg.brand` is for one bold band (the weekly schedule). Buttons use deep cherry (`action.primary`).
+- **Pastels are grounds, not text.** Put cocoa text on blue, pink and beige.
+- **Don't stack blue and pink sections back to back** without a beige band or an edge between them.
+- **Focus is navy on purpose.** `border.focus` (`blue-700`) never gets confused with cherry.
+- **Left out on purpose:** the orange of pin 07, the green and peach of 06 and the lavender of 15. Their layouts are used, recolored.

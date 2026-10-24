@@ -1,4 +1,12 @@
-import { useId, useRef, useState, type HTMLAttributes, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react';
+import {
+  useId,
+  useRef,
+  useState,
+  type HTMLAttributes,
+  type KeyboardEvent,
+  type PointerEvent,
+  type ReactNode,
+} from 'react';
 import { cx } from '../../utils/cx';
 import { Marquee } from '../Marquee/Marquee';
 
@@ -169,7 +177,12 @@ export function Gallery({
           {current?.caption}
         </p>
         <div className="bbm-gallery__controls">
-          <button type="button" className="bbm-gallery__nav" aria-label="Previous photo" onClick={() => select(open - 1)}>
+          <button
+            type="button"
+            className="bbm-gallery__nav"
+            aria-label="Previous photo"
+            onClick={() => select(open - 1)}
+          >
             <Arrow dir="prev" />
           </button>
           <button type="button" className="bbm-gallery__nav" aria-label="Next photo" onClick={() => select(open + 1)}>

@@ -3,7 +3,7 @@ import { cx } from '../../utils/cx';
 import { scallopCirclePath } from '../../utils/shapes';
 import type { Tone } from '../../utils/types';
 
-export type PriceTagShape = 'flower' | 'cloud' | 'scallop' | 'circle' | 'tag';
+export type PriceTagShape = 'flower' | 'cloud' | 'scallop' | 'circle' | 'burst' | 'tag';
 
 export interface PriceTagProps extends HTMLAttributes<HTMLDivElement> {
   /** The price as displayed, e.g. "$38" or "From $24". */
@@ -23,7 +23,19 @@ const SHAPES: Record<Exclude<PriceTagShape, 'tag'>, string> = {
   cloud: scallopCirclePath(50, 50, 49, 6, 1.25),
   circle: 'M50 1a49 49 0 1 1 0 98a49 49 0 1 1 0-98z',
   scallop: scallopSquarePath(),
+  burst: burstPath(),
 };
+
+/** A 16-point starburst sticker, the "new!" badge shape. */
+function burstPath(points = 16, outer = 49, inner = 41) {
+  let d = '';
+  for (let i = 0; i < points * 2; i++) {
+    const r = i % 2 ? inner : outer;
+    const a = (Math.PI * i) / points - Math.PI / 2;
+    d += `${i ? 'L' : 'M'}${(50 + r * Math.cos(a)).toFixed(2)} ${(50 + r * Math.sin(a)).toFixed(2)}`;
+  }
+  return `${d}Z`;
+}
 
 /** A rounded square with a scalloped edge: the "$399 cart fee" shape on pin 15. */
 function scallopSquarePath() {
@@ -44,7 +56,7 @@ function scallopSquarePath() {
 // Hotel key tag: tapered end with a hole (even-odd cut-out) and a ring.
 const KEY_TAG = 'M34 6H186a12 12 0 0 1 12 12V82a12 12 0 0 1-12 12H34L6 62V38Z M24 50a6 6 0 1 0 12 0a6 6 0 1 0-12 0Z';
 
-/** A playful shaped price: flower, cloud and scalloped square (pin 15), coin, or key tag (pin 08). */
+/** A playful shaped price: flower, cloud and scalloped square (pin 15), coin, starburst, or key tag (pin 08). */
 export function PriceTag({
   amount,
   label,

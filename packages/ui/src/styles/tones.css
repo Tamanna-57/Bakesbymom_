@@ -1,8 +1,37 @@
 /*
  * Tone mapping. Any element with data-bbm-tone gets local --_tone-* properties
  * that components read, so every tone-aware component shares one switch.
+ * An empty or unknown tone falls back to pink.
  */
+
 [data-bbm-tone] {
+  --_tone-bg: var(--bbm-color-tone-pink-bg);
+  --_tone-border: var(--bbm-color-tone-pink-border);
+  --_tone-fg: var(--bbm-color-tone-pink-fg);
+  --_tone-solid: var(--bbm-color-tone-pink-solid);
+  --_tone-on-solid: var(--bbm-color-tone-pink-on-solid);
+  --_tone-pattern: var(--bbm-color-tone-pink-pattern);
+}
+
+[data-bbm-tone='blue'] {
+  --_tone-bg: var(--bbm-color-tone-blue-bg);
+  --_tone-border: var(--bbm-color-tone-blue-border);
+  --_tone-fg: var(--bbm-color-tone-blue-fg);
+  --_tone-solid: var(--bbm-color-tone-blue-solid);
+  --_tone-on-solid: var(--bbm-color-tone-blue-on-solid);
+  --_tone-pattern: var(--bbm-color-tone-blue-pattern);
+}
+
+[data-bbm-tone='beige'] {
+  --_tone-bg: var(--bbm-color-tone-beige-bg);
+  --_tone-border: var(--bbm-color-tone-beige-border);
+  --_tone-fg: var(--bbm-color-tone-beige-fg);
+  --_tone-solid: var(--bbm-color-tone-beige-solid);
+  --_tone-on-solid: var(--bbm-color-tone-beige-on-solid);
+  --_tone-pattern: var(--bbm-color-tone-beige-pattern);
+}
+
+[data-bbm-tone='cherry'] {
   --_tone-bg: var(--bbm-color-tone-cherry-bg);
   --_tone-border: var(--bbm-color-tone-cherry-border);
   --_tone-fg: var(--bbm-color-tone-cherry-fg);
@@ -11,22 +40,13 @@
   --_tone-pattern: var(--bbm-color-tone-cherry-pattern);
 }
 
-[data-bbm-tone='strawberry'] {
-  --_tone-bg: var(--bbm-color-tone-strawberry-bg);
-  --_tone-border: var(--bbm-color-tone-strawberry-border);
-  --_tone-fg: var(--bbm-color-tone-strawberry-fg);
-  --_tone-solid: var(--bbm-color-tone-strawberry-solid);
-  --_tone-on-solid: var(--bbm-color-tone-strawberry-on-solid);
-  --_tone-pattern: var(--bbm-color-tone-strawberry-pattern);
-}
-
-[data-bbm-tone='blueberry'] {
-  --_tone-bg: var(--bbm-color-tone-blueberry-bg);
-  --_tone-border: var(--bbm-color-tone-blueberry-border);
-  --_tone-fg: var(--bbm-color-tone-blueberry-fg);
-  --_tone-solid: var(--bbm-color-tone-blueberry-solid);
-  --_tone-on-solid: var(--bbm-color-tone-blueberry-on-solid);
-  --_tone-pattern: var(--bbm-color-tone-blueberry-pattern);
+[data-bbm-tone='brown'] {
+  --_tone-bg: var(--bbm-color-tone-brown-bg);
+  --_tone-border: var(--bbm-color-tone-brown-border);
+  --_tone-fg: var(--bbm-color-tone-brown-fg);
+  --_tone-solid: var(--bbm-color-tone-brown-solid);
+  --_tone-on-solid: var(--bbm-color-tone-brown-on-solid);
+  --_tone-pattern: var(--bbm-color-tone-brown-pattern);
 }
 
 [data-bbm-tone='butter'] {
@@ -38,47 +58,11 @@
   --_tone-pattern: var(--bbm-color-tone-butter-pattern);
 }
 
-[data-bbm-tone='pistachio'] {
-  --_tone-bg: var(--bbm-color-tone-pistachio-bg);
-  --_tone-border: var(--bbm-color-tone-pistachio-border);
-  --_tone-fg: var(--bbm-color-tone-pistachio-fg);
-  --_tone-solid: var(--bbm-color-tone-pistachio-solid);
-  --_tone-on-solid: var(--bbm-color-tone-pistachio-on-solid);
-  --_tone-pattern: var(--bbm-color-tone-pistachio-pattern);
-}
-
-[data-bbm-tone='caramel'] {
-  --_tone-bg: var(--bbm-color-tone-caramel-bg);
-  --_tone-border: var(--bbm-color-tone-caramel-border);
-  --_tone-fg: var(--bbm-color-tone-caramel-fg);
-  --_tone-solid: var(--bbm-color-tone-caramel-solid);
-  --_tone-on-solid: var(--bbm-color-tone-caramel-on-solid);
-  --_tone-pattern: var(--bbm-color-tone-caramel-pattern);
-}
-
-[data-bbm-tone='lavender'] {
-  --_tone-bg: var(--bbm-color-tone-lavender-bg);
-  --_tone-border: var(--bbm-color-tone-lavender-border);
-  --_tone-fg: var(--bbm-color-tone-lavender-fg);
-  --_tone-solid: var(--bbm-color-tone-lavender-solid);
-  --_tone-on-solid: var(--bbm-color-tone-lavender-on-solid);
-  --_tone-pattern: var(--bbm-color-tone-lavender-pattern);
-}
-
-[data-bbm-tone='cocoa'] {
-  --_tone-bg: var(--bbm-color-tone-cocoa-bg);
-  --_tone-border: var(--bbm-color-tone-cocoa-border);
-  --_tone-fg: var(--bbm-color-tone-cocoa-fg);
-  --_tone-solid: var(--bbm-color-tone-cocoa-solid);
-  --_tone-on-solid: var(--bbm-color-tone-cocoa-on-solid);
-  --_tone-pattern: var(--bbm-color-tone-cocoa-pattern);
-}
-
-[data-bbm-tone='cream'] {
-  --_tone-bg: var(--bbm-color-tone-cream-bg);
-  --_tone-border: var(--bbm-color-tone-cream-border);
-  --_tone-fg: var(--bbm-color-tone-cream-fg);
-  --_tone-solid: var(--bbm-color-tone-cream-solid);
-  --_tone-on-solid: var(--bbm-color-tone-cream-on-solid);
-  --_tone-pattern: var(--bbm-color-tone-cream-pattern);
+[data-bbm-tone='matcha'] {
+  --_tone-bg: var(--bbm-color-tone-matcha-bg);
+  --_tone-border: var(--bbm-color-tone-matcha-border);
+  --_tone-fg: var(--bbm-color-tone-matcha-fg);
+  --_tone-solid: var(--bbm-color-tone-matcha-solid);
+  --_tone-on-solid: var(--bbm-color-tone-matcha-on-solid);
+  --_tone-pattern: var(--bbm-color-tone-matcha-pattern);
 }

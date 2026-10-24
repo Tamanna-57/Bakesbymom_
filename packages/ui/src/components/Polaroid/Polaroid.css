@@ -19,8 +19,9 @@
 
 .bbm-polaroid__caption {
   padding-top: var(--bbm-space-2);
-  font-family: var(--bbm-font-family-script);
-  font-size: var(--bbm-text-script-sm-size);
+  font-family: var(--bbm-text-hand-md-family);
+  font-size: var(--bbm-text-hand-md-size);
+  font-weight: var(--bbm-text-hand-md-weight);
   line-height: 1.1;
   text-align: center;
   color: var(--bbm-color-text-primary);
@@ -37,15 +38,16 @@
   padding-bottom: var(--bbm-space-10);
 }
 
-/* Scallop: cookie-cutter frame in the tone color, outlined */
-.bbm-polaroid--scallop {
+/* Scallop: the photo itself is cut with a scalloped edge and outlined (pin 05) */
+.bbm-polaroid--scallop,
+.bbm-polaroid--flower,
+.bbm-polaroid--cartouche {
   filter: drop-shadow(1.5px 0 0 var(--bbm-color-border-default)) drop-shadow(-1.5px 0 0 var(--bbm-color-border-default))
     drop-shadow(0 1.5px 0 var(--bbm-color-border-default)) drop-shadow(0 -1.5px 0 var(--bbm-color-border-default));
 }
 
 .bbm-polaroid--scallop .bbm-polaroid__frame {
-  --_r: 12px;
-  padding: calc(var(--_r) * 1.6);
+  --_r: 14px;
   background-color: var(--_tone-solid);
   -webkit-mask:
     linear-gradient(#000 0 0) center / calc(100% - 2 * var(--_r)) calc(100% - 2 * var(--_r)) no-repeat,
@@ -55,11 +57,15 @@
     radial-gradient(closest-side, #000 calc(100% - 0.5px), #0000) 0 0 / calc(2 * var(--_r)) calc(2 * var(--_r)) round;
 }
 
-.bbm-polaroid--scallop .bbm-polaroid__photo {
-  border-radius: var(--bbm-radius-sm);
+/* Flower avatar (pin 07) and cartouche (pin 13): SVG masks set in --_mask */
+.bbm-polaroid--flower .bbm-polaroid__frame,
+.bbm-polaroid--cartouche .bbm-polaroid__frame {
+  background-color: var(--_tone-solid);
+  -webkit-mask: var(--_mask) center / 100% 100% no-repeat;
+  mask: var(--_mask) center / 100% 100% no-repeat;
 }
 
-/* Pattern: printed tile border around the photo (September Sun) */
+/* Pattern: printed tile border around the photo (pin 12) */
 .bbm-polaroid--pattern .bbm-polaroid__frame {
   padding: var(--bbm-space-3);
   border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
@@ -79,13 +85,13 @@
   height: 1.5rem;
   translate: -50% 0;
   rotate: 3deg;
-  background-color: color-mix(in srgb, var(--bbm-color-cream-200) 80%, transparent);
+  background-color: color-mix(in srgb, var(--bbm-color-beige-100) 80%, transparent);
   box-shadow: 0 1px 2px rgb(58 30 23 / 0.12);
 }
 
 .bbm-polaroid__tape--gingham {
   --_g: color-mix(in srgb, var(--bbm-color-cherry-500) 45%, transparent);
-  background-color: color-mix(in srgb, var(--bbm-color-cream-50) 85%, transparent);
+  background-color: color-mix(in srgb, var(--bbm-color-paper) 85%, transparent);
   background-image: linear-gradient(90deg, var(--_g) 50%, transparent 0), linear-gradient(var(--_g) 50%, transparent 0);
   background-size: 0.75rem 0.75rem;
 }

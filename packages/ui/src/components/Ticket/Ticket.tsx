@@ -20,7 +20,7 @@ export interface TicketProps extends HTMLAttributes<HTMLElement> {
 /** Paper ephemera: an admission ticket or a postage stamp, for gift cards, classes, steps and dates. */
 export function Ticket({
   variant = 'ticket',
-  tone = 'blueberry',
+  tone = 'blue',
   fill = 'soft',
   stub,
   outline = true,

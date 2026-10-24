@@ -1,75 +1,41 @@
-import { Button, EdgeDivider, Hero } from '@bakesbymom/ui';
-import { findCake } from '../content/catalog';
-import { orderLink } from '../content/site';
+import { FaqSection, GallerySection, ReviewsSection } from '../sections/blocks';
 import {
-  CustomCakesSection,
-  DoubleRibbon,
-  FaqSection,
-  GallerySection,
-  GiftSection,
-  InstagramSection,
-  MeetMomSection,
-  MenuSection,
-  OrderBandSection,
-  ProcessSection,
-  ReviewsSection,
-  TreatsSection,
-} from '../sections/blocks';
+  AboutUsCard,
+  CraftedSection,
+  FeatureStrip,
+  FlavoursSection,
+  HomeHero,
+  KitchenSplit,
+  OccasionBand,
+  QuoteBand,
+  ShapeRibbon,
+  ShopByBoxSection,
+  SignOffRibbon,
+} from '../sections/home';
 import { Layout } from './Layout';
 
-const heroCake = findCake('cake-choco-drip')!;
-
 /**
- * The home page, in the order of pin 15 (Nectar): hero, the cakes, how to order, the order band,
- * custom cakes, Mom, the gallery and the rest. See design/board/sections/landing-page.md.
+ * The home page, after pin 16 (SugarLace) and pin 13 (Puzzle Pantry): striped hero, the shape ribbon,
+ * the feature strip, about us, flavours, shop by the box, occasions, a quote, how to order with the
+ * cherry tiles, Mom's kitchen, then the gallery, reviews and FAQ. Only the gallery shows cake photos.
  */
 export function LandingPage() {
-  const photo = heroCake.photos[0]!;
   return (
     <Layout path="/" withAnnouncement>
-      <Hero
-        eyebrow="Home bakery · Panipat"
-        title={
-          <>
-            Homemade cakes, <em>still warm</em> from Mom's oven.
-          </>
-        }
-        description="Cakes, brownies, cookies, cupcakes and breads, baked to order in Mom's kitchen. Everything is 100% eggless."
-        actions={
-          <>
-            <Button size="lg" href="/catalog">
-              See the cakes
-            </Button>
-            <Button size="lg" variant="secondary" href={orderLink} target="_blank" rel="noreferrer">
-              Order on WhatsApp
-            </Button>
-          </>
-        }
-        media={
-          <img
-            className="site-hero-photo"
-            src={photo.src}
-            alt={`${heroCake.name}: ${heroCake.description}`}
-            width={photo.width}
-            height={photo.height}
-          />
-        }
-        note="100% eggless!"
-      />
-      <DoubleRibbon />
-      <MenuSection limit={8} />
-      <EdgeDivider shape="dots" color="var(--bbm-color-brown-900)" background="var(--bbm-color-bg-blue)" />
-      <TreatsSection />
-      <ProcessSection />
-      <OrderBandSection />
-      <CustomCakesSection />
-      <EdgeDivider shape="checker" color="var(--bbm-color-cherry-700)" altColor="var(--bbm-color-pink-300)" size="sm" />
-      <MeetMomSection />
+      <HomeHero />
+      <ShapeRibbon />
+      <FeatureStrip />
+      <AboutUsCard />
+      <FlavoursSection />
+      <ShopByBoxSection />
+      <OccasionBand />
+      <QuoteBand />
+      <CraftedSection />
+      <KitchenSplit />
       <GallerySection />
       <ReviewsSection />
-      <GiftSection />
       <FaqSection />
-      <InstagramSection />
+      <SignOffRibbon />
     </Layout>
   );
 }

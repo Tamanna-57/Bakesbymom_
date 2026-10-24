@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Accordion } from '@bakesbymom/ui';
-import { faqItems } from '../assets/site';
+import { faqItems } from '../../apps/web/src/content/site';
 
 const meta = {
   title: 'Components/Accordion',

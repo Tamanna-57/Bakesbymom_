@@ -1,0 +1,19 @@
+{
+  "name": "@bakesbymom/web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The Bakes by Mom website: the landing page, menu, about and link-in-bio pages, built from @bakesbymom/ui.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@bakesbymom/tokens": "0.1.0",
+    "@bakesbymom/ui": "0.1.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  }
+}

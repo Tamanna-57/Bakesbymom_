@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Badge, Button, Doodle, Hero, Polaroid, Seal, Ticket } from '@bakesbymom/ui';
-import { art } from '../assets';
+import { art } from '../../apps/web/src/content';
 import { fromBoard } from './ref';
 
 const meta = {

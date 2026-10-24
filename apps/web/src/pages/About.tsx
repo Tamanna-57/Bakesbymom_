@@ -1,8 +1,15 @@
-import { Marquee, SectionHeading, StepList } from '@bakesbymom/ui';
-import { AboutCardSection, MeetMomSection, OrbitSection, ValuesRow } from '../sections/blocks';
+import { Marquee, SectionHeading } from '@bakesbymom/ui';
+import {
+  AboutCardSection,
+  MeetMomSection,
+  OrbitSection,
+  RitualSection,
+  StoryChaptersSection,
+  ValuesRow,
+} from '../sections/blocks';
 import { Layout } from './Layout';
 
-/** Our story: the orbit (pin 01), Meet Mom and values (pin 05), the about card (pin 16) and a timeline (pin 04). */
+/** Our story: the orbit (pin 01), Meet Mom and values (pin 05), the about card (pin 16), the chapters and the ritual. */
 export function AboutPage() {
   return (
     <Layout path="/about">
@@ -16,7 +23,7 @@ export function AboutPage() {
             align="center"
             title={
               <>
-                A kitchen table, thirty years and a lot of <em>butter</em>
+                What began as a hobby in a <em>home kitchen</em>
               </>
             }
           />
@@ -25,9 +32,9 @@ export function AboutPage() {
       <OrbitSection />
       <Marquee
         tone="pink"
-        items={['Made from scratch', 'Real butter, real eggs', 'One cake at a time']}
+        items={['Passion', 'Patience', 'Perfection', '100% eggless', 'Baked to order']}
         caps={false}
-        label="What we believe"
+        label="What goes into every box"
       />
       <MeetMomSection />
       <section className="site-section site-section--beige">
@@ -36,19 +43,8 @@ export function AboutPage() {
         </div>
       </section>
       <AboutCardSection />
-      <section className="site-section" style={{ paddingTop: 0 }}>
-        <div className="site-container site-narrow" style={{ display: 'grid', gap: 32 }}>
-          <SectionHeading align="center" title="How it started" />
-          <StepList
-            variant="row"
-            steps={[
-              { title: '1998', description: 'Birthday cakes for the neighbors.' },
-              { title: '2012', description: 'A stall at the Saturday market.' },
-              { title: '2026', description: 'Bakes by Mom, online.' },
-            ]}
-          />
-        </div>
-      </section>
+      <StoryChaptersSection />
+      <RitualSection />
     </Layout>
   );
 }

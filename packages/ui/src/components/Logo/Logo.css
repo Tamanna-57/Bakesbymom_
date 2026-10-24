@@ -26,13 +26,13 @@
 
 .bbm-logo--inverse {
   --_logo-color: var(--bbm-color-text-inverse);
-  --_logo-accent: var(--bbm-color-strawberry-300);
+  --_logo-accent: var(--bbm-color-pink-300);
 }
 
 .bbm-logo__bakes {
   font-family: var(--bbm-font-family-display);
   font-variation-settings: var(--bbm-font-variation-soft);
-  font-weight: var(--bbm-font-weight-black);
+  font-weight: var(--bbm-font-weight-bold);
   font-size: 1em;
   letter-spacing: -0.02em;
 }
@@ -77,4 +77,25 @@
 .bbm-logo__seal-mark .bbm-logo__by {
   font-size: 0.8em;
   font-weight: var(--bbm-font-weight-regular);
+}
+
+/* Monogram: "BM" on a cherry circle (the footer monogram of pin 12) */
+.bbm-logo--monogram {
+  display: inline-grid;
+  place-items: center;
+  width: 1.6em;
+  height: 1.6em;
+  border-radius: 50%;
+  background-color: var(--bbm-color-action-primary-bg);
+  color: var(--bbm-color-action-primary-fg);
+  font-family: var(--bbm-font-family-display);
+  font-variation-settings: var(--bbm-font-variation-soft);
+  font-weight: var(--bbm-font-weight-bold);
+  font-size: calc(var(--_logo-size) * 0.75);
+  letter-spacing: -0.04em;
+}
+
+.bbm-logo--monogram.bbm-logo--inverse {
+  background-color: var(--bbm-color-bg-canvas);
+  color: var(--bbm-color-text-brand);
 }

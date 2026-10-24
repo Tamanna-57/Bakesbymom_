@@ -4,173 +4,542 @@
       "display": {
         "$type": "fontFamily",
         "$value": ["Fraunces", "Iowan Old Style", "Georgia", "serif"],
-        "$description": "Soft retro serif for headlines. Variable axes: opsz, wght 100–900, SOFT 0–100, WONK 0–1."
-      },
-      "script": {
-        "$type": "fontFamily",
-        "$value": ["Pinyon Script", "Snell Roundhand", "cursive"],
-        "$description": "Copperplate accent. Single words, signatures and the 'by Mom' in the logo only, 28px and up."
+        "$description": "Soft serif for headlines, prices and the logo (pins 02, 05, 11, 13, 15). Variable: opsz, wght 100-900, SOFT 0-100, WONK 0-1."
       },
       "body": {
         "$type": "fontFamily",
         "$value": ["DM Sans", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
-        "$description": "Everything functional: body, UI, buttons, forms."
+        "$description": "Body, UI and labels; 800-900 for the heavy title moment of pin 16."
       },
-      "mono": {
+      "script": {
         "$type": "fontFamily",
-        "$value": ["DM Mono", "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
-        "$description": "The recipe-card voice: eyebrows, prices, dates and opening hours."
+        "$value": ["Pinyon Script", "Snell Roundhand", "cursive"],
+        "$description": "Formal script for one accent word, the \"by Mom\" in the logo and signatures (pins 10, 16). 32px and up."
+      },
+      "hand": {
+        "$type": "fontFamily",
+        "$value": ["Caveat", "Bradley Hand", "cursive"],
+        "$description": "Handwritten notes, captions and pill labels (pins 01, 04, 13, 15). 20px and up."
+      },
+      "bubble": {
+        "$type": "fontFamily",
+        "$value": ["Cherry Bomb One", "Arial Rounded MT Bold", "system-ui", "sans-serif"],
+        "$description": "Bubble display for one word per page, always outlined (pins 01, 11). 64px and up."
       }
     },
     "weight": {
-      "light": { "$type": "fontWeight", "$value": 300 },
-      "regular": { "$type": "fontWeight", "$value": 400 },
-      "medium": { "$type": "fontWeight", "$value": 500 },
-      "semibold": { "$type": "fontWeight", "$value": 600 },
-      "bold": { "$type": "fontWeight", "$value": 700 },
-      "black": { "$type": "fontWeight", "$value": 900 }
+      "regular": {
+        "$type": "fontWeight",
+        "$value": 400
+      },
+      "medium": {
+        "$type": "fontWeight",
+        "$value": 500
+      },
+      "semibold": {
+        "$type": "fontWeight",
+        "$value": 600
+      },
+      "bold": {
+        "$type": "fontWeight",
+        "$value": 700
+      },
+      "extrabold": {
+        "$type": "fontWeight",
+        "$value": 800
+      },
+      "black": {
+        "$type": "fontWeight",
+        "$value": 900
+      }
     },
     "variation": {
       "$description": "font-variation-settings presets for Fraunces.",
-      "display": { "$value": "\"SOFT\" 50, \"WONK\" 0", "$description": "Default headline softness." },
+      "display": {
+        "$value": "\"SOFT\" 100, \"WONK\" 0",
+        "$description": "Default headline: fully soft."
+      },
       "soft": {
         "$value": "\"SOFT\" 100, \"WONK\" 1",
-        "$description": "Puffy Cooper-style look for playful moments (badges, promo, logo)."
+        "$description": "Puffy retro look for the logo and playful moments (pin 11)."
       },
       "crisp": {
-        "$value": "\"SOFT\" 0, \"WONK\" 0",
-        "$description": "Sharper patisserie serif for caps and editorial lines."
+        "$value": "\"SOFT\" 30, \"WONK\" 0",
+        "$description": "Crisper serif for short uppercase titles."
       }
     }
   },
   "text": {
-    "$description": "Text styles. Each style is a group of properties; the UI package exposes them as .bbm-text-<style> classes. Display sizes are fluid between the values in $extensions.",
+    "$description": "Text styles from the brand kit. The UI package exposes them as .bbm-text-<style> classes. Display sizes are fluid between the values in $extensions.",
     "display-xl": {
-      "family": { "$type": "fontFamily", "$value": "{font.family.display}" },
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.display}"
+      },
       "size": {
         "$value": "clamp(3rem, 2.2rem + 3.6vw, 5.5rem)",
-        "$extensions": { "bbm.fluid": { "min": "48px", "max": "88px" } }
+        "$extensions": {
+          "bbm.fluid": {
+            "min": "48px",
+            "max": "88px"
+          }
+        }
       },
-      "line-height": { "$type": "number", "$value": 0.95 },
-      "tracking": { "$type": "dimension", "$value": "-0.02em" },
-      "weight": { "$type": "fontWeight", "$value": "{font.weight.semibold}" }
+      "line-height": {
+        "$type": "number",
+        "$value": 0.98
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "-0.02em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}"
+      }
     },
     "display-lg": {
-      "family": { "$type": "fontFamily", "$value": "{font.family.display}" },
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.display}"
+      },
       "size": {
         "$value": "clamp(2.5rem, 1.95rem + 2.4vw, 4rem)",
-        "$extensions": { "bbm.fluid": { "min": "40px", "max": "64px" } }
+        "$extensions": {
+          "bbm.fluid": {
+            "min": "40px",
+            "max": "64px"
+          }
+        }
       },
-      "line-height": { "$type": "number", "$value": 1 },
-      "tracking": { "$type": "dimension", "$value": "-0.015em" },
-      "weight": { "$type": "fontWeight", "$value": "{font.weight.semibold}" }
+      "line-height": {
+        "$type": "number",
+        "$value": 1.02
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "-0.015em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}"
+      }
     },
     "display-md": {
-      "family": { "$type": "fontFamily", "$value": "{font.family.display}" },
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.display}"
+      },
       "size": {
         "$value": "clamp(2rem, 1.65rem + 1.6vw, 3rem)",
-        "$extensions": { "bbm.fluid": { "min": "32px", "max": "48px" } }
+        "$extensions": {
+          "bbm.fluid": {
+            "min": "32px",
+            "max": "48px"
+          }
+        }
       },
-      "line-height": { "$type": "number", "$value": 1.05 },
-      "tracking": { "$type": "dimension", "$value": "-0.01em" },
-      "weight": { "$type": "fontWeight", "$value": "{font.weight.semibold}" }
+      "line-height": {
+        "$type": "number",
+        "$value": 1.08
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "-0.01em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}"
+      }
     },
     "heading-lg": {
-      "family": { "$type": "fontFamily", "$value": "{font.family.display}" },
-      "size": {
-        "$value": "clamp(1.625rem, 1.45rem + 0.8vw, 2.125rem)",
-        "$extensions": { "bbm.fluid": { "min": "26px", "max": "34px" } }
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.display}"
       },
-      "line-height": { "$type": "number", "$value": 1.15 },
-      "tracking": { "$type": "dimension", "$value": "-0.005em" },
-      "weight": { "$type": "fontWeight", "$value": "{font.weight.semibold}" }
+      "size": {
+        "$type": "dimension",
+        "$value": "2rem"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.15
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "-0.005em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}"
+      }
     },
     "heading-md": {
-      "family": { "$type": "fontFamily", "$value": "{font.family.display}" },
-      "size": { "$type": "dimension", "$value": "1.5rem" },
-      "line-height": { "$type": "number", "$value": 1.25 },
-      "tracking": { "$type": "dimension", "$value": "0em" },
-      "weight": { "$type": "fontWeight", "$value": "{font.weight.semibold}" }
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.display}"
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "1.5rem"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.25
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "0em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}"
+      }
     },
     "heading-sm": {
-      "family": { "$type": "fontFamily", "$value": "{font.family.display}" },
-      "size": { "$type": "dimension", "$value": "1.25rem" },
-      "line-height": { "$type": "number", "$value": 1.3 },
-      "tracking": { "$type": "dimension", "$value": "0em" },
-      "weight": { "$type": "fontWeight", "$value": "{font.weight.semibold}" }
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.body}"
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "1.125rem"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.3
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "0em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.bold}"
+      }
     },
     "body-lg": {
-      "family": { "$type": "fontFamily", "$value": "{font.family.body}" },
-      "size": { "$type": "dimension", "$value": "1.125rem" },
-      "line-height": { "$type": "number", "$value": 1.6 },
-      "tracking": { "$type": "dimension", "$value": "0em" },
-      "weight": { "$type": "fontWeight", "$value": "{font.weight.regular}" }
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.body}"
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "1.25rem"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.55
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "0em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.regular}"
+      }
     },
     "body-md": {
-      "family": { "$type": "fontFamily", "$value": "{font.family.body}" },
-      "size": { "$type": "dimension", "$value": "1rem" },
-      "line-height": { "$type": "number", "$value": 1.6 },
-      "tracking": { "$type": "dimension", "$value": "0em" },
-      "weight": { "$type": "fontWeight", "$value": "{font.weight.regular}" }
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.body}"
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "1.0625rem"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.6
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "0em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.regular}"
+      }
     },
     "body-sm": {
-      "family": { "$type": "fontFamily", "$value": "{font.family.body}" },
-      "size": { "$type": "dimension", "$value": "0.875rem" },
-      "line-height": { "$type": "number", "$value": 1.5 },
-      "tracking": { "$type": "dimension", "$value": "0em" },
-      "weight": { "$type": "fontWeight", "$value": "{font.weight.regular}" }
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.body}"
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "0.9375rem"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.5
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "0em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.regular}"
+      }
     },
     "caption": {
-      "family": { "$type": "fontFamily", "$value": "{font.family.body}" },
-      "size": { "$type": "dimension", "$value": "0.75rem" },
-      "line-height": { "$type": "number", "$value": 1.4 },
-      "tracking": { "$type": "dimension", "$value": "0.01em" },
-      "weight": { "$type": "fontWeight", "$value": "{font.weight.regular}" }
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.body}"
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "0.8125rem"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.4
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "0.01em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.regular}"
+      }
     },
     "label": {
-      "family": { "$type": "fontFamily", "$value": "{font.family.body}" },
-      "size": { "$type": "dimension", "$value": "0.9375rem" },
-      "line-height": { "$type": "number", "$value": 1.2 },
-      "tracking": { "$type": "dimension", "$value": "0.01em" },
-      "weight": { "$type": "fontWeight", "$value": "{font.weight.semibold}" }
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.body}"
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "0.875rem"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.2
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "0.08em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}"
+      }
     },
     "eyebrow": {
-      "family": { "$type": "fontFamily", "$value": "{font.family.mono}" },
-      "size": { "$type": "dimension", "$value": "0.75rem" },
-      "line-height": { "$type": "number", "$value": 1.2 },
-      "tracking": { "$type": "dimension", "$value": "0.18em" },
-      "weight": { "$type": "fontWeight", "$value": "{font.weight.medium}" }
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.body}"
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "0.8125rem"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.2
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "0.12em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.bold}"
+      }
     },
     "price": {
-      "family": { "$type": "fontFamily", "$value": "{font.family.mono}" },
-      "size": { "$type": "dimension", "$value": "1rem" },
-      "line-height": { "$type": "number", "$value": 1.2 },
-      "tracking": { "$type": "dimension", "$value": "0em" },
-      "weight": { "$type": "fontWeight", "$value": "{font.weight.medium}" }
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.body}"
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "1rem"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.2
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "0em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.bold}"
+      }
+    },
+    "heavy": {
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.body}"
+      },
+      "size": {
+        "$value": "clamp(2rem, 1.5rem + 2.2vw, 3.5rem)",
+        "$extensions": {
+          "bbm.fluid": {
+            "min": "32px",
+            "max": "56px"
+          }
+        }
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "-0.02em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.black}"
+      }
     },
     "script-lg": {
-      "family": { "$type": "fontFamily", "$value": "{font.family.script}" },
-      "size": {
-        "$value": "clamp(2.75rem, 2.1rem + 2.8vw, 4.5rem)",
-        "$extensions": { "bbm.fluid": { "min": "44px", "max": "72px" } }
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.script}"
       },
-      "line-height": { "$type": "number", "$value": 1 },
-      "tracking": { "$type": "dimension", "$value": "0em" },
-      "weight": { "$type": "fontWeight", "$value": "{font.weight.regular}" }
+      "size": {
+        "$value": "clamp(3.5rem, 2.4rem + 4.8vw, 6rem)",
+        "$extensions": {
+          "bbm.fluid": {
+            "min": "56px",
+            "max": "96px"
+          }
+        }
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "0em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.regular}"
+      }
     },
     "script-md": {
-      "family": { "$type": "fontFamily", "$value": "{font.family.script}" },
-      "size": { "$type": "dimension", "$value": "2.25rem" },
-      "line-height": { "$type": "number", "$value": 1.1 },
-      "tracking": { "$type": "dimension", "$value": "0em" },
-      "weight": { "$type": "fontWeight", "$value": "{font.weight.regular}" }
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.script}"
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "3.5rem"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.05
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "0em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.regular}"
+      }
     },
     "script-sm": {
-      "family": { "$type": "fontFamily", "$value": "{font.family.script}" },
-      "size": { "$type": "dimension", "$value": "1.75rem" },
-      "line-height": { "$type": "number", "$value": 1.1 },
-      "tracking": { "$type": "dimension", "$value": "0em" },
-      "weight": { "$type": "fontWeight", "$value": "{font.weight.regular}" }
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.script}"
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "2.5rem"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.1
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "0em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.regular}"
+      }
+    },
+    "hand-md": {
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.hand}"
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "1.75rem"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.15
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "0em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}"
+      }
+    },
+    "hand-sm": {
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.hand}"
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "1.375rem"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.2
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "0em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}"
+      }
+    },
+    "bubble": {
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.bubble}"
+      },
+      "size": {
+        "$value": "clamp(4rem, 2.6rem + 6.2vw, 8.75rem)",
+        "$extensions": {
+          "bbm.fluid": {
+            "min": "64px",
+            "max": "140px"
+          }
+        }
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 0.95
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "0.01em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.regular}"
+      }
     }
   }
 }

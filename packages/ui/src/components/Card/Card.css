@@ -65,6 +65,11 @@
     radial-gradient(closest-side, #000 calc(100% - 0.5px), #0000) 0 0 / calc(2 * var(--_r)) calc(2 * var(--_r)) round;
 }
 
+/* Cloud: the same construction with big bumps, like the text card on pin 07. */
+.bbm-card--cloud {
+  --_r: 26px;
+}
+
 /* Outlines for masked shapes are drawn on the parent so the mask doesn't clip them. */
 .bbm-card-scallop--outline {
   filter: drop-shadow(1.5px 0 0 var(--bbm-color-border-default)) drop-shadow(-1.5px 0 0 var(--bbm-color-border-default))
@@ -77,7 +82,7 @@
     drop-shadow(4px 4px 0 var(--bbm-color-border-default));
 }
 
-/* Airmail frame: candy stripes around a paper panel. */
+/* Candy-stripe frame around a paper panel (pin 05). */
 .bbm-card-frame {
   display: block;
   box-sizing: border-box;

@@ -1,127 +1,337 @@
 {
   "color": {
-    "$description": "Primitive palette. Raw ingredients only: components never use these directly, they use the semantic layer.",
+    "$description": "Primitive palette measured from the 16 pins on the bakesbymom Pinterest board (see design/board/palette.md). Components never use these directly; they use the semantic layer.",
     "white": {
       "$type": "color",
       "$value": "#ffffff",
-      "$description": "Pure white. Raised surfaces and sticker halos only, never the page."
+      "$description": "Pure white. Photo borders and highlights only."
     },
-    "cream": {
-      "$description": "Paper and frosting: the canvas family. Every page sits on cream.",
-      "50": { "$type": "color", "$value": "#fffcf6", "$description": "Paper white: card surface." },
-      "100": { "$type": "color", "$value": "#fdf6e9", "$description": "Canvas: default page background." },
-      "200": { "$type": "color", "$value": "#f8ecd6", "$description": "Sunken: alternate section band." },
-      "300": { "$type": "color", "$value": "#f0debf", "$description": "Kraft: subtle borders, quiet fills." },
-      "400": { "$type": "color", "$value": "#e5cca4", "$description": "Toasted kraft." },
-      "500": { "$type": "color", "$value": "#d4b589", "$description": "Biscuit." }
+    "paper": {
+      "$type": "color",
+      "$value": "#fffdf6",
+      "$description": "Warm white of the product cards in pins 15 and 16. Card surface."
     },
-    "cocoa": {
-      "$description": "Warm brown ink. Replaces black everywhere.",
-      "50": { "$type": "color", "$value": "#f7f1ee" },
-      "100": { "$type": "color", "$value": "#ede2dc" },
-      "200": { "$type": "color", "$value": "#dcc9bf" },
-      "300": { "$type": "color", "$value": "#c2a799" },
-      "400": { "$type": "color", "$value": "#a28474" },
-      "500": { "$type": "color", "$value": "#826455", "$description": "Muted text (5.0:1 on canvas)." },
-      "600": { "$type": "color", "$value": "#6a4c3f" },
-      "700": { "$type": "color", "$value": "#553829", "$description": "Secondary text." },
-      "800": { "$type": "color", "$value": "#45281f" },
+    "blue": {
+      "$description": "Baby Blue. Section fills, stripes, the menu band, FAQ rows and info states.",
+      "50": {
+        "$type": "color",
+        "$value": "#f2f7fc"
+      },
+      "100": {
+        "$type": "color",
+        "$value": "#e5eaf0",
+        "$description": "Measured: category band, pin 13."
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#c4d7e8",
+        "$description": "Hero value. Measured: cards and menu band, pins 02, 05, 16."
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#a0b6cd",
+        "$description": "Dusty blue. Measured: pins 03, 08."
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#859bb2"
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#6b8199"
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#52687f"
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#3a5067",
+        "$description": "Navy band and focus ring. Measured: pin 10."
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#25374a"
+      },
       "900": {
         "$type": "color",
-        "$value": "#3a1e17",
-        "$description": "Primary text, sticker outlines and shadows (14.2:1 on canvas)."
+        "$value": "#12202f"
+      }
+    },
+    "pink": {
+      "$description": "Baby Pink. Cards, scalloped bands, reviews and the warm half of a stripe.",
+      "50": {
+        "$type": "color",
+        "$value": "#fcedf2",
+        "$description": "Measured: quote card, pin 03."
+      },
+      "100": {
+        "$type": "color",
+        "$value": "#fae5e9"
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#f5d7d5",
+        "$description": "Pink band. Measured: Berloga loyalty band, pin 01."
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#f3c5c8",
+        "$description": "Hero value. Measured: step and FAQ cards, pins 02, 05."
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#d7a5a8"
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#bc8588",
+        "$description": "Rose. Measured: ribbon, pin 13."
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#9a686c"
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#794d52"
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#593338"
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#3b1b21"
+      }
+    },
+    "beige": {
+      "$description": "Beige and cream. The page itself: canvas, paper cards, biscuit bands.",
+      "50": {
+        "$type": "color",
+        "$value": "#fbf7ef",
+        "$description": "Canvas. Measured: page grounds, pins 02, 15, 16."
+      },
+      "100": {
+        "$type": "color",
+        "$value": "#f8f1de",
+        "$description": "Cream. Measured: Berloga page, pin 01."
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#ece3c6",
+        "$description": "Hero value, the biscuit band. Measured: pin 04."
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#d3c6ab"
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#baa991",
+        "$description": "Sand. Measured: stripe texture, pins 04, 12."
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#9c8c77"
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#7e705d"
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#625645"
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#473c2e"
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#2e2519"
       }
     },
     "cherry": {
-      "$description": "The brand red, from maraschino to black cherry. The only primary-action color.",
-      "50": { "$type": "color", "$value": "#fdf0f0" },
-      "100": { "$type": "color", "$value": "#fadadc" },
-      "200": { "$type": "color", "$value": "#f4b5ba" },
-      "300": { "$type": "color", "$value": "#ea8a93" },
-      "400": { "$type": "color", "$value": "#dc5a66" },
-      "500": { "$type": "color", "$value": "#c8323f", "$description": "Bright cherry for illustration and doodles." },
-      "600": { "$type": "color", "$value": "#a81e31", "$description": "Primary action fill and links." },
-      "700": { "$type": "color", "$value": "#8a1428", "$description": "Brand ink: headings, logo, hover." },
-      "800": { "$type": "color", "$value": "#6b0f1f", "$description": "Pressed state and deep bands." },
-      "900": { "$type": "color", "$value": "#4a0a15" }
+      "$description": "Cherry Red. Buttons, links, prices and stickers; bright cherry for one bold band.",
+      "50": {
+        "$type": "color",
+        "$value": "#fff1f2"
+      },
+      "100": {
+        "$type": "color",
+        "$value": "#fdddde"
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#f6b5b5"
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#ed8c8b"
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#e06160"
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#d02b2f",
+        "$description": "Bright cherry. Measured: schedule band, pin 15."
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#b22137"
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#941939",
+        "$description": "Hero value, the primary action. Measured: tabs and buttons, pins 08, 16."
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#801026",
+        "$description": "Deep cherry. Measured: headlines and buttons, pin 15."
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#430e17"
+      }
     },
-    "strawberry": {
-      "$description": "Strawberry milk pinks. The main soft surface.",
-      "50": { "$type": "color", "$value": "#fff5f5" },
-      "100": { "$type": "color", "$value": "#fce7e7", "$description": "Blush section background." },
-      "200": { "$type": "color", "$value": "#f7d3d4", "$description": "Soft button and card fill." },
-      "300": { "$type": "color", "$value": "#f2b9c0" },
-      "400": { "$type": "color", "$value": "#ea97a3" },
-      "500": { "$type": "color", "$value": "#dd7385" },
-      "600": { "$type": "color", "$value": "#c4566b" },
-      "700": { "$type": "color", "$value": "#9e3e52" },
-      "800": { "$type": "color", "$value": "#772d3d" },
-      "900": { "$type": "color", "$value": "#511f2a" }
-    },
-    "blueberry": {
-      "$description": "Powder blue to blueberry navy. The cool partner to strawberry.",
-      "50": { "$type": "color", "$value": "#f3f8fb" },
-      "100": { "$type": "color", "$value": "#e4eef5" },
-      "200": { "$type": "color", "$value": "#c9dcea", "$description": "Powder blue stripes and panels." },
-      "300": { "$type": "color", "$value": "#abc6dd" },
-      "400": { "$type": "color", "$value": "#8aabc9" },
-      "500": { "$type": "color", "$value": "#6a8fb3" },
-      "600": { "$type": "color", "$value": "#52749a" },
-      "700": { "$type": "color", "$value": "#3e5a7c", "$description": "Focus ring." },
-      "800": { "$type": "color", "$value": "#2f4560", "$description": "Library navy: optional dark section." },
-      "900": { "$type": "color", "$value": "#213245" }
+    "brown": {
+      "$description": "Cocoa Brown. All text, sticker outlines, offset shadows and dark bands; caramel for warm details.",
+      "50": {
+        "$type": "color",
+        "$value": "#fcf3ed"
+      },
+      "100": {
+        "$type": "color",
+        "$value": "#efe0d4"
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#d7b9a2"
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#be9472"
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#a56f41",
+        "$description": "Caramel. Measured: nav and footer, pin 04."
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#8f5b38"
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#7a492e"
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#643725",
+        "$description": "Cocoa. Measured: display type, pins 07, 11."
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#4a2717"
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#32180b",
+        "$description": "Espresso, the ink. Measured: dark cards and ribbons, pins 02, 05, 13."
+      }
     },
     "butter": {
-      "$description": "Butter, custard and honey.",
-      "50": { "$type": "color", "$value": "#fffcee" },
-      "100": { "$type": "color", "$value": "#fff5cf" },
-      "200": { "$type": "color", "$value": "#fce9a6" },
-      "300": { "$type": "color", "$value": "#f8d878" },
-      "400": { "$type": "color", "$value": "#f2c451" },
-      "500": { "$type": "color", "$value": "#e2a92e" },
-      "600": { "$type": "color", "$value": "#bf8a1c" },
-      "700": { "$type": "color", "$value": "#946914" },
-      "800": { "$type": "color", "$value": "#6c4c10" },
-      "900": { "$type": "color", "$value": "#47320b" }
+      "$description": "Butter (helper). Highlights, a sunny band, warning states.",
+      "50": {
+        "$type": "color",
+        "$value": "#fcf9ea"
+      },
+      "100": {
+        "$type": "color",
+        "$value": "#f8f1d9"
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#f0e1b6",
+        "$description": "Measured: floral band and nav, pins 03, 13."
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#f2db87",
+        "$description": "Measured: ribbon, pin 07."
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#d1bb70"
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#b19b5a"
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#917d46"
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#736032"
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#55451e"
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#392c0c"
+      }
     },
-    "pistachio": {
-      "$description": "Pistachio cream to garden-forest green.",
-      "50": { "$type": "color", "$value": "#f5f7ec" },
-      "100": { "$type": "color", "$value": "#e9eed8" },
-      "200": { "$type": "color", "$value": "#d5deb6" },
-      "300": { "$type": "color", "$value": "#bbc88e" },
-      "400": { "$type": "color", "$value": "#9dae6c" },
-      "500": { "$type": "color", "$value": "#7f9356" },
-      "600": { "$type": "color", "$value": "#657946" },
-      "700": { "$type": "color", "$value": "#4d6139", "$description": "Forest panel (Lilli Pilli)." },
-      "800": { "$type": "color", "$value": "#384a2b" },
-      "900": { "$type": "color", "$value": "#25331d" }
-    },
-    "caramel": {
-      "$description": "Apricot glaze to toffee.",
-      "50": { "$type": "color", "$value": "#fff6ee" },
-      "100": { "$type": "color", "$value": "#fce8d6" },
-      "200": { "$type": "color", "$value": "#f6d0ae" },
-      "300": { "$type": "color", "$value": "#edb384" },
-      "400": { "$type": "color", "$value": "#e0955f", "$description": "Apricot section." },
-      "500": { "$type": "color", "$value": "#cc7a43" },
-      "600": { "$type": "color", "$value": "#ad6233", "$description": "Toffee (Hopf Haus)." },
-      "700": { "$type": "color", "$value": "#8a4c28" },
-      "800": { "$type": "color", "$value": "#66381e" },
-      "900": { "$type": "color", "$value": "#462714" }
-    },
-    "lavender": {
-      "$description": "Ube and periwinkle candy. A minor accent.",
-      "50": { "$type": "color", "$value": "#f7f5fd" },
-      "100": { "$type": "color", "$value": "#eeeafb" },
-      "200": { "$type": "color", "$value": "#dcd5f6" },
-      "300": { "$type": "color", "$value": "#c4b9ee" },
-      "400": { "$type": "color", "$value": "#a898e2" },
-      "500": { "$type": "color", "$value": "#8b78d0" },
-      "600": { "$type": "color", "$value": "#705fb3" },
-      "700": { "$type": "color", "$value": "#574990" },
-      "800": { "$type": "color", "$value": "#40366b" },
-      "900": { "$type": "color", "$value": "#2b2448" }
+    "matcha": {
+      "$description": "Matcha (helper). Success states and a matcha flavor tag only.",
+      "50": {
+        "$type": "color",
+        "$value": "#f7f8e9"
+      },
+      "100": {
+        "$type": "color",
+        "$value": "#edeed2"
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#dcd8a2"
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#cfc06f",
+        "$description": "Measured: stripes and value card, pins 02, 05."
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#aea65e"
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#8e8d4d"
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#70743d"
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#545b2d"
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#3b441e"
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#232d10"
+      }
     }
   }
 }

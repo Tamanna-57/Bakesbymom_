@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Badge, Button, ProductCard } from '@bakesbymom/ui';
-import { art, menu } from '../assets';
+import { art, menu } from '../../apps/web/src/content';
 
 const item = menu[0]!;
 

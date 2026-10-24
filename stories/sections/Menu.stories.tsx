@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { MenuSection, CategoryTiles } from './blocks';
+import { MenuSection, CategoryTiles } from '../../apps/web/src/sections/blocks';
 import { fromBoard } from './ref';
 
 const meta = {
@@ -28,8 +28,8 @@ export const Lead: Story = { render: () => <MenuSection /> };
 export const CategoryTilesRow: Story = {
   name: 'Category tiles',
   render: () => (
-    <div className="sb-section">
-      <div className="sb-container">
+    <div className="site-section">
+      <div className="site-container">
         <CategoryTiles />
       </div>
     </div>

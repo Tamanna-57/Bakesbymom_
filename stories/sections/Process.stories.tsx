@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { ProcessSection } from './blocks';
+import { ProcessSection } from '../../apps/web/src/sections/blocks';
 import { fromBoard } from './ref';
 
 const meta = {

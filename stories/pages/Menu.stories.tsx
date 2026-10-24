@@ -1,34 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { SectionHeading, SiteHeader } from '@bakesbymom/ui';
-import { headerActions, mobileCta, navLinks } from '../assets/site';
-import { CategoryTiles, FaqSection, Footer, MenuSection, PackagesSection } from '../sections/blocks';
+import { MenuPage } from '../../apps/web/src/pages/Menu';
 import { fromBoard } from '../sections/ref';
 
-function MenuPage() {
-  return (
-    <div>
-      <SiteHeader
-        links={navLinks.map((l) => ({ ...l, current: l.label === 'Menu' }))}
-        actions={headerActions}
-        mobileCta={mobileCta}
-        scallop
-      />
-      <main>
-        <MenuSection level={1} />
-        <section className="sb-section">
-          <div className="sb-container" style={{ display: 'grid', gap: 32 }}>
-            <SectionHeading align="center" eyebrow="by the box" title="Something for every table" />
-            <CategoryTiles />
-          </div>
-        </section>
-        <PackagesSection />
-        <FaqSection />
-      </main>
-      <Footer />
-    </div>
-  );
-}
-
+// The live website page (apps/web), shown here with its source pins.
 const meta = {
   title: 'Pages/Menu',
   component: MenuPage,

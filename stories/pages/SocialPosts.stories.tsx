@@ -12,7 +12,7 @@ import {
   SectionHeading,
   Ticket,
 } from '@bakesbymom/ui';
-import { art } from '../assets';
+import { art } from '../../apps/web/src/content';
 import { fromBoard } from '../sections/ref';
 import './pages.css';
 

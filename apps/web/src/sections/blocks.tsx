@@ -30,7 +30,7 @@ import {
   WeekSchedule,
   type ChatMessage,
 } from '@bakesbymom/ui';
-import { art, menu } from '../assets';
+import { art, menu } from '../content';
 import {
   faqItems,
   footerBottom,
@@ -42,12 +42,12 @@ import {
   howToOrder,
   reviews,
   scheduleDays,
-} from '../assets/site';
+} from '../content/site';
 import './sections.css';
 
 const Band = ({ children, className, id }: { children: ReactNode; className?: string; id?: string }) => (
-  <section id={id} className={['sb-section', className].filter(Boolean).join(' ')}>
-    <div className="sb-container">{children}</div>
+  <section id={id} className={['site-section', className].filter(Boolean).join(' ')}>
+    <div className="site-container">{children}</div>
   </section>
 );
 
@@ -73,9 +73,9 @@ export function MenuSection({ level = 2 }: { level?: 1 | 2 }) {
   const [filter, setFilter] = useState<string[]>(['All']);
   const items = useMemo(() => menu.filter((item) => filter[0] === 'All' || item.category === filter[0]), [filter]);
   return (
-    <Band id="menu" className="sb-section--blue">
+    <Band id="menu" className="site-section--blue">
       <SectionHeading variant="ribbon" level={level} title="Menu" ribbonText="fresh this week" />
-      <div className="sb-menu__filters">
+      <div className="site-menu__filters">
         <FilterChips
           label="Filter the menu"
           options={CATEGORIES.map((c) => ({ value: c, label: c }))}
@@ -86,7 +86,7 @@ export function MenuSection({ level = 2 }: { level?: 1 | 2 }) {
           Showing {items.length} bakes
         </p>
       </div>
-      <ul className="sb-menu__grid">
+      <ul className="site-menu__grid">
         {items.map((item, i) => (
           <li key={item.name}>
             <ProductCard
@@ -110,7 +110,7 @@ export function MenuSection({ level = 2 }: { level?: 1 | 2 }) {
           </li>
         ))}
       </ul>
-      <p className="sb-menu__note">
+      <p className="site-menu__note">
         <Doodle name="sparkle" size={18} color="var(--bbm-color-cherry-500)" />
         Most bakes can be made gluten-, dairy- or nut-free. Just ask Mom.
       </p>
@@ -127,13 +127,13 @@ export function CategoryTiles() {
     { label: 'Bread', image: art.sourdough },
   ];
   return (
-    <ul className="sb-tiles">
+    <ul className="site-tiles">
       {tiles.map((tile) => (
         <li key={tile.label}>
-          <a className="sb-tile" href="#menu">
+          <a className="site-tile" href="#menu">
             <img src={tile.image} alt="" />
-            <span className="sb-tile__label">{tile.label}</span>
-            <span className="sb-tile__arrow" aria-hidden="true">
+            <span className="site-tile__label">{tile.label}</span>
+            <span className="site-tile__arrow" aria-hidden="true">
               ↗
             </span>
           </a>
@@ -153,10 +153,10 @@ export function ProcessSection() {
       tone="pink"
       scale="xl"
       ground="var(--bbm-color-bg-canvas)"
-      className="sb-section"
+      className="site-section"
     >
-      <div className="sb-container sb-narrow">
-        <div className="sb-process__card">
+      <div className="site-container site-narrow">
+        <div className="site-process__card">
           <SectionHeading title="How to order" align="center" />
           <StepList variant="stack" steps={howToOrder} />
         </div>
@@ -169,12 +169,12 @@ export function ProcessSection() {
 
 export function FindUsSection() {
   return (
-    <section id="find-us" className="sb-section sb-section--cherry">
-      <div className="sb-container">
+    <section id="find-us" className="site-section site-section--cherry">
+      <div className="site-container">
         <WeekSchedule days={scheduleDays} action={<Button>Get directions</Button>} />
         <NewsletterSignup
           variant="bar"
-          className="sb-find__bar"
+          className="site-find__bar"
           title="Psst! Get Mom's schedule every Monday"
           buttonLabel="Sign up"
           onSubmit={() => new Promise((resolve) => setTimeout(resolve, 600))}
@@ -188,8 +188,8 @@ export function FindUsSection() {
 
 export function CustomCakesSection() {
   return (
-    <Band id="custom" className="sb-custom">
-      <div className="sb-custom__copy">
+    <Band id="custom" className="site-custom">
+      <div className="site-custom__copy">
         <SectionHeading
           eyebrow="Birthdays · Weddings · Showers"
           title={
@@ -199,14 +199,14 @@ export function CustomCakesSection() {
           }
           description="Custom cakes in any flavor on the menu, decorated your way."
         />
-        <div className="sb-custom__prices">
+        <div className="site-custom__prices">
           <PriceTag shape="scallop" tone="pink" amount="$45" label="6-inch cake" size={128} rotate={-4} />
           <PriceTag shape="flower" tone="cherry" amount="$4" label="per cupcake" size={128} rotate={3} />
           <PriceTag shape="cloud" tone="blue" amount="$15" label="custom message" size={128} rotate={-2} />
         </div>
         <Button size="lg">Plan your cake</Button>
       </div>
-      <PatternSurface pattern="pinstripe" tone="pink" className="sb-custom__panel">
+      <PatternSurface pattern="pinstripe" tone="pink" className="site-custom__panel">
         <Polaroid
           src={art.chocolateCake}
           alt="Chocolate cake with ganache drip and strawberries"
@@ -214,11 +214,16 @@ export function CustomCakesSection() {
           rotate={4}
           width={300}
         />
-        <Seal className="sb-custom__seal" text="Designed to delight • Designed to delight • " size={104} tone="cherry">
+        <Seal
+          className="site-custom__seal"
+          text="Designed to delight • Designed to delight • "
+          size={104}
+          tone="cherry"
+        >
           <Doodle name="heart" size={24} color="var(--bbm-color-pink-300)" />
         </Seal>
         <PriceTag
-          className="sb-custom__tag"
+          className="site-custom__tag"
           shape="tag"
           tone="butter"
           amount="Baked for:"
@@ -233,7 +238,7 @@ export function CustomCakesSection() {
 
 export function PackagesSection() {
   return (
-    <Band className="sb-section--beige">
+    <Band className="site-section--beige">
       <SectionHeading
         align="center"
         title={
@@ -242,7 +247,7 @@ export function PackagesSection() {
           </>
         }
       />
-      <div className="sb-packages">
+      <div className="site-packages">
         <PricingCard
           title="Little cake"
           price="$45"
@@ -271,23 +276,23 @@ export function PackagesSection() {
 
 export function MeetMomSection() {
   return (
-    <Band id="story" className="sb-meet">
-      <PatternSurface pattern="dots" tone="brown" ground="var(--bbm-color-bg-blue)" className="sb-meet__photo">
+    <Band id="story" className="site-meet">
+      <PatternSurface pattern="dots" tone="brown" ground="var(--bbm-color-bg-blue)" className="site-meet__photo">
         <Polaroid frame="scallop" src={art.mom} alt="Mom in her apron, smiling" rotate={0} />
         <Doodle
           name="sparkle"
           size={64}
           color="var(--bbm-color-blue-400)"
-          className="sb-meet__spark sb-meet__spark--a"
+          className="site-meet__spark site-meet__spark--a"
         />
         <Doodle
           name="sparkle"
           size={48}
           color="var(--bbm-color-blue-400)"
-          className="sb-meet__spark sb-meet__spark--b"
+          className="site-meet__spark site-meet__spark--b"
         />
       </PatternSurface>
-      <Card frame="stripes" tone="cherry" rotate={-2} padding="lg" className="sb-meet__note">
+      <Card frame="stripes" tone="cherry" rotate={-2} padding="lg" className="site-meet__note">
         <SectionHeading
           eyebrow="The baker behind it all"
           title="Hi, I'm Mom."
@@ -302,7 +307,7 @@ export function MeetMomSection() {
             </>
           }
         />
-        <p className="sb-signature">with love, Mom</p>
+        <p className="site-signature">with love, Mom</p>
         <Button variant="secondary">Read our story</Button>
       </Card>
     </Band>
@@ -311,7 +316,7 @@ export function MeetMomSection() {
 
 export function OrbitSection() {
   return (
-    <Band className="sb-orbit">
+    <Band className="site-orbit">
       <Orbit
         center={{ src: art.kitchen, alt: "Mom's kitchen with jars on the shelf and a cake on a stand" }}
         satellites={[
@@ -324,10 +329,10 @@ export function OrbitSection() {
         ]}
         arcText="Every bake is a little bit of home"
       />
-      <p className="sb-orbit__text">
+      <p className="site-orbit__text">
         Bakes by Mom started at our kitchen table. Every order is still baked there, one cake at a time.
       </p>
-      <div className="sb-center">
+      <div className="site-center">
         <Button>Find us this week</Button>
       </div>
     </Band>
@@ -336,7 +341,7 @@ export function OrbitSection() {
 
 export function ValuesRow() {
   return (
-    <div className="sb-values">
+    <div className="site-values">
       <Card tone="blue" outline padding="lg">
         <Doodle name="whisk" size={56} />
         <p className="bbm-text-heading-md">Made from scratch</p>
@@ -354,16 +359,16 @@ export function ValuesRow() {
 export function AboutCardSection() {
   return (
     <Band>
-      <Card outline="brand" padding="lg" className="sb-about-card">
+      <Card outline="brand" padding="lg" className="site-about-card">
         <Doodle
           name="cherries-halftone"
           size={180}
           color="var(--bbm-color-cherry-700)"
-          className="sb-about-card__cherries"
+          className="site-about-card__cherries"
         />
         <SectionHeading variant="stamp" align="start" title="About us" overlay="About us" />
         <p className="bbm-text-heading-sm">What makes it different?</p>
-        <p className="sb-about-card__quote">
+        <p className="site-about-card__quote">
           “Cakes are more than dessert. They're the part of the party people remember. I bake every one like it's for my
           own family, because for thirty years it was.”
         </p>
@@ -389,7 +394,7 @@ export function ReviewsSection() {
   return (
     <Band>
       <SectionHeading eyebrow="reviews" eyebrowStyle="pill" title="Kind words" align="center" />
-      <ul className="sb-reviews">
+      <ul className="site-reviews">
         {reviews.map((review) => (
           <li key={review.author}>
             <ReviewCard {...review} />
@@ -404,27 +409,27 @@ export function ReviewsSection() {
 
 export function BakeClubSection() {
   return (
-    <section id="club" className="sb-club">
-      <div className="sb-club__mascot" aria-hidden="true">
+    <section id="club" className="site-club">
+      <div className="site-club__mascot" aria-hidden="true">
         <Doodle name="cupcake" size={96} />
       </div>
       <EdgeDivider shape="scallop" flip color="var(--bbm-color-bg-pink)" outline size="lg" />
-      <div className="sb-club__band">
-        <div className="sb-container sb-narrow">
+      <div className="site-club__band">
+        <div className="site-container site-narrow">
           <SectionHeading eyebrow="bake club" eyebrowStyle="pill" title="Dear neighbors," align="center" />
-          <p className="sb-club__letter">
+          <p className="site-club__letter">
             Every month I bake a box of four seasonal treats, just for the Bake Club. You get first pick of holiday
             orders too, and a recipe card from my kitchen.
           </p>
-          <Ticket tone="blue" stub={<span>June ’26</span>} className="sb-club__ticket">
-            <p className="sb-club__perks-title">Bake Club · member perks</p>
-            <ul className="sb-club__perks">
+          <Ticket tone="blue" stub={<span>June ’26</span>} className="site-club__ticket">
+            <p className="site-club__perks-title">Bake Club · member perks</p>
+            <ul className="site-club__perks">
               <li>A box of 4 seasonal treats</li>
               <li>First pick of holiday orders</li>
               <li>Mom's recipe card every month</li>
             </ul>
           </Ticket>
-          <div className="sb-club__cta">
+          <div className="site-club__cta">
             <p>
               <strong>$28 a month</strong> · skip or pause anytime
             </p>
@@ -450,7 +455,7 @@ export function FaqSection() {
           </>
         }
       />
-      <Accordion items={faqItems} columns={2} exclusive className="sb-faq" />
+      <Accordion items={faqItems} columns={2} exclusive className="site-faq" />
     </Band>
   );
 }
@@ -459,13 +464,13 @@ export function FaqSection() {
 
 export function NewsletterSection() {
   return (
-    <section className="sb-news">
+    <section className="site-news">
       <EdgeDivider shape="scallop" flip color="var(--bbm-color-bg-butter)" />
       <PatternSurface
         pattern="dots"
         tone="brown"
         ground="var(--bbm-color-bg-butter)"
-        className="sb-news__band"
+        className="site-news__band"
         scale="sm"
       >
         <NewsletterSignup
@@ -494,7 +499,7 @@ export function JournalSection() {
   return (
     <Band>
       <SectionHeading eyebrow="journal" eyebrowStyle="pill" title="From Mom's notebook" align="center" />
-      <ul className="sb-journal">
+      <ul className="site-journal">
         {posts.map((post) => (
           <li key={post.title}>
             <ProductCard
@@ -505,7 +510,7 @@ export function JournalSection() {
               href="#journal"
               description={
                 <>
-                  <span className="sb-journal__kicker">{post.kicker}</span> · {post.date}
+                  <span className="site-journal__kicker">{post.kicker}</span> · {post.date}
                 </>
               }
             />

@@ -1,4 +1,4 @@
-// Shared sample content for section stories and page mockups.
+// Site content (sample copy for now), shared by the website and the Storybook section stories.
 import {
   Button,
   Doodle,
@@ -10,13 +10,18 @@ import {
   type ScheduleDay,
 } from '@bakesbymom/ui';
 import { art, menu } from './index';
+import '../sections/sections.css';
 
 export const navLinks: NavLink[] = [
-  { label: 'Menu', href: '#menu', current: true },
-  { label: 'Custom cakes', href: '#custom' },
-  { label: 'Find us', href: '#find-us' },
-  { label: 'Bake Club', href: '#club' },
+  { label: 'Menu', href: '/menu' },
+  { label: 'Custom cakes', href: '/#custom' },
+  { label: 'Find us', href: '/#find-us' },
+  { label: 'Bake Club', href: '/#club' },
 ];
+
+/** The nav with the link for the current page marked (`aria-current`). */
+export const navLinksFor = (path: string): NavLink[] =>
+  navLinks.map((link) => ({ ...link, current: link.href === path }));
 
 const Icon = ({ d }: { d: string }) => (
   <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
@@ -30,11 +35,11 @@ export const headerActions = (
     <Button variant="secondary" shape="circle" size="sm" aria-label="Search" href="#search">
       <Icon d="M10.5 17a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13zM20 20l-4.8-4.8" />
     </Button>
-    <span className="sb-order-box">
+    <span className="site-order-box">
       <Button variant="secondary" shape="circle" size="sm" aria-label="Order box, 2 items" href="#order">
         <Icon d="M4 9h16l-1.5 10.5a1.5 1.5 0 0 1-1.5 1.3H7a1.5 1.5 0 0 1-1.5-1.3zM8.5 9V7.5a3.5 3.5 0 0 1 7 0V9" />
       </Button>
-      <span className="sb-order-box__count" aria-hidden="true">
+      <span className="site-order-box__count" aria-hidden="true">
         2
       </span>
     </span>
@@ -42,14 +47,14 @@ export const headerActions = (
 );
 
 export const mobileCta = (
-  <Button fullWidth href="#custom">
+  <Button fullWidth href="/#custom">
     Order a cake
   </Button>
 );
 
 export const announcement = (
   <>
-    Order by Wednesday for Saturday pick-up. <a href="#menu">See this week's menu →</a>
+    Order by Wednesday for Saturday pick-up. <a href="/menu">See this week's menu →</a>
   </>
 );
 
@@ -57,19 +62,19 @@ export const footerColumns: FooterColumn[] = [
   {
     title: 'Shop',
     links: [
-      { label: "This week's menu", href: '#menu' },
-      { label: 'Custom cakes', href: '#custom' },
-      { label: 'Bake Club', href: '#club' },
-      { label: 'Find us', href: '#find-us' },
+      { label: "This week's menu", href: '/menu' },
+      { label: 'Custom cakes', href: '/#custom' },
+      { label: 'Bake Club', href: '/#club' },
+      { label: 'Find us', href: '/#find-us' },
     ],
   },
   {
     title: 'Hello',
     links: [
-      { label: 'Our story', href: '#story' },
-      { label: 'Allergens', href: '#allergens' },
-      { label: 'FAQ', href: '#faq' },
-      { label: 'Contact', href: '#contact' },
+      { label: 'Our story', href: '/about' },
+      { label: 'Allergens', href: '/#faq' },
+      { label: 'FAQ', href: '/#faq' },
+      { label: 'Contact', href: 'mailto:hello@bakesbymom.com' },
     ],
   },
 ];

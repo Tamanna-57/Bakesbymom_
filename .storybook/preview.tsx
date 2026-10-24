@@ -7,6 +7,12 @@ import theme from './theme';
 // The page base (canvas, ink, body type) for every story and docs page.
 document.body.classList.add('bbm-theme');
 
+// Website links (/menu, /#custom) point at pages of apps/web; inside Storybook they'd load a missing page.
+document.addEventListener('click', (event) => {
+  const link = event.target instanceof Element ? event.target.closest('a[href^="/"]') : null;
+  if (link) event.preventDefault();
+});
+
 const preview: Preview = {
   tags: ['autodocs'],
   parameters: {

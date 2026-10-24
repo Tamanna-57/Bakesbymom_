@@ -1,0 +1,430 @@
+/* Layout for the section compositions in blocks.tsx (Storybook only, built from tokens). */
+
+.sb-section {
+  padding: var(--bbm-layout-section-y) var(--bbm-layout-gutter);
+  color: var(--bbm-color-text-primary);
+}
+
+.sb-section > .sb-container {
+  display: grid;
+  gap: var(--bbm-space-10);
+}
+
+.sb-narrow {
+  max-width: 44rem;
+}
+
+.sb-center {
+  display: flex;
+  justify-content: center;
+}
+
+.sb-section--blue {
+  background-color: var(--bbm-color-bg-blue);
+}
+
+.sb-section--beige {
+  background-color: var(--bbm-color-bg-beige);
+}
+
+.sb-section--cherry {
+  background-color: var(--bbm-color-bg-brand);
+}
+
+/* Menu */
+.sb-menu__filters {
+  display: flex;
+  justify-content: center;
+}
+
+.sb-menu__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: var(--bbm-space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sb-menu__grid > li {
+  display: flex;
+}
+
+.sb-menu__grid > li > * {
+  flex: 1;
+}
+
+.sb-menu__note {
+  display: flex;
+  align-items: center;
+  gap: var(--bbm-space-2);
+  justify-self: center;
+  margin: 0;
+  padding: var(--bbm-space-2) var(--bbm-space-5);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-pill);
+  background-color: var(--bbm-color-bg-surface);
+  font-size: var(--bbm-text-body-sm-size);
+}
+
+/* Category tiles (pin 16) */
+.sb-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: var(--bbm-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sb-tile {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 1;
+  border-radius: var(--bbm-radius-xl);
+  background-color: var(--bbm-color-bg-brand-deep);
+  color: var(--bbm-color-text-inverse);
+  text-decoration: none;
+}
+
+.sb-tile img {
+  position: absolute;
+  right: -18%;
+  bottom: -14%;
+  width: 82%;
+  opacity: 0.35;
+  filter: grayscale(1) brightness(0.5) sepia(1) hue-rotate(-30deg) saturate(3);
+}
+
+.sb-tile__label {
+  position: absolute;
+  left: var(--bbm-space-5);
+  bottom: var(--bbm-space-5);
+  max-width: 70%;
+  font-family: var(--bbm-text-heavy-family);
+  font-size: 1.75rem;
+  font-weight: var(--bbm-font-weight-black);
+  line-height: 1;
+}
+
+.sb-tile__arrow {
+  position: absolute;
+  top: var(--bbm-space-4);
+  right: var(--bbm-space-4);
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background-color: var(--bbm-color-bg-surface);
+  color: var(--bbm-color-text-primary);
+}
+
+.sb-tile:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: var(--bbm-focus-ring-offset);
+}
+
+/* Process */
+.sb-process__card {
+  display: grid;
+  gap: var(--bbm-space-8);
+}
+
+.sb-process__card .bbm-heading__title {
+  display: inline-block;
+  padding: 0.1em 0.5em;
+  background-color: var(--bbm-color-bg-canvas);
+}
+
+/* Find us */
+.sb-find__bar {
+  margin-top: var(--bbm-space-6);
+}
+
+/* Custom cakes */
+.sb-custom > .sb-container {
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+
+@media (min-width: 960px) {
+  .sb-custom > .sb-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.sb-custom__copy {
+  display: grid;
+  justify-items: start;
+  gap: var(--bbm-space-8);
+}
+
+.sb-custom__prices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bbm-space-4);
+}
+
+/* Keep the three price stickers on one row on phones */
+@media (max-width: 599.98px) {
+  .sb-custom__prices {
+    gap: var(--bbm-space-2);
+  }
+
+  .sb-custom__prices > * {
+    --_tag-size: 100px !important;
+  }
+}
+
+.sb-custom__panel {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 28rem;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-2xl);
+}
+
+.sb-custom__seal {
+  position: absolute;
+  top: var(--bbm-space-6);
+  left: var(--bbm-space-6);
+  rotate: -10deg;
+}
+
+.sb-custom__tag {
+  position: absolute;
+  right: var(--bbm-space-8);
+  bottom: var(--bbm-space-8);
+}
+
+.sb-packages {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--bbm-space-12) var(--bbm-space-8);
+  padding-top: var(--bbm-space-6);
+}
+
+/* Meet Mom (pin 05) */
+.sb-meet > .sb-container {
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: var(--bbm-space-12);
+}
+
+@media (min-width: 960px) {
+  .sb-meet > .sb-container {
+    grid-template-columns: 1fr 1.05fr;
+  }
+}
+
+.sb-meet__photo {
+  position: relative;
+  padding: var(--bbm-space-8);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+}
+
+.sb-meet__photo .bbm-polaroid {
+  max-width: 26rem;
+  margin-inline: auto;
+}
+
+.sb-meet__spark {
+  position: absolute;
+}
+
+.sb-meet__spark--a {
+  top: -1.5rem;
+  right: -1rem;
+}
+
+.sb-meet__spark--b {
+  bottom: -1rem;
+  left: -0.75rem;
+}
+
+.sb-meet__note .bbm-card {
+  display: grid;
+  gap: var(--bbm-space-5);
+  justify-items: start;
+}
+
+.sb-signature {
+  margin: 0;
+  font-family: var(--bbm-text-script-sm-family);
+  font-size: var(--bbm-text-script-sm-size);
+  line-height: 1;
+  color: var(--bbm-color-text-brand);
+}
+
+/* Orbit */
+.sb-orbit__text {
+  max-width: 34rem;
+  margin: 0 auto;
+  font-size: var(--bbm-text-body-lg-size);
+  line-height: var(--bbm-text-body-lg-line-height);
+  text-align: center;
+  color: var(--bbm-color-text-secondary);
+}
+
+/* Values (pin 05) */
+.sb-values {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--bbm-space-5);
+}
+
+.sb-values .bbm-card {
+  display: grid;
+  justify-items: center;
+  gap: var(--bbm-space-2);
+  text-align: center;
+}
+
+.sb-values p {
+  margin: 0;
+}
+
+/* About card (pin 16) */
+.sb-about-card {
+  display: grid;
+  gap: var(--bbm-space-4);
+  overflow: hidden;
+  padding-inline-start: clamp(var(--bbm-space-6), 16vw, 12rem) !important;
+}
+
+.sb-about-card__cherries {
+  position: absolute;
+  left: -3rem;
+  bottom: -2rem;
+}
+
+.sb-about-card p {
+  margin: 0;
+}
+
+.sb-about-card__quote {
+  max-width: 34rem;
+  font-size: var(--bbm-text-body-lg-size);
+  line-height: var(--bbm-text-body-lg-line-height);
+}
+
+/* Reviews */
+.sb-reviews {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--bbm-space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Bake Club (pin 01) */
+.sb-club {
+  position: relative;
+  padding-top: var(--bbm-space-12);
+}
+
+.sb-club .bbm-edge {
+  display: block;
+}
+
+.sb-club__mascot {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 7.5rem;
+  height: 7.5rem;
+  translate: -50% 0;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: 50%;
+  background-color: var(--bbm-color-bg-surface);
+}
+
+.sb-club__band {
+  padding: var(--bbm-space-12) var(--bbm-layout-gutter) var(--bbm-space-16);
+  background-color: var(--bbm-color-bg-pink);
+}
+
+.sb-club__band .sb-container {
+  display: grid;
+  gap: var(--bbm-space-6);
+  justify-items: center;
+}
+
+.sb-club__letter {
+  max-width: 34rem;
+  margin: 0;
+  font-size: var(--bbm-text-body-lg-size);
+  line-height: var(--bbm-text-body-lg-line-height);
+  text-align: center;
+}
+
+.sb-club__ticket {
+  width: min(100%, 32rem);
+}
+
+.sb-club__perks-title {
+  margin: 0 0 var(--bbm-space-2);
+  font-size: var(--bbm-text-eyebrow-size);
+  font-weight: var(--bbm-text-eyebrow-weight);
+  letter-spacing: var(--bbm-text-eyebrow-tracking);
+  text-transform: uppercase;
+}
+
+.sb-club__perks {
+  margin: 0;
+  padding-inline-start: 1.25rem;
+  line-height: 1.6;
+}
+
+.sb-club__cta {
+  display: grid;
+  justify-items: center;
+  gap: var(--bbm-space-3);
+}
+
+.sb-club__cta p {
+  margin: 0;
+}
+
+/* FAQ */
+.sb-faq {
+  width: 100%;
+}
+
+/* Newsletter */
+.sb-news .bbm-edge {
+  display: block;
+  margin-bottom: -1px;
+}
+
+.sb-news__band {
+  padding: var(--bbm-space-16) var(--bbm-layout-gutter) var(--bbm-space-20);
+}
+
+/* Journal */
+.sb-journal {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: var(--bbm-space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sb-journal .bbm-product__media {
+  box-shadow: var(--bbm-shadow-sticker-md);
+}
+
+.sb-journal__kicker {
+  font-weight: var(--bbm-font-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bbm-color-text-brand);
+}

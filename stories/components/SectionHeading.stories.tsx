@@ -2,43 +2,25 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { SectionHeading } from '@bakesbymom/ui';
 
 const meta = {
-  title: 'Components/Content/SectionHeading',
+  title: 'Components/SectionHeading',
   component: SectionHeading,
-  args: {
-    eyebrow: 'Fresh this week',
-    title: 'Baked in small batches',
-    description:
-      'Everything is made to order in Mom’s kitchen, with real butter, free-range eggs and fruit from the Saturday market.',
-    align: 'start',
-    size: 'lg',
-    level: 2,
-    tone: 'ink',
-    eyebrowStyle: 'text',
-  },
-  argTypes: {
-    align: { control: 'inline-radio', options: ['start', 'center'] },
-    size: { control: 'inline-radio', options: ['xl', 'lg', 'md', 'sm'] },
-    tone: { control: 'inline-radio', options: ['ink', 'brand', 'inverse'] },
-    eyebrowStyle: { control: 'inline-radio', options: ['text', 'pill'] },
-    level: { control: 'select', options: [1, 2, 3, 4, 5, 6] },
-    title: { control: 'text' },
-    script: { control: 'text' },
-  },
   parameters: {
     docs: {
       description: {
         component:
-          'The section opener: a mono eyebrow, a Fraunces title and an optional script line or script word. Wrap a word in `<em>` to swap it into Pinyon Script (Puzzle Pantry), or pass `script` for a second line (Cherry Cloud, Pastry Guide). `eyebrowStyle="pill"` clips the label onto a rule (Berloga).',
+          'The board\'s title moves. **default**: a serif title where `<em>` words switch to script (pins 13, 15). **`bubble`**: one huge outlined word like GALLERY (pin 01), once per page. **`ribbon`**: a big script title between two cherry ribbons (pin 16\'s "Fillings"). **`stamp`**: a heavy title overlapped by the same words in script (pin 16), once per page; the script copy is hidden from screen readers. Eyebrows: tracked caps, a **handwritten pill** (pin 01) or **brackets** (pin 15).',
       },
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ width: 'min(760px, 90vw)' }}>
-        <Story />
-      </div>
+  args: {
+    eyebrow: 'Fresh this week',
+    title: (
+      <>
+        Baked with <em>love</em>
+      </>
     ),
-  ],
+    description: 'Cakes, cookies and pies, baked to order in Mom’s kitchen.',
+  },
 } satisfies Meta<typeof SectionHeading>;
 
 export default meta;
@@ -46,42 +28,37 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-export const ScriptWord: Story = {
-  args: {
-    title: (
-      <>
-        For the nights that need <em>something</em> sweet
-      </>
-    ),
-    eyebrow: 'Weeknight treats',
-  },
-};
-
-export const ScriptLine: Story = {
-  args: {
-    title: 'Cherry cloud',
-    script: 'Shortcake',
-    align: 'center',
-    size: 'xl',
-    tone: 'brand',
-    eyebrow: 'Soft opening · 9 August',
-    description: undefined,
-  },
-};
-
+/** Pin 01. */
 export const PillEyebrow: Story = {
-  args: { eyebrowStyle: 'pill', eyebrow: 'special events', align: 'center', title: 'Dessert hour, every Friday' },
+  args: { eyebrow: 'reviews', eyebrowStyle: 'pill', title: 'Kind words', align: 'center', description: undefined },
 };
 
-export const OnCocoa: Story = {
-  args: {
-    tone: 'inverse',
-    title: (
-      <>
-        Join the <em>bake</em> club
-      </>
+/** Pin 15. */
+export const BracketEyebrow: Story = {
+  args: { eyebrow: "Baked in Mom's kitchen", eyebrowStyle: 'bracket', size: 'xl' },
+};
+
+/** Pin 01. */
+export const Bubble: Story = {
+  args: { variant: 'bubble', title: 'Gallery', eyebrow: undefined, description: undefined },
+};
+
+/** Pin 16. */
+export const Ribbon: Story = {
+  args: { variant: 'ribbon', title: 'Menu', eyebrow: undefined, description: undefined },
+  decorators: [(Story) => <div style={{ width: 'min(960px, 90vw)' }}>{Story()}</div>],
+};
+
+/** Pin 16. */
+export const Stamp: Story = {
+  args: { variant: 'stamp', title: 'About us', eyebrow: undefined, description: undefined },
+};
+
+export const Inverse: Story = {
+  args: { tone: 'inverse' },
+  decorators: [
+    (Story) => (
+      <div style={{ background: 'var(--bbm-color-bg-inverse)', padding: 32, borderRadius: 16 }}>{Story()}</div>
     ),
-    eyebrow: 'Monthly subscription',
-  },
-  globals: { backgrounds: { value: 'cocoa' } },
+  ],
 };

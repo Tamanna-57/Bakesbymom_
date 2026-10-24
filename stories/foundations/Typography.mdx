@@ -5,48 +5,52 @@ import { FontFamilies, TypeScale } from '../blocks/TokenBlocks';
 
 # Typography
 
-Four families, each with one job. All are free Google Fonts (SIL OFL), loaded by `@bakesbymom/ui/fonts.css`.
+Five families, each with one job, all read from the board. All are free Google Fonts (SIL OFL), loaded by `@bakesbymom/ui/fonts.css`.
+
+| Family              | Job                                                     | From the board                                                               |
+| ------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| **Fraunces**        | Headlines, prices, the logo                             | The soft serif display of pins 02, 05, 13 and 15; the soft black serif of 11 |
+| **DM Sans**         | Body, UI, labels; 800–900 for one heavy title           | The clean sans bodies everywhere; the heavy grotesque of 16                  |
+| **Pinyon Script**   | One accent word, "by Mom", signatures (32px and up)     | The formal script of 16 ("Fillings") and 10                                  |
+| **Caveat**          | Handwritten notes, captions, pill labels (20px and up)  | The handwriting on 15 ("catch me if you candy!"), 04, 13 and 01              |
+| **Cherry Bomb One** | One bubble word per page, always outlined (64px and up) | GALLERY on 01, the pink marquee on 11                                        |
 
 <FontFamilies />
 
 ## Type scale
 
-Display and heading sizes are **fluid**: they scale smoothly between the phone and desktop sizes with `clamp()`. Use the classes (`.bbm-text-display-xl`) or the variables (`--bbm-text-display-xl-size`, `-line-height`, `-tracking`, `-weight`, `-family`).
+Display sizes are **fluid**: they scale between the phone and desktop sizes with `clamp()`. Use the classes (`.bbm-text-display-xl`) or the variables (`--bbm-text-display-xl-size`, `-line-height`, `-tracking`, `-weight`, `-family`).
 
 <TypeScale />
 
-## Fraunces softness
-
-Fraunces is a variable font with `SOFT` and `WONK` axes, so one family covers several looks:
-
-| Token                          | Value                  | Use                                                                     |
-| ------------------------------ | ---------------------- | ----------------------------------------------------------------------- |
-| `--bbm-font-variation-display` | `"SOFT" 50, "WONK" 0`  | Default for headings                                                    |
-| `--bbm-font-variation-soft`    | `"SOFT" 100, "WONK" 1` | Puffy, Cooper-style: logo, price tags, promo posters (`.bbm-font-soft`) |
-| `--bbm-font-variation-crisp`   | `"SOFT" 0, "WONK" 0`   | Sharper patisserie caps: marquees, editorial lines                      |
-
-## Script, sparingly
-
-Pinyon Script is an accent: one word in a headline (`<em>` inside `SectionHeading` and `Hero` titles), a second line under a title, captions on polaroids, and Mom's signature. Never use it for buttons, labels, body copy or anything under 28px.
+## The board's title moves
 
 <Unstyled>
-  <div style={{ display: 'grid', gap: 12, margin: '16px 0' }}>
+  <div style={{ display: 'grid', gap: 28, margin: '16px 0' }}>
     <div className="bbm-text-display-md">
-      For the nights that need <em className="bbm-script-word">something</em> sweet
+      Homemade cakes, <em className="bbm-script-word">still warm</em> from Mom's oven
     </div>
     <div className="bbm-text-display-md">
-      Baked with <span className="bbm-squiggle">love</span>, by Mom
+      A town you'll <span className="bbm-squiggle">never</span> want to leave
     </div>
+    <p
+      className="bbm-text-hand-md"
+      style={{ color: 'var(--bbm-color-text-brand)', margin: 0, rotate: '-4deg', width: 'fit-content' }}
+    >
+      made with real butter!
+    </p>
+    <div className="bbm-text-bubble">Gallery</div>
   </div>
 </Unstyled>
 
-## Labels speak "recipe card"
+1. **A serif headline with one word in script**, as on pins 13 and 15. In components, wrap the word in `<em>`.
+2. **A hand-drawn underline** under one word, as on pin 03 (`.bbm-squiggle`).
+3. **A handwritten aside**, tilted, next to the product, as on pin 15.
+4. **One bubble word** per page, outlined with a hard cocoa shadow, as on pin 01.
 
-Eyebrows, prices, dates and opening hours use DM Mono, which brings back the typed recipe cards from the Hopf Haus and Book Nook references:
+## Rules
 
-<Unstyled>
-  <p className="bbm-text-eyebrow" style={{ color: 'var(--bbm-color-text-brand)' }}>
-    Recipe no. 04 · baked fresh daily
-  </p>
-  <p className="bbm-text-price">Strawberry layer cake ........ $38.00</p>
-</Unstyled>
+- Body copy is 17px minimum on the web. Ingredients and small print can go to 15px.
+- Script never sets more than three words, and never below 32px.
+- Handwriting is for asides. Anything a customer needs to know (dates, prices, allergens) is in DM Sans.
+- Labels and eyebrows are uppercase with tracking; buttons are sentence case and bold.

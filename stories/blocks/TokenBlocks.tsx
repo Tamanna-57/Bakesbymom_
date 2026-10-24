@@ -42,11 +42,11 @@ export function contrast(a: string, b: string) {
   return (hi + 0.05) / (lo + 0.05);
 }
 
-const textOn = (hex: string) => (contrast(hex, '#3a1e17') >= contrast(hex, '#fffcf6') ? '#3a1e17' : '#fffcf6');
+const textOn = (hex: string) => (contrast(hex, '#32180b') >= contrast(hex, '#fffdf6') ? '#32180b' : '#fffdf6');
 
 /* Shared styles -------------------------------------------------------- */
 
-const mono: CSSProperties = { fontFamily: 'var(--bbm-font-family-mono)', fontSize: 12 };
+const mono: CSSProperties = { fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace', fontSize: 12 };
 const muted: CSSProperties = { ...mono, color: 'var(--bbm-color-text-muted)' };
 const card: CSSProperties = {
   border: '1.5px solid var(--bbm-color-border-default)',
@@ -88,8 +88,16 @@ export function ColorScale({ family }: { family: string }) {
               style={{ background: hex, color: textOn(hex), padding: '56px 10px 10px', minWidth: 0 }}
               title={t.description ?? undefined}
             >
-              <div style={{ fontWeight: 700, fontSize: 13 }}>{t.path[2]}</div>
+              <div style={{ fontWeight: 700, fontSize: 13 }}>
+                {t.path[2]}
+                {t.description?.includes('Measured') && <span title="Measured from a pin"> ★</span>}
+              </div>
               <div style={{ ...mono, opacity: 0.85 }}>{hex}</div>
+              {t.description?.includes('Measured') && (
+                <div style={{ fontSize: 10.5, marginTop: 4, opacity: 0.85 }}>
+                  {t.description.replace(/^.*Measured: /, '').replace(/\.$/, '')}
+                </div>
+              )}
             </div>
           );
         })}
@@ -194,22 +202,26 @@ export function ToneGrid() {
 /* Typography ----------------------------------------------------------- */
 
 const TEXT_STYLES = [
-  ['display-xl', 'Baked with love'],
-  ['display-lg', 'Fresh from Mom’s oven'],
-  ['display-md', 'Celebration cakes'],
-  ['heading-lg', 'This week’s bakes'],
-  ['heading-md', 'Strawberry layer cake'],
-  ['heading-sm', 'Pick-up & opening hours'],
-  ['body-lg', 'Every cake is baked to order in a home kitchen, with real butter and fruit from the market.'],
-  ['body-md', 'Order by Wednesday for weekend pick-up. Gluten-free and nut-free options on most of the menu.'],
-  ['body-sm', 'Allergen information is listed on every product page.'],
-  ['caption', 'Photo: the Saturday market stall'],
-  ['label', 'Add to box'],
-  ['eyebrow', 'Fresh this week'],
-  ['price', '$38.00'],
-  ['script-lg', 'with love, Mom'],
-  ['script-md', 'Shortcake'],
-  ['script-sm', 'xoxo'],
+  ['display-xl', 'Homemade cakes, still warm'],
+  ['display-lg', 'How to order'],
+  ['display-md', 'Meet Mom'],
+  ['heading-lg', "Mom's Monday letter"],
+  ['heading-md', 'Pick your bake'],
+  ['heading-sm', 'Strawberry layer cake'],
+  ['body-lg', 'Cakes, cookies and pies baked to order every week, ready for Saturday pick-up.'],
+  ['body-md', 'Order by Wednesday for Saturday. Custom cakes need a week. Most bakes can be made gluten-free.'],
+  ['body-sm', 'Vanilla sponge, strawberry jam, whipped buttercream.'],
+  ['caption', 'Baked in a home kitchen that also handles nuts, dairy, eggs and wheat.'],
+  ['label', 'Custom cakes'],
+  ['eyebrow', 'Where to find Mom'],
+  ['price', '₹1,450'],
+  ['heavy', 'About us'],
+  ['script-lg', 'Menu'],
+  ['script-md', 'this week'],
+  ['script-sm', 'with love, Mom'],
+  ['hand-md', 'made with real butter!'],
+  ['hand-sm', 'Birthday cupcakes'],
+  ['bubble', 'Gallery'],
 ] as const;
 
 export function TypeScale() {
@@ -255,10 +267,15 @@ export function TypeScale() {
 export function FontFamilies() {
   const families = startsWith(['font', 'family']);
   const samples: Record<string, ReactNode> = {
-    display: <span style={{ fontVariationSettings: 'var(--bbm-font-variation-soft)', fontWeight: 800 }}>Bakes</span>,
+    display: <span style={{ fontVariationSettings: 'var(--bbm-font-variation-soft)', fontWeight: 700 }}>Bakes</span>,
+    body: <span style={{ fontWeight: 900 }}>About us</span>,
     script: 'by Mom',
-    body: 'Order by Wednesday',
-    mono: 'PICK-UP 9AM–1PM',
+    hand: 'real butter!',
+    bubble: (
+      <span className="bbm-text-bubble" style={{ fontSize: 40 }}>
+        Yum
+      </span>
+    ),
   };
   return (
     <Unstyled>
@@ -317,7 +334,7 @@ export function SpaceScale() {
                 style={{
                   height: 14,
                   width: String(t.value),
-                  background: 'var(--bbm-color-strawberry-300)',
+                  background: 'var(--bbm-color-pink-300)',
                   border: '1.5px solid var(--bbm-color-border-default)',
                   borderRadius: 4,
                 }}
@@ -345,7 +362,7 @@ export function RadiusScale() {
             <div
               style={{
                 height: 88,
-                background: 'var(--bbm-color-bg-blush)',
+                background: 'var(--bbm-color-bg-pink)',
                 border: '1.5px solid var(--bbm-color-border-default)',
                 borderRadius: String(t.value),
               }}

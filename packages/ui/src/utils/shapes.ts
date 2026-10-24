@@ -27,7 +27,8 @@ export function scallopCirclePath(cx: number, cy: number, fit: number, bumps: nu
   return `M${points[0]} ${arcs.join(' ')}Z`;
 }
 
-export type EdgeShape = 'scallop' | 'wave' | 'zigzag' | 'torn' | 'awning' | 'dots';
+/** Section edges seen on the bakesbymom board. */
+export type EdgeShape = 'scallop' | 'wave' | 'torn' | 'dots' | 'checker';
 
 export interface EdgeTile {
   width: number;
@@ -60,15 +61,6 @@ export function edgeTile(shape: EdgeShape, unit: number): EdgeTile {
       const m = h / 2;
       const curve = `Q${w * 0.75} ${m + h} ${w / 2} ${m}T0 ${m}`;
       return { width: w, height: h, fills: [{ d: `M0 -2H${w}V${m}${curve}Z` }], edge: `M${w} ${m}${curve}` };
-    }
-    case 'zigzag': {
-      const w = u * 1.5;
-      return {
-        width: w,
-        height: u,
-        fills: [{ d: `M0 -2H${w}V0L${w / 2} ${u}L0 0Z` }],
-        edge: `M0 0L${w / 2} ${u}L${w} 0`,
-      };
     }
     case 'torn': {
       // Hand-placed jagged points, scaled to the unit. Start and end match so tiles join seamlessly.
@@ -105,15 +97,19 @@ export function edgeTile(shape: EdgeShape, unit: number): EdgeTile {
         edge: `M${line}`,
       };
     }
-    case 'awning': {
-      const s = u * 1.5;
-      const band = u * 1.5;
-      const stripe = (x: number) => `M${x} -2H${x + s}V${band}A${s / 2} ${s / 2} 0 0 1 ${x} ${band}Z`;
+    case 'checker': {
+      // Two rows of alternating squares (the checker strips on pins 05 and 15).
+      const w = u * 2;
       return {
-        width: s * 2,
-        height: band + s / 2,
-        fills: [{ d: stripe(0) }, { d: stripe(s), alt: true }],
-        edge: `M0 ${band}A${s / 2} ${s / 2} 0 0 0 ${s} ${band}A${s / 2} ${s / 2} 0 0 0 ${s * 2} ${band}`,
+        width: w,
+        height: w,
+        fills: [
+          { d: `M0 0H${u}V${u}H0Z` },
+          { d: `M${u} ${u}H${w}V${w}H${u}Z` },
+          { d: `M${u} 0H${w}V${u}H${u}Z`, alt: true },
+          { d: `M0 ${u}H${u}V${w}H0Z`, alt: true },
+        ],
+        edge: `M0 ${w}H${w}`,
       };
     }
     case 'dots': {

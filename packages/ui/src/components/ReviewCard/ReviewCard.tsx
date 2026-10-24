@@ -6,7 +6,7 @@ import { Card, type CardProps } from '../Card/Card';
 export interface ReviewCardProps extends Omit<CardProps, 'children' | 'tone' | 'frame'> {
   quote: ReactNode;
   author: string;
-  /** What they ordered or when, e.g. "Strawberry layer cake · May". */
+  /** What they ordered, shown in handwriting under the stars, e.g. "Birthday cupcakes". */
   detail?: string;
   /** Star rating from 0 to 5 (whole numbers). */
   rating?: number;
@@ -26,13 +26,13 @@ function Stars({ rating }: { rating: number }) {
   );
 }
 
-/** A customer review on a scalloped (cookie-edge) card, after the Berloga reference. */
+/** A customer review on a scalloped card with an offset shadow, after pin 01. */
 export function ReviewCard({
   quote,
   author,
   detail,
   rating,
-  tone = 'strawberry',
+  tone = 'pink',
   shape = 'scallop',
   sticker = true,
   as = 'article',
@@ -41,14 +41,14 @@ export function ReviewCard({
 }: ReviewCardProps) {
   return (
     <Card {...rest} as={as} tone={tone} shape={shape} sticker={sticker} className={cx('bbm-review', className)}>
-      {rating !== undefined && <Stars rating={rating} />}
+      <p className="bbm-review__name">{author}</p>
       <blockquote className="bbm-review__quote">
         <p>{quote}</p>
       </blockquote>
-      <p className="bbm-review__author">
-        <span className="bbm-review__name">{author}</span>
-        {detail && <span className="bbm-review__detail">{detail}</span>}
-      </p>
+      <div className="bbm-review__footer">
+        {rating !== undefined && <Stars rating={rating} />}
+        {detail && <p className="bbm-review__detail">{detail}</p>}
+      </div>
     </Card>
   );
 }

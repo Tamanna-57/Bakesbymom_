@@ -3,13 +3,14 @@
 React 19 components for Bakes by Mom, built only from [`@bakesbymom/tokens`](../tokens). Every component is documented with live controls in Storybook (`npm run storybook` at the repo root).
 
 ```tsx
-import '@bakesbymom/ui/fonts.css'; // Fraunces, Pinyon Script, DM Sans, DM Mono (Google Fonts)
+import '@bakesbymom/ui/fonts.css'; // Fraunces, DM Sans, Pinyon Script, Caveat, Cherry Bomb One (Google Fonts)
 import '@bakesbymom/ui/styles.css'; // tokens + component styles in one file
 import { Button, ProductCard, Badge } from '@bakesbymom/ui';
 
 export function Bestseller() {
   return (
     <ProductCard
+      variant="menu"
       name="Strawberry layer cake"
       image={{ src: '/cake.jpg', alt: 'Strawberry layer cake with pink frosting' }}
       price="From $38"
@@ -24,39 +25,48 @@ export function Bestseller() {
 }
 ```
 
-Add `className="bbm-theme"` to `<body>` for the cream canvas, cocoa ink and body type. If you already load the token CSS yourself, import `@bakesbymom/ui/components.css` instead of `styles.css`.
+Add `className="bbm-theme"` to `<body>` for the beige canvas, cocoa ink and body type. If you already load the token CSS yourself, import `@bakesbymom/ui/components.css` instead of `styles.css`.
 
 ## Components
 
-| Group      | Component              | What it's for                                                                                              | Reference                             |
-| ---------- | ---------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------- |
-| Primitives | `Button`               | Pill actions: `primary` (cherry, one per view), `secondary`, `soft`, `ghost`; `sticker`, `loading`, `href` | Apron, Ko-fi                          |
-|            | `Badge`                | Status and category labels; `tape` and `tab` shapes                                                        | bella, Sunday Brunch, Bolo de Morango |
-|            | `TextField` / `Select` | Pill inputs with linked label, hint and error; `multiline`                                                 | Ko-fi, Monte                          |
-| Surfaces   | `Card`                 | Paper, tone, solid, outline, `sticker`, scalloped, airmail-striped                                         | Berloga, Pretty OK, SugarLace         |
-|            | `PatternSurface`       | Stripes, pinstripe, gingham, checker, grid paper, polka dots                                               | Sasa Khalisa stripes, Nectar          |
-|            | `EdgeDivider`          | Scallop, wave, zigzag, torn, awning and half-dot section edges                                             | Berloga, Lilli Pilli, Taplink         |
-| Ephemera   | `Ticket`               | Admission ticket with stub, or postage stamp                                                               | Book Nook, Spring Bouquet             |
-|            | `Polaroid`             | Instant photo with tape and caption, scallop or pattern frame                                              | Stevie Kay, September Sun             |
-|            | `PriceTag`             | Flower, cloud, coin or hotel key-tag prices                                                                | Nectar, Taplink                       |
-|            | `Seal`                 | Circular ring-text sticker, optional spin; oval claim sticker                                              | Book Nook, Lilli Pilli                |
-| Brand      | `Logo`                 | Wordmark: horizontal, stacked or seal                                                                      |                                       |
-|            | `Doodle`               | Sparkle, heart, cherry, daisy, star, cupcake, squiggle                                                     | Berloga, cloche collage               |
-| Content    | `ProductCard`          | Menu items: stack or row layout, rounded/arch/oval/circle frames                                           | Pretty OK, Lilli Pilli                |
-|            | `ReviewCard`           | Scalloped review sticker with spoken star rating                                                           | Berloga                               |
-|            | `SectionHeading`       | Eyebrow + title (`<em>` → script) + script line + lead                                                     | Puzzle Pantry, Pastry Guide           |
-|            | `StepList`             | Ordered steps: row, stacked letters or numbered tabs                                                       | Hopf Haus, Pretty OK, Taplink         |
-|            | `Accordion`            | Native `<details>` FAQ and specials list                                                                   | Pretty OK, Berloga                    |
-|            | `Marquee`              | Ribbon ticker, accessible and pausable                                                                     | 9 of 23 pins                          |
-| Sections   | `SiteHeader`           | Announcement, logo, nav, actions, mobile menu; bar or capsule                                              | Puzzle Pantry, Emily Jane             |
-|            | `Hero`                 | Page opener with media, pattern backdrop and optional awning                                               | Lilli Pilli, Cherry Cloud             |
-|            | `SiteFooter`           | Cocoa footer with columns, newsletter and small print                                                      | Emily Jane, Nectar                    |
+Every component comes from the [bakesbymom board](../../design/board/README.md); the numbers are pins.
+
+| Group      | Component              | What it's for                                                                                                   | Pins           |
+| ---------- | ---------------------- | --------------------------------------------------------------------------------------------------------------- | -------------- |
+| Primitives | `Button`               | Pill actions: `primary` (deep cherry, one per view), `secondary`, `soft`, `ghost`; `sticker`, `loading`, `href` | 08, 16, 01     |
+|            | `Badge`                | Labels and stickers; `pill`, `tape` and `tab` shapes                                                            | 05, 07, 13     |
+|            | `TextField` / `Select` | Pill inputs with linked label, hint and error; `multiline`                                                      | 03, 15         |
+|            | `FilterChips`          | Toggle-button filter pills with `aria-pressed`, single or multiple                                              | 13             |
+| Surfaces   | `Card`                 | Paper or tone, outline, `sticker`, rounded/scallop/cloud shapes, candy-stripe frame, thick cherry frame         | 01, 02, 05, 16 |
+|            | `PatternSurface`       | Stripes (plain, dotted, wavy), pinstripe, gingham, checker, grid paper, polka dots                              | 09, 15, 02, 05 |
+|            | `EdgeDivider`          | Scallop, wave, torn, dot and checker section edges                                                              | 01, 06, 08, 15 |
+| Ephemera   | `Ticket`               | Membership ticket with stub, or perforated stamp                                                                | 10, 08, 16     |
+|            | `Polaroid`             | Instant photo with tape and handwritten caption; scallop, pattern, flower and cartouche frames                  | 11, 05, 07     |
+|            | `PriceTag`             | Scallop, flower, cloud, circle or key-tag prices                                                                | 15, 08         |
+|            | `Seal`                 | Ring-text sticker, optional spin                                                                                | 03, 10         |
+|            | `PricingCard`          | Package card with a pill title tab and a hanging key-tag price                                                  | 08             |
+| Brand      | `Logo`                 | Wordmark: horizontal, stacked, seal or monogram                                                                 | 10, 16, 12     |
+|            | `Doodle`               | Cherry, heart, sparkle, cupcake, whisk, bow, arrow, halftone cherries and more                                  | 15, 01, 16     |
+| Content    | `ProductCard`          | Menu card (photo, what's inside, arrow and price pill), sold-out state; horizontal on phones                    | 16             |
+|            | `ReviewCard`           | Scalloped review with name, quote, spoken star rating and a handwritten detail                                  | 01             |
+|            | `SectionHeading`       | Eyebrow (text, pill or bracket) + title (`<em>` → script); `bubble`, `ribbon` and `stamp` variants              | 01, 16, 11     |
+|            | `StepList`             | Ordered steps: tilted stack, checkbox row, folder tabs or cards                                                 | 02, 04, 08     |
+|            | `Accordion`            | Native `<details>` FAQ: cards (two columns), pills or hairline rows                                             | 02, 08, 01     |
+|            | `Marquee`              | Ribbon ticker, one or two rows, tilt, badge; accessible and pausable                                            | 02, 07, 04, 11 |
+|            | `Gallery`              | Expanding photo strips (keyboard and drag), trio or grid                                                        | 01, 11, 12     |
+|            | `Orbit`                | A center photo with satellites on an orbit line and arc text                                                    | 01             |
+|            | `WeekSchedule`         | Where to find Mom this week, today highlighted, map links                                                       | 15             |
+|            | `NewsletterSignup`     | Card, bar or inline signup with sending, done and error states                                                  | 03, 15         |
+|            | `ChatWidget`           | "Ask Mom" chat: seal launcher, dialog with focus management, quick replies, live log, human handoff             | 08, 10, 01, 15 |
+| Sections   | `SiteHeader`           | Announcement, split/center/start logo, bar or capsule, scalloped edge, mobile menu                              | 15, 13, 03     |
+|            | `Hero`                 | Grid-paper, band, sticker or photo opener with a handwritten note and doodles                                   | 15, 06, 07, 13 |
+|            | `SiteFooter`           | Cocoa footer: columns, centered logo with socials and contact, newsletter, small print                          | 03, 04, 06     |
 
 ## Conventions
 
-- **Tones.** Tone-aware components take `tone` (`cherry`, `strawberry`, `blueberry`, `butter`, `pistachio`, `caramel`, `lavender`, `cocoa`, `cream`) and read the `--bbm-color-tone-*` tokens through `data-bbm-tone`, so every combination is AA.
+- **Tones.** Tone-aware components take `tone` (`blue`, `pink`, `beige`, `cherry`, `brown`, `butter`, `matcha`) and read the `--bbm-color-tone-*` tokens through `data-bbm-tone`, so every combination is AA.
 - **Styling hooks.** Class names are BEM-style and prefixed (`.bbm-card`, `.bbm-card--sticker`). Pass `className` and `style` to any component; refs work as plain props (React 19).
-- **Accessibility.** Native elements first (`<button>`, `<details>`, `<select>`, `<ol>`), visible focus rings in `border.focus`, 44px touch targets, decorative SVG hidden from assistive tech, and motion that stops under `prefers-reduced-motion`. The Marquee also has a pause button (WCAG 2.2.2).
+- **Accessibility.** Native elements first (`<button>`, `<details>`, `<select>`, `<ol>`), visible focus rings in `border.focus`, 44px touch targets, decorative SVG hidden from assistive tech, and motion that stops under `prefers-reduced-motion`. The Marquee has a pause button (WCAG 2.2.2); the chat panel moves focus in and back out and announces new messages.
 - **Decoration frames content.** Patterns, edges and stickers never sit behind body text.
 
 ## Scripts

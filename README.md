@@ -69,9 +69,14 @@ The packages are npm workspaces in this repo. To use them from another repositor
 
 The reasoning, with alternates for every section, is in [`design/board/README.md`](./design/board/README.md).
 
-## Storybook on Vercel
+## On Vercel
 
-Storybook is deployed as a static site on Vercel. [`vercel.json`](./vercel.json) holds the build settings (`npm ci`, `npm run build-storybook`, output `storybook-static`), so no dashboard configuration is needed. One-time setup: in Vercel, **Add New → Project**, import `Tamanna-57/Bakesbymom_` and keep the root directory as `./`. After that, every push to `main` updates the production site and every other branch or pull request gets its own preview URL.
+| Site | Address | Project settings |
+|---|---|---|
+| The website | https://bakesbymom-site.vercel.app | Root directory `apps/web`; [`apps/web/vercel.json`](./apps/web/vercel.json) builds the packages and the site and sends every path to `index.html` |
+| Storybook | https://bakesbymom-gilt.vercel.app | Root directory `./`; [`vercel.json`](./vercel.json) runs `npm run build-storybook` and serves `storybook-static` |
+
+Both are deployed from this repository. To redeploy on every push automatically, give Vercel's GitHub app access to `Tamanna-57/Bakesbymom_` and connect the two projects to it.
 
 [`.github/workflows/ci.yml`](./.github/workflows/ci.yml) runs `npm run check` on every push.
 

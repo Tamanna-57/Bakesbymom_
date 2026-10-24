@@ -1,0 +1,942 @@
+/* The home page sections in home.tsx (pins 16 and 13). Built only from tokens. */
+
+.home-script {
+  font-family: var(--bbm-font-family-script);
+  font-weight: var(--bbm-font-weight-regular);
+  font-variation-settings: normal;
+  letter-spacing: 0;
+  color: var(--bbm-color-text-brand);
+}
+
+/* Hero: stripes, the drawn cake and a cream label card ---------------- */
+
+.home-hero {
+  padding: var(--bbm-space-12) var(--bbm-layout-gutter) var(--bbm-space-16);
+  border-bottom: var(--bbm-border-width-thin) solid var(--bbm-color-pink-400);
+}
+
+.home-hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--bbm-space-6);
+  align-items: center;
+  max-width: var(--bbm-layout-container);
+  margin-inline: auto;
+}
+
+@media (min-width: 900px) {
+  .home-hero__inner {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: var(--bbm-space-10);
+  }
+}
+
+.home-hero__art {
+  position: relative;
+  justify-self: center;
+  width: min(100%, 30rem);
+}
+
+.home-hero__art > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(6px 8px 0 rgb(50 24 11 / 0.12));
+}
+
+.home-hero__burst {
+  position: absolute;
+  top: 2%;
+  left: -2%;
+}
+
+.home-hero__spark {
+  position: absolute;
+  right: 4%;
+  top: 12%;
+}
+
+.home-hero__card {
+  display: grid;
+  gap: var(--bbm-space-5);
+  padding: clamp(1.5rem, 1rem + 2.5vw, 3rem);
+  border: 5px solid var(--bbm-color-cherry-700);
+  border-radius: var(--bbm-radius-2xl);
+  background-color: var(--bbm-color-bg-canvas);
+  box-shadow: var(--bbm-shadow-sticker-lg);
+}
+
+.home-hero__eyebrow {
+  margin: 0;
+  font-size: var(--bbm-text-caption-size);
+  font-weight: var(--bbm-font-weight-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bbm-color-text-secondary);
+}
+
+.home-hero__title {
+  display: grid;
+  margin: 0;
+}
+
+.home-hero__heavy {
+  font-family: var(--bbm-text-heavy-family);
+  font-size: var(--bbm-text-heavy-size);
+  font-weight: var(--bbm-text-heavy-weight);
+  line-height: var(--bbm-text-heavy-line-height);
+  letter-spacing: var(--bbm-text-heavy-tracking);
+  color: var(--bbm-color-brown-900);
+}
+
+.home-hero__script {
+  margin-top: 0.05em;
+  font-family: var(--bbm-font-family-script);
+  font-size: clamp(3rem, 1.6rem + 5vw, 5.25rem);
+  font-weight: var(--bbm-font-weight-regular);
+  line-height: 1.05;
+  color: var(--bbm-color-cherry-700);
+}
+
+.home-hero__lead {
+  max-width: 34rem;
+  margin: 0;
+  font-size: var(--bbm-text-body-lg-size);
+  line-height: var(--bbm-text-body-lg-line-height);
+  color: var(--bbm-color-text-secondary);
+}
+
+.home-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bbm-space-3);
+}
+
+/* Shape ribbon (pin 13) ------------------------------------------------ */
+
+.home-ribbon__shapes {
+  display: flex;
+  justify-content: center;
+  gap: var(--bbm-space-5);
+  overflow: hidden;
+  padding: var(--bbm-space-2) 0;
+  border-bottom: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  background-color: var(--bbm-color-pink-300);
+  color: var(--bbm-color-cherry-700);
+}
+
+.home-ribbon__shapes > svg {
+  flex: none;
+}
+
+/* Feature strip (Sweet Crumbs) ------------------------------------------ */
+
+.home-features {
+  padding: var(--bbm-space-8) var(--bbm-layout-gutter);
+  background-color: var(--bbm-color-bg-canvas);
+}
+
+.home-features__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
+  gap: var(--bbm-space-4);
+  max-width: var(--bbm-layout-container);
+  margin: 0 auto;
+  padding: var(--bbm-space-5);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-xl);
+  background-color: var(--bbm-color-bg-surface);
+  list-style: none;
+}
+
+.home-features__list > li {
+  display: flex;
+  align-items: center;
+  gap: var(--bbm-space-3);
+}
+
+.home-features__list > li > span:last-child {
+  display: grid;
+  gap: 2px;
+  font-size: var(--bbm-text-body-sm-size);
+  line-height: var(--bbm-text-body-sm-line-height);
+  color: var(--bbm-color-text-secondary);
+}
+
+.home-features__list strong {
+  font-size: var(--bbm-text-body-md-size);
+  color: var(--bbm-color-text-primary);
+}
+
+.home-features__icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: 50%;
+  background-color: var(--bbm-color-bg-pink);
+}
+
+/* About us (pin 16's outlined card) -------------------------------------- */
+
+.home-about {
+  padding-top: var(--bbm-space-8);
+  background-color: var(--bbm-color-bg-canvas);
+}
+
+.home-about__card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--bbm-space-8);
+  align-items: center;
+  overflow: hidden;
+  border-width: 5px;
+  border-radius: var(--bbm-radius-2xl);
+  background-color: var(--bbm-color-bg-canvas);
+}
+
+@media (min-width: 900px) {
+  .home-about__card {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    padding-inline-start: 11rem;
+  }
+}
+
+.home-about__cherries {
+  position: absolute;
+  top: 50%;
+  left: -5.5rem;
+  translate: 0 -40%;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+@media (max-width: 899px) {
+  .home-about__cherries,
+  .home-about__flourish {
+    display: none;
+  }
+}
+
+.home-about__flourish {
+  position: absolute;
+  top: var(--bbm-space-6);
+  right: var(--bbm-space-6);
+  opacity: 0.7;
+}
+
+.home-about__copy {
+  position: relative;
+  display: grid;
+  gap: var(--bbm-space-4);
+  justify-items: start;
+}
+
+.home-about__copy .bbm-heading {
+  --bbm-heading-overlay-halo: var(--bbm-color-bg-canvas);
+}
+
+.home-about__sub {
+  margin: 0;
+  font-family: var(--bbm-text-heavy-family);
+  font-size: clamp(1.4rem, 1.1rem + 1vw, 2rem);
+  font-weight: var(--bbm-font-weight-black);
+  line-height: 1.1;
+}
+
+.home-about__lead {
+  margin: 0;
+  max-width: 30rem;
+}
+
+.home-about__quote {
+  position: relative;
+  margin: var(--bbm-space-2) 0;
+  padding-inline-start: var(--bbm-space-10);
+  max-width: 32rem;
+}
+
+.home-about__quote::before {
+  content: '“';
+  position: absolute;
+  top: -0.2em;
+  left: 0;
+  font-family: var(--bbm-text-heavy-family);
+  font-size: 4rem;
+  font-weight: var(--bbm-font-weight-black);
+  line-height: 1;
+  color: var(--bbm-color-brown-900);
+}
+
+.home-about__quote p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.home-about__cake {
+  justify-self: center;
+  width: min(100%, 22rem);
+  height: auto;
+}
+
+/* Flavours (pin 16's "Fillings") ------------------------------------------ */
+
+.home-flavours__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
+  gap: var(--bbm-space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-flavours__grid > li {
+  display: flex;
+}
+
+@media (max-width: 599px) {
+  .home-flavours__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--bbm-space-3);
+  }
+
+  .home-flavour {
+    padding: var(--bbm-space-2);
+  }
+
+  .home-flavour h3 {
+    font-size: var(--bbm-text-body-sm-size);
+  }
+}
+
+.home-flavour {
+  display: grid;
+  flex: 1;
+  grid-template-rows: auto auto 1fr auto;
+  gap: var(--bbm-space-2);
+  padding: var(--bbm-space-3);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-xl);
+  background-color: var(--bbm-color-paper);
+  box-shadow: var(--bbm-shadow-sticker-sm);
+}
+
+.home-flavour__slice {
+  display: block;
+  width: 100%;
+  height: auto;
+  clip-path: inset(0 round var(--bbm-radius-lg));
+  margin-bottom: var(--bbm-space-1);
+}
+
+.home-flavour h3 {
+  margin: 0;
+  font-family: var(--bbm-text-heavy-family);
+  font-size: 1.05rem;
+  font-weight: var(--bbm-font-weight-black);
+}
+
+.home-flavour p {
+  margin: 0;
+  font-size: var(--bbm-text-body-sm-size);
+  line-height: var(--bbm-text-body-sm-line-height);
+  color: var(--bbm-color-text-secondary);
+}
+
+.home-flavour__foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--bbm-space-2);
+}
+
+.home-flavour__pill {
+  padding: 2px var(--bbm-space-3);
+  border-radius: var(--bbm-radius-pill);
+  background-color: var(--bbm-color-cherry-700);
+  font-size: var(--bbm-text-caption-size);
+  font-weight: var(--bbm-font-weight-bold);
+  color: var(--bbm-color-text-inverse);
+}
+
+.home-flavour__ask {
+  display: grid;
+  place-items: center;
+  width: var(--bbm-layout-touch-target);
+  height: var(--bbm-layout-touch-target);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-brand);
+  border-radius: 50%;
+  color: var(--bbm-color-text-brand);
+  font-weight: var(--bbm-font-weight-bold);
+  text-decoration: none;
+}
+
+.home-flavour__ask:hover {
+  background-color: var(--bbm-color-bg-brand);
+  color: var(--bbm-color-text-inverse);
+}
+
+.home-flavour__ask:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: 2px;
+}
+
+.home-flavours__note {
+  text-align: start;
+}
+
+/* Shop by the box (pin 13's bestsellers) ---------------------------------- */
+
+.home-shop {
+  background-color: var(--bbm-color-bg-canvas);
+}
+
+.home-shop__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bbm-space-4);
+  min-width: 0;
+}
+
+.home-shop__title {
+  margin: 0;
+  font-family: var(--bbm-font-family-display);
+  font-size: var(--bbm-text-display-md-size);
+  font-weight: var(--bbm-font-weight-semibold);
+  line-height: 1.1;
+}
+
+.home-shop__title .home-script {
+  font-size: 1.35em;
+}
+
+.home-shop__row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(16rem, 100%), 1fr));
+  gap: var(--bbm-space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (max-width: 599px) {
+  .home-shop__row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--bbm-space-4) var(--bbm-space-3);
+  }
+}
+
+.home-shop__lead,
+.home-shop__item {
+  display: grid;
+  height: 100%;
+  color: var(--bbm-color-text-primary);
+  text-decoration: none;
+}
+
+.home-shop__lead {
+  position: relative;
+  overflow: hidden;
+  min-height: 16rem;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-lg);
+  background-color: var(--bbm-color-cherry-700);
+}
+
+.home-shop__lead img {
+  position: absolute;
+  top: 6%;
+  left: 50%;
+  width: 86%;
+  translate: -50% 0;
+  transition: scale var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard);
+}
+
+.home-shop__lead-label {
+  position: absolute;
+  inset: auto 0 0;
+  display: grid;
+  gap: var(--bbm-space-1);
+  padding: var(--bbm-space-8) var(--bbm-space-4) var(--bbm-space-4);
+  background: linear-gradient(transparent, rgb(67 14 23 / 0.75));
+  font-weight: var(--bbm-font-weight-black);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bbm-color-text-inverse);
+}
+
+.home-shop__lead-label > span {
+  font-size: var(--bbm-text-caption-size);
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+
+.home-shop__item {
+  grid-template-rows: auto auto 1fr;
+  gap: var(--bbm-space-2);
+  text-align: center;
+}
+
+.home-shop__art {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 1;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-lg);
+  background-color: var(--_tone-bg);
+}
+
+.home-shop__art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: scale var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard);
+}
+
+.home-shop__name {
+  font-size: var(--bbm-text-body-sm-size);
+  font-weight: var(--bbm-font-weight-black);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.home-shop__meta {
+  font-size: var(--bbm-text-body-sm-size);
+  color: var(--bbm-color-text-secondary);
+}
+
+.home-shop__item:hover .home-shop__art img {
+  scale: 1.05;
+}
+
+.home-shop__lead:hover img {
+  scale: 1.04;
+}
+
+.home-shop__lead:focus-visible,
+.home-shop__item:focus-visible,
+.home-craft-tile:focus-visible,
+.home-occasions__list a:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: 3px;
+  border-radius: var(--bbm-radius-lg);
+}
+
+/* Occasions (pin 13's category row) ------------------------------------- */
+
+.home-occasions {
+  padding: calc(var(--bbm-layout-section-y) * 0.8) var(--bbm-layout-gutter) var(--bbm-layout-section-y);
+  border-radius: 50% 50% 0 0 / 3.5rem 3.5rem 0 0;
+  background-color: var(--bbm-color-blue-100);
+}
+
+.home-occasions > .site-container {
+  display: grid;
+  gap: var(--bbm-space-10);
+}
+
+.home-occasions__title {
+  margin: 0;
+  font-family: var(--bbm-font-family-display);
+  font-size: var(--bbm-text-display-md-size);
+  font-weight: var(--bbm-font-weight-semibold);
+  line-height: 1.1;
+  text-align: center;
+}
+
+.home-occasions__title .home-script {
+  font-size: 1.35em;
+}
+
+.home-occasions__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--bbm-space-8) var(--bbm-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-occasions__list > li {
+  width: 8.75rem;
+}
+
+@media (max-width: 599px) {
+  .home-occasions__list > li {
+    width: calc(50% - var(--bbm-space-2));
+  }
+}
+
+.home-occasions__list a {
+  display: grid;
+  justify-items: center;
+  gap: var(--bbm-space-3);
+  color: var(--bbm-color-text-primary);
+  text-align: center;
+  text-decoration: none;
+}
+
+.home-occasions__icon {
+  display: grid;
+  place-items: center;
+  width: 5rem;
+  height: 5rem;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: 50%;
+  background-color: var(--bbm-color-paper);
+  box-shadow: var(--bbm-shadow-sticker-sm);
+  transition: translate var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard);
+}
+
+.home-occasions__list a:hover .home-occasions__icon {
+  translate: 0 -4px;
+}
+
+.home-occasions__label {
+  font-size: var(--bbm-text-caption-size);
+  font-weight: var(--bbm-font-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+}
+
+/* Quote on a checker band (Sunday Bakehouse) ------------------------------ */
+
+.home-quote {
+  padding: var(--bbm-space-16) var(--bbm-layout-gutter);
+  border-block: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+}
+
+.home-quote__card {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: var(--bbm-space-8) var(--bbm-space-6);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-xl);
+  background-color: var(--bbm-color-bg-canvas);
+  box-shadow: var(--bbm-shadow-sticker-md);
+  text-align: center;
+}
+
+.home-quote__card blockquote {
+  margin: 0;
+}
+
+.home-quote__card p {
+  margin: 0;
+  font-family: var(--bbm-font-family-display);
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+  line-height: 1.25;
+}
+
+.home-quote__card em {
+  font-family: var(--bbm-font-family-script);
+  font-style: normal;
+  font-size: 1.25em;
+  color: var(--bbm-color-text-brand);
+}
+
+.home-quote__card figcaption {
+  margin-top: var(--bbm-space-3);
+  font-family: var(--bbm-font-family-hand);
+  font-size: 1.6rem;
+  color: var(--bbm-color-text-secondary);
+}
+
+/* Crafted happiness (pin 16) ---------------------------------------------- */
+
+.home-crafted {
+  border-block: var(--bbm-border-width-thin) solid var(--bbm-color-pink-400);
+}
+
+.home-crafted__lockup {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--bbm-space-4);
+  justify-self: center;
+  max-width: 64rem;
+  padding: var(--bbm-space-4) var(--bbm-space-6);
+  border-radius: var(--bbm-radius-xl);
+  background-color: var(--bbm-color-bg-canvas);
+}
+
+.home-crafted__lockup h2 {
+  display: grid;
+  margin: 0;
+  text-align: center;
+}
+
+.home-crafted__heavy {
+  font-family: var(--bbm-text-heavy-family);
+  font-size: clamp(1.5rem, 1rem + 1.8vw, 2.4rem);
+  font-weight: var(--bbm-text-heavy-weight);
+  line-height: 1.05;
+  letter-spacing: var(--bbm-text-heavy-tracking);
+  color: var(--bbm-color-brown-900);
+}
+
+.home-crafted__script {
+  font-size: clamp(2.6rem, 1.6rem + 4vw, 4.5rem);
+  line-height: 1.1;
+  color: var(--bbm-color-brown-900);
+}
+
+.home-crafted__mirror {
+  scale: -1 1;
+}
+
+@media (max-width: 599px) {
+  .home-crafted__lockup {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-crafted__lockup > svg {
+    display: none;
+  }
+}
+
+.home-crafted__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--bbm-space-6);
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .home-crafted__grid {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  }
+}
+
+.home-order-card {
+  position: relative;
+}
+
+.home-order-card .bbm-ticket__main {
+  display: grid;
+  gap: var(--bbm-space-4);
+  justify-items: start;
+}
+
+.home-order-card__tape {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  width: 7rem;
+  height: 1.75rem;
+  z-index: 1;
+  translate: -50% 0;
+  rotate: -3deg;
+  background-color: var(--bbm-color-cherry-700);
+  opacity: 0.9;
+}
+
+.home-order-card__title {
+  margin: 0;
+  font-size: clamp(2rem, 1.6rem + 1.4vw, 2.6rem);
+  line-height: 1.1;
+  color: var(--bbm-color-brown-900);
+}
+
+.home-order-card__steps {
+  display: grid;
+  gap: var(--bbm-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--bbm-text-body-sm-size);
+  line-height: var(--bbm-text-body-sm-line-height);
+}
+
+.home-order-card__note {
+  margin: 0;
+  padding: var(--bbm-space-3) var(--bbm-space-4);
+  border-radius: var(--bbm-radius-md);
+  background-color: var(--bbm-color-bg-blue);
+  font-size: var(--bbm-text-body-sm-size);
+  line-height: var(--bbm-text-body-sm-line-height);
+}
+
+.home-crafted__tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--bbm-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-craft-tile {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 5 / 4;
+  border-radius: var(--bbm-radius-xl);
+  background-color: var(--bbm-color-cherry-700);
+  color: var(--bbm-color-text-inverse);
+  text-decoration: none;
+}
+
+.home-craft-tile__blob {
+  position: absolute;
+  inset: 18% -10% -20% 30%;
+  border-radius: 58% 42% 0 60% / 64% 48% 0 52%;
+  background-color: var(--bbm-color-cherry-900);
+  opacity: 0.55;
+}
+
+.home-craft-tile img {
+  position: absolute;
+  top: 20%;
+  right: 7%;
+  width: 42%;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-lg);
+  box-shadow: var(--bbm-shadow-sticker-md);
+  rotate: 6deg;
+  transition: rotate var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard);
+}
+
+.home-craft-tile:hover img {
+  rotate: -2deg;
+}
+
+.home-craft-tile__arrow {
+  position: absolute;
+  top: var(--bbm-space-4);
+  right: var(--bbm-space-4);
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background-color: var(--bbm-color-paper);
+  font-weight: var(--bbm-font-weight-bold);
+  color: var(--bbm-color-text-brand);
+}
+
+.home-craft-tile__label {
+  position: absolute;
+  left: var(--bbm-space-5);
+  bottom: var(--bbm-space-4);
+  max-width: 90%;
+  font-family: var(--bbm-text-heavy-family);
+  font-size: clamp(1.15rem, 0.8rem + 1.4vw, 2rem);
+  font-weight: var(--bbm-font-weight-black);
+  line-height: 1;
+}
+
+@media (max-width: 479px) {
+  .home-crafted__tiles {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--bbm-space-3);
+  }
+
+  .home-craft-tile {
+    aspect-ratio: 4 / 5;
+  }
+
+  .home-craft-tile img {
+    top: 24%;
+    width: 60%;
+  }
+
+  .home-craft-tile__label {
+    left: var(--bbm-space-3);
+    bottom: var(--bbm-space-3);
+  }
+
+  .home-craft-tile__arrow {
+    top: var(--bbm-space-2);
+    right: var(--bbm-space-2);
+  }
+}
+
+/* Mom's kitchen (pin 13's split about) ------------------------------------ */
+
+.home-kitchen {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  border-block: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+}
+
+@media (min-width: 900px) {
+  .home-kitchen {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.home-kitchen__copy {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: var(--bbm-space-4);
+  padding: var(--bbm-layout-section-y) var(--bbm-layout-gutter);
+  padding-inline-start: max(var(--bbm-layout-gutter), calc((100vw - var(--bbm-layout-container)) / 2));
+  background-color: var(--bbm-color-bg-butter);
+}
+
+.home-kitchen__copy p {
+  max-width: 32rem;
+  margin: 0;
+  line-height: 1.65;
+}
+
+.home-kitchen__title {
+  margin: 0;
+  font-family: var(--bbm-font-family-display);
+  font-size: var(--bbm-text-display-md-size);
+  font-weight: var(--bbm-font-weight-semibold);
+  line-height: 1.1;
+}
+
+.home-kitchen__title .home-script {
+  font-size: 1.35em;
+}
+
+.home-kitchen__art {
+  display: grid;
+  place-items: center;
+  min-height: 26rem;
+  padding: var(--bbm-space-10) var(--bbm-layout-gutter);
+}
+
+.home-kitchen__art .bbm-polaroid {
+  filter: drop-shadow(6px 8px 0 rgb(50 24 11 / 0.15));
+}
+
+/* Puzzle Pantry's stitched button */
+.home-stamp-button.bbm-button {
+  border-color: transparent;
+  background-color: var(--bbm-color-pink-300);
+  color: var(--bbm-color-brown-900);
+  outline: 2px dashed var(--bbm-color-pink-600);
+  outline-offset: -6px;
+}
+
+.home-stamp-button.bbm-button:hover {
+  background-color: var(--bbm-color-pink-400);
+}
+
+.home-stamp-button.bbm-button:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-shop__lead img,
+  .home-shop__art img,
+  .home-craft-tile img,
+  .home-occasions__icon {
+    transition: none;
+  }
+}

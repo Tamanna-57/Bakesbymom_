@@ -89,9 +89,27 @@
   aspect-ratio: 1;
 }
 
+.shop-item__photo--art {
+  position: relative;
+}
+
 .shop-item__photo--art img {
+  object-fit: cover;
   border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
   border-radius: var(--bbm-radius-lg);
+}
+
+/* Treat photos are stock until there are photos of our own boxes */
+.shop-photo-note {
+  position: absolute;
+  right: var(--bbm-space-3);
+  bottom: var(--bbm-space-3);
+  margin: 0;
+  padding: 2px var(--bbm-space-3);
+  border-radius: var(--bbm-radius-pill);
+  background-color: rgb(255 253 246 / 0.9);
+  font-size: var(--bbm-text-caption-size);
+  color: var(--bbm-color-text-secondary);
 }
 
 .shop-item__thumbs {
@@ -246,6 +264,7 @@
 }
 
 .shop-category__art {
+  position: relative;
   display: grid;
   place-items: center;
   padding: var(--bbm-space-6);
@@ -256,6 +275,8 @@
 .shop-category__art img {
   width: 100%;
   height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
   border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
   border-radius: var(--bbm-radius-lg);
   box-shadow: var(--bbm-shadow-sticker-md);

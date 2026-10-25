@@ -1,5 +1,5 @@
 import { ProductCard, SectionHeading } from '@bakesbymom/ui';
-import { art, treatArt } from '../content';
+import { stock, treatArt } from '../content';
 import { cakes } from '../content/catalog';
 import { treatCategories } from '../content/treats';
 import { Layout } from './Layout';
@@ -34,7 +34,7 @@ export function ShopPage() {
                 as="div"
                 variant="menu"
                 name="Cakes"
-                image={{ src: art.strawberryCake, alt: '' }}
+                image={{ src: stock.occasions.src, alt: '' }}
                 description="Every cake, by occasion: birthdays, anniversaries, festivals and more."
                 price={`${cakes.length} cakes`}
                 href="/catalog"
@@ -48,7 +48,7 @@ export function ShopPage() {
                   as="div"
                   variant="menu"
                   name={category.name}
-                  image={{ src: treatArt[category.slug]?.src ?? art.cupcake, alt: '' }}
+                  image={{ src: treatArt[category.slug]?.src ?? stock.cupcakes.src, alt: '' }}
                   description={category.blurb}
                   price={`From ${category.minQty} ${category.unit}`}
                   href={`/shop/${category.slug}`}

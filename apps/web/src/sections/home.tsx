@@ -3,7 +3,8 @@
  * the order card and cherry tiles) and pin 13 (Puzzle Pantry: the shape ribbon, shop by the box with
  * filter pills, the occasion row, the split about). The feature strip, the starburst and the checker
  * quote come from other bakery sites on Pinterest (Sweet Crumbs, joe & dough, Sunday Bakehouse).
- * Illustrations only: the real cake photos are kept for the catalog and the gallery.
+ * Photos here are stock (content/index.ts `stock`, `treatArt`, `flavours`); the photos of the cakes we sell are
+ * kept for the catalog and the gallery.
  */
 import { useState } from 'react';
 import {
@@ -19,12 +20,11 @@ import {
   Ticket,
   type DoodleName,
 } from '@bakesbymom/ui';
-import { art, treatArt } from '../content';
+import { flavours, stock, treatArt } from '../content';
 import { bakery, cakeFlavours, cakeSizes, whatsappLink } from '../content/bakery';
 import { occasions } from '../content/catalog';
 import { howToOrder, orderLink } from '../content/site';
 import { treatCategories } from '../content/treats';
-import { FlavourSlice, flavourLayers } from './FlavourSlice';
 import './home.css';
 
 const external = { target: '_blank', rel: 'noreferrer' } as const;
@@ -45,7 +45,7 @@ export function HomeHero() {
     >
       <div className="home-hero__inner">
         <div className="home-hero__art">
-          <img src={art.heroCake} alt="" width={480} height={520} />
+          <img className="home-hero__photo" src={stock.hero.src} alt={stock.hero.alt} width={733} height={1100} />
           <PriceTag
             className="home-hero__burst"
             shape="burst"
@@ -175,7 +175,7 @@ export function AboutUsCard() {
               Read our story
             </Button>
           </div>
-          <img className="home-about__cake" src={art.cherryCake} alt="" width={400} height={400} />
+          <img className="home-about__cake" src={stock.about.src} alt={stock.about.alt} loading="lazy" />
         </Card>
       </div>
     </section>
@@ -191,13 +191,13 @@ export function FlavoursSection() {
         <SectionHeading variant="ribbon" title="Flavours" ribbonText="baked to order" />
         <ul className="home-flavours__grid">
           {cakeFlavours.map((flavour) => {
-            const layers = flavourLayers[flavour];
+            const photo = flavours[flavour];
             return (
               <li key={flavour}>
                 <article className="home-flavour">
-                  <FlavourSlice flavour={flavour} />
+                  {photo && <img className="home-flavour__photo" src={photo.src} alt={photo.alt} loading="lazy" />}
                   <h3>{flavour}</h3>
-                  <p>{layers?.inside}</p>
+                  <p>{photo?.inside}</p>
                   <div className="home-flavour__foot">
                     <span className="home-flavour__pill">any cake</span>
                     <a
@@ -257,7 +257,7 @@ export function ShopByBoxSection() {
         <ul className="home-shop__row">
           <li>
             <a className="home-shop__lead" href="/catalog">
-              <img src={art.heroCake} alt="" />
+              <img src={stock.occasions.src} alt="" loading="lazy" />
               <span className="home-shop__lead-label">
                 Cakes by occasion
                 <span>Shop now</span>
@@ -268,7 +268,7 @@ export function ShopByBoxSection() {
             <li key={category.slug}>
               <a className="home-shop__item" href={`/shop/${category.slug}`}>
                 <span className="home-shop__art" data-bbm-tone={TILE_TONES[i % TILE_TONES.length]}>
-                  <img src={treatArt[category.slug]?.src ?? art.cupcake} alt="" />
+                  <img src={treatArt[category.slug]?.src ?? stock.cupcakes.src} alt="" loading="lazy" />
                 </span>
                 <span className="home-shop__name">{category.name}</span>
                 <span className="home-shop__meta">
@@ -357,17 +357,17 @@ const craftTiles = [
   {
     label: 'Custom cake',
     href: whatsappLink("Hello Bakes by Mom! I'd like to plan a custom cake 🎂"),
-    image: art.strawberryCake,
+    image: stock.custom.src,
     externalLink: true,
   },
-  { label: 'Bento cake', href: '/shop/bento-cakes', image: art.bento, externalLink: false },
+  { label: 'Bento cake', href: '/shop/bento-cakes', image: stock.bento.src, externalLink: false },
   {
     label: 'Send a gift',
     href: whatsappLink("Hello Bakes by Mom! I'd like to send a cake as a gift 🎁"),
-    image: art.combo,
+    image: stock.gift.src,
     externalLink: true,
   },
-  { label: 'Questions?', href: '#faq', image: art.cupcake, externalLink: false },
+  { label: 'Questions?', href: '#faq', image: stock.cupcakes.src, externalLink: false },
 ];
 
 export function CraftedSection() {
@@ -425,7 +425,7 @@ export function CraftedSection() {
               <li key={tile.label}>
                 <a className="home-craft-tile" href={tile.href} {...(tile.externalLink ? external : {})}>
                   <span className="home-craft-tile__blob" aria-hidden="true" />
-                  <img src={tile.image} alt="" />
+                  <img src={tile.image} alt="" loading="lazy" />
                   <span className="home-craft-tile__arrow" aria-hidden="true">
                     ↗
                   </span>
@@ -469,7 +469,14 @@ export function KitchenSplit() {
         scale="lg"
         className="home-kitchen__art"
       >
-        <Polaroid frame="cartouche" src={art.mom} alt="Mom in her apron, smiling" rotate={0} width="min(20rem, 72%)" />
+        <Polaroid
+          frame="cartouche"
+          src={stock.kitchen.src}
+          alt={stock.kitchen.alt}
+          rotate={0}
+          width="min(20rem, 72%)"
+          aspect="4/5"
+        />
       </PatternSurface>
     </section>
   );

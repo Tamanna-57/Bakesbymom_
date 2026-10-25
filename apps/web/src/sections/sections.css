@@ -100,6 +100,8 @@
   right: -6%;
   bottom: -6%;
   width: 62%;
+  aspect-ratio: 1;
+  object-fit: cover;
   border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
   border-radius: var(--bbm-radius-lg);
   box-shadow: var(--bbm-shadow-sticker-md);

@@ -32,7 +32,7 @@ import {
   type GalleryItem,
   type HeadingLevel,
 } from '@bakesbymom/ui';
-import { art, treatArt } from '../content';
+import { art, stock, treatArt } from '../content';
 import { answer, starterChips, type Answer } from '../content/assistant';
 import { bakery, chefsPicks, giftAddons, inr, kgLabel, mostOrdered, timeSlots, whatsappLink } from '../content/bakery';
 import { cakes, findCake, occasions, type Cake } from '../content/catalog';
@@ -166,11 +166,11 @@ export function MenuSection({ level = 2, limit }: { level?: 1 | 2; limit?: numbe
 /** Cherry tiles for every kind of bake (pin 16). */
 export function CategoryTiles() {
   const tiles = [
-    { label: 'Cakes', href: '/catalog', image: art.strawberryCake },
+    { label: 'Cakes', href: '/catalog', image: stock.occasions.src },
     ...treatCategories.map((category) => ({
       label: category.name,
       href: `/shop/${category.slug}`,
-      image: treatArt[category.slug]?.src ?? art.cupcake,
+      image: treatArt[category.slug]?.src ?? stock.cupcakes.src,
     })),
   ];
   return (

@@ -2,16 +2,16 @@
 
 The Bakes by Mom website: a home bakery in Panipat, Haryana, where everything is 100% eggless and orders go through WhatsApp. It's built only from [`@bakesbymom/ui`](../../packages/ui) and the board specs in [`design/board/sections/`](../../design/board/sections). The content, categories, photos and ordering flow come from the old site (bakesbymom.vercel.app), and the paths match it, so old links keep working.
 
-| Path                  | Page                                                                                                                                                                                                           |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/`                   | Home, after pins 16 and 13: striped hero, about us, flavours, shop by the box, occasions, how to order, Mom's kitchen, the gallery, reviews, FAQ. Drawings only; the gallery is the one place with cake photos |
-| `/catalog`            | Every cake, by occasion (11 occasions, 21 cakes). `?occasion=anniversary` opens one shelf                                                                                                                      |
-| `/catalog/<cake>`     | One cake: photos, price, and an order builder (size, flavour, add-ons, message, date, time, pickup or delivery) that opens WhatsApp                                                                            |
-| `/shop`               | Every kind of bake                                                                                                                                                                                             |
-| `/shop/<type>`        | Brownies, cookies, jar cakes, dry cakes, cupcakes, bento cakes or combos, with what to know                                                                                                                    |
-| `/shop/<type>/<item>` | One treat and its order builder (quantity, flour for cookies, extras, date, time)                                                                                                                              |
-| `/about`              | Our story: the orbit, Mom, values, the about card, how it started and the ritual                                                                                                                               |
-| `/links`              | The Instagram link-in-bio page (pin 08)                                                                                                                                                                        |
+| Path                  | Page                                                                                                                                                                                                                    |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/`                   | Home, after pins 16 and 13: striped hero, about us, flavours, shop by the box, occasions, how to order, Mom's kitchen, the gallery, reviews, FAQ. Stock photos for flavours and treats; the gallery shows our own cakes |
+| `/catalog`            | Every cake, by occasion (11 occasions, 21 cakes). `?occasion=anniversary` opens one shelf                                                                                                                               |
+| `/catalog/<cake>`     | One cake: photos, price, and an order builder (size, flavour, add-ons, message, date, time, pickup or delivery) that opens WhatsApp                                                                                     |
+| `/shop`               | Every kind of bake                                                                                                                                                                                                      |
+| `/shop/<type>`        | Brownies, cookies, jar cakes, dry cakes, cupcakes, bento cakes or combos, with what to know                                                                                                                             |
+| `/shop/<type>/<item>` | One treat and its order builder (quantity, flour for cookies, extras, date, time)                                                                                                                                       |
+| `/about`              | Our story: the orbit, Mom, values, the about card, how it started and the ritual                                                                                                                                        |
+| `/links`              | The Instagram link-in-bio page (pin 08)                                                                                                                                                                                 |
 
 ```bash
 npm run web        # at the repo root: builds the packages, then starts the site at http://localhost:5173
@@ -37,7 +37,7 @@ npm test -w @bakesbymom/web
 ## Keeping it up to date
 
 - **Cakes.** The catalog is a copy of the old site's `/api/catalog` (the one its admin page edits), so edits made there don't show up here. Add or change cakes in `catalog.ts`, and put photos in `public/photos` (cut-outs with a transparent background look best).
-- **Treat photos.** The treats have no photos yet, so each type shows an illustration. Drop in real photos when you have them.
+- **Stock photos.** The treat types, the flavours and the home page use stock photos from Unsplash (`public/stock`, credits in `public/stock/CREDITS.md`), and the treat pages say "Photo for reference". Swap in photos of your own boxes when you have them: same file names, or change `stock`, `treatArt` and `flavours` in `src/content/index.ts`.
 - **Not wired up.** Ordering is WhatsApp-only, by design: nothing is sent from the site. The Ask Mom assistant answers from the catalog and hands off to WhatsApp.
 
 Deployed on Vercel with this folder as the project's root directory.

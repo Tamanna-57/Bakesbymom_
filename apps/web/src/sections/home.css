@@ -37,17 +37,23 @@
   width: min(100%, 30rem);
 }
 
-.home-hero__art > img {
+/* The photo in an arched frame, like a shop window */
+.home-hero__photo {
   display: block;
   width: 100%;
   height: auto;
-  filter: drop-shadow(6px 8px 0 rgb(50 24 11 / 0.12));
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border: 5px solid var(--bbm-color-cherry-700);
+  border-radius: 999px 999px var(--bbm-radius-2xl) var(--bbm-radius-2xl);
+  background-color: var(--bbm-color-paper);
+  box-shadow: var(--bbm-shadow-sticker-lg);
 }
 
 .home-hero__burst {
   position: absolute;
-  top: 2%;
-  left: -2%;
+  top: 6%;
+  left: -6%;
 }
 
 .home-hero__spark {
@@ -280,6 +286,12 @@
   justify-self: center;
   width: min(100%, 22rem);
   height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-xl);
+  box-shadow: var(--bbm-shadow-sticker-md);
+  rotate: 3deg;
 }
 
 /* Flavours (pin 16's "Fillings") ------------------------------------------ */
@@ -324,11 +336,13 @@
   box-shadow: var(--bbm-shadow-sticker-sm);
 }
 
-.home-flavour__slice {
+.home-flavour__photo {
   display: block;
   width: 100%;
   height: auto;
-  clip-path: inset(0 round var(--bbm-radius-lg));
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--bbm-radius-lg);
   margin-bottom: var(--bbm-space-1);
 }
 
@@ -450,10 +464,10 @@
 
 .home-shop__lead img {
   position: absolute;
-  top: 6%;
-  left: 50%;
-  width: 86%;
-  translate: -50% 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   transition: scale var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard);
 }
 
@@ -799,6 +813,8 @@
   top: 20%;
   right: 7%;
   width: 42%;
+  aspect-ratio: 1;
+  object-fit: cover;
   border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
   border-radius: var(--bbm-radius-lg);
   box-shadow: var(--bbm-shadow-sticker-md);

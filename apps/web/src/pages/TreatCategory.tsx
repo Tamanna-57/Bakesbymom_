@@ -1,5 +1,5 @@
 import { Button, Card, PatternSurface, ProductCard, SectionHeading } from '@bakesbymom/ui';
-import { art, treatArt } from '../content';
+import { stock, treatArt } from '../content';
 import { treatCategories, type TreatCategory } from '../content/treats';
 import { Layout } from './Layout';
 import { Breadcrumbs, EgglessNote } from './order';
@@ -8,7 +8,7 @@ const TONES = ['pink', 'blue', 'beige', 'butter'] as const;
 
 /** One kind of treat (the old site's /shop/<type>): what to know, then every item. */
 export function TreatCategoryPage({ category }: { category: TreatCategory }) {
-  const image = treatArt[category.slug] ?? { src: art.cupcake, alt: '' };
+  const image = treatArt[category.slug] ?? stock.cupcakes;
   return (
     <Layout path="/shop">
       <section className="site-section">
@@ -19,6 +19,7 @@ export function TreatCategoryPage({ category }: { category: TreatCategory }) {
           <div className="shop-category">
             <PatternSurface pattern="gingham" tone="pink" className="shop-category__art">
               <img src={image.src} alt={image.alt} width={320} height={320} />
+              <p className="shop-photo-note">Photo for reference. Every box is baked to order.</p>
             </PatternSurface>
             <div className="shop-category__intro">
               <SectionHeading level={1} size="xl" title={category.name} description={category.blurb} />

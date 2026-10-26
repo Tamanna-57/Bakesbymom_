@@ -37,6 +37,31 @@
   background-color: var(--bbm-color-bg-brand);
 }
 
+.site-section--pink {
+  background-color: var(--bbm-color-bg-pink);
+}
+
+.site-section--butter {
+  background-color: var(--bbm-color-bg-butter);
+}
+
+.site-section--cocoa {
+  background-color: var(--bbm-color-bg-inverse);
+  color: var(--bbm-color-text-inverse);
+}
+
+/* A band whose scalloped top edge (SectionEdge) rises into the band above it */
+.site-section--edged {
+  position: relative;
+}
+
+.site-edge {
+  position: absolute;
+  bottom: calc(100% - 1px);
+  left: 0;
+  z-index: 2;
+}
+
 /* Menu */
 .site-menu__filters {
   display: flex;
@@ -275,7 +300,108 @@
   color: var(--bbm-color-text-brand);
 }
 
+/* "About us" stamp: the script sits across the end of the heavy heading like a signature */
+.home-about__copy .bbm-heading__overlay,
+.site-about-card .bbm-heading__overlay {
+  left: calc(100% - 0.35em);
+  top: 0.5em;
+  font-size: 0.78em;
+  color: var(--bbm-color-cherry-700);
+  rotate: -10deg;
+}
+
+/* Our story: the heading and the orbit share one pink sky */
+.site-about-intro {
+  padding-bottom: 0;
+}
+
+.site-values-band {
+  padding-top: 0;
+}
+
 /* Orbit */
+.site-orbit {
+  position: relative;
+  overflow: clip;
+}
+
+.site-orbit > .site-container {
+  position: relative;
+  z-index: 1;
+}
+
+.site-orbit__sky > svg {
+  position: absolute;
+  animation: site-twinkle 3.2s ease-in-out infinite;
+}
+
+.site-orbit__sky > :nth-child(1) {
+  top: 8%;
+  left: 6%;
+}
+
+.site-orbit__sky > :nth-child(2) {
+  top: 30%;
+  left: 14%;
+  animation-delay: -0.8s;
+}
+
+.site-orbit__sky > :nth-child(3) {
+  top: 70%;
+  left: 5%;
+  animation-delay: -1.6s;
+}
+
+.site-orbit__sky > :nth-child(4) {
+  top: 12%;
+  right: 16%;
+  animation-delay: -2.1s;
+}
+
+.site-orbit__sky > :nth-child(5) {
+  top: 46%;
+  right: 5%;
+  animation-delay: -0.4s;
+}
+
+.site-orbit__sky > :nth-child(6) {
+  bottom: 12%;
+  right: 13%;
+  animation-delay: -1.2s;
+}
+
+.site-orbit__sky > :nth-child(7) {
+  bottom: 6%;
+  left: 30%;
+  animation-delay: -2.6s;
+}
+
+@keyframes site-twinkle {
+  0%,
+  100% {
+    scale: 1;
+    rotate: 0deg;
+    opacity: 0.95;
+  }
+  50% {
+    scale: 0.55;
+    rotate: 45deg;
+    opacity: 0.5;
+  }
+}
+
+@media (max-width: 599.98px) {
+  .site-orbit__sky > :nth-child(n + 5) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-orbit__sky > svg {
+    animation: none;
+  }
+}
+
 .site-orbit__text {
   max-width: 34rem;
   margin: 0 auto;
@@ -306,6 +432,7 @@
 /* About card (pin 16) */
 .site-about-card {
   display: grid;
+  justify-items: start;
   gap: var(--bbm-space-4);
   overflow: hidden;
   padding-inline-start: clamp(var(--bbm-space-6), 16vw, 12rem) !important;
@@ -327,14 +454,80 @@
   line-height: var(--bbm-text-body-lg-line-height);
 }
 
-/* Reviews */
+/* Reviews: an endless, slow row of cards that pauses under the pointer */
 .site-reviews {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
-  gap: var(--bbm-space-6);
+  --_gap: var(--bbm-space-6);
+  display: flex;
+  gap: var(--_gap);
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  padding-block: var(--bbm-space-2) var(--bbm-space-4);
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.site-reviews__track {
+  display: flex;
+  flex: none;
+  gap: var(--_gap);
   margin: 0;
   padding: 0;
   list-style: none;
+  animation: site-reviews-scroll 60s linear infinite;
+}
+
+.site-reviews__track > li {
+  flex: none;
+  width: clamp(16rem, 70vw, 19rem);
+}
+
+.site-reviews:hover .site-reviews__track {
+  animation-play-state: paused;
+}
+
+/* Each card tips a little, sticker-style, and straightens when you point at it */
+.site-reviews__track > li:nth-child(odd) .bbm-review {
+  rotate: -1.5deg;
+}
+
+.site-reviews__track > li:nth-child(even) .bbm-review {
+  rotate: 1.5deg;
+}
+
+.site-reviews__track .bbm-review {
+  transition:
+    rotate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce),
+    translate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
+}
+
+.site-reviews__track > li:hover .bbm-review {
+  rotate: 0deg;
+  translate: 0 -6px;
+}
+
+@keyframes site-reviews-scroll {
+  to {
+    translate: calc(-100% - var(--_gap)) 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-reviews {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  .site-reviews__track {
+    animation: none;
+  }
+
+  .site-reviews__track[aria-hidden] {
+    display: none;
+  }
+
+  .site-reviews__track > li {
+    scroll-snap-align: center;
+  }
 }
 
 /* Bake Club (pin 01) */
@@ -657,6 +850,33 @@
   background: var(--bbm-color-bg-pink);
 }
 
+/* The open photo shows the whole cake, not a crop through the middle of it */
+.site-gallery .bbm-gallery__strip--open img {
+  object-fit: contain;
+  padding: var(--bbm-space-4);
+  box-sizing: border-box;
+}
+
+/* The gallery sits on the cocoa band: candy-pink bubble letters, light caption */
+.site-gallery .bbm-heading--bubble .bbm-heading__title {
+  --bbm-heading-bubble-fill: var(--bbm-color-pink-300);
+  -webkit-text-stroke-color: var(--bbm-color-paper);
+  text-shadow: 0.05em 0.06em 0 var(--bbm-color-cherry-600);
+}
+
+.site-gallery .bbm-gallery__caption,
+.site-gallery .bbm-gallery__caption a {
+  color: var(--bbm-color-pink-300);
+}
+
+.site-gallery .bbm-gallery__strip {
+  border-color: var(--bbm-color-paper);
+}
+
+.site-gallery .bbm-gallery__strip--open {
+  box-shadow: 6px 6px 0 var(--bbm-color-cherry-600);
+}
+
 /* Phones: the occasion chips scroll sideways in one row instead of filling the screen */
 @media (max-width: 599.98px) {
   .site-menu__filters {
@@ -678,4 +898,8 @@
   .site-gallery__filters .bbm-chips__chip {
     flex: none;
   }
+}
+
+.site-reviews-band {
+  overflow-x: clip;
 }

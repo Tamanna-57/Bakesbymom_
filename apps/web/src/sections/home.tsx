@@ -24,6 +24,7 @@ import { flavours, stock, treatArt } from '../content';
 import { bakery, cakeFlavours, cakeSizes, whatsappLink } from '../content/bakery';
 import { occasions } from '../content/catalog';
 import { howToOrder, orderLink } from '../content/site';
+import { SectionEdge } from './blocks';
 import { treatCategories } from '../content/treats';
 import './home.css';
 
@@ -45,7 +46,14 @@ export function HomeHero() {
     >
       <div className="home-hero__inner">
         <div className="home-hero__art">
-          <img className="home-hero__photo" src={stock.hero.src} alt={stock.hero.alt} width={733} height={1100} />
+          <img
+            className="home-hero__photo"
+            src={stock.hero.src}
+            alt={stock.hero.alt}
+            width={733}
+            height={1100}
+            data-parallax="-0.06"
+          />
           <PriceTag
             className="home-hero__burst"
             shape="burst"
@@ -56,6 +64,13 @@ export function HomeHero() {
             rotate={-12}
           />
           <Doodle name="sparkle" size={44} color="var(--bbm-color-cherry-700)" className="home-hero__spark" />
+          <Doodle
+            name="sparkle"
+            size={26}
+            color="var(--bbm-color-butter-400)"
+            className="home-hero__spark home-hero__spark--b"
+          />
+          <Doodle name="heart" size={30} color="var(--bbm-color-cherry-500)" className="home-hero__heart" />
         </div>
         <div className="home-hero__card">
           <p className="home-hero__eyebrow">Home bakery · {bakery.place}</p>
@@ -125,6 +140,16 @@ const features = [
   },
 ];
 
+/** The pink polka-dot band under the ribbon: the feature strip, then the about us card. */
+export function HomeIntro() {
+  return (
+    <PatternSurface pattern="dots" tone="pink" ground="var(--bbm-color-bg-pink)" className="home-intro">
+      <FeatureStrip />
+      <AboutUsCard />
+    </PatternSurface>
+  );
+}
+
 export function FeatureStrip() {
   return (
     <section className="home-features" aria-label="Why order from Mom">
@@ -152,15 +177,12 @@ export function AboutUsCard() {
     <section className="site-section home-about">
       <div className="site-container">
         <Card outline="brand" padding="lg" className="home-about__card">
-          <Doodle
-            name="cherries-halftone"
-            size={240}
-            color="var(--bbm-color-cherry-700)"
-            className="home-about__cherries"
-          />
+          <span className="home-about__cherries" data-parallax="0.08">
+            <Doodle name="cherries-halftone" size={240} color="var(--bbm-color-cherry-700)" />
+          </span>
           <Doodle name="squiggle" size={150} color="var(--bbm-color-cherry-700)" className="home-about__flourish" />
           <div className="home-about__copy">
-            <SectionHeading variant="stamp" align="start" title="About us" overlay="About us" />
+            <SectionHeading variant="stamp" align="start" title="About us" overlay="with love" />
             <h3 className="home-about__sub">What sets us apart?</h3>
             <p className="home-about__lead">
               Everything is eggless, baked to order and finished by hand, in batches small enough to taste the care.
@@ -175,7 +197,18 @@ export function AboutUsCard() {
               Read our story
             </Button>
           </div>
-          <img className="home-about__cake" src={stock.about.src} alt={stock.about.alt} loading="lazy" />
+          <div className="home-about__art">
+            <img className="home-about__cake" src={stock.custom.src} alt={stock.custom.alt} loading="lazy" />
+            <PriceTag
+              className="home-about__tag"
+              shape="burst"
+              tone="pink"
+              amount="by hand"
+              label="every one"
+              size={104}
+              rotate={10}
+            />
+          </div>
         </Card>
       </div>
     </section>
@@ -186,7 +219,8 @@ export function AboutUsCard() {
 
 export function FlavoursSection() {
   return (
-    <section id="flavours" className="site-section site-section--blue home-flavours">
+    <section id="flavours" className="site-section site-section--blue site-section--edged home-flavours">
+      <SectionEdge color="var(--bbm-color-bg-blue)" />
       <div className="site-container">
         <SectionHeading variant="ribbon" title="Flavours" ribbonText="baked to order" />
         <ul className="home-flavours__grid">
@@ -243,7 +277,8 @@ export function ShopByBoxSection() {
   const group = filter[0] ?? 'all';
   const shown = group === 'all' ? treatCategories : treatCategories.filter((c) => boxGroups[group]?.includes(c.slug));
   return (
-    <section id="treats" className="site-section home-shop">
+    <section id="treats" className="site-section site-section--edged home-shop">
+      <SectionEdge color="var(--bbm-color-bg-beige)" shape="wave" />
       <div className="site-container">
         <div className="home-shop__head">
           <h2 className="home-shop__title">
@@ -357,7 +392,9 @@ const craftTiles = [
   {
     label: 'Custom cake',
     href: whatsappLink("Hello Bakes by Mom! I'd like to plan a custom cake 🎂"),
-    image: stock.custom.src,
+    // One of Mom's own: a cut-out photo, shown whole on a pink card
+    image: '/photos/heart-pearl-1.webp',
+    cutout: true,
     externalLink: true,
   },
   { label: 'Bento cake', href: '/shop/bento-cakes', image: stock.bento.src, externalLink: false },
@@ -384,17 +421,21 @@ export function CraftedSection() {
     >
       <div className="site-container">
         <div className="home-crafted__lockup">
-          <Doodle name="cherries-halftone" size={120} color="var(--bbm-color-cherry-700)" />
+          <span data-parallax="0.1">
+            <Doodle name="cherries-halftone" size={120} color="var(--bbm-color-cherry-700)" />
+          </span>
           <h2>
             <span className="home-crafted__heavy">Crafted happiness, baked with love.</span>
             <span className="home-script home-crafted__script">Bakes by Mom</span>
           </h2>
-          <Doodle
-            name="cherries-halftone"
-            size={120}
-            color="var(--bbm-color-cherry-700)"
-            className="home-crafted__mirror"
-          />
+          <span data-parallax="-0.1">
+            <Doodle
+              name="cherries-halftone"
+              size={120}
+              color="var(--bbm-color-cherry-700)"
+              className="home-crafted__mirror"
+            />
+          </span>
         </div>
         <div className="home-crafted__grid">
           <div className="home-order-card">
@@ -425,7 +466,12 @@ export function CraftedSection() {
               <li key={tile.label}>
                 <a className="home-craft-tile" href={tile.href} {...(tile.externalLink ? external : {})}>
                   <span className="home-craft-tile__blob" aria-hidden="true" />
-                  <img src={tile.image} alt="" loading="lazy" />
+                  <img
+                    src={tile.image}
+                    alt=""
+                    loading="lazy"
+                    className={'cutout' in tile ? 'home-craft-tile__cutout' : undefined}
+                  />
                   <span className="home-craft-tile__arrow" aria-hidden="true">
                     ↗
                   </span>
@@ -470,6 +516,7 @@ export function KitchenSplit() {
         className="home-kitchen__art"
       >
         <Polaroid
+          data-parallax="-0.05"
           frame="cartouche"
           src={stock.kitchen.src}
           alt={stock.kitchen.alt}

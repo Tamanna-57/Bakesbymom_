@@ -4,7 +4,7 @@ import { Layout } from './Layout';
 export function NotFoundPage() {
   return (
     <Layout path="">
-      <section className="site-section">
+      <section className="site-section site-section--pink">
         <div className="site-container site-narrow" style={{ display: 'grid', gap: 24, justifyItems: 'center' }}>
           <Doodle name="cupcake" size={72} />
           <SectionHeading

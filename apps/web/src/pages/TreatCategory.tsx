@@ -3,6 +3,7 @@ import { stock, treatArt } from '../content';
 import { treatCategories, type TreatCategory } from '../content/treats';
 import { Layout } from './Layout';
 import { Breadcrumbs, EgglessNote } from './order';
+import { SectionEdge } from '../sections/blocks';
 
 const TONES = ['pink', 'blue', 'beige', 'butter'] as const;
 
@@ -11,7 +12,7 @@ export function TreatCategoryPage({ category }: { category: TreatCategory }) {
   const image = treatArt[category.slug] ?? stock.cupcakes;
   return (
     <Layout path="/shop">
-      <section className="site-section">
+      <section className="site-section site-section--blue">
         <div className="site-container">
           <Breadcrumbs
             items={[{ label: 'Home', href: '/' }, { label: 'Treats', href: '/shop' }, { label: category.name }]}
@@ -50,7 +51,8 @@ export function TreatCategoryPage({ category }: { category: TreatCategory }) {
         </div>
       </section>
 
-      <section className="site-section site-section--beige">
+      <section className="site-section site-section--beige site-section--edged">
+        <SectionEdge color="var(--bbm-color-bg-beige)" shape="wave" />
         <div className="site-container">
           <ul className="site-menu__grid">
             {category.items.map((treat, i) => (
@@ -72,7 +74,8 @@ export function TreatCategoryPage({ category }: { category: TreatCategory }) {
         </div>
       </section>
 
-      <section className="site-section">
+      <section className="site-section site-section--pink site-section--edged">
+        <SectionEdge color="var(--bbm-color-bg-pink)" />
         <div className="site-container">
           <SectionHeading title="More from the kitchen" size="md" align="center" />
           <div className="shop-more">

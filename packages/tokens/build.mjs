@@ -118,7 +118,8 @@ function deepMerge(target, source) {
 await rm(distDir, { recursive: true, force: true });
 
 const sd = new StyleDictionary({
-  source: [path.join(srcDir, '**/*.json')],
+  // Globs need forward slashes, also on Windows.
+  source: [path.join(srcDir, '**/*.json').split(path.sep).join('/')],
   usesDtcg: true,
   log: { verbosity: 'default', warnings: 'warn' },
   platforms: {

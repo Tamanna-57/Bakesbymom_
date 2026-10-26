@@ -15,6 +15,7 @@ import {
   WhenWhereFields,
   type WhenWhere,
 } from './order';
+import { SectionEdge } from '../sections/blocks';
 
 /** One treat (the old site's /shop/<type>/<item>): what it is, and an order that opens in WhatsApp. */
 export function TreatPage({ category, treat }: { category: TreatCategory; treat: Treat }) {
@@ -32,7 +33,7 @@ export function TreatPage({ category, treat }: { category: TreatCategory; treat:
 
   return (
     <Layout path="/shop">
-      <section className="site-section">
+      <section className="site-section site-section--blue">
         <div className="site-container">
           <Breadcrumbs
             items={[
@@ -129,7 +130,8 @@ export function TreatPage({ category, treat }: { category: TreatCategory; treat:
       </section>
 
       {others.length > 0 && (
-        <section className="site-section site-section--beige">
+        <section className="site-section site-section--beige site-section--edged">
+          <SectionEdge color="var(--bbm-color-bg-beige)" shape="wave" />
           <div className="site-container">
             <SectionHeading title={`More ${category.name.toLowerCase()}`} size="md" />
             <ul className="shop-more">

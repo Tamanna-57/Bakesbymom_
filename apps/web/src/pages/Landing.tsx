@@ -1,10 +1,9 @@
 import { FaqSection, GallerySection, ReviewsSection } from '../sections/blocks';
 import {
-  AboutUsCard,
   CraftedSection,
-  FeatureStrip,
   FlavoursSection,
   HomeHero,
+  HomeIntro,
   KitchenSplit,
   OccasionBand,
   QuoteBand,
@@ -24,8 +23,7 @@ export function LandingPage() {
     <Layout path="/" withAnnouncement>
       <HomeHero />
       <ShapeRibbon />
-      <FeatureStrip />
-      <AboutUsCard />
+      <HomeIntro />
       <FlavoursSection />
       <ShopByBoxSection />
       <OccasionBand />

@@ -11,7 +11,7 @@ const TONES = ['pink', 'blue', 'beige', 'butter'] as const;
 export function ShopPage() {
   return (
     <Layout path="/shop">
-      <section className="site-section">
+      <section className="site-section site-section--pink">
         <div className="site-container">
           <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Treats' }]} />
           <SectionHeading

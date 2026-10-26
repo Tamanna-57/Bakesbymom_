@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 // Fonts load from Google Fonts in index.html.
+import 'lenis/dist/lenis.css';
 import '@bakesbymom/ui/styles.css';
 import './site.css';
 import { App } from './App';

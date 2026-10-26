@@ -13,7 +13,7 @@ import { Layout } from './Layout';
 export function AboutPage() {
   return (
     <Layout path="/about">
-      <section className="site-section" style={{ paddingBottom: 0 }}>
+      <section className="site-section site-section--pink site-about-intro">
         <div className="site-container">
           <SectionHeading
             eyebrow="our story"
@@ -31,13 +31,13 @@ export function AboutPage() {
       </section>
       <OrbitSection />
       <Marquee
-        tone="pink"
+        tone="cherry"
         items={['Passion', 'Patience', 'Perfection', '100% eggless', 'Baked to order']}
         caps={false}
         label="What goes into every box"
       />
       <MeetMomSection />
-      <section className="site-section site-section--beige">
+      <section className="site-section site-section--beige site-values-band">
         <div className="site-container">
           <ValuesRow />
         </div>

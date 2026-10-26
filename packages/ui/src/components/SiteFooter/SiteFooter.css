@@ -4,9 +4,13 @@
   font-family: var(--bbm-font-family-body);
 }
 
+/* The waves rise into the section above, so its color (not the page's) shows between them */
 .bbm-footer__edge {
+  position: absolute;
+  bottom: calc(100% - 1px);
+  left: 0;
+  z-index: 2;
   display: block;
-  margin-bottom: -1px;
 }
 
 .bbm-footer__body {

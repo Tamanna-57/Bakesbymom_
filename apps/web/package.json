@@ -14,6 +14,7 @@
   "dependencies": {
     "@bakesbymom/tokens": "0.1.0",
     "@bakesbymom/ui": "0.1.0",
+    "lenis": "^1.3.27",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   }

@@ -1,12 +1,18 @@
 .bbm-orbit {
+  --_lean-x: 0;
+  --_lean-y: 0;
   position: relative;
   width: 100%;
   max-width: 60rem;
   margin-inline: auto;
   aspect-ratio: 1000 / 625;
   color: var(--bbm-color-text-primary);
+  user-select: none;
+  -webkit-user-select: none;
 }
 
+/* Layers, back to front: the far side of the rings, the planet, the arc, the near side of the rings.
+   Satellites and moons switch between z-index 1 (behind) and 5 (in front) as they come round. */
 .bbm-orbit__lines,
 .bbm-orbit__arc {
   position: absolute;
@@ -17,15 +23,44 @@
   pointer-events: none;
 }
 
+.bbm-orbit__lines--back {
+  z-index: 0;
+}
+
+.bbm-orbit__planet {
+  position: absolute;
+  z-index: 2;
+  aspect-ratio: 1;
+}
+
+.bbm-orbit__arc {
+  z-index: 3;
+}
+
+.bbm-orbit__lines--front {
+  z-index: 4;
+}
+
 .bbm-orbit__path {
   fill: none;
   stroke: var(--bbm-color-border-default);
   stroke-width: 2;
 }
 
+.bbm-orbit__halo {
+  fill: none;
+  stroke: var(--bbm-color-border-default);
+  stroke-width: 1.25;
+  stroke-dasharray: 2 9;
+  stroke-linecap: round;
+  opacity: 0.45;
+}
+
 .bbm-orbit__center,
-.bbm-orbit__satellite {
-  position: absolute;
+.bbm-orbit__satellite img {
+  display: block;
+  width: 100%;
+  height: 100%;
   aspect-ratio: 1;
   object-fit: cover;
   border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
@@ -35,10 +70,54 @@
 
 .bbm-orbit__center {
   border-width: var(--bbm-border-width-thick);
+  box-shadow: var(--bbm-shadow-sticker-md);
+  -webkit-user-drag: none;
 }
 
 .bbm-orbit__satellite {
+  position: absolute;
+  aspect-ratio: 1;
+}
+
+.bbm-orbit__satellite img {
   box-shadow: var(--bbm-shadow-sticker-sm);
+  -webkit-user-drag: none;
+  transition: scale var(--bbm-motion-duration-base) var(--bbm-motion-easing-bounce);
+}
+
+.bbm-orbit__moon {
+  position: absolute;
+  z-index: 1;
+  aspect-ratio: 1;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: 50%;
+  background-color: var(--bbm-color-cherry-500);
+}
+
+.bbm-orbit__moon + .bbm-orbit__moon {
+  background-color: var(--bbm-color-butter-300);
+}
+
+.bbm-orbit__label {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.4rem);
+  padding: 0.25rem 0.7rem;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-pill);
+  background-color: var(--bbm-color-paper);
+  box-shadow: var(--bbm-shadow-sticker-sm);
+  font-family: var(--bbm-font-family-body);
+  font-size: var(--bbm-text-caption-size);
+  font-weight: var(--bbm-font-weight-bold);
+  white-space: nowrap;
+  color: var(--bbm-color-text-primary);
+  opacity: 0;
+  translate: -50% 0.4rem;
+  transition:
+    opacity var(--bbm-motion-duration-base) var(--bbm-motion-easing-out),
+    translate var(--bbm-motion-duration-base) var(--bbm-motion-easing-out);
+  pointer-events: none;
 }
 
 .bbm-orbit__arc-text {
@@ -47,6 +126,84 @@
   font-weight: var(--bbm-font-weight-semibold);
   letter-spacing: 0.02em;
   fill: currentColor;
+}
+
+/* Moving: bodies are placed by transform from the corner, so drop the still layout's offsets */
+.bbm-orbit--live {
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.bbm-orbit--dragging {
+  cursor: grabbing;
+}
+
+.bbm-orbit--live .bbm-orbit__satellite,
+.bbm-orbit--live .bbm-orbit__moon {
+  left: 0 !important;
+  top: 0 !important;
+  will-change: transform;
+  /* Near bodies lean further toward the pointer than far ones: a little depth */
+  translate: calc(var(--_lean-x) * (6px + 14px * var(--_near, 0.5)))
+    calc(var(--_lean-y) * (4px + 8px * var(--_near, 0.5)));
+}
+
+.bbm-orbit--live .bbm-orbit__planet {
+  translate: calc(var(--_lean-x) * -6px) calc(var(--_lean-y) * -4px);
+  animation: bbm-orbit-bob 7s ease-in-out infinite;
+}
+
+.bbm-orbit--live .bbm-orbit__arc {
+  transform-origin: 50% 54%;
+  translate: calc(var(--_lean-x) * -10px) calc(var(--_lean-y) * -6px);
+  animation: bbm-orbit-sway 9s ease-in-out infinite;
+}
+
+.bbm-orbit--live .bbm-orbit__lines {
+  translate: calc(var(--_lean-x) * 4px) calc(var(--_lean-y) * 3px);
+}
+
+.bbm-orbit--live .bbm-orbit__halo {
+  animation: bbm-orbit-dash 6s linear infinite;
+}
+
+.bbm-orbit--live .bbm-orbit__satellite:hover {
+  z-index: 6 !important;
+}
+
+.bbm-orbit--live .bbm-orbit__satellite:hover img {
+  scale: 1.18;
+}
+
+.bbm-orbit--live .bbm-orbit__satellite:hover .bbm-orbit__label {
+  opacity: 1;
+  translate: -50% 0;
+}
+
+.bbm-orbit--dragging .bbm-orbit__label {
+  opacity: 0 !important;
+}
+
+@keyframes bbm-orbit-bob {
+  50% {
+    transform: translateY(-2.5%) rotate(-1.5deg);
+  }
+}
+
+@keyframes bbm-orbit-sway {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes bbm-orbit-dash {
+  to {
+    stroke-dashoffset: -110;
+  }
 }
 
 /* Small screens: fewer, smaller satellites */
@@ -58,5 +215,9 @@
 
   .bbm-orbit__arc-text {
     font-size: 40px;
+  }
+
+  .bbm-orbit__label {
+    display: none;
   }
 }

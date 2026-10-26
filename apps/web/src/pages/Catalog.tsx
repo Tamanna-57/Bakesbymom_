@@ -4,6 +4,7 @@ import { cakes, occasions } from '../content/catalog';
 import { CakeCard, occasionOptions } from '../sections/blocks';
 import { Layout } from './Layout';
 import { Breadcrumbs } from './order';
+import { SectionEdge } from '../sections/blocks';
 
 const initialOccasion = () => {
   const wanted = new URLSearchParams(window.location.search).get('occasion');
@@ -52,8 +53,17 @@ export function CatalogPage() {
         <section
           key={occasion.slug}
           id={occasion.slug}
-          className={['site-section', 'catalog-shelf', i % 2 ? 'site-section--beige' : ''].filter(Boolean).join(' ')}
+          className={[
+            'site-section',
+            'site-section--edged',
+            'catalog-shelf',
+            i % 2 ? 'site-section--beige' : 'site-section--pink',
+          ].join(' ')}
         >
+          <SectionEdge
+            color={i % 2 ? 'var(--bbm-color-bg-beige)' : 'var(--bbm-color-bg-pink)'}
+            shape={i % 2 ? 'wave' : 'scallop'}
+          />
           <div className="site-container">
             <SectionHeading title={occasion.name} description={occasion.description} size="md" />
             <ul className="site-menu__grid">

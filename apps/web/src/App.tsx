@@ -10,6 +10,7 @@ import { NotFoundPage } from './pages/NotFound';
 import { ShopPage } from './pages/Shop';
 import { TreatCategoryPage } from './pages/TreatCategory';
 import { TreatPage } from './pages/TreatPage';
+import { jumpTo, useParallax, useReveal, useSmoothScroll } from './motion';
 import { matchPath, usePath, useLinkInterception } from './router';
 
 type Route = { title: string; page: ReactElement };
@@ -49,6 +50,7 @@ export function App() {
   const route = resolve(path) ?? { title: `Page not found · ${site}`, page: <NotFoundPage /> };
   const firstRender = useRef(true);
   useLinkInterception();
+  useSmoothScroll();
 
   useEffect(() => {
     document.title = route.title;
@@ -57,12 +59,15 @@ export function App() {
     if (target) {
       target.scrollIntoView();
     } else if (!firstRender.current) {
-      window.scrollTo(0, 0);
+      jumpTo(0);
       // Tell screen readers the page changed by moving focus to the new content.
       document.getElementById('main')?.focus({ preventScroll: true });
     }
     firstRender.current = false;
   }, [path, route.title]);
+  // After the scroll reset above, so they measure the new page from the top.
+  useReveal(path);
+  useParallax(path);
 
   // A new key per path resets each page's state (filters, order forms) when you move between items.
   return <div key={path}>{route.page}</div>;

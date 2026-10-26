@@ -29,6 +29,7 @@ import {
   Ticket,
   WeekSchedule,
   type ChatMessage,
+  type EdgeShape,
   type GalleryItem,
   type HeadingLevel,
 } from '@bakesbymom/ui';
@@ -50,8 +51,28 @@ import {
 import { treatCategories } from '../content/treats';
 import './sections.css';
 
-const Band = ({ children, className, id }: { children: ReactNode; className?: string; id?: string }) => (
-  <section id={id} className={['site-section', className].filter(Boolean).join(' ')}>
+/**
+ * Scallops or waves along the top of a section, in the section's own color, rising into the one above.
+ * Sections sit flush, so the page reads as one run of colored bands with no bare background between them.
+ */
+export function SectionEdge({ color, shape = 'scallop' }: { color: string; shape?: EdgeShape }) {
+  return <EdgeDivider className="site-edge" shape={shape} color={color} flip outline size="md" />;
+}
+
+const Band = ({
+  children,
+  className,
+  id,
+  edge,
+}: {
+  children: ReactNode;
+  className?: string;
+  id?: string;
+  /** The color of this band, to draw its top edge (see SectionEdge). */
+  edge?: { color: string; shape?: EdgeShape };
+}) => (
+  <section id={id} className={['site-section', edge && 'site-section--edged', className].filter(Boolean).join(' ')}>
+    {edge && <SectionEdge {...edge} />}
     <div className="site-container">{children}</div>
   </section>
 );
@@ -412,7 +433,7 @@ export function PackagesSection() {
 
 export function MeetMomSection() {
   return (
-    <Band id="story" className="site-meet">
+    <Band id="story" className="site-meet site-section--beige">
       <PatternSurface pattern="dots" tone="brown" ground="var(--bbm-color-bg-blue)" className="site-meet__photo">
         <Polaroid frame="scallop" src={art.mom} alt="Mom in her apron, smiling" rotate={0} />
         <Doodle
@@ -468,7 +489,13 @@ export function OrbitSection() {
     .filter(Boolean)
     .map((cake) => ({ src: cake!.photos[0]!.src, alt: cake!.name }));
   return (
-    <Band className="site-orbit">
+    <Band className="site-orbit site-section--pink">
+      {/* A pink sky of twinkling sparkles behind the orbit (pin 01) */}
+      <div className="site-orbit__sky" aria-hidden="true">
+        {Array.from({ length: 7 }, (_, i) => (
+          <Doodle key={i} name="sparkle" size={[56, 28, 40, 22, 64, 30, 36][i]} color="var(--bbm-color-paper)" />
+        ))}
+      </div>
       <Orbit
         center={{ src: art.kitchen, alt: "Mom's kitchen with jars on the shelf and a cake on a stand" }}
         satellites={satellites}
@@ -509,7 +536,7 @@ export function ValuesRow() {
 
 export function AboutCardSection() {
   return (
-    <Band>
+    <Band className="site-section--blue" edge={{ color: 'var(--bbm-color-bg-blue)' }}>
       <Card outline="brand" padding="lg" className="site-about-card">
         <Doodle
           name="cherries-halftone"
@@ -517,7 +544,7 @@ export function AboutCardSection() {
           color="var(--bbm-color-cherry-700)"
           className="site-about-card__cherries"
         />
-        <SectionHeading variant="stamp" align="start" title="About us" overlay="About us" />
+        <SectionHeading variant="stamp" align="start" title="About us" overlay="with love" />
         <p className="bbm-text-heading-sm">Passion, patience, perfection</p>
         <p className="site-about-card__quote">
           “Three things go into every box that leaves this kitchen. We pour the passion in at the mixing bowl, give the
@@ -531,7 +558,7 @@ export function AboutCardSection() {
 /** How the bakery grew, in three chapters. */
 export function StoryChaptersSection() {
   return (
-    <Band className="site-narrow-band">
+    <Band className="site-narrow-band site-section--pink" edge={{ color: 'var(--bbm-color-bg-pink)', shape: 'wave' }}>
       <SectionHeading align="center" title="How it started" />
       <StepList
         variant="row"
@@ -560,7 +587,7 @@ export function StoryChaptersSection() {
 /** "From flour to the first warm bite": the cookie ritual. */
 export function RitualSection() {
   return (
-    <Band id="ritual" className="site-section--beige">
+    <Band id="ritual" className="site-section--butter" edge={{ color: 'var(--bbm-color-bg-butter)' }}>
       <SectionHeading
         align="center"
         eyebrow="Chapter I · before the bell"
@@ -612,7 +639,7 @@ export function GallerySection() {
     [slug],
   );
   return (
-    <Band id="gallery" className="site-gallery">
+    <Band id="gallery" className="site-gallery site-section--cocoa" edge={{ color: 'var(--bbm-color-bg-inverse)' }}>
       <SectionHeading variant="bubble" title="Gallery" />
       <FilterChips
         label="Show cakes for"
@@ -630,7 +657,7 @@ export function GallerySection() {
 
 export function ReviewsSection() {
   return (
-    <Band>
+    <Band className="site-section--pink site-reviews-band" edge={{ color: 'var(--bbm-color-bg-pink)', shape: 'wave' }}>
       <SectionHeading
         eyebrow="kind words"
         eyebrowStyle="pill"
@@ -638,13 +665,18 @@ export function ReviewsSection() {
         description="Every box leaves the kitchen warm and comes back as a message on the phone. A few of the ones we kept."
         align="center"
       />
-      <ul className="site-reviews">
-        {reviews.map((review) => (
-          <li key={review.author}>
-            <ReviewCard {...review} />
-          </li>
+      {/* A slow, endless row: the second copy only fills the loop, so screen readers skip it */}
+      <div className="site-reviews">
+        {[0, 1].map((copy) => (
+          <ul key={copy} className="site-reviews__track" aria-hidden={copy === 1 || undefined}>
+            {reviews.map((review) => (
+              <li key={review.author}>
+                <ReviewCard {...review} />
+              </li>
+            ))}
+          </ul>
         ))}
-      </ul>
+      </div>
     </Band>
   );
 }
@@ -694,7 +726,7 @@ export function GiftSection() {
 
 export function FaqSection() {
   return (
-    <Band id="faq">
+    <Band id="faq" className="site-section--blue" edge={{ color: 'var(--bbm-color-bg-blue)' }}>
       <SectionHeading
         align="center"
         title={

@@ -6,6 +6,7 @@ import { cakeOrderMessage, cakePrice } from '../content/order';
 import { CakeCard } from '../sections/blocks';
 import { Layout } from './Layout';
 import { Breadcrumbs, Chips, EgglessNote, OrderGroup, WhatsAppOrder, WhenWhereFields, type WhenWhere } from './order';
+import { SectionEdge } from '../sections/blocks';
 
 /** One cake (the old site's /catalog/<cake>): photos, price, and an order that opens in WhatsApp. */
 export function CakePage({ cake }: { cake: Cake }) {
@@ -34,7 +35,7 @@ export function CakePage({ cake }: { cake: Cake }) {
 
   return (
     <Layout path="/catalog">
-      <section className="site-section">
+      <section className="site-section site-section--blue">
         <div className="site-container">
           <Breadcrumbs
             items={[
@@ -183,7 +184,8 @@ export function CakePage({ cake }: { cake: Cake }) {
       </section>
 
       {more.length > 0 && (
-        <section className="site-section site-section--beige">
+        <section className="site-section site-section--beige site-section--edged">
+          <SectionEdge color="var(--bbm-color-bg-beige)" shape="wave" />
           <div className="site-container">
             <SectionHeading title={`More for ${occasion?.name ?? 'this occasion'}`} size="md" />
             <ul className="site-menu__grid">

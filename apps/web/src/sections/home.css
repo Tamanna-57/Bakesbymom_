@@ -52,14 +52,109 @@
 
 .home-hero__burst {
   position: absolute;
+  z-index: 1;
   top: 6%;
   left: -6%;
+  animation: home-wobble 6s ease-in-out infinite;
 }
 
 .home-hero__spark {
   position: absolute;
   right: 4%;
   top: 12%;
+  animation: home-twinkle 2.8s ease-in-out infinite;
+}
+
+.home-hero__spark--b {
+  top: auto;
+  right: auto;
+  bottom: 14%;
+  left: -4%;
+  animation-delay: -1.2s;
+}
+
+.home-hero__heart {
+  position: absolute;
+  right: -5%;
+  bottom: 26%;
+  animation: home-float 5s ease-in-out infinite;
+}
+
+/* Entrance: the arch scales up, then the card's lines rise in one after another */
+.home-hero__art {
+  animation: home-pop 1.1s var(--bbm-motion-easing-out) both;
+}
+
+.home-hero__card {
+  animation: home-rise 0.9s var(--bbm-motion-easing-out) 0.1s both;
+}
+
+.home-hero__card > * {
+  animation: home-rise 0.9s var(--bbm-motion-easing-out) both;
+}
+
+.home-hero__card > :nth-child(1) {
+  animation-delay: 0.25s;
+}
+
+.home-hero__card > :nth-child(2) {
+  animation-delay: 0.35s;
+}
+
+.home-hero__card > :nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+.home-hero__card > :nth-child(4) {
+  animation-delay: 0.6s;
+}
+
+@keyframes home-rise {
+  from {
+    opacity: 0;
+    translate: 0 1.75rem;
+  }
+}
+
+@keyframes home-pop {
+  from {
+    opacity: 0;
+    scale: 0.92;
+  }
+}
+
+@keyframes home-wobble {
+  0%,
+  100% {
+    rotate: -6deg;
+  }
+  50% {
+    rotate: 8deg;
+  }
+}
+
+@keyframes home-twinkle {
+  0%,
+  100% {
+    scale: 1;
+    opacity: 1;
+  }
+  50% {
+    scale: 0.6;
+    opacity: 0.55;
+  }
+}
+
+@keyframes home-float {
+  0%,
+  100% {
+    translate: 0 0;
+    rotate: -8deg;
+  }
+  50% {
+    translate: 0 -10px;
+    rotate: 6deg;
+  }
 }
 
 .home-hero__card {
@@ -137,9 +232,13 @@
 
 /* Feature strip (Sweet Crumbs) ------------------------------------------ */
 
+/* The pink polka-dot band that holds the feature strip and the about card */
+.home-intro {
+  padding-bottom: calc(var(--bbm-layout-section-y) * 0.8);
+}
+
 .home-features {
-  padding: var(--bbm-space-8) var(--bbm-layout-gutter);
-  background-color: var(--bbm-color-bg-canvas);
+  padding: var(--bbm-space-10) var(--bbm-layout-gutter) var(--bbm-space-8);
 }
 
 .home-features__list {
@@ -152,7 +251,23 @@
   border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
   border-radius: var(--bbm-radius-xl);
   background-color: var(--bbm-color-bg-surface);
+  box-shadow: var(--bbm-shadow-sticker-md);
   list-style: none;
+}
+
+/* Point at a feature and its sticker gives a little jiggle */
+.home-features__list > li:hover .home-features__icon {
+  animation: home-jiggle 0.6s var(--bbm-motion-easing-bounce);
+}
+
+@keyframes home-jiggle {
+  30% {
+    rotate: -12deg;
+    scale: 1.12;
+  }
+  60% {
+    rotate: 8deg;
+  }
 }
 
 .home-features__list > li {
@@ -188,8 +303,8 @@
 /* About us (pin 16's outlined card) -------------------------------------- */
 
 .home-about {
-  padding-top: var(--bbm-space-8);
-  background-color: var(--bbm-color-bg-canvas);
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .home-about__card {
@@ -202,6 +317,7 @@
   border-width: 5px;
   border-radius: var(--bbm-radius-2xl);
   background-color: var(--bbm-color-bg-canvas);
+  box-shadow: 8px 10px 0 var(--bbm-color-cherry-700);
 }
 
 @media (min-width: 900px) {
@@ -213,9 +329,8 @@
 
 .home-about__cherries {
   position: absolute;
-  top: 50%;
+  top: calc(50% - 6rem);
   left: -5.5rem;
-  translate: 0 -40%;
   opacity: 0.85;
   pointer-events: none;
 }
@@ -282,16 +397,34 @@
   line-height: 1.6;
 }
 
-.home-about__cake {
+.home-about__art {
+  position: relative;
   justify-self: center;
   width: min(100%, 22rem);
+}
+
+.home-about__cake {
+  display: block;
+  width: 100%;
   height: auto;
   aspect-ratio: 4 / 5;
   object-fit: cover;
   border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
-  border-radius: var(--bbm-radius-xl);
+  border-radius: 999px 999px var(--bbm-radius-xl) var(--bbm-radius-xl);
   box-shadow: var(--bbm-shadow-sticker-md);
   rotate: 3deg;
+  transition: rotate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
+}
+
+.home-about__art:hover .home-about__cake {
+  rotate: -1deg;
+}
+
+.home-about__tag {
+  position: absolute;
+  left: -2rem;
+  bottom: 1.5rem;
+  animation: home-wobble 7s ease-in-out infinite;
 }
 
 /* Flavours (pin 16's "Fillings") ------------------------------------------ */
@@ -334,6 +467,22 @@
   border-radius: var(--bbm-radius-xl);
   background-color: var(--bbm-color-paper);
   box-shadow: var(--bbm-shadow-sticker-sm);
+  transition:
+    translate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce),
+    box-shadow var(--bbm-motion-duration-slow) var(--bbm-motion-easing-out);
+}
+
+.home-flavour:hover {
+  translate: 0 -6px;
+  box-shadow: var(--bbm-shadow-sticker-lg);
+}
+
+.home-flavour__photo {
+  transition: scale 0.6s var(--bbm-motion-easing-out);
+}
+
+.home-flavour:hover .home-flavour__photo {
+  scale: 1.03;
 }
 
 .home-flavour__photo {
@@ -405,7 +554,9 @@
 /* Shop by the box (pin 13's bestsellers) ---------------------------------- */
 
 .home-shop {
-  background-color: var(--bbm-color-bg-canvas);
+  /* Extra room at the bottom: the occasion band's curved top laps over it */
+  padding-bottom: calc(var(--bbm-layout-section-y) + 3.5rem);
+  background-color: var(--bbm-color-bg-beige);
 }
 
 .home-shop__head {
@@ -468,7 +619,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: scale var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard);
+  transition: scale 0.6s var(--bbm-motion-easing-out);
 }
 
 .home-shop__lead-label {
@@ -496,6 +647,20 @@
   text-align: center;
 }
 
+.home-shop__art,
+.home-shop__lead {
+  box-shadow: 0 0 0 var(--bbm-color-border-default);
+  transition:
+    translate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce),
+    box-shadow var(--bbm-motion-duration-slow) var(--bbm-motion-easing-out);
+}
+
+.home-shop__item:hover .home-shop__art,
+.home-shop__lead:hover {
+  translate: -3px -5px;
+  box-shadow: 6px 8px 0 var(--bbm-color-border-default);
+}
+
 .home-shop__art {
   display: block;
   overflow: hidden;
@@ -510,7 +675,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: scale var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard);
+  transition: scale 0.6s var(--bbm-motion-easing-out);
 }
 
 .home-shop__name {
@@ -545,7 +710,10 @@
 /* Occasions (pin 13's category row) ------------------------------------- */
 
 .home-occasions {
+  position: relative;
+  margin-top: -3.5rem;
   padding: calc(var(--bbm-layout-section-y) * 0.8) var(--bbm-layout-gutter) var(--bbm-layout-section-y);
+  border-top: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
   border-radius: 50% 50% 0 0 / 3.5rem 3.5rem 0 0;
   background-color: var(--bbm-color-blue-100);
 }
@@ -573,7 +741,9 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: var(--bbm-space-8) var(--bbm-space-4);
-  margin: 0;
+  /* Six to a row, so the eleven occasions sit as six over five */
+  max-width: calc(6 * 8.75rem + 5 * var(--bbm-space-4));
+  margin: 0 auto;
   padding: 0;
   list-style: none;
 }
@@ -606,11 +776,16 @@
   border-radius: 50%;
   background-color: var(--bbm-color-paper);
   box-shadow: var(--bbm-shadow-sticker-sm);
-  transition: translate var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard);
+  transition:
+    translate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce),
+    rotate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce),
+    background-color var(--bbm-motion-duration-base) var(--bbm-motion-easing-standard);
 }
 
 .home-occasions__list a:hover .home-occasions__icon {
-  translate: 0 -4px;
+  translate: 0 -8px;
+  rotate: -8deg;
+  background-color: var(--bbm-color-pink-200);
 }
 
 .home-occasions__label {
@@ -819,11 +994,33 @@
   border-radius: var(--bbm-radius-lg);
   box-shadow: var(--bbm-shadow-sticker-md);
   rotate: 6deg;
-  transition: rotate var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard);
+  transition: rotate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
 }
 
 .home-craft-tile:hover img {
   rotate: -2deg;
+}
+
+/* A cut-out photo of one of Mom's own cakes: cropped in to the cake, on pink where the cut-out is clear */
+.home-craft-tile img.home-craft-tile__cutout {
+  object-position: 50% 55%;
+  background-color: var(--bbm-color-pink-200);
+}
+
+.home-craft-tile {
+  transition: translate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
+}
+
+.home-craft-tile:hover {
+  translate: 0 -6px;
+}
+
+.home-craft-tile__blob {
+  transition: scale 0.8s var(--bbm-motion-easing-out);
+}
+
+.home-craft-tile:hover .home-craft-tile__blob {
+  scale: 1.15;
 }
 
 .home-craft-tile__arrow {
@@ -951,8 +1148,26 @@
 @media (prefers-reduced-motion: reduce) {
   .home-shop__lead img,
   .home-shop__art img,
+  .home-shop__art,
+  .home-shop__lead,
+  .home-craft-tile,
   .home-craft-tile img,
-  .home-occasions__icon {
+  .home-craft-tile__blob,
+  .home-occasions__icon,
+  .home-flavour,
+  .home-flavour__photo,
+  .home-about__cake {
     transition: none;
+  }
+
+  .home-hero__art,
+  .home-hero__card,
+  .home-hero__card > *,
+  .home-hero__burst,
+  .home-hero__spark,
+  .home-hero__heart,
+  .home-about__tag,
+  .home-features__list > li:hover .home-features__icon {
+    animation: none;
   }
 }

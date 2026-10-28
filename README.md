@@ -78,7 +78,18 @@ The reasoning, with alternates for every section, is in [`design/board/README.md
 | The website | https://bakesbymom-site.vercel.app | Root directory `apps/web`; [`apps/web/vercel.json`](./apps/web/vercel.json) builds the packages and the site and sends every path to `index.html` |
 | Storybook | https://bakesbymom-gilt.vercel.app | Root directory `./`; [`vercel.json`](./vercel.json) runs `npm run build-storybook` and serves `storybook-static` |
 
-Both are deployed from this repository. To redeploy on every push automatically, give Vercel's GitHub app access to `Tamanna-57/Bakesbymom_` and connect the two projects to it.
+Both are deployed from this repository. `https://bakesbymom.vercel.app` is the old site (last updated 19 October) and does not get these changes.
+
+[`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml) deploys both projects every time `main` changes, so a merged PR goes live within a few minutes. It needs four repository secrets (Settings → Secrets and variables → Actions); until they are set the deploy jobs skip:
+
+| Secret | Where to find it |
+|---|---|
+| `VERCEL_TOKEN` | https://vercel.com/account/tokens |
+| `VERCEL_ORG_ID` | `orgId` in `.vercel/project.json` after running `npx vercel link` in the repo |
+| `VERCEL_SITE_PROJECT_ID` | `projectId` after `npx vercel link` to the `bakesbymom-site` project |
+| `VERCEL_STORYBOOK_PROJECT_ID` | `projectId` after `npx vercel link` to the `bakesbymom-gilt` project |
+
+Connecting the two projects to `Tamanna-57/Bakesbymom_` through Vercel's GitHub app works too; then the workflow can be deleted.
 
 [`.github/workflows/ci.yml`](./.github/workflows/ci.yml) runs `npm run check` on every push.
 

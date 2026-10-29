@@ -1,0 +1,88 @@
+/* The home page intro (intro.tsx): the name on a cream screen, then rainbow bands sweep it away. */
+
+.bbm-intro {
+  /* How far each band's bottom edge dips, and how much of each band shows */
+  --intro-curve: min(36vh, 45vw);
+  --intro-band: 14vh;
+  position: fixed;
+  inset: 0;
+  z-index: var(--bbm-z-toast);
+  overflow: hidden;
+}
+
+/* The screen and the bands, stacked, slide up together. Wider than the screen, so only the shallow middle of
+   each curve shows. */
+.bbm-intro__track {
+  position: absolute;
+  top: 0;
+  left: -20%;
+  right: -20%;
+  display: flex;
+  flex-direction: column;
+}
+
+.bbm-intro.is-sweeping .bbm-intro__track {
+  animation: bbm-intro-sweep var(--intro-sweep) cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+/* Each layer's curved bottom sits over the top of the one below it */
+.bbm-intro__screen,
+.bbm-intro__band {
+  position: relative;
+  flex: none;
+  border-radius: 0 0 50% 50% / 0 0 var(--intro-curve) var(--intro-curve);
+}
+
+.bbm-intro__screen {
+  display: grid;
+  place-items: center;
+  /* The curve hangs below the fold, so the screen covers the page edge to edge */
+  height: calc(100vh + var(--intro-curve));
+  height: calc(100lvh + var(--intro-curve));
+  padding-bottom: var(--intro-curve);
+  box-sizing: border-box;
+  background-color: var(--bbm-color-bg-canvas);
+}
+
+.bbm-intro__band {
+  height: calc(var(--intro-band) + var(--intro-curve));
+  margin-top: calc(-1 * var(--intro-curve));
+  background-color: var(--band);
+}
+
+.bbm-intro__name {
+  margin: 0;
+  /* Room for the script's swashes, which the clip would otherwise cut */
+  padding: 0.2em 0.45em;
+  font-family: var(--bbm-font-family-script);
+  font-size: clamp(2.75rem, 1rem + 12vw, 9.5rem);
+  font-weight: var(--bbm-font-weight-regular);
+  line-height: 1.1;
+  color: var(--bbm-color-text-brand);
+  white-space: nowrap;
+  clip-path: inset(0 100% 0 0);
+}
+
+/* Written in from left to right, settling as it goes */
+.bbm-intro:not(.is-waiting) .bbm-intro__name {
+  animation: bbm-intro-write var(--intro-write) var(--bbm-motion-easing-out) both;
+}
+
+@keyframes bbm-intro-write {
+  from {
+    clip-path: inset(0 100% 0 0);
+    translate: 0 0.12em;
+    rotate: -3deg;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    translate: 0 0;
+    rotate: 0deg;
+  }
+}
+
+@keyframes bbm-intro-sweep {
+  to {
+    translate: 0 -100%;
+  }
+}

@@ -2,16 +2,19 @@
 
 The Bakes by Mom website: a home bakery in Panipat, Haryana, where everything is 100% eggless and orders go through WhatsApp. It's built only from [`@bakesbymom/ui`](../../packages/ui) and the board specs in [`design/board/sections/`](../../design/board/sections). The content, categories, photos and ordering flow come from the old site (bakesbymom.vercel.app), and the paths match it, so old links keep working.
 
-| Path                  | Page                                                                                                                                                                                                                    |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/`                   | Home, after pins 16 and 13: striped hero, about us, flavours, shop by the box, occasions, how to order, Mom's kitchen, the gallery, reviews, FAQ. Stock photos for flavours and treats; the gallery shows our own cakes |
-| `/catalog`            | Every cake, by occasion (11 occasions, 21 cakes). `?occasion=anniversary` opens one shelf                                                                                                                               |
-| `/catalog/<cake>`     | One cake: photos, price, and an order builder (size, flavour, add-ons, message, date, time, pickup or delivery) that opens WhatsApp                                                                                     |
-| `/shop`               | Every kind of bake                                                                                                                                                                                                      |
-| `/shop/<type>`        | Brownies, cookies, jar cakes, dry cakes, cupcakes, bento cakes or combos, with what to know                                                                                                                             |
-| `/shop/<type>/<item>` | One treat and its order builder (quantity, flour for cookies, extras, date, time)                                                                                                                                       |
-| `/about`              | Our story: the orbit, Mom, values, the about card, how it started and the ritual                                                                                                                                        |
-| `/links`              | The Instagram link-in-bio page (pin 08)                                                                                                                                                                                 |
+The nav has three links, each a page of its own: **Menu**, **How to order** and **Our story**.
+
+| Path              | Page                                                                                                                                                                                                                                             |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `/`               | Home, one idea per section: the hero, the four promises, a chooser (a cake for an occasion, or a box of treats), the most-loved cakes, Mom's kitchen, reviews, and one call to order                                                             |
+| `/menu`           | The whole menu: cakes by occasion (`?occasion=anniversary` opens one shelf), then the treats. The old `/catalog` opens it too, and `/shop` opens it at the treats                                                                                |
+| `/catalog/<cake>` | One cake: photos, price, and an order builder (size, flavour, add-ons, message, date, time, pickup or delivery) that opens WhatsApp                                                                                                              |
+| `/shop/<type>`    | One kind of treat (brownies, cookies, jar cakes, dry cakes, cupcakes, bento cakes, combos) and its order builder: flavour, quantity, flour for cookies, extras, date, time. The old `/shop/<type>/<item>` links open it with that flavour picked |
+| `/how-to-order`   | The steps, timings and pickup or delivery, custom cakes and gifts, and the questions. Old links to `/#order` and `/#faq` land here                                                                                                               |
+| `/about`          | Our story: Mom, what she promises, how it started, and everything on the table today                                                                                                                                                             |
+| `/links`          | The Instagram link-in-bio page (pin 08)                                                                                                                                                                                                          |
+
+Every page but the home page and `/links` has a Back button in the bottom-left corner.
 
 ```bash
 npm run web        # at the repo root: builds the packages, then starts the site at http://localhost:5173

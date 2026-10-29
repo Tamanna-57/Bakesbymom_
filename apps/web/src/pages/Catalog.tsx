@@ -4,6 +4,7 @@ import { cakes, occasions } from '../content/catalog';
 import { CakeCard, occasionOptions } from '../sections/blocks';
 import { Layout } from './Layout';
 import { Breadcrumbs } from './order';
+import { replaceUrl } from '../router';
 import { SectionEdge } from '../sections/blocks';
 
 const initialOccasion = () => {
@@ -20,7 +21,7 @@ export function CatalogPage() {
   const choose = (next: string[]) => {
     setFilter(next);
     const url = next[0] && next[0] !== 'all' ? `/catalog?occasion=${next[0]}` : '/catalog';
-    window.history.replaceState(null, '', url);
+    replaceUrl(url);
   };
 
   return (

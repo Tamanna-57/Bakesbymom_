@@ -11,9 +11,10 @@ import { NotFoundPage } from './pages/NotFound';
 import { ShopPage } from './pages/Shop';
 import { TreatCategoryPage } from './pages/TreatCategory';
 import { TreatPage } from './pages/TreatPage';
+import { BackButton, hasBackButton } from './back-button';
 import { Intro, shouldPlayIntro } from './intro';
 import { jumpTo, useParallax, useReveal, useSmoothScroll } from './motion';
-import { matchPath, usePath, useLinkInterception } from './router';
+import { matchPath, savedScroll, usePath, useLinkInterception } from './router';
 
 type Route = { title: string; page: ReactElement };
 const site = 'Bakes by Mom';
@@ -62,12 +63,12 @@ export function App() {
 
   useEffect(() => {
     document.title = route.title;
-    // Jump to the section in the address (/#order), else start at the top.
+    // Jump to the section in the address (/#order), else to where the visitor was when going back, else the top.
     const target = window.location.hash ? document.getElementById(window.location.hash.slice(1)) : null;
     if (target) {
       target.scrollIntoView();
     } else if (!firstRender.current) {
-      jumpTo(0);
+      jumpTo(savedScroll() ?? 0);
       // Tell screen readers the page changed by moving focus to the new content.
       document.getElementById('main')?.focus({ preventScroll: true });
     }
@@ -81,6 +82,7 @@ export function App() {
   return (
     <>
       <div key={path}>{route.page}</div>
+      {hasBackButton(path) && <BackButton path={path} />}
       {intro && <Intro onDone={endIntro} />}
     </>
   );

@@ -9,23 +9,26 @@ import {
   type GalleryItem,
   type NavLink,
 } from '@bakesbymom/ui';
-import { bakery, whatsappLink } from './bakery';
+import { bakery, cakeFlavours, whatsappLink } from './bakery';
 import { cakes, findOccasion } from './catalog';
 import { treatCategories } from './treats';
 import '../sections/sections.css';
 
+// Three pages, each a real page: the menu (every cake and treat), how ordering works, and our story.
 export const navLinks: NavLink[] = [
-  { label: 'Cakes', href: '/catalog' },
-  { label: 'Treats', href: '/shop' },
+  { label: 'Menu', href: '/menu' },
+  { label: 'How to order', href: '/how-to-order' },
   { label: 'Our story', href: '/about' },
-  { label: 'How to order', href: '/#order' },
 ];
+
+/** Paths that belong to each nav link: a cake or a treat is part of the menu. */
+const sections: Record<string, string[]> = { '/menu': ['/menu', '/catalog', '/shop'] };
 
 /** The nav with the link for the current section marked (`aria-current`). */
 export const navLinksFor = (path: string): NavLink[] =>
   navLinks.map((link) => ({
     ...link,
-    current: !link.href.includes('#') && (path === link.href || path.startsWith(`${link.href}/`)),
+    current: (sections[link.href] ?? [link.href]).some((base) => path === base || path.startsWith(`${base}/`)),
   }));
 
 /** The opening line of every WhatsApp chat started from the site. */
@@ -81,24 +84,24 @@ export const mobileCta = (
 
 export const announcement = (
   <>
-    Order your cakes and cookies now · 100% eggless, baked to order in Panipat. <a href="/catalog">See the cakes →</a>
+    Order your cakes and cookies now · 100% eggless, baked to order in Panipat. <a href="/menu">See the menu →</a>
   </>
 );
 
 export const footerColumns: FooterColumn[] = [
   {
-    title: 'Cakes & treats',
+    title: 'The menu',
     links: [
-      { label: 'Cakes by occasion', href: '/catalog' },
+      { label: 'Cakes', href: '/menu' },
       ...treatCategories.map((category) => ({ label: category.name, href: `/shop/${category.slug}` })),
     ],
   },
   {
     title: 'Bakes by Mom',
     links: [
+      { label: 'How to order', href: '/how-to-order' },
+      { label: 'Questions', href: '/how-to-order#faq' },
       { label: 'Our story', href: '/about' },
-      { label: 'How to order', href: '/#order' },
-      { label: 'FAQ', href: '/#faq' },
       { label: 'Link in bio', href: '/links' },
     ],
   },
@@ -141,27 +144,22 @@ export const faqItems: AccordionItem[] = [
     ),
   },
   {
-    icon: <Doodle name="cupcake" size={28} />,
-    title: 'How do I order?',
-    content: (
-      <p>
-        Open a cake or a treat, pick the size, flavour and extras, and tap <strong>Order on WhatsApp</strong>. The order
-        opens in WhatsApp already typed out: read it, change anything, and send it yourself.
-      </p>
-    ),
-  },
-  {
-    icon: <Doodle name="whisk" size={28} />,
-    title: 'How much notice do you need?',
-    content: <p>{bakery.notice}</p>,
-  },
-  {
     icon: <Doodle name="heart" size={28} color="var(--bbm-color-cherry-500)" />,
     title: 'What sizes do the cakes come in?',
     content: (
       <p>
         ½ kg (about 4–6 slices), 1 kg (about 8–10), 1½ kg, 2 kg (a two-tier for a proper crowd) and 3 kg. Each cake's
         price is for its listed weight; other sizes are priced off its per-pound rate.
+      </p>
+    ),
+  },
+  {
+    icon: <Doodle name="whisk" size={28} />,
+    title: 'Which flavours can I choose?',
+    content: (
+      <p>
+        {cakeFlavours.join(', ')}. Every flavour is eggless and goes in any cake; pick yours on the cake's page, or let
+        Mom suggest one. Tell her about any allergies when you order.
       </p>
     ),
   },
@@ -189,16 +187,6 @@ export const faqItems: AccordionItem[] = [
     icon: <Doodle name="sparkle" size={28} color="var(--bbm-color-cherry-500)" />,
     title: 'Can I choose the flour for cookies?',
     content: <p>Yes: maida, wheat flour, ragi, oats or jowar. Any flavour can be baked in any of them.</p>,
-  },
-  {
-    icon: <Doodle name="cherry" size={28} color="var(--bbm-color-cherry-500)" />,
-    title: 'Pickup or delivery?',
-    content: (
-      <p>
-        Pick up from the kitchen in Panipat, or choose delivery when you order and Mom sorts out the details with you on
-        WhatsApp.
-      </p>
-    ),
   },
 ];
 

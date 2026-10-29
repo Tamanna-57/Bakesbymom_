@@ -241,7 +241,8 @@
 
 /* The pink polka-dot band that holds the feature strip and the about card */
 .home-intro {
-  padding-bottom: calc(var(--bbm-layout-section-y) * 0.8);
+  /* Room for the chooser's curved top, which laps over this band */
+  padding-bottom: calc(var(--bbm-space-8) + 3.5rem);
 }
 
 .home-features {
@@ -802,6 +803,76 @@
   text-transform: uppercase;
   text-decoration: underline;
   text-underline-offset: 0.35em;
+}
+
+/* The chooser: occasions and treat types on the occasion band's curved top -------------------- */
+
+.home-choose {
+  background-color: var(--bbm-color-bg-beige);
+}
+
+.home-choose__group {
+  display: grid;
+  gap: var(--bbm-space-6);
+}
+
+.home-choose__label {
+  margin: 0;
+  font-family: var(--bbm-font-family-script);
+  font-size: clamp(2rem, 1.5rem + 1.5vw, 2.75rem);
+  font-weight: var(--bbm-font-weight-regular);
+  line-height: 1;
+  text-align: center;
+  color: var(--bbm-color-text-brand);
+}
+
+/* Ready to order: the closing cherry band ------------------------------------------------------- */
+
+.home-order-cta {
+  color: var(--bbm-color-text-inverse);
+  text-align: center;
+}
+
+.home-order-cta .site-container {
+  display: grid;
+  justify-items: center;
+  gap: var(--bbm-space-5);
+}
+
+.home-order-cta h2 {
+  margin: 0;
+  font-family: var(--bbm-font-family-display);
+  font-size: var(--bbm-text-display-md-size);
+  font-weight: var(--bbm-font-weight-semibold);
+  line-height: 1.1;
+}
+
+.home-order-cta h2 .home-script {
+  font-size: 1.35em;
+  color: var(--bbm-color-pink-200);
+}
+
+.home-order-cta p {
+  margin: 0;
+  max-width: 36rem;
+}
+
+.home-order-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--bbm-space-3);
+}
+
+.home-order-cta__more {
+  color: inherit;
+  font-weight: var(--bbm-font-weight-bold);
+  text-underline-offset: 0.3em;
+}
+
+.home-order-cta__more:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-pink-200);
+  outline-offset: var(--bbm-focus-ring-offset);
 }
 
 /* Quote on a checker band (Sunday Bakehouse) ------------------------------ */

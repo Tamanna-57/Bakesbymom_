@@ -36,7 +36,7 @@ import {
 import { art, stock, treatArt } from '../content';
 import { answer, starterChips, type Answer } from '../content/assistant';
 import { bakery, chefsPicks, giftAddons, inr, kgLabel, mostOrdered, timeSlots, whatsappLink } from '../content/bakery';
-import { cakes, findCake, occasions, type Cake } from '../content/catalog';
+import { cakes, catalogStatus, findCake, occasions, type Cake } from '../content/catalog';
 import { journalPosts, scheduleDays } from '../content/samples';
 import {
   faqItems,
@@ -119,9 +119,9 @@ export function CakeCard({
     <ProductCard
       as="div"
       variant="menu"
-      className="site-cake-card"
+      className={cake.photos[0]?.backdrop ? 'site-cake-card site-cake-card--backdrop' : 'site-cake-card'}
       name={cake.name}
-      image={{ src: cake.photos[0]?.src ?? art.strawberryCake, alt: '' }}
+      image={{ src: cake.photos[0]?.thumb ?? art.strawberryCake, alt: '' }}
       description={cake.description}
       price={inr(cake.price)}
       href={`/catalog/${cake.slug}`}
@@ -148,6 +148,19 @@ export const occasionOptions = () => [
   ...occasions.map((occasion) => ({ value: occasion.slug, label: occasion.name })),
 ];
 
+/** What a cake shelf says before the catalog arrives, or if it couldn't be loaded. */
+export function CatalogNote() {
+  const status = catalogStatus();
+  if (status === 'ready') return null;
+  return (
+    <p className="site-center" role="status">
+      {status === 'loading'
+        ? 'Bringing the cakes out of the kitchen…'
+        : "The cakes didn't load. Please refresh the page, or ask Mom on WhatsApp."}
+    </p>
+  );
+}
+
 /** The cake shelf, filterable by occasion. On the home page it shows the first few with a link to the rest. */
 export function MenuSection({ level = 2, limit }: { level?: 1 | 2; limit?: number }) {
   const [filter, setFilter] = useState<string[]>(['all']);
@@ -163,6 +176,7 @@ export function MenuSection({ level = 2, limit }: { level?: 1 | 2; limit?: numbe
           Showing {shown.length} of {list.length} cakes
         </p>
       </div>
+      <CatalogNote />
       <ul className="site-menu__grid">
         {shown.map((cake, i) => (
           <li key={cake.slug}>
@@ -327,9 +341,10 @@ export function FindUsSection() {
 /* Custom cakes (pin 15) and sizes (pin 08 packages) ------------------- */
 
 export function CustomCakesSection() {
+  const showcase = findCake('cake-anniversary-50') ?? cakes.find((cake) => cake.photos.length);
+  if (!showcase) return null;
   const cheapest = Math.min(...cakes.map((cake) => cake.price));
   const lowestRate = Math.min(...cakes.map((cake) => cake.perPound));
-  const showcase = findCake('cake-anniversary-50') ?? cakes.find((cake) => cake.photos.length) ?? cakes[0]!;
   return (
     <Band id="custom" className="site-custom">
       <div className="site-custom__copy">
@@ -353,13 +368,13 @@ export function CustomCakesSection() {
       </div>
       <PatternSurface pattern="pinstripe" tone="pink" className="site-custom__panel">
         <Polaroid
-          src={showcase.photos[0]?.src ?? art.strawberryCake}
+          src={showcase.photos[0]?.thumb ?? art.strawberryCake}
           alt={`${showcase.name}: ${showcase.description}`}
           tape="cherry"
           rotate={4}
           width={300}
           aspect="4/5"
-          className="site-cutout"
+          className={showcase.photos[0]?.backdrop ? undefined : 'site-cutout'}
         />
         <Seal className="site-custom__seal" text="Baked to order • 100% eggless • " size={104} tone="cherry">
           <Doodle name="heart" size={24} color="var(--bbm-color-pink-300)" />
@@ -487,7 +502,7 @@ export function OrbitSection() {
   ]
     .map(findCake)
     .filter((cake) => cake?.photos.length)
-    .map((cake) => ({ src: cake!.photos[0]!.src, alt: cake!.name }));
+    .map((cake) => ({ src: cake!.photos[0]!.thumb, alt: cake!.name }));
   return (
     <Band className="site-orbit site-section--pink">
       {/* A pink sky of twinkling sparkles behind the orbit (pin 01) */}
@@ -616,7 +631,7 @@ export function RitualSection() {
 const photoItems = (list: Cake[], firstOnly = false): GalleryItem[] =>
   list.flatMap((cake) =>
     (firstOnly ? cake.photos.slice(0, 1) : cake.photos).map((photo, i) => ({
-      src: photo.src,
+      src: photo.thumb,
       alt: i === 0 ? `${cake.name}: ${cake.description}` : `${cake.name}, another view`,
       caption: (
         <>
@@ -645,7 +660,7 @@ export function GallerySection() {
         onChange={setFilter}
         className="site-gallery__filters"
       />
-      <Gallery key={slug} items={items} label="Photos of cakes from Mom's kitchen" />
+      {items.length > 0 && <Gallery key={slug} items={items} label="Photos of cakes from Mom's kitchen" />}
     </Band>
   );
 }

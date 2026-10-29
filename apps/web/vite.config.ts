@@ -1,6 +1,5 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig, type Plugin } from 'vite';
-import catalog from './src/content/catalog.json' with { type: 'json' };
 import { treatCategories } from './src/content/treats.ts';
 
 // The Cloudflare Worker that serves the bakesbymom D1 catalog and its R2 photos. On Vercel, vercel.json rewrites
@@ -14,31 +13,44 @@ const siteUrl = (
   process.env.SITE_URL || (vercelUrl ? `https://${vercelUrl}` : 'https://bakesbymom-site.vercel.app')
 ).replace(/\/+$/, '');
 
+/** The cake pages, from the live catalog. A build that can't reach it leaves them out of the sitemap. */
+async function cakePaths(warn: (message: string) => void) {
+  try {
+    const response = await fetch(`${api.target}/api/catalog`);
+    if (!response.ok) throw new Error(`status ${response.status}`);
+    const catalog = (await response.json()) as { cakes: { id: string }[] }[];
+    return catalog.flatMap((occasion) => occasion.cakes.map((cake) => `/catalog/${cake.id}`));
+  } catch (error) {
+    warn(`The sitemap leaves out the cake pages: the catalog did not load (${String(error)}).`);
+    return [];
+  }
+}
+
 /** Fills %SITE_URL% in index.html, and writes robots.txt and a sitemap of every page into the build. */
 function siteAddress(): Plugin {
-  const paths = [
-    '/',
-    '/catalog',
-    '/shop',
-    '/about',
-    '/links',
-    ...catalog.flatMap((occasion) => occasion.cakes.map((cake) => `/catalog/${cake.id}`)),
-    ...treatCategories.flatMap((category) => [
-      `/shop/${category.slug}`,
-      ...category.items.map((item) => `/shop/${category.slug}/${item.slug}`),
-    ]),
-  ];
-  const sitemap = [
-    '<?xml version="1.0" encoding="UTF-8"?>',
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ...paths.map((path) => `  <url><loc>${siteUrl}${path}</loc></url>`),
-    '</urlset>',
-    '',
-  ].join('\n');
   return {
     name: 'site-address',
     transformIndexHtml: { order: 'pre', handler: (html) => html.replaceAll('%SITE_URL%', siteUrl) },
-    generateBundle() {
+    async generateBundle() {
+      const paths = [
+        '/',
+        '/catalog',
+        '/shop',
+        '/about',
+        '/links',
+        ...(await cakePaths((message) => this.warn(message))),
+        ...treatCategories.flatMap((category) => [
+          `/shop/${category.slug}`,
+          ...category.items.map((item) => `/shop/${category.slug}/${item.slug}`),
+        ]),
+      ];
+      const sitemap = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+        ...paths.map((path) => `  <url><loc>${siteUrl}${path}</loc></url>`),
+        '</urlset>',
+        '',
+      ].join('\n');
       this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemap });
       this.emitFile({
         type: 'asset',

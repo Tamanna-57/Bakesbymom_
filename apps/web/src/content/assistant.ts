@@ -141,7 +141,7 @@ export function answer(input: string): Answer {
     };
   }
 
-  if (/cheapest|lowest price|least expensive|budget|price range|how much/.test(text) && !budget(text)) {
+  if (/cheapest|lowest price|least expensive|budget|price range|how much/.test(text) && !budget(text) && cakes.length) {
     const list = byPrice();
     return {
       text: [

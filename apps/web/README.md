@@ -24,7 +24,8 @@ npm test -w @bakesbymom/web
 | File                       | What                                                                                                    |
 | -------------------------- | ------------------------------------------------------------------------------------------------------- |
 | `src/content/bakery.ts`    | The bakery's details: WhatsApp number, Instagram, place, time slots, cake sizes, flavours, add-ons      |
-| `src/content/catalog.ts`   | Cakes by occasion, with prices (₹ per pound, listed weight, listed price) and photos in `public/photos` |
+| `src/content/catalog.ts`   | Cakes by occasion, read live from the D1 database, with prices (₹ a pound, listed weight, listed price) |
+| `src/content/catalog.json` | A saved copy of the D1 catalog, shown until the live one loads (`npm run sync:catalog` updates it)      |
 | `src/content/treats.ts`    | The seven treat types and their items, smallest orders and "make it yours" options                      |
 | `src/content/order.ts`     | The WhatsApp order messages and the price for other sizes (per-pound rate)                              |
 | `src/content/assistant.ts` | The "Ask Mom" cake assistant, rebuilt from the old site's rules over the same catalog                   |
@@ -36,7 +37,7 @@ npm test -w @bakesbymom/web
 
 ## Keeping it up to date
 
-- **Cakes.** The catalog is a copy of the old site's `/api/catalog` (the one its admin page edits), so edits made there don't show up here. Add or change cakes in `catalog.ts`, and put photos in `public/photos` (cut-outs with a transparent background look best).
+- **Cakes.** The cakes come from the same Cloudflare D1 database as the old site, so add or change them in the old site's admin page and the change shows up here on the next page load. The site reads the database through the old site's Worker (`bakesbymom.snehagupta.workers.dev`): `vercel.json` rewrites `/api` to it, and `npm run web` proxies it. The phone photos in the database are shown as their cut-outs in `public/photos` (the list is in `catalog.ts`); a photo uploaded in the admin page is shown as uploaded. Run `npm run sync:catalog -w @bakesbymom/web` now and then to refresh `catalog.json`, the copy the site shows first.
 - **Stock photos.** The treat types, the flavours and the home page use stock photos from Unsplash (`public/stock`, credits in `public/stock/CREDITS.md`), and the treat pages say "Photo for reference". Swap in photos of your own boxes when you have them: same file names, or change `stock`, `treatArt` and `flavours` in `src/content/index.ts`.
 - **Not wired up.** Ordering is WhatsApp-only, by design: nothing is sent from the site. The Ask Mom assistant answers from the catalog and hands off to WhatsApp.
 

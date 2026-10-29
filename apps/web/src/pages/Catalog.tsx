@@ -42,7 +42,7 @@ export function CatalogPage() {
             description="Browse a shelf, open a cake, and build your order. The final price follows the flavour, the size and the finishing touches you pick."
           />
           <div className="site-menu__filters">
-            <FilterChips label="Show cakes for" options={occasionOptions} value={filter} onChange={choose} />
+            <FilterChips label="Show cakes for" options={occasionOptions()} value={filter} onChange={choose} />
             <p className="bbm-visually-hidden" aria-live="polite">
               Showing {shown.reduce((n, o) => n + o.cakes.length, 0)} of {cakes.length} cakes
             </p>

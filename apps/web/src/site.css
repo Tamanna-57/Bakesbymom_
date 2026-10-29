@@ -42,6 +42,60 @@ body {
   padding-bottom: calc(var(--bbm-space-8) + 6rem);
 }
 
+/* Back button (back-button.tsx): a paper pill in the bottom-left corner, opposite the Ask Mom launcher.
+   Under the sticky header, so the phone menu covers it when open. */
+.site-back {
+  position: fixed;
+  left: var(--bbm-space-6);
+  bottom: var(--bbm-space-6);
+  z-index: calc(var(--bbm-z-sticky) - 1);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bbm-space-2);
+  min-height: 3rem;
+  padding: 0 var(--bbm-space-5) 0 var(--bbm-space-4);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-pill);
+  background-color: var(--bbm-color-bg-surface);
+  box-shadow: var(--bbm-shadow-sticker-sm);
+  color: var(--bbm-color-text-primary);
+  font-family: var(--bbm-font-family-body);
+  font-size: var(--bbm-text-body-sm-size);
+  font-weight: var(--bbm-font-weight-bold);
+  cursor: pointer;
+  transition:
+    translate var(--bbm-motion-duration-fast) var(--bbm-motion-easing-bounce),
+    background-color var(--bbm-motion-duration-fast) ease;
+}
+
+.site-back svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--bbm-color-text-brand);
+  transition: translate var(--bbm-motion-duration-fast) var(--bbm-motion-easing-bounce);
+}
+
+.site-back:hover {
+  background-color: var(--bbm-color-pink-100);
+  translate: 0 -2px;
+}
+
+.site-back:hover svg {
+  translate: -3px 0;
+}
+
+.site-back:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: 3px;
+}
+
+@media (max-width: 639.98px) {
+  .site-back {
+    left: var(--bbm-space-4);
+    bottom: var(--bbm-space-4);
+  }
+}
+
 /* Motion (motion.ts) --------------------------------------------------------------------------------------- */
 
 /* Blocks below the fold rise in as they scroll into view, items in a row a beat apart */
@@ -74,5 +128,10 @@ body {
 
   [data-parallax] {
     translate: none;
+  }
+
+  .site-back,
+  .site-back svg {
+    transition: none;
   }
 }

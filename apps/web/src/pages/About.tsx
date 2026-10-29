@@ -1,15 +1,8 @@
-import { Marquee, SectionHeading } from '@bakesbymom/ui';
-import {
-  AboutCardSection,
-  MeetMomSection,
-  OrbitSection,
-  RitualSection,
-  StoryChaptersSection,
-  ValuesRow,
-} from '../sections/blocks';
+import { SectionHeading } from '@bakesbymom/ui';
+import { MeetMomSection, OrbitSection, StoryChaptersSection, ValuesRow } from '../sections/blocks';
 import { Layout } from './Layout';
 
-/** Our story: the orbit (pin 01), Meet Mom and values (pin 05), the about card (pin 16), the chapters and the ritual. */
+/** Our story: who Mom is, what she promises, how it started, and everything on the table today. */
 export function AboutPage() {
   return (
     <Layout path="/about">
@@ -29,22 +22,14 @@ export function AboutPage() {
           />
         </div>
       </section>
-      <OrbitSection />
-      <Marquee
-        tone="cherry"
-        items={['Passion', 'Patience', 'Perfection', '100% eggless', 'Baked to order']}
-        caps={false}
-        label="What goes into every box"
-      />
       <MeetMomSection />
       <section className="site-section site-section--beige site-values-band">
         <div className="site-container">
           <ValuesRow />
         </div>
       </section>
-      <AboutCardSection />
       <StoryChaptersSection />
-      <RitualSection />
+      <OrbitSection />
     </Layout>
   );
 }

@@ -1,40 +1,22 @@
-import { FaqSection, GallerySection, MenuSection, ReviewsSection } from '../sections/blocks';
-import {
-  CraftedSection,
-  FlavoursSection,
-  HomeHero,
-  HomeIntro,
-  KitchenSplit,
-  OccasionBand,
-  QuoteBand,
-  ShapeRibbon,
-  ShopByBoxSection,
-  SignOffRibbon,
-} from '../sections/home';
+import { MenuSection, ReviewsSection } from '../sections/blocks';
+import { ChooseSection, HomeHero, HomeIntro, KitchenSplit, OrderCtaSection } from '../sections/home';
 import { Layout } from './Layout';
 
 /**
- * The home page, after pin 16 (SugarLace) and pin 13 (Puzzle Pantry): striped hero, the shape ribbon,
- * the cake shelf (the first few cakes from the catalog), the feature strip, about us, flavours, shop by the box,
- * occasions, a quote, how to order with the cherry tiles, Mom's kitchen, then the gallery, reviews and FAQ.
+ * The home page, one idea per section: the hero, the four promises, a chooser (a cake for an occasion, or a box
+ * of treats), the most-loved cakes, Mom's kitchen, what people say, and one call to order. Everything else has a
+ * page of its own: the full menu, how to order (with the questions), and our story.
  */
 export function LandingPage() {
   return (
     <Layout path="/" withAnnouncement>
       <HomeHero />
-      <ShapeRibbon />
-      <MenuSection limit={8} />
       <HomeIntro />
-      <FlavoursSection />
-      <ShopByBoxSection />
-      <OccasionBand />
-      <QuoteBand />
-      <CraftedSection />
+      <ChooseSection />
+      <MenuSection limit={6} filters={false} title="Most loved" />
       <KitchenSplit />
-      <GallerySection />
       <ReviewsSection />
-      <FaqSection />
-      <SignOffRibbon />
+      <OrderCtaSection />
     </Layout>
   );
 }

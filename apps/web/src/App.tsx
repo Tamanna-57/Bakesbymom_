@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type ReactElement } from 'react';
-import { catalogSettled, findCake, useCatalog } from './content/catalog';
+import { catalogStatus, findCake, useCatalog } from './content/catalog';
 import { findTreatCategory } from './content/treats';
 import { AboutPage } from './pages/About';
 import { CakePage } from './pages/CakePage';
@@ -7,6 +7,7 @@ import { CatalogPage } from './pages/Catalog';
 import { LandingPage } from './pages/Landing';
 import { LinkInBioPage } from './pages/LinkInBio';
 import { Layout } from './pages/Layout';
+import { CatalogNote } from './sections/blocks';
 import { NotFoundPage } from './pages/NotFound';
 import { ShopPage } from './pages/Shop';
 import { TreatCategoryPage } from './pages/TreatCategory';
@@ -31,8 +32,20 @@ function resolve(path: string): Route | null {
   if (cake) {
     const found = findCake(cake.cake!);
     if (found) return { title: `${found.name} · ${site}`, page: <CakePage cake={found} /> };
-    // A cake added since catalog.json was saved shows up once the live catalog arrives.
-    return catalogSettled() ? null : { title: site, page: <Layout path="/catalog">{null}</Layout> };
+    // The cake pages wait for the catalog; a cake missing from it once it has arrived really is missing.
+    if (catalogStatus() === 'ready') return null;
+    return {
+      title: site,
+      page: (
+        <Layout path="/catalog">
+          <section className="site-section site-section--blue">
+            <div className="site-container">
+              <CatalogNote />
+            </div>
+          </section>
+        </Layout>
+      ),
+    };
   }
   const category = matchPath('/shop/:category', path);
   if (category) {

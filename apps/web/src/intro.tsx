@@ -4,8 +4,8 @@ import './intro.css';
 // The home page opens on "Bakes by Mom" written across a cream screen. After a beat, bands in the palette's
 // colours sweep up from the bottom, carry the name away and uncover the page (after the Sweet Tape site's intro).
 
-/** The bands, top to bottom: cherry, pink frosting, caramel and latte from the cocoa scale, then the hero's blues. */
-const BANDS = ['cherry-500', 'pink-300', 'brown-400', 'brown-200', 'blue-200', 'blue-700'];
+/** The bands, top to bottom: cherry, pink frosting, the footer's cocoa, caramel and latte, then the hero's blues. */
+const BANDS = ['cherry-500', 'pink-300', 'brown-900', 'brown-400', 'brown-200', 'blue-200', 'blue-700'];
 
 const WRITE_MS = 1000; // the name writes in, left to right
 const HOLD_MS = 700; // then rests before the sweep

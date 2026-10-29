@@ -68,10 +68,10 @@ export function LinkInBioPage() {
       {/* Links: torn edge into a cherry band (section 2) */}
       <EdgeDivider shape="torn" color={cherry} background={canvas} />
       <div className="bio__band">
-        <Button fullWidth variant="secondary" href="/catalog">
+        <Button fullWidth variant="secondary" href="/menu">
           Cakes by occasion
         </Button>
-        <Button fullWidth variant="secondary" href="/shop">
+        <Button fullWidth variant="secondary" href="/menu#treats">
           Brownies, cookies & more
         </Button>
         <Button fullWidth variant="secondary" href={bakery.instagram} {...external}>
@@ -106,7 +106,7 @@ export function LinkInBioPage() {
 
       {/* Key-tag price (section 6) */}
       <div className="bio__section">
-        <a className="bio__club" href="/catalog">
+        <a className="bio__club" href="/menu">
           <p className="bbm-text-eyebrow" style={{ margin: 0 }}>
             Cakes for every occasion
           </p>

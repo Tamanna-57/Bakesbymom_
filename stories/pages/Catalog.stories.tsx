@@ -2,16 +2,15 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { findCake } from '../../apps/web/src/content/catalog';
 import { findTreatCategory } from '../../apps/web/src/content/treats';
 import { CakePage } from '../../apps/web/src/pages/CakePage';
-import { CatalogPage } from '../../apps/web/src/pages/Catalog';
-import { ShopPage } from '../../apps/web/src/pages/Shop';
+import { HowToOrderPage } from '../../apps/web/src/pages/HowToOrder';
+import { MenuPage } from '../../apps/web/src/pages/Menu';
 import { TreatCategoryPage } from '../../apps/web/src/pages/TreatCategory';
-import { TreatPage } from '../../apps/web/src/pages/TreatPage';
 import { fromBoard } from '../sections/ref';
 
 // The live website's shop pages (apps/web), shown here with their source pins.
 const meta = {
-  title: 'Pages/Catalog & shop',
-  component: CatalogPage,
+  title: 'Pages/Menu & ordering',
+  component: MenuPage,
   parameters: {
     layout: 'fullscreen',
     docs: {
@@ -24,27 +23,19 @@ const meta = {
       },
     },
   },
-} satisfies Meta<typeof CatalogPage>;
+} satisfies Meta<typeof MenuPage>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** /catalog: every cake, by occasion. */
-export const Catalog: Story = {};
+/** /menu (and the old /catalog and /shop): every cake by occasion, then the treats by the box. */
+export const Menu: Story = {};
 
 /** /catalog/cake-spiderman: one cake and its order builder. */
 export const Cake: Story = { render: () => <CakePage cake={findCake('cake-spiderman')!} /> };
 
-/** /shop: every kind of bake. */
-export const Treats: Story = { render: () => <ShopPage /> };
+/** /shop/brownies: one kind of treat, its flavours picked in the order form. */
+export const TreatType: Story = { render: () => <TreatCategoryPage category={findTreatCategory('brownies')!} /> };
 
-/** /shop/cookies: one treat type. */
-export const TreatType: Story = { render: () => <TreatCategoryPage category={findTreatCategory('cookies')!} /> };
-
-/** /shop/brownies/oreo-brownie: one treat and its order builder. */
-export const Treat: Story = {
-  render: () => {
-    const category = findTreatCategory('brownies')!;
-    return <TreatPage category={category} treat={category.items[0]!} />;
-  },
-};
+/** /how-to-order: the steps, timings and pickup, custom cakes and gifts, and the questions. */
+export const HowToOrder: Story = { render: () => <HowToOrderPage /> };

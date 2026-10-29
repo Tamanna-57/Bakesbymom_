@@ -9,8 +9,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc -p tsconfig.json",
-    "test": "vitest run",
-    "sync:catalog": "node scripts/sync-catalog.mjs"
+    "test": "vitest run"
   },
   "dependencies": {
     "@bakesbymom/tokens": "0.1.0",

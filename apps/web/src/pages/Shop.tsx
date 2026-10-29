@@ -36,7 +36,7 @@ export function ShopPage() {
                 name="Cakes"
                 image={{ src: stock.occasions.src, alt: '' }}
                 description="Every cake, by occasion: birthdays, anniversaries, festivals and more."
-                price={`${cakes.length} cakes`}
+                price={cakes.length ? `${cakes.length} cakes` : 'By occasion'}
                 href="/catalog"
                 tone="pink"
                 headingLevel={2}

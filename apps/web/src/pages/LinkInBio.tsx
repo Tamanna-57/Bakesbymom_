@@ -117,15 +117,17 @@ export function LinkInBioPage() {
             {cakeSizes[0]!.label.split(' · ')[0]} to {cakeSizes[cakeSizes.length - 1]!.label.split(' · ')[0]}, in the
             flavour you want.
           </p>
-          <PriceTag
-            className="bio__key"
-            shape="tag"
-            amount={inr(cheapest)}
-            label="from"
-            tone="blue"
-            size={64}
-            rotate={-8}
-          />
+          {cakes.length > 0 && (
+            <PriceTag
+              className="bio__key"
+              shape="tag"
+              amount={inr(cheapest)}
+              label="from"
+              tone="blue"
+              size={64}
+              rotate={-8}
+            />
+          )}
         </a>
       </div>
 

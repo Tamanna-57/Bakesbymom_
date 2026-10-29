@@ -4,8 +4,8 @@ name: Deploy
 # without anyone running `vercel` by hand. Needs these repository secrets:
 #   VERCEL_TOKEN                  a token from https://vercel.com/account/tokens
 #   VERCEL_ORG_ID                 the team (or personal account) id, from .vercel/project.json after `vercel link`
-#   VERCEL_SITE_PROJECT_ID        the bakesbymom-site project id
-#   VERCEL_STORYBOOK_PROJECT_ID   the bakesbymom-gilt (Storybook) project id
+#   VERCEL_SITE_PROJECT_ID        the website project id (Root Directory ./)
+#   VERCEL_STORYBOOK_PROJECT_ID   the Storybook project id (Root Directory apps/storybook)
 # Until they are set, the jobs skip instead of failing.
 
 on:

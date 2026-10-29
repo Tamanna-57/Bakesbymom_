@@ -393,7 +393,7 @@ const craftTiles = [
     label: 'Custom cake',
     href: whatsappLink("Hello Bakes by Mom! I'd like to plan a custom cake 🎂"),
     // One of Mom's own: a cut-out photo, shown whole on a pink card
-    image: '/photos/heart-pearl-1.webp',
+    image: '/photos/thumbs/IMG-20260206-WA0062.webp',
     cutout: true,
     externalLink: true,
   },

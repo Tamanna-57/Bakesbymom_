@@ -51,15 +51,13 @@ export function CakePage({ cake }: { cake: Cake }) {
           />
           <div className="shop-item">
             <div className="shop-item__media">
-              <PatternSurface pattern="dots" tone="pink" ground="var(--bbm-color-bg-pink)" className="shop-item__photo">
-                {current && (
-                  <img
-                    src={current.src}
-                    width={current.width}
-                    height={current.height}
-                    alt={`${cake.name}: ${cake.description}`}
-                  />
-                )}
+              <PatternSurface
+                pattern="dots"
+                tone="pink"
+                ground="var(--bbm-color-bg-pink)"
+                className={current?.backdrop ? 'shop-item__photo shop-item__photo--backdrop' : 'shop-item__photo'}
+              >
+                {current && <img src={current.src} alt={`${cake.name}: ${cake.description}`} />}
               </PatternSurface>
               {cake.photos.length > 1 && (
                 <div className="shop-item__thumbs" role="group" aria-label="Photos">
@@ -71,7 +69,7 @@ export function CakePage({ cake }: { cake: Cake }) {
                       aria-label={`Photo ${i + 1} of ${cake.photos.length}`}
                       onClick={() => setPhoto(i)}
                     >
-                      <img src={p.src} alt="" />
+                      <img src={p.thumb} alt="" />
                     </button>
                   ))}
                 </div>

@@ -684,6 +684,12 @@
   }
 }
 
+/* A restaged photo brings its own background, so it fills the frame */
+.site-cake-card--backdrop .bbm-product__image {
+  padding: 0;
+  object-fit: cover;
+}
+
 /* Cut-out photos in frames sit on the frame's paper, not on a crop */
 .site-cutout .bbm-polaroid__photo {
   object-fit: contain;

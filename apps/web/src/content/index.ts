@@ -118,13 +118,14 @@ export interface MenuItem {
 }
 
 /** Real cakes from the catalog in menu-card form, for stories and teasers. */
-export const menu: MenuItem[] = cakes.map((cake) => ({
-  name: cake.name,
-  image: cake.photos[0]?.src ?? strawberryCake,
-  alt: cake.name,
-  price: `${inr(cake.price)} · ${kgLabel(cake.weightKg)}`,
-  description: cake.description,
-  category: findOccasion(cake.occasion)?.name ?? '',
-  href: `/catalog/${cake.slug}`,
-  badge: mostOrdered.includes(cake.slug) ? 'Most ordered' : undefined,
-}));
+export const menu = (): MenuItem[] =>
+  cakes.map((cake) => ({
+    name: cake.name,
+    image: cake.photos[0]?.thumb ?? strawberryCake,
+    alt: cake.name,
+    price: `${inr(cake.price)} · ${kgLabel(cake.weightKg)}`,
+    description: cake.description,
+    category: findOccasion(cake.occasion)?.name ?? '',
+    href: `/catalog/${cake.slug}`,
+    badge: mostOrdered.includes(cake.slug) ? 'Most ordered' : undefined,
+  }));

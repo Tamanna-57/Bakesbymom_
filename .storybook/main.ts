@@ -26,13 +26,17 @@ const config: StorybookConfig = {
       propFilter: (prop) => (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true),
     },
   },
-  // Stories import the component library from source for instant hot reload.
+  // Stories import the component library from source for instant hot reload. /api is the cake catalog's
+  // Worker, as on the website (apps/storybook/vercel.json rewrites it when Storybook is deployed).
   viteFinal: (viteConfig) =>
     mergeConfig(viteConfig, {
       resolve: {
         alias: {
           '@bakesbymom/ui': fileURLToPath(new URL('../packages/ui/src/index.ts', import.meta.url)),
         },
+      },
+      server: {
+        proxy: { '/api': { target: 'https://bakesbymom.snehagupta.workers.dev', changeOrigin: true } },
       },
     }),
 };

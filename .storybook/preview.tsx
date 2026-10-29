@@ -2,7 +2,11 @@ import type { Preview } from '@storybook/react-vite';
 import '@bakesbymom/tokens/css';
 import '../packages/ui/src/styles.css';
 import './preview.css';
+import { loadCatalog } from '../apps/web/src/content/catalog';
 import theme from './theme';
+
+// The cakes come from the bakesbymom D1 catalog, as on the website: load it before any story reads it.
+await loadCatalog();
 
 // The page base (canvas, ink, body type) for every story and docs page.
 document.body.classList.add('bbm-theme');

@@ -123,13 +123,14 @@ export const footerBottom = (
 );
 
 /** One photo per cake, captioned with its name and occasion. */
-export const galleryItems: GalleryItem[] = cakes
-  .filter((cake) => cake.photos.length)
-  .map((cake) => ({
-    src: cake.photos[0]!.src,
-    alt: cake.name,
-    caption: `${cake.name} · ${findOccasion(cake.occasion)?.name ?? ''}`,
-  }));
+export const galleryItems = (): GalleryItem[] =>
+  cakes
+    .filter((cake) => cake.photos.length)
+    .map((cake) => ({
+      src: cake.photos[0]!.thumb,
+      alt: cake.name,
+      caption: `${cake.name} · ${findOccasion(cake.occasion)?.name ?? ''}`,
+    }));
 
 export const faqItems: AccordionItem[] = [
   {

@@ -10,7 +10,7 @@ import { loadCatalog } from './content/catalog';
 const root = document.getElementById('root');
 if (!root) throw new Error('Missing #root element');
 
-// The pages render from catalog.json and pick up the live catalog from D1 when it lands.
+// The cakes come from the D1 catalog: the pages fill in when it lands.
 void loadCatalog();
 
 createRoot(root).render(

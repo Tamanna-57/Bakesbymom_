@@ -19,7 +19,7 @@ const meta = {
       },
     },
   },
-  args: { items: galleryItems, label: "Photos from Mom's kitchen" },
+  args: { items: galleryItems(), label: "Photos from Mom's kitchen" },
   decorators: [
     (Story) => (
       <div className="site-section">
@@ -44,7 +44,7 @@ export const Strips: Story = {
 export const Trio: Story = {
   args: {
     variant: 'trio',
-    items: galleryItems.slice(1, 4),
+    items: galleryItems().slice(1, 4),
     marquee: ['fresh from the oven', 'baked with love'],
   },
 };
@@ -53,7 +53,7 @@ export const Trio: Story = {
 export const InstagramGrid: Story = {
   args: {
     variant: 'grid',
-    items: galleryItems.slice(0, 6),
+    items: galleryItems().slice(0, 6),
     follow: { label: 'Follow @bakesbymom', href: '#instagram' },
   },
 };

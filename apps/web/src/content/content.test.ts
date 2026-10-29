@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { matchPath } from '../router';
+import { matchPath, parentPath } from '../router';
 import { answer, starterChips } from './assistant';
 import { inr, kgLabel, whatsappLink } from './bakery';
 import { cakes, findCake, occasions, toOccasions, type ApiCake } from './catalog';
@@ -180,5 +180,13 @@ describe('router', () => {
     });
     expect(matchPath('/catalog/:cake', '/catalog')).toBeNull();
     expect(matchPath('/shop/:category', '/about/x')).toBeNull();
+  });
+
+  it('goes one level up for the back button when there is no previous page', () => {
+    expect(parentPath('/shop/brownies/oreo-brownie')).toBe('/shop/brownies');
+    expect(parentPath('/shop/brownies')).toBe('/shop');
+    expect(parentPath('/catalog/cake-spiderman')).toBe('/catalog');
+    expect(parentPath('/catalog')).toBe('/');
+    expect(parentPath('/about')).toBe('/');
   });
 });

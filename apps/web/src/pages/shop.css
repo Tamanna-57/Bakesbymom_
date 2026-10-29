@@ -89,6 +89,13 @@
   aspect-ratio: 1;
 }
 
+/* A restaged cake photo brings its own background: framed like the treat photos, not floated */
+.shop-item__photo--backdrop img {
+  object-fit: cover;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-lg);
+}
+
 .shop-item__photo--art {
   position: relative;
 }

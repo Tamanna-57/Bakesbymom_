@@ -3,5 +3,6 @@
   "framework": null,
   "installCommand": "cd ../.. && npm ci",
   "buildCommand": "cd ../.. && npm run build-storybook && mv storybook-static apps/storybook/",
-  "outputDirectory": "storybook-static"
+  "outputDirectory": "storybook-static",
+  "rewrites": [{ "source": "/api/(.*)", "destination": "https://bakesbymom.snehagupta.workers.dev/api/$1" }]
 }

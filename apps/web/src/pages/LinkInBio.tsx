@@ -19,7 +19,6 @@ import { treatCategories } from '../content/treats';
 import './link-in-bio.css';
 
 const external = { target: '_blank', rel: 'noreferrer' } as const;
-const cheapest = Math.min(...cakes.map((cake) => cake.price));
 
 const cherry = 'var(--bbm-color-bg-brand-deep)';
 const canvas = 'var(--bbm-color-bg-canvas)';
@@ -29,6 +28,7 @@ const canvas = 'var(--bbm-color-bg-canvas)';
  * builds its mobile pages. A single column, centered on wider screens.
  */
 export function LinkInBioPage() {
+  const cheapest = Math.min(...cakes.map((cake) => cake.price));
   return (
     <main className="bio">
       {/* Hero: blue stripes, stamp card, cutout with floating pills (pin 08, section 1) */}

@@ -31,10 +31,17 @@ export interface TreatOrder extends CommonOrder {
   extras: string[];
 }
 
-/** The price for a size: exact for the listed weight, otherwise worked out from the per-pound rate. */
-export function cakePrice(cake: Cake, weightKg: number) {
-  if (weightKg === cake.weightKg) return { amount: cake.price, exact: true };
-  return { amount: Math.round(cake.perPound * weightKg * 2), exact: false };
+/**
+ * The price for a size: exact for the listed weight, otherwise worked out from the per-pound rate. Flavours and
+ * add-ons set for the cake in the admin panel add their price on top.
+ */
+export function cakePrice(cake: Cake, weightKg: number, picks: { flavour?: string; addons?: string[] } = {}) {
+  const extra = [
+    cake.flavours.find((option) => option.name === picks.flavour),
+    ...cake.addons.filter((option) => picks.addons?.includes(option.name)),
+  ].reduce((sum, option) => sum + (option?.priceDelta ?? 0), 0);
+  if (weightKg === cake.weightKg) return { amount: cake.price + extra, exact: true };
+  return { amount: Math.round(cake.perPound * weightKg * 2) + extra, exact: false };
 }
 
 /** "Sat 25 Oct 2026" */
@@ -70,7 +77,7 @@ function closingLines(order: CommonOrder) {
 
 export function cakeOrderMessage(cake: Cake, occasion: string, order: CakeOrder) {
   const size = cakeSizes.find((s) => s.kg === order.weightKg)?.label ?? `${order.weightKg} kg`;
-  const price = cakePrice(cake, order.weightKg);
+  const price = cakePrice(cake, order.weightKg, order);
   const lines = [
     "Hello Bakes by Mom! I'd like to place an order 🎂",
     '',

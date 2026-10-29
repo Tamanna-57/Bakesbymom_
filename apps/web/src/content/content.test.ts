@@ -2,11 +2,11 @@ import { describe, expect, it } from 'vitest';
 import { matchPath } from '../router';
 import { answer, starterChips } from './assistant';
 import { inr, kgLabel, whatsappLink } from './bakery';
-import { cakes, findCake, occasions } from './catalog';
+import { cakes, findCake, occasions, toOccasions, type ApiCake } from './catalog';
 import { boxes, cakeOrderMessage, cakePrice, treatOrderMessage } from './order';
 import { findTreatCategory, treatCategories } from './treats';
 
-describe('catalog data from the old site', () => {
+describe('catalog data from D1 (catalog.json)', () => {
   it('has every occasion and cake, each with a photo', () => {
     expect(occasions).toHaveLength(11);
     expect(cakes).toHaveLength(21);
@@ -28,6 +28,52 @@ describe('catalog data from the old site', () => {
   });
 });
 
+describe('live catalog from the API', () => {
+  const row = (id: string, cover: string | null): ApiCake => ({
+    id,
+    category_id: 'cat-anniversary',
+    name: id,
+    description: null,
+    per_pound_price: 760,
+    weight_kg: 1,
+    fixed_price: 1400,
+    sort_order: 1,
+    cover_url: cover,
+  });
+  const [occasion] = toOccasions(
+    [
+      {
+        id: 'cat-anniversary',
+        name: 'Anniversary',
+        description: null,
+        sort_order: 6,
+        cakes: [
+          row('cake-heart-pearl', '/api/photos/uploads/IMG-20260206-WA0062.png'),
+          row('cake-choco-drip', '/api/photos/cake-choco-drip/new.webp'),
+          row('a-new-cake', null),
+        ],
+      },
+    ],
+    cakes,
+  );
+  const [heart, drip, fresh] = occasion!.cakes;
+
+  it('uses the old occasion slugs and the new prices', () => {
+    expect(occasion!.slug).toBe('anniversary');
+    expect(heart).toMatchObject({ occasion: 'anniversary', price: 1400, perPound: 760, description: '' });
+  });
+
+  it('keeps the cut-outs and extra photos while the cover is the same, and shows new photos as uploaded', () => {
+    expect(heart!.photos.map((photo) => photo.src)).toEqual([
+      '/photos/heart-pearl-1.webp',
+      '/photos/heart-pearl-2.webp',
+      '/photos/heart-pearl-3.webp',
+    ]);
+    expect(drip!.photos).toEqual([{ src: '/api/photos/cake-choco-drip/new.webp' }]);
+    expect(fresh!.photos).toEqual([]);
+  });
+});
+
 describe('prices and labels', () => {
   it('formats rupees and sizes', () => {
     expect(inr(1450)).toBe('₹1,450');
@@ -40,6 +86,18 @@ describe('prices and labels', () => {
     const cake = findCake('cake-spiderman')!;
     expect(cakePrice(cake, 1)).toEqual({ amount: 1450, exact: true });
     expect(cakePrice(cake, 2)).toEqual({ amount: 3200, exact: false }); // 4 pounds × ₹800
+  });
+
+  it("adds the price of a cake's own flavours and add-ons", () => {
+    const cake = {
+      ...findCake('cake-spiderman')!,
+      flavours: [{ name: 'Belgian dark', priceDelta: 100 }],
+      addons: [{ name: 'Fresh flowers', priceDelta: 250 }],
+    };
+    expect(cakePrice(cake, 1, { flavour: 'Belgian dark', addons: ['Fresh flowers', 'Gift box'] })).toEqual({
+      amount: 1800,
+      exact: true,
+    });
   });
 
   it('counts boxes the way the old site did', () => {

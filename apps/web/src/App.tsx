@@ -3,32 +3,28 @@ import { catalogStatus, findCake, useCatalog } from './content/catalog';
 import { findTreatCategory } from './content/treats';
 import { AboutPage } from './pages/About';
 import { CakePage } from './pages/CakePage';
-import { HowToOrderPage } from './pages/HowToOrder';
+import { CatalogPage } from './pages/Catalog';
 import { LandingPage } from './pages/Landing';
 import { LinkInBioPage } from './pages/LinkInBio';
 import { Layout } from './pages/Layout';
-import { MenuPage } from './pages/Menu';
 import { CatalogNote } from './sections/blocks';
 import { NotFoundPage } from './pages/NotFound';
+import { ShopPage } from './pages/Shop';
 import { TreatCategoryPage } from './pages/TreatCategory';
+import { TreatPage } from './pages/TreatPage';
 import { BackButton, hasBackButton } from './back-button';
 import { Intro, shouldPlayIntro } from './intro';
 import { jumpTo, useParallax, useReveal, useSmoothScroll } from './motion';
-import { matchPath, navigate, savedScroll, usePath, useLinkInterception } from './router';
+import { matchPath, savedScroll, usePath, useLinkInterception } from './router';
 
-/** `anchor`: the section a page opens at when the address doesn't name one (/shop opens the menu at its treats). */
-type Route = { title: string; page: ReactElement; anchor?: string };
+type Route = { title: string; page: ReactElement };
 const site = 'Bakes by Mom';
 
-/**
- * Paths match the old site's (/catalog, /catalog/<cake>, /shop/<type>/<item>), so its links keep working: the cake
- * and treat lists are now one menu, and a treat's flavours are picked on its type's page.
- */
+/** Paths match the old site's (/catalog, /catalog/<cake>, /shop/<type>/<item>), so its links keep working. */
 function resolve(path: string): Route | null {
   if (path === '/') return { title: `${site} · Eggless home bakery in Panipat`, page: <LandingPage /> };
-  if (path === '/menu' || path === '/catalog') return { title: `Menu · ${site}`, page: <MenuPage /> };
-  if (path === '/shop') return { title: `Menu · ${site}`, page: <MenuPage />, anchor: 'treats' };
-  if (path === '/how-to-order') return { title: `How to order · ${site}`, page: <HowToOrderPage /> };
+  if (path === '/catalog' || path === '/menu') return { title: `Cakes by occasion · ${site}`, page: <CatalogPage /> };
+  if (path === '/shop') return { title: `Treats · ${site}`, page: <ShopPage /> };
   if (path === '/about') return { title: `Our story · ${site}`, page: <AboutPage /> };
   if (path === '/links') return { title: `Links · ${site}`, page: <LinkInBioPage /> };
 
@@ -61,30 +57,16 @@ function resolve(path: string): Route | null {
     const found = findTreatCategory(item.category!);
     const treat = found?.items.find((t) => t.slug === item.item);
     return found && treat
-      ? {
-          title: `${treat.name} · ${site}`,
-          page: <TreatCategoryPage category={found} initialItem={treat.slug} />,
-        }
+      ? { title: `${treat.name} · ${site}`, page: <TreatPage category={found} treat={treat} /> }
       : null;
   }
   return null;
 }
 
-/** Sections that used to live on the home page, and where they are now (old links like /#order). */
-const movedSections: Record<string, string> = {
-  order: '/how-to-order',
-  faq: '/how-to-order#faq',
-  flavours: '/how-to-order#faq',
-  cakes: '/menu',
-  treats: '/menu#treats',
-  gallery: '/menu',
-  story: '/about',
-};
-
 export function App() {
   useCatalog();
   const path = usePath();
-  const route: Route = resolve(path) ?? { title: `Page not found · ${site}`, page: <NotFoundPage /> };
+  const route = resolve(path) ?? { title: `Page not found · ${site}`, page: <NotFoundPage /> };
   const firstRender = useRef(true);
   // Only on the first page the visitor lands on, not when they come back to the home page later.
   const [intro, setIntro] = useState(() => shouldPlayIntro(path));
@@ -93,26 +75,18 @@ export function App() {
   useSmoothScroll();
 
   useEffect(() => {
-    const moved = path === '/' ? movedSections[window.location.hash.slice(1)] : undefined;
-    if (moved) {
-      navigate(moved, { replace: true });
-      return;
-    }
     document.title = route.title;
-    // Jump to the section in the address (/menu#treats), else to where the visitor was when going back, else to the
-    // page's own opening section, else the top.
-    const saved = savedScroll();
-    const id = window.location.hash.slice(1) || (saved === undefined ? route.anchor : undefined);
-    const target = id ? document.getElementById(id) : null;
+    // Jump to the section in the address (/#order), else to where the visitor was when going back, else the top.
+    const target = window.location.hash ? document.getElementById(window.location.hash.slice(1)) : null;
     if (target) {
       target.scrollIntoView();
     } else if (!firstRender.current) {
-      jumpTo(saved ?? 0);
+      jumpTo(savedScroll() ?? 0);
       // Tell screen readers the page changed by moving focus to the new content.
       document.getElementById('main')?.focus({ preventScroll: true });
     }
     firstRender.current = false;
-  }, [path, route.title, route.anchor]);
+  }, [path, route.title]);
   // After the scroll reset above, so they measure the new page from the top.
   useReveal(path);
   useParallax(path);

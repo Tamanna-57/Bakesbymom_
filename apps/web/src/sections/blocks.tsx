@@ -161,41 +161,21 @@ export function CatalogNote() {
   );
 }
 
-/**
- * The cake shelf, filterable by occasion. On the home page it shows the most-loved few, without the filters (the
- * occasions sit in their own chooser there), and links to the full menu.
- */
-export function MenuSection({
-  level = 2,
-  limit,
-  title = 'Cakes',
-  filters = true,
-}: {
-  level?: 1 | 2;
-  limit?: number;
-  title?: ReactNode;
-  filters?: boolean;
-}) {
+/** The cake shelf, filterable by occasion. On the home page it shows the first few with a link to the rest. */
+export function MenuSection({ level = 2, limit }: { level?: 1 | 2; limit?: number }) {
   const [filter, setFilter] = useState<string[]>(['all']);
   const slug = filter[0] ?? 'all';
   const list = slug === 'all' ? featured() : cakes.filter((cake) => cake.occasion === slug);
   const shown = limit ? list.slice(0, limit) : list;
   return (
     <Band id="cakes" className="site-section--blue">
-      <SectionHeading variant="ribbon" level={level} title={title} ribbonText="baked to order" />
-      {filters && (
-        <div className="site-menu__filters">
-          <FilterChips
-            label="Filter cakes by occasion"
-            options={occasionOptions()}
-            value={filter}
-            onChange={setFilter}
-          />
-          <p className="bbm-visually-hidden" aria-live="polite">
-            Showing {shown.length} of {list.length} cakes
-          </p>
-        </div>
-      )}
+      <SectionHeading variant="ribbon" level={level} title="Cakes" ribbonText="baked to order" />
+      <div className="site-menu__filters">
+        <FilterChips label="Filter cakes by occasion" options={occasionOptions()} value={filter} onChange={setFilter} />
+        <p className="bbm-visually-hidden" aria-live="polite">
+          Showing {shown.length} of {list.length} cakes
+        </p>
+      </div>
       <CatalogNote />
       <ul className="site-menu__grid">
         {shown.map((cake, i) => (
@@ -206,8 +186,8 @@ export function MenuSection({
       </ul>
       {limit && list.length > shown.length && (
         <div className="site-center">
-          <Button size="lg" variant="secondary" href={slug === 'all' ? '/menu' : `/menu?occasion=${slug}`}>
-            See the full menu
+          <Button size="lg" variant="secondary" href={slug === 'all' ? '/catalog' : `/catalog?occasion=${slug}`}>
+            See all {list.length} cakes
           </Button>
         </div>
       )}
@@ -222,7 +202,7 @@ export function MenuSection({
 /** Cherry tiles for every kind of bake (pin 16). */
 export function CategoryTiles() {
   const tiles = [
-    { label: 'Cakes', href: '/menu', image: stock.occasions.src },
+    { label: 'Cakes', href: '/catalog', image: stock.occasions.src },
     ...treatCategories.map((category) => ({
       label: category.name,
       href: `/shop/${category.slug}`,
@@ -420,7 +400,7 @@ const fromPrice = (kg: number) => {
 
 export function PackagesSection() {
   const action = (
-    <Button fullWidth href="/menu">
+    <Button fullWidth href="/catalog">
       See the cakes
     </Button>
   );
@@ -503,6 +483,9 @@ export function MeetMomSection() {
           }
         />
         <p className="site-signature">with love, Mom</p>
+        <Button variant="secondary" href="/about">
+          Read our story
+        </Button>
       </Card>
     </Band>
   );
@@ -538,7 +521,7 @@ export function OrbitSection() {
         to order and finished by hand.
       </p>
       <div className="site-center">
-        <Button href="/menu">See the menu</Button>
+        <Button href="/catalog">Explore the catalog</Button>
       </div>
     </Band>
   );

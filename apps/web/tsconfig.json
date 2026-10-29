@@ -2,6 +2,7 @@
   "extends": "../../packages/ui/tsconfig.json",
   "compilerOptions": {
     "types": ["vite/client"],
+    "allowImportingTsExtensions": true,
     "paths": {
       "@bakesbymom/ui": ["../../packages/ui/src/index.ts"]
     }

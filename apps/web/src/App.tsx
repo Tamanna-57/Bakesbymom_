@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef, useState, type ReactElement } from 'react';
-import { findCake } from './content/catalog';
+import { catalogSettled, findCake, useCatalog } from './content/catalog';
 import { findTreatCategory } from './content/treats';
 import { AboutPage } from './pages/About';
 import { CakePage } from './pages/CakePage';
 import { CatalogPage } from './pages/Catalog';
 import { LandingPage } from './pages/Landing';
 import { LinkInBioPage } from './pages/LinkInBio';
+import { Layout } from './pages/Layout';
 import { NotFoundPage } from './pages/NotFound';
 import { ShopPage } from './pages/Shop';
 import { TreatCategoryPage } from './pages/TreatCategory';
@@ -28,7 +29,9 @@ function resolve(path: string): Route | null {
   const cake = matchPath('/catalog/:cake', path);
   if (cake) {
     const found = findCake(cake.cake!);
-    return found ? { title: `${found.name} · ${site}`, page: <CakePage cake={found} /> } : null;
+    if (found) return { title: `${found.name} · ${site}`, page: <CakePage cake={found} /> };
+    // A cake added since catalog.json was saved shows up once the live catalog arrives.
+    return catalogSettled() ? null : { title: site, page: <Layout path="/catalog">{null}</Layout> };
   }
   const category = matchPath('/shop/:category', path);
   if (category) {
@@ -47,6 +50,7 @@ function resolve(path: string): Route | null {
 }
 
 export function App() {
+  useCatalog();
   const path = usePath();
   const route = resolve(path) ?? { title: `Page not found · ${site}`, page: <NotFoundPage /> };
   const firstRender = useRef(true);

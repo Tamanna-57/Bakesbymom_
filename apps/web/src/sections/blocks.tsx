@@ -2,7 +2,7 @@
  * Page sections, built only from library components and filled with the bakery's real content
  * (src/content). The website assembles them into pages; Storybook's Sections stories show the same files.
  */
-import { useMemo, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import {
   Accordion,
   Badge,
@@ -81,13 +81,14 @@ const TONES = ['pink', 'blue', 'beige', 'butter'] as const;
 const external = { target: '_blank', rel: 'noreferrer' } as const;
 
 /** Most-ordered first, then the chef's picks, then the rest of the catalog. */
-const featured = [
-  ...mostOrdered,
-  ...chefsPicks,
-  ...cakes.map((cake) => cake.slug).filter((slug) => !mostOrdered.includes(slug) && !chefsPicks.includes(slug)),
-]
-  .map(findCake)
-  .filter(Boolean) as Cake[];
+const featured = () =>
+  [
+    ...mostOrdered,
+    ...chefsPicks,
+    ...cakes.map((cake) => cake.slug).filter((slug) => !mostOrdered.includes(slug) && !chefsPicks.includes(slug)),
+  ]
+    .map(findCake)
+    .filter(Boolean) as Cake[];
 
 /* Marquee (pin 02) -------------------------------------------------- */
 
@@ -142,7 +143,7 @@ export function CakeCard({
   );
 }
 
-export const occasionOptions = [
+export const occasionOptions = () => [
   { value: 'all', label: 'All' },
   ...occasions.map((occasion) => ({ value: occasion.slug, label: occasion.name })),
 ];
@@ -151,13 +152,13 @@ export const occasionOptions = [
 export function MenuSection({ level = 2, limit }: { level?: 1 | 2; limit?: number }) {
   const [filter, setFilter] = useState<string[]>(['all']);
   const slug = filter[0] ?? 'all';
-  const list = useMemo(() => (slug === 'all' ? featured : cakes.filter((cake) => cake.occasion === slug)), [slug]);
+  const list = slug === 'all' ? featured() : cakes.filter((cake) => cake.occasion === slug);
   const shown = limit ? list.slice(0, limit) : list;
   return (
     <Band id="cakes" className="site-section--blue">
       <SectionHeading variant="ribbon" level={level} title="Cakes" ribbonText="baked to order" />
       <div className="site-menu__filters">
-        <FilterChips label="Filter cakes by occasion" options={occasionOptions} value={filter} onChange={setFilter} />
+        <FilterChips label="Filter cakes by occasion" options={occasionOptions()} value={filter} onChange={setFilter} />
         <p className="bbm-visually-hidden" aria-live="polite">
           Showing {shown.length} of {list.length} cakes
         </p>
@@ -325,11 +326,10 @@ export function FindUsSection() {
 
 /* Custom cakes (pin 15) and sizes (pin 08 packages) ------------------- */
 
-const cheapest = Math.min(...cakes.map((cake) => cake.price));
-const lowestRate = Math.min(...cakes.map((cake) => cake.perPound));
-
 export function CustomCakesSection() {
-  const showcase = findCake('cake-anniversary-50') ?? cakes[0]!;
+  const cheapest = Math.min(...cakes.map((cake) => cake.price));
+  const lowestRate = Math.min(...cakes.map((cake) => cake.perPound));
+  const showcase = findCake('cake-anniversary-50') ?? cakes.find((cake) => cake.photos.length) ?? cakes[0]!;
   return (
     <Band id="custom" className="site-custom">
       <div className="site-custom__copy">
@@ -353,7 +353,7 @@ export function CustomCakesSection() {
       </div>
       <PatternSurface pattern="pinstripe" tone="pink" className="site-custom__panel">
         <Polaroid
-          src={showcase.photos[0]!.src}
+          src={showcase.photos[0]?.src ?? art.strawberryCake}
           alt={`${showcase.name}: ${showcase.description}`}
           tape="cherry"
           rotate={4}
@@ -486,7 +486,7 @@ export function OrbitSection() {
     'cake-hbd-wifey',
   ]
     .map(findCake)
-    .filter(Boolean)
+    .filter((cake) => cake?.photos.length)
     .map((cake) => ({ src: cake!.photos[0]!.src, alt: cake!.name }));
   return (
     <Band className="site-orbit site-section--pink">
@@ -628,16 +628,13 @@ const photoItems = (list: Cake[], firstOnly = false): GalleryItem[] =>
 
 /** Photos of real cakes, filterable by occasion. */
 export function GallerySection() {
-  const withPhotos = occasionOptions.filter(
+  const withPhotos = occasionOptions().filter(
     (option) => option.value === 'all' || cakes.some((cake) => cake.occasion === option.value && cake.photos.length),
   );
   const [filter, setFilter] = useState<string[]>(['all']);
   const slug = filter[0] ?? 'all';
-  const items = useMemo(
-    () =>
-      slug === 'all' ? photoItems(featured.slice(0, 9), true) : photoItems(cakes.filter((c) => c.occasion === slug)),
-    [slug],
-  );
+  const items =
+    slug === 'all' ? photoItems(featured().slice(0, 9), true) : photoItems(cakes.filter((c) => c.occasion === slug));
   return (
     <Band id="gallery" className="site-gallery site-section--cocoa" edge={{ color: 'var(--bbm-color-bg-inverse)' }}>
       <SectionHeading variant="bubble" title="Gallery" />
@@ -758,7 +755,7 @@ export function InstagramSection() {
       />
       <Gallery
         variant="grid"
-        items={photoItems(featured.slice(0, 6), true)}
+        items={photoItems(featured().slice(0, 6), true)}
         label="Recent cakes"
         follow={{ label: `Follow ${bakery.instagramHandle}`, href: bakery.instagram }}
       />

@@ -34,15 +34,13 @@ function siteAddress(): Plugin {
     async generateBundle() {
       const paths = [
         '/',
-        '/catalog',
-        '/shop',
+        '/menu',
+        '/how-to-order',
         '/about',
         '/links',
         ...(await cakePaths((message) => this.warn(message))),
-        ...treatCategories.flatMap((category) => [
-          `/shop/${category.slug}`,
-          ...category.items.map((item) => `/shop/${category.slug}/${item.slug}`),
-        ]),
+        // One page per kind of treat: its flavours are picked there (the old /shop/<type>/<item> links open it too)
+        ...treatCategories.map((category) => `/shop/${category.slug}`),
       ];
       const sitemap = [
         '<?xml version="1.0" encoding="UTF-8"?>',

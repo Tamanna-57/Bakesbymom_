@@ -109,6 +109,13 @@
   animation-delay: 0.6s;
 }
 
+/* Held on its first frame while the intro plays over the page (intro.tsx), then played as the bands clear it */
+.bbm-intro-on .home-hero__art,
+.bbm-intro-on .home-hero__card,
+.bbm-intro-on .home-hero__card > * {
+  animation-play-state: paused;
+}
+
 @keyframes home-rise {
   from {
     opacity: 0;

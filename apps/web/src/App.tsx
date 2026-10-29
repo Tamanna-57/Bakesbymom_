@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactElement } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactElement } from 'react';
 import { findCake } from './content/catalog';
 import { findTreatCategory } from './content/treats';
 import { AboutPage } from './pages/About';
@@ -10,6 +10,7 @@ import { NotFoundPage } from './pages/NotFound';
 import { ShopPage } from './pages/Shop';
 import { TreatCategoryPage } from './pages/TreatCategory';
 import { TreatPage } from './pages/TreatPage';
+import { Intro, shouldPlayIntro } from './intro';
 import { jumpTo, useParallax, useReveal, useSmoothScroll } from './motion';
 import { matchPath, usePath, useLinkInterception } from './router';
 
@@ -49,6 +50,9 @@ export function App() {
   const path = usePath();
   const route = resolve(path) ?? { title: `Page not found · ${site}`, page: <NotFoundPage /> };
   const firstRender = useRef(true);
+  // Only on the first page the visitor lands on, not when they come back to the home page later.
+  const [intro, setIntro] = useState(() => shouldPlayIntro(path));
+  const endIntro = useCallback(() => setIntro(false), []);
   useLinkInterception();
   useSmoothScroll();
 
@@ -70,5 +74,10 @@ export function App() {
   useParallax(path);
 
   // A new key per path resets each page's state (filters, order forms) when you move between items.
-  return <div key={path}>{route.page}</div>;
+  return (
+    <>
+      <div key={path}>{route.page}</div>
+      {intro && <Intro onDone={endIntro} />}
+    </>
+  );
 }

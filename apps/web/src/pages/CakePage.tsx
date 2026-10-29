@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Card, PatternSurface, SectionHeading, Select, TextField } from '@bakesbymom/ui';
 import { cakeAddons, cakeFlavours, cakeSizes, giftAddons, inr, kgLabel, whatsappLink } from '../content/bakery';
-import { findOccasion, type Cake } from '../content/catalog';
+import { findOccasion, refreshCake, type Cake } from '../content/catalog';
 import { cakeOrderMessage, cakePrice } from '../content/order';
 import { CakeCard } from '../sections/blocks';
 import { Layout } from './Layout';
@@ -20,7 +20,11 @@ export function CakePage({ cake }: { cake: Cake }) {
   const [name, setName] = useState('');
   const [notes, setNotes] = useState('');
 
-  const price = cakePrice(cake, weightKg);
+  useEffect(() => {
+    void refreshCake(cake.slug);
+  }, [cake.slug]);
+
+  const price = cakePrice(cake, weightKg, { flavour, addons });
   const order = cakeOrderMessage(cake, occasion?.name ?? '', {
     weightKg,
     flavour,
@@ -126,14 +130,19 @@ export function CakePage({ cake }: { cake: Cake }) {
                       onChange={(event) => setFlavour(event.target.value)}
                       options={[
                         { value: '', label: 'Ask Mom to suggest' },
-                        ...cakeFlavours.map((f) => ({ value: f, label: f })),
+                        ...(cake.flavours.length
+                          ? cake.flavours.map((f) => ({
+                              value: f.name,
+                              label: f.priceDelta ? `${f.name} (+${inr(f.priceDelta)})` : f.name,
+                            }))
+                          : cakeFlavours.map((f) => ({ value: f, label: f }))),
                       ]}
                     />
                   </div>
                   <Chips
                     label="Make it yours"
                     multiple
-                    options={[...cakeAddons, ...giftAddons]}
+                    options={[...(cake.addons.length ? cake.addons.map((a) => a.name) : cakeAddons), ...giftAddons]}
                     value={addons}
                     onChange={setAddons}
                   />

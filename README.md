@@ -73,23 +73,23 @@ The reasoning, with alternates for every section, is in [`design/board/README.md
 
 ## On Vercel
 
-| Site | Address | Project settings |
+| Site | Root Directory | Config |
 |---|---|---|
-| The website | https://bakesbymom-site.vercel.app | Root directory `apps/web`; [`apps/web/vercel.json`](./apps/web/vercel.json) builds the packages and the site and sends every path to `index.html` |
-| Storybook | https://bakesbymom-gilt.vercel.app | Root directory `./`; [`vercel.json`](./vercel.json) runs `npm run build-storybook` and serves `storybook-static` |
+| The website | `./` (Vercel's default) | [`vercel.json`](./vercel.json) builds the packages and the site into `apps/web/dist`, sends `/api` to the catalog Worker and every other path to `index.html` |
+| Storybook | `apps/storybook` | [`apps/storybook/vercel.json`](./apps/storybook/vercel.json) runs `npm run build-storybook` and serves `storybook-static` |
 
-Both are deployed from this repository. `https://bakesbymom.vercel.app` is the old site (last updated 19 October) and does not get these changes.
+To put the website on a Vercel account: **Add New → Project**, import `Tamanna-57/Bakesbymom_`, leave the Root Directory as it is and deploy. The framework preset, build command and output directory come from `vercel.json`, and no environment variables are needed. The canonical link, link preview and sitemap use the project's production address on their own; set `SITE_URL` (e.g. `https://bakesbymom.in`) once a custom domain is added. A project whose Root Directory is `apps/web` works too, through [`apps/web/vercel.json`](./apps/web/vercel.json); keep its `headers` and `rewrites` the same as the root file's.
 
-[`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml) deploys both projects every time `main` changes, so a merged PR goes live within a few minutes. It needs four repository secrets (Settings → Secrets and variables → Actions); until they are set the deploy jobs skip:
+`https://bakesbymom.vercel.app` is the old site. Its admin page edits the cake catalog both sites read.
+
+Connected through Vercel's GitHub app, a project deploys every push to `main` by itself. [`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml) is the other way, for projects that aren't connected: it deploys both projects every time `main` changes, using four repository secrets (Settings → Secrets and variables → Actions), and skips until they are set:
 
 | Secret | Where to find it |
 |---|---|
 | `VERCEL_TOKEN` | https://vercel.com/account/tokens |
 | `VERCEL_ORG_ID` | `orgId` in `.vercel/project.json` after running `npx vercel link` in the repo |
-| `VERCEL_SITE_PROJECT_ID` | `projectId` after `npx vercel link` to the `bakesbymom-site` project |
-| `VERCEL_STORYBOOK_PROJECT_ID` | `projectId` after `npx vercel link` to the `bakesbymom-gilt` project |
-
-Connecting the two projects to `Tamanna-57/Bakesbymom_` through Vercel's GitHub app works too; then the workflow can be deleted.
+| `VERCEL_SITE_PROJECT_ID` | `projectId` after `npx vercel link` to the website project |
+| `VERCEL_STORYBOOK_PROJECT_ID` | `projectId` after `npx vercel link` to the Storybook project |
 
 [`.github/workflows/ci.yml`](./.github/workflows/ci.yml) runs `npm run check` on every push.
 

@@ -1,4 +1,4 @@
-import { canGoBack, matchPath, navigate, parentPath } from './router';
+import { canGoBack, navigate, parentPath } from './router';
 
 /** Pages that start a visit and have nothing to go back to: the home page and the Instagram bio page. */
 const NO_BACK = new Set(['/', '/links']);
@@ -12,8 +12,7 @@ export const hasBackButton = (path: string) => !NO_BACK.has(path);
 export function BackButton({ path }: { path: string }) {
   const goBack = () => {
     if (canGoBack()) window.history.back();
-    // A treat's old item address opens its type's page, so one level up from it is the menu.
-    else navigate(matchPath('/shop/:category/:item', path) ? '/shop' : parentPath(path), { replace: true });
+    else navigate(parentPath(path), { replace: true });
   };
 
   return (

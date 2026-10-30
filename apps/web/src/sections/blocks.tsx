@@ -110,10 +110,13 @@ export function CakeCard({
   cake,
   index = 0,
   headingLevel = 3,
+  flavour,
 }: {
   cake: Cake;
   index?: number;
   headingLevel?: HeadingLevel;
+  /** A flavour slug: the cake's page opens with that flavour picked. */
+  flavour?: string;
 }) {
   return (
     <ProductCard
@@ -124,7 +127,7 @@ export function CakeCard({
       image={{ src: cake.photos[0]?.thumb ?? art.strawberryCake, alt: '' }}
       description={cake.description}
       price={inr(cake.price)}
-      href={`/catalog/${cake.slug}`}
+      href={flavour ? `/catalog/${cake.slug}?flavour=${flavour}` : `/catalog/${cake.slug}`}
       tone={TONES[index % TONES.length]}
       headingLevel={headingLevel}
       badge={

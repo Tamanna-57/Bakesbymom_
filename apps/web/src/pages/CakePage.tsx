@@ -1,6 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Card, PatternSurface, SectionHeading, Select, TextField } from '@bakesbymom/ui';
-import { cakeAddons, cakeFlavours, cakeSizes, giftAddons, inr, kgLabel, whatsappLink } from '../content/bakery';
+import {
+  cakeAddons,
+  cakeFlavours,
+  cakeSizes,
+  findFlavour,
+  flavourSlug,
+  giftAddons,
+  inr,
+  kgLabel,
+  whatsappLink,
+} from '../content/bakery';
 import { findOccasion, refreshCake, type Cake } from '../content/catalog';
 import { cakeOrderMessage, cakePrice } from '../content/order';
 import { CakeCard } from '../sections/blocks';
@@ -13,7 +23,16 @@ export function CakePage({ cake }: { cake: Cake }) {
   const occasion = findOccasion(cake.occasion);
   const [photo, setPhoto] = useState(0);
   const [weightKg, setWeightKg] = useState(cake.weightKg);
-  const [flavour, setFlavour] = useState('');
+  // A link from a flavour card (?flavour=vanilla) opens the cake with that flavour picked. The cake's own list of
+  // flavours arrives a moment after the page (refreshCake), so the pick follows it until the visitor chooses.
+  const linked = findFlavour(new URLSearchParams(window.location.search).get('flavour'));
+  const flavourNames = cake.flavours.length ? cake.flavours.map((f) => f.name) : cakeFlavours;
+  const linkedOption = linked ? (flavourNames.find((name) => flavourSlug(name) === flavourSlug(linked)) ?? '') : '';
+  const [flavour, setFlavour] = useState(linkedOption);
+  const chosen = useRef(false);
+  useEffect(() => {
+    if (!chosen.current) setFlavour(linkedOption);
+  }, [linkedOption]);
   const [addons, setAddons] = useState<string[]>([]);
   const [message, setMessage] = useState('');
   const [when, setWhen] = useState<WhenWhere>({ date: '', slot: '', fulfilment: { method: 'Pickup' } });
@@ -125,7 +144,15 @@ export function CakePage({ cake }: { cake: Cake }) {
                     <Select
                       label="Flavour"
                       value={flavour}
-                      onChange={(event) => setFlavour(event.target.value)}
+                      onChange={(event) => {
+                        chosen.current = true;
+                        setFlavour(event.target.value);
+                      }}
+                      hint={
+                        linked && !linkedOption
+                          ? `${linked} isn't made in this design. Pick another flavour, or ask Mom.`
+                          : undefined
+                      }
                       options={[
                         { value: '', label: 'Ask Mom to suggest' },
                         ...(cake.flavours.length

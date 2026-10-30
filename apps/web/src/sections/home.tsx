@@ -21,7 +21,7 @@ import {
   type DoodleName,
 } from '@bakesbymom/ui';
 import { flavours, stock, treatArt } from '../content';
-import { bakery, cakeFlavours, cakeSizes, whatsappLink } from '../content/bakery';
+import { bakery, cakeFlavours, cakeSizes, flavourSlug, whatsappLink } from '../content/bakery';
 import { occasions } from '../content/catalog';
 import { howToOrder, orderLink } from '../content/site';
 import { SectionEdge } from './blocks';
@@ -236,9 +236,8 @@ export function FlavoursSection() {
                     <span className="home-flavour__pill">any cake</span>
                     <a
                       className="home-flavour__ask"
-                      href={whatsappLink(`Hello Bakes by Mom! I'd like a ${flavour.toLowerCase()} cake 🎂`)}
-                      {...external}
-                      aria-label={`Ask for a ${flavour.toLowerCase()} cake on WhatsApp`}
+                      href={`/catalog?flavour=${flavourSlug(flavour)}`}
+                      aria-label={`See every cake in ${flavour.toLowerCase()}`}
                     >
                       <span aria-hidden="true">↗</span>
                     </a>

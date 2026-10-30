@@ -219,40 +219,15 @@
   color: var(--bbm-color-text-secondary);
 }
 
-/* − [ 9 ] +: the field's label, input and hint join the stepper's grid, so the buttons sit beside the
-   number itself rather than beside the hint under it */
 .order-stepper {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: var(--bbm-space-2) var(--bbm-space-3);
+  align-items: end;
+  gap: var(--bbm-space-3);
 }
 
-.order-stepper__field {
-  display: contents;
-}
-
-.order-stepper__field > .bbm-field__label,
-.order-stepper__field > .bbm-field__hint,
-.order-stepper__field > .bbm-field__error {
-  grid-column: 1 / -1;
-}
-
-.order-stepper__field > .bbm-field__label {
-  grid-row: 1;
-}
-
-.order-stepper > .bbm-button,
-.order-stepper__field > .bbm-field__control {
-  grid-row: 2;
-}
-
-.order-stepper > .bbm-button:last-child {
-  grid-column: 3;
-}
-
-.order-stepper__field > .bbm-field__control {
-  grid-column: 2;
+.order-stepper > .bbm-button {
+  margin-bottom: var(--bbm-space-1);
 }
 
 .order-stepper__field input {
@@ -359,66 +334,4 @@
 /* Catalog: one shelf per occasion */
 .catalog-shelf > .site-container {
   gap: var(--bbm-space-6);
-}
-
-/* The menu (Menu.tsx): jump links under the title, then the cakes by occasion and the treats ------------- */
-
-.menu-head .site-container {
-  display: grid;
-  justify-items: center;
-  gap: var(--bbm-space-6);
-}
-
-.menu-head .shop-crumbs {
-  justify-self: start;
-}
-
-.menu-shelf {
-  display: grid;
-  gap: var(--bbm-space-5);
-  margin-top: var(--bbm-space-10);
-  scroll-margin-top: 7rem;
-}
-
-.menu-shelf__title {
-  margin: 0;
-  padding-bottom: var(--bbm-space-2);
-  border-bottom: var(--bbm-border-width-thin) dashed var(--bbm-color-border-default);
-  font-family: var(--bbm-font-family-display);
-  font-size: var(--bbm-text-heading-lg-size);
-  font-weight: var(--bbm-font-weight-semibold);
-}
-
-/* A treat's flavour, described under the flavour picker */
-.treat-description {
-  margin: 0;
-}
-
-/* How to order (HowToOrder.tsx) ------------------------------------------------------------------- */
-
-.order-steps {
-  padding: clamp(1.5rem, 1rem + 2.5vw, 3rem);
-  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
-  border-radius: var(--bbm-radius-2xl);
-  background-color: var(--bbm-color-bg-canvas);
-  box-shadow: var(--bbm-shadow-sticker-lg);
-}
-
-.order-specials {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
-  gap: var(--bbm-space-6);
-  margin-top: var(--bbm-space-8);
-}
-
-.order-special {
-  display: grid;
-  justify-items: start;
-  align-content: start;
-  gap: var(--bbm-space-3);
-}
-
-.order-special h3,
-.order-special p {
-  margin: 0;
 }

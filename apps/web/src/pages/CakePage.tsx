@@ -44,8 +44,8 @@ export function CakePage({ cake }: { cake: Cake }) {
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
-              { label: 'Menu', href: '/menu' },
-              ...(occasion ? [{ label: occasion.name, href: `/menu?occasion=${occasion.slug}` }] : []),
+              { label: 'Cakes', href: '/catalog' },
+              ...(occasion ? [{ label: occasion.name, href: `/catalog?occasion=${occasion.slug}` }] : []),
               { label: cake.name },
             ]}
           />

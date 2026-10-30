@@ -86,8 +86,8 @@ export function HomeHero() {
             <Button size="lg" href={orderLink} {...external}>
               Order on WhatsApp
             </Button>
-            <Button size="lg" variant="secondary" href="/menu">
-              See the menu
+            <Button size="lg" variant="secondary" href="/catalog">
+              See the cakes
             </Button>
           </div>
         </div>
@@ -140,11 +140,12 @@ const features = [
   },
 ];
 
-/** The pink polka-dot band under the hero: the four promises, said once. */
+/** The pink polka-dot band under the ribbon: the feature strip, then the about us card. */
 export function HomeIntro() {
   return (
     <PatternSurface pattern="dots" tone="pink" ground="var(--bbm-color-bg-pink)" className="home-intro">
       <FeatureStrip />
+      <AboutUsCard />
     </PatternSurface>
   );
 }
@@ -290,7 +291,7 @@ export function ShopByBoxSection() {
         </p>
         <ul className="home-shop__row">
           <li>
-            <a className="home-shop__lead" href="/menu">
+            <a className="home-shop__lead" href="/catalog">
               <img src={stock.occasions.src} alt="" loading="lazy" />
               <span className="home-shop__lead-label">
                 Cakes by occasion
@@ -345,7 +346,7 @@ export function OccasionBand() {
             const icon = occasionIcons[occasion.slug] ?? { name: 'heart', color: 'currentColor' };
             return (
               <li key={occasion.slug}>
-                <a href={`/menu?occasion=${occasion.slug}`}>
+                <a href={`/catalog?occasion=${occasion.slug}`}>
                   <span className="home-occasions__icon" aria-hidden="true">
                     <Doodle name={icon.name} size={34} color={icon.color} />
                   </span>
@@ -355,86 +356,6 @@ export function OccasionBand() {
             );
           })}
         </ul>
-      </div>
-    </section>
-  );
-}
-
-/* What are we baking for you? The occasions and the treat types in one chooser ------------------- */
-
-/** One place to start: a cake for an occasion, or a box of treats. Each opens straight onto what you picked. */
-export function ChooseSection() {
-  return (
-    <section className="home-occasions home-choose" aria-labelledby="home-choose-title">
-      <div className="site-container">
-        <h2 id="home-choose-title" className="home-occasions__title">
-          What are we <span className="home-script">baking</span> for you?
-        </h2>
-        <div className="home-choose__group">
-          <h3 className="home-choose__label">A cake, for…</h3>
-          <ul className="home-occasions__list">
-            {occasions.map((occasion) => {
-              const icon = occasionIcons[occasion.slug] ?? { name: 'heart', color: 'currentColor' };
-              return (
-                <li key={occasion.slug}>
-                  <a href={`/menu?occasion=${occasion.slug}`}>
-                    <span className="home-occasions__icon" aria-hidden="true">
-                      <Doodle name={icon.name} size={34} color={icon.color} />
-                    </span>
-                    <span className="home-occasions__label">{occasion.name}</span>
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-        <div className="home-choose__group">
-          <h3 className="home-choose__label">Or treats, by the box</h3>
-          <ul className="home-shop__row">
-            {treatCategories.map((category, i) => (
-              <li key={category.slug}>
-                <a className="home-shop__item" href={`/shop/${category.slug}`}>
-                  <span className="home-shop__art" data-bbm-tone={TILE_TONES[i % TILE_TONES.length]}>
-                    <img src={treatArt[category.slug]?.src ?? stock.cupcakes.src} alt="" loading="lazy" />
-                  </span>
-                  <span className="home-shop__name">{category.name}</span>
-                  <span className="home-shop__meta">
-                    from {category.minQty} {category.minQty === 1 ? category.unit.replace(/s$/, '') : category.unit}
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* Ready to order: the one call to action at the end of the home page --------------------------- */
-
-export function OrderCtaSection() {
-  return (
-    <section className="site-section site-section--cherry home-order-cta" aria-labelledby="home-order-cta-title">
-      <div className="site-container site-narrow">
-        <h2 id="home-order-cta-title">
-          Ready when <span className="home-script">you</span> are
-        </h2>
-        <p>
-          Pick a cake or a box, choose the size, flavour and day, and the order opens in WhatsApp already typed out.{' '}
-          {bakery.notice}
-        </p>
-        <div className="home-order-cta__actions">
-          <Button size="lg" variant="secondary" href="/menu">
-            See the menu
-          </Button>
-          <Button size="lg" variant="secondary" href={orderLink} {...external}>
-            Order on WhatsApp
-          </Button>
-        </div>
-        <a className="home-order-cta__more" href="/how-to-order">
-          How ordering works, pickup and delivery →
-        </a>
       </div>
     </section>
   );

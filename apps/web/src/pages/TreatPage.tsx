@@ -3,7 +3,7 @@ import { PatternSurface, SectionHeading, Select, TextField } from '@bakesbymom/u
 import { stock, treatArt } from '../content';
 import { whatsappLink } from '../content/bakery';
 import { boxes, treatOrderMessage } from '../content/order';
-import type { Treat, TreatCategory } from '../content/treats';
+import { qtyLabel, type Treat, type TreatCategory } from '../content/treats';
 import { Layout } from './Layout';
 import {
   Breadcrumbs,
@@ -38,7 +38,7 @@ export function TreatPage({ category, treat }: { category: TreatCategory; treat:
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
-              { label: 'Treats', href: '/shop' },
+              { label: 'Cakes & Treats', href: '/shop' },
               { label: category.name, href: `/shop/${category.slug}` },
               { label: treat.name },
             ]}
@@ -86,7 +86,7 @@ export function TreatPage({ category, treat }: { category: TreatCategory; treat:
                     hint={
                       category.perBox && quantity >= category.minQty
                         ? `That's ${boxes(quantity, category.perBox)}. Order any number from ${category.minQty} upwards; we'll box it sensibly.`
-                        : `Order any amount from ${category.minQty} ${category.unit} upwards.`
+                        : `Order any amount from ${qtyLabel(category.minQty, category.unit)} upwards.`
                     }
                     value={quantity}
                     min={category.minQty}

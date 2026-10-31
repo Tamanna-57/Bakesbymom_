@@ -17,7 +17,7 @@ const meta = {
     docs: {
       description: {
         component: fromBoard(
-          "The old site's catalog and shop, rebuilt in the board's look: cakes **by occasion** with pin 13's **filter pills** and pin 16's **menu cards**, a page per cake that builds a WhatsApp order, and the treat types (brownies, cookies, jar cakes, dry cakes, cupcakes, bento cakes, combos) with their own order pages.",
+          "The old site's catalog and shop, rebuilt in the board's look: cakes **by occasion** with pin 13's **filter pills** and pin 16's **menu cards**, a page per cake that builds a WhatsApp order, and the treat types, all under one **Cakes & Treats** page (/shop) that opens each category (brownies, cookies, jar cakes, dry cakes, cupcakes, bento cakes, combos) with their own order pages.",
           ['16', '13', '08'],
           'menu.md',
         ),
@@ -35,8 +35,8 @@ export const Catalog: Story = {};
 /** /catalog/cake-spiderman: one cake and its order builder. */
 export const Cake: Story = { render: () => <CakePage cake={findCake('cake-spiderman')!} /> };
 
-/** /shop: every kind of bake. */
-export const Treats: Story = { render: () => <ShopPage /> };
+/** /shop: Cakes & Treats, every category in one place, and a custom order. */
+export const CakesAndTreats: Story = { render: () => <ShopPage /> };
 
 /** /shop/cookies: one treat type. */
 export const TreatType: Story = { render: () => <TreatCategoryPage category={findTreatCategory('cookies')!} /> };

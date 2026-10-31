@@ -46,7 +46,9 @@ export function CatalogPage() {
     <Layout path="/catalog">
       <section className="site-section site-section--blue">
         <div className="site-container">
-          <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Cakes' }]} />
+          <Breadcrumbs
+            items={[{ label: 'Home', href: '/' }, { label: 'Cakes & Treats', href: '/shop' }, { label: 'Cakes' }]}
+          />
           <SectionHeading
             level={1}
             size="xl"

@@ -1,0 +1,939 @@
+/* "Bake it with Mom" (bake.tsx): one kitchen pinned to the screen while scrolling bakes a cake, and the light
+   moves from sunrise to night. --day and --p0 … --p5 (0 → 1) are written by the scroll handler. */
+
+/* The light, step by step: the room around the scene, the kitchen wall, the sky, the sun and the rooftops */
+:is(.bake, .bake-scene)[data-step='0'] {
+  --_room: var(--bbm-color-blue-100);
+  --_wall: var(--bbm-color-blue-200);
+  --_sky: var(--bbm-color-pink-300);
+  --_sun: var(--bbm-color-butter-300);
+  --_roofs: var(--bbm-color-blue-400);
+}
+
+:is(.bake, .bake-scene)[data-step='1'] {
+  --_room: var(--bbm-color-blue-50);
+  --_wall: var(--bbm-color-blue-200);
+  --_sky: var(--bbm-color-blue-100);
+  --_sun: var(--bbm-color-butter-300);
+  --_roofs: var(--bbm-color-blue-400);
+}
+
+:is(.bake, .bake-scene)[data-step='2'] {
+  --_room: var(--bbm-color-butter-50);
+  --_wall: var(--bbm-color-butter-200);
+  --_sky: var(--bbm-color-blue-50);
+  --_sun: var(--bbm-color-butter-300);
+  --_roofs: var(--bbm-color-blue-300);
+}
+
+:is(.bake, .bake-scene)[data-step='3'] {
+  --_room: var(--bbm-color-butter-100);
+  --_wall: var(--bbm-color-butter-300);
+  --_sky: var(--bbm-color-butter-100);
+  --_sun: var(--bbm-color-butter-400);
+  --_roofs: var(--bbm-color-beige-400);
+}
+
+:is(.bake, .bake-scene)[data-step='4'] {
+  --_room: var(--bbm-color-pink-100);
+  --_wall: var(--bbm-color-pink-300);
+  --_sky: var(--bbm-color-cherry-300);
+  --_sun: var(--bbm-color-cherry-400);
+  --_roofs: var(--bbm-color-pink-600);
+  --_dim: 0.06;
+  --_glow: 0.14;
+}
+
+:is(.bake, .bake-scene)[data-step='5'] {
+  --_room: var(--bbm-color-brown-800);
+  --_on-room: var(--bbm-color-text-inverse);
+  --_wall: var(--bbm-color-brown-600);
+  --_sky: var(--bbm-color-blue-800);
+  --_sun: var(--bbm-color-cherry-400);
+  --_roofs: var(--bbm-color-blue-900);
+  --_dim: 0.3;
+  --_glow: 0.32;
+  --_night: 1;
+}
+
+/* Section and pinned stage ------------------------------------------------ */
+
+.bake {
+  --_fade: 700ms var(--bbm-motion-easing-standard);
+  position: relative;
+  /* One screen to pin, then 80% of a screen of scrolling for each step */
+  height: calc(var(--steps) * 80svh + 100svh);
+  background-color: var(--_room);
+  color: var(--bbm-color-text-primary);
+  transition: background-color var(--_fade);
+  /* The card changes height with every step. Without this the browser "anchors" to it and nudges the scroll,
+     which changes the step again, and the page drifts on its own. */
+  overflow-anchor: none;
+}
+
+.bake__stage {
+  position: sticky;
+  top: 0;
+  box-sizing: border-box;
+  height: 100svh;
+  padding-top: var(--bake-top, 5rem);
+}
+
+.bake__inner {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-areas: 'rail' 'scene' 'card';
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: var(--bbm-space-3);
+  height: 100%;
+  max-width: var(--bbm-layout-container);
+  margin-inline: auto;
+  padding: var(--bbm-space-3) var(--bbm-layout-gutter) var(--bbm-space-4);
+}
+
+@media (min-width: 900px) {
+  .bake__inner {
+    grid-template-areas: 'rail rail' 'scene card';
+    grid-template-columns: minmax(0, 1.2fr) minmax(20rem, 0.8fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    align-items: center;
+    align-content: center;
+    column-gap: var(--bbm-space-12);
+    row-gap: var(--bbm-space-5);
+    padding-block: var(--bbm-space-8);
+  }
+}
+
+.bake__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The scene: a framed window into the kitchen */
+.bake__scene {
+  grid-area: scene;
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  height: 100%;
+  container-type: size;
+}
+
+.bake-scene {
+  display: block;
+  /* As big as the space allows while keeping the drawing's 6:5 shape */
+  width: min(100cqw, 120cqh);
+  height: auto;
+  aspect-ratio: 6 / 5;
+  border: var(--bbm-border-width-thick) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-xl);
+  background: var(--_wall);
+  box-shadow: 6px 6px 0 var(--bbm-color-border-default);
+  stroke: var(--bbm-color-border-default);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: background-color var(--_fade);
+}
+
+/* The step rail */
+.bake__rail {
+  grid-area: rail;
+  display: flex;
+  align-items: center;
+  gap: var(--bbm-space-3);
+  min-width: 0;
+}
+
+.bake__rail ol {
+  display: flex;
+  flex: 1;
+  gap: var(--bbm-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.bake__rail-step {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bbm-space-1);
+  min-height: var(--bbm-layout-touch-target);
+  padding: 0 var(--bbm-space-2);
+  border: var(--bbm-border-width-thin) solid transparent;
+  border-radius: var(--bbm-radius-pill);
+  background: none;
+  color: var(--_on-room, var(--bbm-color-text-primary));
+  font: inherit;
+  font-size: var(--bbm-text-label-size);
+  font-weight: var(--bbm-font-weight-bold);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--bbm-motion-duration-base),
+    color var(--bbm-motion-duration-base);
+}
+
+.bake__rail-num {
+  display: inline-grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: var(--bbm-border-width-thin) solid currentColor;
+  border-radius: 50%;
+  font-size: var(--bbm-text-caption-size);
+}
+
+.bake__rail-step[data-done] .bake__rail-num {
+  background: var(--bbm-color-matcha-300);
+  border-color: var(--bbm-color-border-default);
+  color: var(--bbm-color-text-primary);
+}
+
+.bake__rail-step[aria-current] {
+  border-color: var(--bbm-color-border-default);
+  background: var(--bbm-color-bg-surface);
+  color: var(--bbm-color-text-primary);
+}
+
+.bake__rail-step[aria-current] .bake__rail-num {
+  background: var(--bbm-color-cherry-700);
+  border-color: var(--bbm-color-cherry-700);
+  color: var(--bbm-color-paper);
+}
+
+/* On a phone only the current step shows its name */
+@media (max-width: 899px) {
+  .bake__rail-step:not([aria-current]) .bake__rail-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .bake__rail-step:not([aria-current]) {
+    padding: 0 2px;
+  }
+
+  .bake__rail ol {
+    gap: 0;
+  }
+
+  .bake__skip {
+    padding: 0;
+  }
+
+  /* Kitchen and card sit together at the bottom, the rail stays up top like a header */
+  .bake__scene {
+    place-items: end center;
+  }
+}
+
+.bake__skip {
+  flex: none;
+  min-height: var(--bbm-layout-touch-target);
+  padding: 0 var(--bbm-space-2);
+  border: 0;
+  background: none;
+  color: var(--_on-room, var(--bbm-color-text-secondary));
+  font: inherit;
+  font-size: var(--bbm-text-caption-size);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.bake__rail-step:focus-visible,
+.bake__skip:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: var(--bbm-focus-ring-offset);
+}
+
+/* The card ------------------------------------------------------------------ */
+
+.bake__card-slot {
+  grid-area: card;
+  min-width: 0;
+}
+
+.bake__card {
+  display: grid;
+  gap: var(--bbm-space-2);
+  justify-items: start;
+  padding: var(--bbm-space-5);
+  border: var(--bbm-border-width-thick) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-lg);
+  background: var(--bbm-color-bg-surface);
+  box-shadow: 4px 4px 0 var(--bbm-color-border-default);
+  animation: bake-card-in 520ms var(--bbm-motion-easing-out) both;
+}
+
+@media (min-width: 900px) {
+  .bake__card {
+    gap: var(--bbm-space-3);
+    padding: var(--bbm-space-8);
+  }
+}
+
+@keyframes bake-card-in {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+.bake__time {
+  margin: 0;
+  font-size: var(--bbm-text-eyebrow-size);
+  font-weight: var(--bbm-font-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bbm-color-text-muted);
+}
+
+.bake__time span {
+  color: var(--bbm-color-text-brand);
+}
+
+.bake__title {
+  margin: 0;
+  font-family: var(--bbm-font-family-display);
+  font-variation-settings: var(--bbm-font-variation-soft);
+  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem);
+  font-weight: var(--bbm-font-weight-semibold);
+  line-height: 1.1;
+}
+
+.bake__hint {
+  margin: 0;
+  font-size: var(--bbm-text-body-sm-size);
+  color: var(--bbm-color-text-muted);
+}
+
+.bake__hint::before {
+  content: '↓ ';
+  color: var(--bbm-color-text-brand);
+}
+
+.bake__says {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 var(--bbm-space-3);
+  align-items: start;
+  margin: var(--bbm-space-1) 0 0;
+}
+
+.bake__says img {
+  grid-row: span 2;
+  width: 3rem;
+  height: 3rem;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: 50%;
+}
+
+.bake__says blockquote {
+  margin: 0;
+}
+
+.bake__says p {
+  margin: 0;
+  font-family: var(--bbm-font-family-hand);
+  font-size: clamp(1.3rem, 1.15rem + 0.5vw, 1.6rem);
+  line-height: 1.2;
+  color: var(--bbm-color-text-secondary);
+}
+
+.bake__says figcaption {
+  font-size: var(--bbm-text-caption-size);
+  font-weight: var(--bbm-font-weight-bold);
+  color: var(--bbm-color-text-brand);
+}
+
+.bake__says figcaption::before {
+  content: '— ';
+}
+
+.bake__timer {
+  margin: 0;
+  padding: var(--bbm-space-1) var(--bbm-space-4);
+  border-radius: var(--bbm-radius-sm);
+  background: var(--bbm-color-bg-inverse);
+  color: var(--bbm-color-butter-300);
+  font-size: var(--bbm-text-heading-md-size);
+  font-weight: var(--bbm-font-weight-bold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+}
+
+.bake__name {
+  display: grid;
+  gap: var(--bbm-space-1);
+  width: 100%;
+}
+
+.bake__name label {
+  font-size: var(--bbm-text-label-size);
+  font-weight: var(--bbm-font-weight-bold);
+}
+
+.bake__name input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: var(--bbm-layout-touch-target);
+  padding: 0 var(--bbm-space-4);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-pill);
+  background: var(--bbm-color-bg-canvas);
+  color: var(--bbm-color-text-primary);
+  font: inherit;
+  font-size: 1rem; /* 16px keeps phones from zooming in */
+}
+
+.bake__name input:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: var(--bbm-focus-ring-offset);
+}
+
+.bake__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bbm-space-2);
+  margin-top: var(--bbm-space-1);
+}
+
+/* On short phone screens, keep the card compact so the kitchen stays in view */
+@media (max-width: 899px) and (max-height: 720px) {
+  .bake__card {
+    padding: var(--bbm-space-4);
+  }
+
+  .bake__says img {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+}
+
+/* The drawing ---------------------------------------------------------------- */
+
+.bake-scene .f-paper {
+  fill: var(--bbm-color-paper);
+}
+.bake-scene .f-sunken {
+  fill: var(--bbm-color-beige-100);
+}
+.bake-scene .f-flour {
+  fill: var(--bbm-color-beige-100);
+}
+.bake-scene .f-pink {
+  fill: var(--bbm-color-pink-200);
+}
+.bake-scene .f-pink2 {
+  fill: var(--bbm-color-pink-300);
+}
+.bake-scene .f-cherry {
+  fill: var(--bbm-color-cherry-500);
+}
+.bake-scene .f-blue {
+  fill: var(--bbm-color-blue-100);
+}
+.bake-scene .f-blue2 {
+  fill: var(--bbm-color-blue-300);
+}
+.bake-scene .f-butter {
+  fill: var(--bbm-color-butter-300);
+}
+.bake-scene .f-gold {
+  fill: var(--bbm-color-butter-400);
+}
+.bake-scene .f-matcha {
+  fill: var(--bbm-color-matcha-400);
+}
+.bake-scene .f-brown {
+  fill: var(--bbm-color-brown-500);
+}
+.bake-scene .f-tin {
+  fill: var(--bbm-color-blue-400);
+}
+.bake-scene .f-skin {
+  fill: #e9bf9c; /* matches Mom's portrait in content/mom.svg */
+}
+.bake-scene .f-ink {
+  fill: var(--bbm-color-brown-900);
+}
+.bake-scene .f-bowl-in {
+  fill: var(--bbm-color-blue-200);
+}
+.bake-scene .f-oven-in {
+  fill: var(--bbm-color-brown-800);
+}
+
+.bk-wall,
+.bk-sky,
+.bk-sky-cut,
+.bk-sun,
+.bk-roofs {
+  transition: fill var(--_fade, 700ms);
+}
+
+.bk-wall {
+  fill: var(--_wall);
+}
+
+.bk-tiles {
+  color: var(--bbm-color-paper);
+  opacity: 0.3;
+}
+
+.bk-sky,
+.bk-sky-cut {
+  fill: var(--_sky);
+}
+
+.bk-roofs {
+  fill: var(--_roofs);
+}
+
+/* The sun climbs across the window and sets by nightfall; then the moon and stars come out */
+.bk-sun {
+  --_arc: min(calc(var(--day, 0) * 1.2), 1);
+  fill: var(--_sun);
+  transform: translate(calc(var(--_arc) * 136px), calc(sin(var(--_arc) * 180deg) * -92px));
+}
+
+.bk-moon,
+.bk-stars {
+  fill: var(--bbm-color-paper);
+  opacity: var(--_night, 0);
+  transition: opacity var(--_fade, 700ms);
+}
+
+.bk-dim {
+  fill: var(--bbm-color-brown-900);
+  opacity: var(--_dim, 0);
+  transition: opacity var(--_fade, 700ms);
+}
+
+.bk-glow {
+  fill: var(--bbm-color-butter-200);
+  opacity: var(--_glow, 0);
+  transition: opacity var(--_fade, 700ms);
+}
+
+.bk-bulb {
+  fill: var(--bbm-color-paper);
+  transition: fill var(--_fade, 700ms);
+}
+
+.bake-scene[data-step='4'] .bk-bulb,
+.bake-scene[data-step='5'] .bk-bulb {
+  fill: var(--bbm-color-butter-300);
+}
+
+/* Set pieces swap in and out as the steps change */
+.bk-piece {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 420ms var(--bbm-motion-easing-standard),
+    transform 600ms var(--bbm-motion-easing-out);
+}
+
+.bake-scene:is([data-step='0'], [data-step='1'], [data-step='2']) .bk-piece--bowl,
+.bake-scene[data-step='3'] .bk-piece--oven,
+.bake-scene[data-step='4'] .bk-piece--cake,
+.bake-scene[data-step='5'] .bk-piece--box {
+  opacity: 1;
+  transform: none;
+}
+
+/* Measure: the cup tips and the flour piles up as you scroll */
+.bk-cup {
+  transform-box: view-box;
+  transform-origin: 268px 134px;
+  transform: rotate(calc(-12deg - var(--p0, 0) * 28deg));
+  transition: opacity 300ms;
+}
+
+.bk-stream {
+  stroke: var(--bbm-color-beige-100);
+  stroke-width: 9;
+  stroke-dasharray: 2 14;
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+.bake-scene:not([data-step='0']) .bk-cup {
+  opacity: 0;
+}
+
+.bake-scene[data-step='0']:not(.is-still) .bk-stream {
+  opacity: 1;
+  animation: bk-pour 0.5s linear infinite;
+}
+
+@keyframes bk-pour {
+  to {
+    stroke-dashoffset: -16;
+  }
+}
+
+.bk-flour {
+  fill: var(--bbm-color-beige-100);
+  transform-box: view-box;
+  transform-origin: 240px 238px;
+  transform: scaleY(calc(var(--p0, 0) * (1 - var(--p2, 0))));
+}
+
+/* Mix: the flour becomes golden batter */
+.bk-batter {
+  fill: var(--bbm-color-butter-300);
+  opacity: var(--p2, 0);
+}
+
+.bk-swirl {
+  stroke: var(--bbm-color-butter-500);
+  stroke-width: 2.5;
+  stroke-dasharray: 12 8;
+  stroke-dashoffset: calc(var(--p2, 0) * -240);
+  opacity: calc(var(--p2, 0) * 0.9);
+}
+
+.bk-whisk {
+  opacity: 0;
+  transform-box: view-box;
+  transform-origin: 300px 140px;
+  transition: opacity 300ms;
+}
+
+.bake-scene[data-step='2'] .bk-whisk {
+  opacity: 1;
+}
+
+.bake-scene[data-step='2']:not(.is-still) .bk-whisk {
+  animation: bk-whisk 0.7s ease-in-out infinite alternate;
+}
+
+@keyframes bk-whisk {
+  from {
+    transform: translateX(-18px) rotate(-8deg);
+  }
+  to {
+    transform: translateX(14px) rotate(6deg);
+  }
+}
+
+.bk-handle {
+  stroke: var(--bbm-color-brown-600);
+}
+
+.bk-bowl-band {
+  stroke: var(--bbm-color-blue-300);
+}
+
+/* Eggs: one egg on the counter, and Mom's hand takes it away */
+.bk-egg {
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity 300ms;
+}
+
+.bk-sheen {
+  stroke: var(--bbm-color-beige-300);
+}
+
+.bake-scene[data-step='1'] .bk-egg,
+.bake-scene.is-egg-taken .bk-egg {
+  opacity: 1;
+}
+
+.bake-scene[data-step='1']:not(.is-egg-taken, .is-egg-held) .bk-egg {
+  animation: bk-wobble 1.6s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+@keyframes bk-wobble {
+  0%,
+  60%,
+  100% {
+    transform: rotate(0);
+  }
+  70% {
+    transform: rotate(-9deg);
+  }
+  85% {
+    transform: rotate(7deg);
+  }
+}
+
+.bk-hand {
+  transform: translateX(130px);
+}
+
+.is-egg-taken .bk-hand {
+  animation: bk-hand 1.8s var(--bbm-motion-easing-standard) forwards;
+}
+
+.is-egg-taken .bk-egg {
+  animation: bk-egg 1.8s var(--bbm-motion-easing-standard) forwards;
+}
+
+.bake-scene[data-step='1'].is-egg-held .bk-hand {
+  transform: none;
+}
+
+@keyframes bk-hand {
+  0% {
+    transform: translateX(130px);
+  }
+  35%,
+  55% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(140px);
+  }
+}
+
+@keyframes bk-egg {
+  0%,
+  55% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(140px);
+  }
+}
+
+/* Bake: the oven glows, the cake rises, the timer runs down */
+.bk-oven-glow {
+  fill: var(--bbm-color-butter-300);
+  opacity: 0.15;
+}
+
+.is-baking .bk-oven-glow {
+  animation: bk-glow 1.2s ease-in-out infinite alternate;
+}
+
+.is-baked .bk-oven-glow {
+  opacity: 0.55;
+}
+
+@keyframes bk-glow {
+  from {
+    opacity: 0.35;
+  }
+  to {
+    opacity: 0.8;
+  }
+}
+
+.bk-rise {
+  fill: var(--bbm-color-butter-300);
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transform: scaleY(0.3);
+}
+
+.is-baking .bk-rise {
+  animation: bk-rise 5s var(--bbm-motion-easing-standard) forwards;
+}
+
+.is-baked .bk-rise {
+  fill: var(--bbm-color-brown-300);
+  transform: none;
+}
+
+@keyframes bk-rise {
+  to {
+    transform: none;
+  }
+}
+
+.bk-timer-text {
+  fill: var(--bbm-color-butter-300);
+  font-family: var(--bbm-font-family-body);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.bk-heat {
+  stroke: var(--bbm-color-brown-400);
+  opacity: 0;
+}
+
+.is-baking .bk-heat {
+  animation: bk-heat 1.4s ease-out infinite;
+}
+
+.is-baking .bk-heat path:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+@keyframes bk-heat {
+  from {
+    opacity: 0.8;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.bk-ding {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0.4);
+  transition:
+    opacity 300ms,
+    transform 500ms var(--bbm-motion-easing-bounce);
+}
+
+.is-baked .bk-ding {
+  opacity: 1;
+  transform: none;
+}
+
+/* Decorate: the name is piped across the cake, left to right */
+.bk-name-text {
+  fill: var(--bbm-color-cherry-700);
+  font-family: var(--bbm-font-family-script);
+  font-size: 34px;
+}
+
+.bk-bag {
+  opacity: 0;
+}
+
+.bake-scene[data-step='4']:not(.is-still) .bk-name-text {
+  animation: bk-pipe 1.8s 0.35s ease-in-out both;
+}
+
+.bake-scene[data-step='4']:not(.is-still) .bk-bag {
+  animation: bk-bag 1.8s 0.35s ease-in-out both;
+}
+
+@keyframes bk-pipe {
+  from {
+    clip-path: inset(-20% 100% -20% 0);
+  }
+  to {
+    clip-path: inset(-20% 0 -20% 0);
+  }
+}
+
+@keyframes bk-bag {
+  0% {
+    opacity: 1;
+    transform: translate(calc(240px - var(--name-w) / 2), 228px);
+  }
+  90% {
+    opacity: 1;
+    transform: translate(calc(240px + var(--name-w) / 2), 228px);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(252px + var(--name-w) / 2), 208px);
+  }
+}
+
+/* Box it: the lid comes down, then the ribbon and the tag */
+.bk-lid {
+  transform: translateY(calc((1 - min(calc(var(--p5, 0) * 1.8), 1)) * -150px));
+}
+
+.bk-lid-text {
+  fill: var(--bbm-color-cherry-700);
+  font-family: var(--bbm-font-family-script);
+  font-size: 20px;
+}
+
+.bk-ribbon {
+  opacity: clamp(0, calc((var(--p5, 0) - 0.55) * 6), 1);
+}
+
+.bk-tails {
+  stroke: var(--bbm-color-cherry-500);
+}
+
+.bk-tag {
+  opacity: clamp(0, calc((var(--p5, 0) - 0.7) * 6), 1);
+}
+
+.bk-tag-text {
+  fill: var(--bbm-color-text-primary);
+  font-family: var(--bbm-font-family-hand);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+/* The still version: the six steps as an illustrated recipe card --------- */
+
+.bake--still {
+  height: auto;
+  padding: var(--bbm-layout-section-y) var(--bbm-layout-gutter);
+  background-color: var(--bbm-color-bg-blue-subtle);
+}
+
+.bake__still-title {
+  max-width: var(--bbm-layout-container);
+  margin: 0 auto var(--bbm-space-10);
+  font-family: var(--bbm-font-family-display);
+  font-size: var(--bbm-text-display-md-size);
+  line-height: var(--bbm-text-display-md-line-height);
+  text-align: center;
+}
+
+.bake__still-list {
+  display: grid;
+  gap: var(--bbm-space-10);
+  max-width: var(--bbm-layout-container);
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.bake__still-step {
+  display: grid;
+  gap: var(--bbm-space-5);
+  align-items: center;
+}
+
+@media (min-width: 760px) {
+  .bake__still-step {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--bbm-space-10);
+  }
+}
+
+.bake__scene--still {
+  grid-area: auto;
+  container-type: normal;
+  height: auto;
+}
+
+.bake__scene--still .bake-scene {
+  width: 100%;
+}
+
+.bake__card[data-still] {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bake-scene *,
+  .bake__card {
+    animation: none !important;
+    transition: none !important;
+  }
+}

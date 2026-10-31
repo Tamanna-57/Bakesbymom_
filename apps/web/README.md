@@ -10,7 +10,7 @@ The Bakes by Mom website: a home bakery in Panipat, Haryana, where everything is
 | `/shop`               | Every kind of bake                                                                                                                                                                                                      |
 | `/shop/<type>`        | Brownies, cookies, jar cakes, dry cakes, cupcakes, bento cakes or combos, with what to know                                                                                                                             |
 | `/shop/<type>/<item>` | One treat and its order builder (quantity, flour for cookies, extras, date, time)                                                                                                                                       |
-| `/about`              | Our story: the orbit, Mom, values, the about card, how it started and the ritual                                                                                                                                        |
+| `/about`              | Our story: **Bake it with Mom** (bake a cake with her, sunrise to night, while she tells the story; ends in a WhatsApp order), then Mom and the values                                                                  |
 | `/links`              | The Instagram link-in-bio page (pin 08)                                                                                                                                                                                 |
 
 ```bash
@@ -29,8 +29,10 @@ npm test -w @bakesbymom/web
 | `src/content/order.ts`     | The WhatsApp order messages and the price for other sizes (per-pound rate)                              |
 | `src/content/assistant.ts` | The "Ask Mom" cake assistant, rebuilt from the old site's rules over the same catalog                   |
 | `src/content/site.tsx`     | Nav, footer, FAQ, reviews and the how-to-order steps                                                    |
+| `src/content/story.ts`     | The About page's story: Mom's line for each baking step. Put her real details here                      |
 | `src/content/samples.tsx`  | Sample content for Storybook-only demos; nothing in it is on the website                                |
 | `src/sections/blocks.tsx`  | Every page section. Storybook's _Sections_ and _Pages_ stories import these same files                  |
+| `src/sections/bake.tsx`    | Bake it with Mom, the scroll-driven About story (styles in `bake.css`)                                  |
 | `src/sections/home.tsx`    | The home page sections (spec: [`landing-page.md`](../../design/board/sections/landing-page.md))         |
 | `src/pages/`               | The pages and the shared order form fields                                                              |
 

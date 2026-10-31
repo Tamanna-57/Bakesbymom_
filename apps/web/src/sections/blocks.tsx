@@ -431,7 +431,8 @@ export function PackagesSection() {
 
 /* About (pin 05, orbit from pin 01, values from pin 05) --------------- */
 
-export function MeetMomSection() {
+/** `action={false}` drops the "Read our story" button, for when the visitor is already on the story page. */
+export function MeetMomSection({ action = true }: { action?: boolean }) {
   return (
     <Band id="story" className="site-meet site-section--beige">
       <PatternSurface pattern="dots" tone="brown" ground="var(--bbm-color-bg-blue)" className="site-meet__photo">
@@ -468,9 +469,11 @@ export function MeetMomSection() {
           }
         />
         <p className="site-signature">with love, Mom</p>
-        <Button variant="secondary" href="/about">
-          Read our story
-        </Button>
+        {action && (
+          <Button variant="secondary" href="/about">
+            Read our story
+          </Button>
+        )}
       </Card>
     </Band>
   );
@@ -551,62 +554,6 @@ export function AboutCardSection() {
           batter the patience it asks for, and keep fussing over the piping until the last rose sits right.”
         </p>
       </Card>
-    </Band>
-  );
-}
-
-/** How the bakery grew, in three chapters. */
-export function StoryChaptersSection() {
-  return (
-    <Band className="site-narrow-band site-section--pink" edge={{ color: 'var(--bbm-color-bg-pink)', shape: 'wave' }}>
-      <SectionHeading align="center" title="How it started" />
-      <StepList
-        variant="row"
-        steps={[
-          {
-            title: 'A hobby at home',
-            description:
-              'Birthday cakes for the people she loves: weekend bakes, one oven, and the joy of watching someone cut the first slice.',
-          },
-          {
-            title: 'Cakes, perfected',
-            description:
-              'Batch after batch the sponge got softer and the buttercream steadier, until the cakes people asked for became the cakes they came back for.',
-          },
-          {
-            title: 'A whole dessert table',
-            description:
-              'Cookies, brownies, cupcakes, bento and jar cakes and every kind of cake: one kitchen, and a table that keeps growing.',
-          },
-        ]}
-      />
-    </Band>
-  );
-}
-
-/** "From flour to the first warm bite": the cookie ritual. */
-export function RitualSection() {
-  return (
-    <Band id="ritual" className="site-section--butter" edge={{ color: 'var(--bbm-color-bg-butter)' }}>
-      <SectionHeading
-        align="center"
-        eyebrow="Chapter I · before the bell"
-        title={
-          <>
-            From flour to the <em>first warm bite</em>
-          </>
-        }
-        description="Every cookie is a small journey. Butter and sugar are creamed to silk, the dough is shaped by hand, the oven turns it gold, and it lands on the plate still warm."
-      />
-      <StepList
-        variant="cards"
-        steps={[
-          { title: 'Mix', description: 'Butter, sugar and flour folded into silky dough.' },
-          { title: 'Shape', description: 'Rolled and pressed into soft, raw rounds.' },
-          { title: 'Pipe', description: 'Buttercream roses piped on by hand.' },
-          { title: 'Done', description: 'Crispy edges, gooey centre, melting chips.' },
-        ]}
-      />
     </Band>
   );
 }

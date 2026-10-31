@@ -443,6 +443,10 @@ export function CraftedSection() {
 
 /* Mom's kitchen (pin 13's split about, with the cartouche frame) -------- */
 
+/**
+ * Not on the home page for now (it repeated the about us card and Our story), but kept, with its styles in
+ * home.css and its story in Storybook (Sections/Home/Moms Kitchen), for another page or design.
+ */
 export function KitchenSplit() {
   return (
     <section id="story" className="home-kitchen">

@@ -29,6 +29,7 @@ import {
   Ticket,
   WeekSchedule,
   type ChatMessage,
+  type DoodleName,
   type EdgeShape,
   type GalleryItem,
   type HeadingLevel,
@@ -36,7 +37,7 @@ import {
 import { art, stock, treatArt } from '../content';
 import { answer, starterChips, type Answer } from '../content/assistant';
 import { bakery, chefsPicks, giftAddons, inr, kgLabel, mostOrdered, timeSlots, whatsappLink } from '../content/bakery';
-import { cakes, catalogStatus, findCake, occasions, type Cake } from '../content/catalog';
+import { cakes, catalogStatus, findCake, findOccasion, occasions, type Cake } from '../content/catalog';
 import { journalPosts, scheduleDays } from '../content/samples';
 import {
   faqItems,
@@ -644,26 +645,102 @@ const photoItems = (list: Cake[], firstOnly = false): GalleryItem[] =>
     })),
   );
 
-/** Photos of real cakes, filterable by occasion. */
-export function GallerySection() {
-  const withPhotos = occasionOptions().filter(
-    (option) => option.value === 'all' || cakes.some((cake) => cake.occasion === option.value && cake.photos.length),
+/** Each occasion's doodle, on its filter chip in the gallery. */
+export const occasionIcons: Record<string, { name: DoodleName; color: string }> = {
+  'birthday-kids': { name: 'star', color: 'var(--bbm-color-butter-400)' },
+  'birthday-parents': { name: 'daisy', color: 'var(--bbm-color-pink-500)' },
+  'birthday-partner': { name: 'heart', color: 'var(--bbm-color-cherry-500)' },
+  'birthday-classic': { name: 'cupcake', color: 'var(--bbm-color-pink-500)' },
+  engagement: { name: 'sparkle', color: 'var(--bbm-color-butter-400)' },
+  anniversary: { name: 'bow', color: 'var(--bbm-color-cherry-500)' },
+  'parents-day': { name: 'heart', color: 'var(--bbm-color-pink-500)' },
+  romantic: { name: 'cherry', color: 'var(--bbm-color-cherry-500)' },
+  farewell: { name: 'daisy', color: 'var(--bbm-color-blue-600)' },
+  festival: { name: 'sparkle', color: 'var(--bbm-color-cherry-500)' },
+  teachers: { name: 'star', color: 'var(--bbm-color-blue-600)' },
+};
+
+/** A card in the gallery reel: the cake's photos, its name and price, and a link to order it. */
+const reelItems = (list: Cake[], firstOnly = false): GalleryItem[] =>
+  list.flatMap((cake) =>
+    (firstOnly ? cake.photos.slice(0, 1) : cake.photos).map((photo, i) => ({
+      src: photo.thumb,
+      alt: i === 0 ? `${cake.name}: ${cake.description}` : `${cake.name}, another view`,
+      caption: (
+        <>
+          <strong>{cake.name}</strong>
+          <span className="site-gallery__order">
+            <a href={`/catalog/${cake.slug}`}>Order this cake</a>
+            <span className="site-gallery__price">{inr(cake.price)}</span>
+          </span>
+        </>
+      ),
+    })),
   );
+
+/**
+ * The gallery, and the home page's one place for occasions: pick an occasion, then keep scrolling and the cakes
+ * slide past sideways (Gallery's reel). The last card opens every cake for that occasion in the catalog.
+ */
+export function GallerySection() {
+  const withPhotos = occasionOptions()
+    .filter(
+      (option) => option.value === 'all' || cakes.some((cake) => cake.occasion === option.value && cake.photos.length),
+    )
+    .map((option) => {
+      const icon = occasionIcons[option.value];
+      return icon
+        ? {
+            ...option,
+            label: (
+              <>
+                <Doodle name={icon.name} size="1.15em" color={icon.color} className="site-gallery__chip-icon" />
+                {option.label}
+              </>
+            ),
+          }
+        : option;
+    });
   const [filter, setFilter] = useState<string[]>(['all']);
   const slug = filter[0] ?? 'all';
+  const occasion = slug === 'all' ? undefined : findOccasion(slug);
   const items =
-    slug === 'all' ? photoItems(featured().slice(0, 9), true) : photoItems(cakes.filter((c) => c.occasion === slug));
+    slug === 'all' ? reelItems(featured().slice(0, 12), true) : reelItems(cakes.filter((c) => c.occasion === slug));
   return (
     <Band id="gallery" className="site-gallery site-section--cocoa" edge={{ color: 'var(--bbm-color-bg-inverse)' }}>
-      <SectionHeading variant="bubble" title="Gallery" />
-      <FilterChips
-        label="Show cakes for"
-        options={withPhotos}
-        value={filter}
-        onChange={setFilter}
-        className="site-gallery__filters"
-      />
-      {items.length > 0 && <Gallery key={slug} items={items} label="Photos of cakes from Mom's kitchen" />}
+      <CatalogNote />
+      {items.length > 0 && (
+        <Gallery
+          variant="reel"
+          items={items}
+          label="Photos of cakes from Mom's kitchen"
+          head={
+            <>
+              <SectionHeading
+                variant="bubble"
+                title="Gallery"
+                description="A cake for every occasion. Pick one, then keep scrolling."
+              />
+              <FilterChips
+                label="Show cakes for"
+                options={withPhotos}
+                value={filter}
+                onChange={setFilter}
+                className="site-gallery__filters"
+              />
+            </>
+          }
+          end={
+            <a className="site-gallery__all" href={occasion ? `/catalog?occasion=${occasion.slug}` : '/catalog'}>
+              <Doodle name="sparkle" size={40} color="var(--bbm-color-butter-400)" />
+              <span>{occasion ? `Every ${occasion.name.toLowerCase()} cake` : 'Every cake on the menu'}</span>
+              <span className="site-gallery__all-arrow" aria-hidden="true">
+                ↗
+              </span>
+            </a>
+          }
+        />
+      )}
     </Band>
   );
 }

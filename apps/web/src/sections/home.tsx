@@ -1,7 +1,7 @@
 /**
  * The home page sections, after pin 16 (SugarLace: stripes, the outlined about card, the flavour grid,
  * the order card and cherry tiles) and pin 13 (Puzzle Pantry: the shape ribbon, shop by the box with
- * filter pills, the occasion row, the split about). The feature strip, the starburst and the checker
+ * filter pills, the split about). The feature strip, the starburst and the checker
  * quote come from other bakery sites on Pinterest (Sweet Crumbs, joe & dough, Sunday Bakehouse).
  * Photos here are stock (content/index.ts `stock`, `treatArt`, `flavours`); the photos of the cakes we sell are
  * kept for the catalog and the gallery.
@@ -22,7 +22,6 @@ import {
 } from '@bakesbymom/ui';
 import { flavours, stock, treatArt } from '../content';
 import { bakery, cakeFlavours, cakeSizes, flavourSlug, whatsappLink } from '../content/bakery';
-import { occasions } from '../content/catalog';
 import { howToOrder, orderLink } from '../content/site';
 import { SectionEdge } from './blocks';
 import { treatCategories } from '../content/treats';
@@ -311,49 +310,6 @@ export function ShopByBoxSection() {
               </a>
             </li>
           ))}
-        </ul>
-      </div>
-    </section>
-  );
-}
-
-/* Occasions (pin 13's category row on a curved pale blue band) ---------- */
-
-const occasionIcons: Record<string, { name: DoodleName; color: string }> = {
-  'birthday-kids': { name: 'star', color: 'var(--bbm-color-butter-400)' },
-  'birthday-parents': { name: 'daisy', color: 'var(--bbm-color-pink-500)' },
-  'birthday-partner': { name: 'heart', color: 'var(--bbm-color-cherry-500)' },
-  'birthday-classic': { name: 'cupcake', color: 'var(--bbm-color-pink-500)' },
-  engagement: { name: 'sparkle', color: 'var(--bbm-color-butter-400)' },
-  anniversary: { name: 'bow', color: 'var(--bbm-color-cherry-500)' },
-  'parents-day': { name: 'heart', color: 'var(--bbm-color-pink-500)' },
-  romantic: { name: 'cherry', color: 'var(--bbm-color-cherry-500)' },
-  farewell: { name: 'daisy', color: 'var(--bbm-color-blue-600)' },
-  festival: { name: 'sparkle', color: 'var(--bbm-color-cherry-500)' },
-  teachers: { name: 'star', color: 'var(--bbm-color-blue-600)' },
-};
-
-export function OccasionBand() {
-  return (
-    <section className="home-occasions" aria-labelledby="home-occasions-title">
-      <div className="site-container">
-        <h2 id="home-occasions-title" className="home-occasions__title">
-          A cake for <span className="home-script">every</span> occasion
-        </h2>
-        <ul className="home-occasions__list">
-          {occasions.map((occasion) => {
-            const icon = occasionIcons[occasion.slug] ?? { name: 'heart', color: 'currentColor' };
-            return (
-              <li key={occasion.slug}>
-                <a href={`/catalog?occasion=${occasion.slug}`}>
-                  <span className="home-occasions__icon" aria-hidden="true">
-                    <Doodle name={icon.name} size={34} color={icon.color} />
-                  </span>
-                  <span className="home-occasions__label">{occasion.name}</span>
-                </a>
-              </li>
-            );
-          })}
         </ul>
       </div>
     </section>

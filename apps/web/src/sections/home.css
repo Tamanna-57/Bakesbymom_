@@ -11,7 +11,8 @@
 /* Hero: stripes, the drawn cake and a cream label card ---------------- */
 
 .home-hero {
-  padding: var(--bbm-space-12) var(--bbm-layout-gutter) var(--bbm-space-16);
+  padding: clamp(var(--bbm-space-6), 6svh, var(--bbm-space-12)) var(--bbm-layout-gutter)
+    clamp(var(--bbm-space-8), 8svh, var(--bbm-space-16));
   border-bottom: var(--bbm-border-width-thin) solid var(--bbm-color-pink-400);
 }
 
@@ -31,10 +32,12 @@
   }
 }
 
+/* The arch is 4:5, so its width follows the screen's height too: on a short laptop screen the whole hero,
+   arch and card, fits under the header instead of running past the fold. Never narrower than 16rem. */
 .home-hero__art {
   position: relative;
   justify-self: center;
-  width: min(100%, 30rem);
+  width: min(100%, 30rem, max(16rem, (100svh - 15rem) * 0.8));
 }
 
 /* The photo in an arched frame, like a shop window */
@@ -200,7 +203,7 @@
 .home-hero__script {
   margin-top: 0.05em;
   font-family: var(--bbm-font-family-script);
-  font-size: clamp(3rem, 1.6rem + 5vw, 5.25rem);
+  font-size: clamp(2.75rem, min(1.6rem + 4.4vw, 1rem + 8svh), 5rem);
   font-weight: var(--bbm-font-weight-regular);
   line-height: 1.05;
   color: var(--bbm-color-cherry-700);
@@ -671,7 +674,7 @@
 .home-shop__art {
   display: block;
   overflow: hidden;
-  aspect-ratio: 1;
+  aspect-ratio: 5 / 4;
   border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
   border-radius: var(--bbm-radius-lg);
   background-color: var(--_tone-bg);
@@ -707,101 +710,10 @@
 
 .home-shop__lead:focus-visible,
 .home-shop__item:focus-visible,
-.home-craft-tile:focus-visible,
-.home-occasions__list a:focus-visible {
+.home-craft-tile:focus-visible {
   outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
   outline-offset: 3px;
   border-radius: var(--bbm-radius-lg);
-}
-
-/* Occasions (pin 13's category row) ------------------------------------- */
-
-.home-occasions {
-  position: relative;
-  margin-top: -3.5rem;
-  padding: calc(var(--bbm-layout-section-y) * 0.8) var(--bbm-layout-gutter) var(--bbm-layout-section-y);
-  border-top: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
-  border-radius: 50% 50% 0 0 / 3.5rem 3.5rem 0 0;
-  background-color: var(--bbm-color-blue-100);
-}
-
-.home-occasions > .site-container {
-  display: grid;
-  gap: var(--bbm-space-10);
-}
-
-.home-occasions__title {
-  margin: 0;
-  font-family: var(--bbm-font-family-display);
-  font-size: var(--bbm-text-display-md-size);
-  font-weight: var(--bbm-font-weight-semibold);
-  line-height: 1.1;
-  text-align: center;
-}
-
-.home-occasions__title .home-script {
-  font-size: 1.35em;
-}
-
-.home-occasions__list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--bbm-space-8) var(--bbm-space-4);
-  /* Six to a row, so the eleven occasions sit as six over five */
-  max-width: calc(6 * 8.75rem + 5 * var(--bbm-space-4));
-  margin: 0 auto;
-  padding: 0;
-  list-style: none;
-}
-
-.home-occasions__list > li {
-  width: 8.75rem;
-}
-
-@media (max-width: 599px) {
-  .home-occasions__list > li {
-    width: calc(50% - var(--bbm-space-2));
-  }
-}
-
-.home-occasions__list a {
-  display: grid;
-  justify-items: center;
-  gap: var(--bbm-space-3);
-  color: var(--bbm-color-text-primary);
-  text-align: center;
-  text-decoration: none;
-}
-
-.home-occasions__icon {
-  display: grid;
-  place-items: center;
-  width: 5rem;
-  height: 5rem;
-  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
-  border-radius: 50%;
-  background-color: var(--bbm-color-paper);
-  box-shadow: var(--bbm-shadow-sticker-sm);
-  transition:
-    translate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce),
-    rotate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce),
-    background-color var(--bbm-motion-duration-base) var(--bbm-motion-easing-standard);
-}
-
-.home-occasions__list a:hover .home-occasions__icon {
-  translate: 0 -8px;
-  rotate: -8deg;
-  background-color: var(--bbm-color-pink-200);
-}
-
-.home-occasions__label {
-  font-size: var(--bbm-text-caption-size);
-  font-weight: var(--bbm-font-weight-bold);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-decoration: underline;
-  text-underline-offset: 0.35em;
 }
 
 /* Quote on a checker band (Sunday Bakehouse) ------------------------------ */
@@ -881,7 +793,7 @@
 }
 
 .home-crafted__script {
-  font-size: clamp(2.6rem, 1.6rem + 4vw, 4.5rem);
+  font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 1rem + 7svh), 4.5rem);
   line-height: 1.1;
   color: var(--bbm-color-brown-900);
 }
@@ -1160,7 +1072,6 @@
   .home-craft-tile,
   .home-craft-tile img,
   .home-craft-tile__blob,
-  .home-occasions__icon,
   .home-flavour,
   .home-flavour__photo,
   .home-about__cake {

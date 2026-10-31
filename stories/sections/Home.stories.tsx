@@ -6,7 +6,6 @@ import {
   FlavoursSection,
   HomeHero,
   KitchenSplit,
-  OccasionBand,
   QuoteBand,
   ShapeRibbon,
   ShopByBoxSection,
@@ -21,7 +20,7 @@ const meta = {
     docs: {
       description: {
         component: fromBoard(
-          '**The home page sections, after pin 16 (SugarLace) and pin 13 (Puzzle Pantry).** Stripes, the outlined about card, the flavour grid and the order card with cherry tiles come from SugarLace; the shape ribbon, shop by the box with filter pills, the occasion row and the split about with the cartouche frame come from Puzzle Pantry. The feature strip, the starburst sticker and the checker quote come from other bakery sites on Pinterest (Sweet Crumbs, joe & dough, Sunday Bakehouse). Flavours, treats and the hero use stock photos; photos of the cakes we sell stay in the catalog and the gallery.',
+          '**The home page sections, after pin 16 (SugarLace) and pin 13 (Puzzle Pantry).** Stripes, the outlined about card, the flavour grid and the order card with cherry tiles come from SugarLace; the shape ribbon, shop by the box with filter pills and the split about with the cartouche frame come from Puzzle Pantry. The feature strip, the starburst sticker and the checker quote come from other bakery sites on Pinterest (Sweet Crumbs, joe & dough, Sunday Bakehouse). Flavours, treats and the hero use stock photos; photos of the cakes we sell stay in the catalog and the gallery.',
           ['16', '13'],
           'landing-page.md',
         ),
@@ -50,9 +49,6 @@ export const Flavours: Story = { render: () => <FlavoursSection /> };
 
 /** Pin 13's bestsellers row: a lead tile, then the treats, with filter pills. */
 export const ShopByTheBox: Story = { render: () => <ShopByBoxSection /> };
-
-/** Pin 13's category row on a curved pale blue band. */
-export const Occasions: Story = { render: () => <OccasionBand /> };
 
 /** Sunday Bakehouse's quote on a checker band. */
 export const Quote: Story = { render: () => <QuoteBand /> };

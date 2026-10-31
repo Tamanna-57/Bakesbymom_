@@ -373,3 +373,28 @@
     justify-self: start;
   }
 }
+
+/* Cakes & Treats: a custom order, under the categories */
+.shop-custom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--bbm-space-4) var(--bbm-space-6);
+}
+
+.shop-custom > div {
+  flex: 1 1 18rem;
+}
+
+.shop-custom__title {
+  margin: 0 0 var(--bbm-space-1);
+  font-family: var(--bbm-text-heading-md-family);
+  font-size: var(--bbm-text-heading-md-size);
+  font-weight: var(--bbm-text-heading-md-weight);
+  line-height: var(--bbm-text-heading-md-line-height);
+}
+
+.shop-custom p {
+  margin: 0;
+  color: var(--bbm-color-text-secondary);
+}

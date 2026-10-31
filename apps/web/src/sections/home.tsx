@@ -85,8 +85,8 @@ export function HomeHero() {
             <Button size="lg" href={orderLink} {...external}>
               Order on WhatsApp
             </Button>
-            <Button size="lg" variant="secondary" href="/catalog">
-              See the cakes
+            <Button size="lg" variant="secondary" href="/shop">
+              Cakes & treats
             </Button>
           </div>
         </div>
@@ -255,7 +255,7 @@ export function FlavoursSection() {
   );
 }
 
-/* Shop by the box (pin 13's bestsellers, with filter pills) ----------- */
+/* Shop cakes & treats (pin 13's bestsellers, with filter pills); every category is also on /shop ---- */
 
 const boxFilters = [
   { value: 'all', label: 'All' },
@@ -280,7 +280,7 @@ export function ShopByBoxSection() {
       <div className="site-container">
         <div className="home-shop__head">
           <h2 className="home-shop__title">
-            <span className="home-script">Shop</span> by the box
+            <span className="home-script">Shop</span> cakes & treats
           </h2>
           <FilterChips label="Show treats for" options={boxFilters} value={filter} onChange={setFilter} />
         </div>

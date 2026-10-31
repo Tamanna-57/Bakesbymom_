@@ -24,7 +24,7 @@ const site = 'Bakes by Mom';
 function resolve(path: string): Route | null {
   if (path === '/') return { title: `${site} · Eggless home bakery in Panipat`, page: <LandingPage /> };
   if (path === '/catalog' || path === '/menu') return { title: `Cakes by occasion · ${site}`, page: <CatalogPage /> };
-  if (path === '/shop') return { title: `Treats · ${site}`, page: <ShopPage /> };
+  if (path === '/shop') return { title: `Cakes & treats · ${site}`, page: <ShopPage /> };
   if (path === '/about') return { title: `Our story · ${site}`, page: <AboutPage /> };
   if (path === '/links') return { title: `Links · ${site}`, page: <LinkInBioPage /> };
 

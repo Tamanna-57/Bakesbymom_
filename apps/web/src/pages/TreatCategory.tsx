@@ -1,6 +1,6 @@
 import { Button, Card, PatternSurface, ProductCard, SectionHeading } from '@bakesbymom/ui';
 import { stock, treatArt } from '../content';
-import { treatCategories, type TreatCategory } from '../content/treats';
+import { qtyLabel, treatCategories, type TreatCategory } from '../content/treats';
 import { Layout } from './Layout';
 import { Breadcrumbs, EgglessNote } from './order';
 import { SectionEdge } from '../sections/blocks';
@@ -15,7 +15,7 @@ export function TreatCategoryPage({ category }: { category: TreatCategory }) {
       <section className="site-section site-section--blue">
         <div className="site-container">
           <Breadcrumbs
-            items={[{ label: 'Home', href: '/' }, { label: 'Treats', href: '/shop' }, { label: category.name }]}
+            items={[{ label: 'Home', href: '/' }, { label: 'Cakes & Treats', href: '/shop' }, { label: category.name }]}
           />
           <div className="shop-category">
             <PatternSurface pattern="gingham" tone="pink" className="shop-category__art">
@@ -28,9 +28,7 @@ export function TreatCategoryPage({ category }: { category: TreatCategory }) {
               <Card tone="blue" outline padding="md">
                 <p className="bbm-text-eyebrow">Good to know</p>
                 <ul className="shop-know">
-                  <li>
-                    Smallest order: {category.minQty} {category.unit}
-                  </li>
+                  <li>Smallest order: {qtyLabel(category.minQty, category.unit)}</li>
                   {category.perBox && (
                     <li>
                       One box holds {category.perBox} {category.unit}

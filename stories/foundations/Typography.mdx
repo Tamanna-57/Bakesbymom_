@@ -19,7 +19,7 @@ Five families, each with one job, all read from the board. All are free Google F
 
 ## Type scale
 
-Display sizes are **fluid**: they scale between the phone and desktop sizes with `clamp()`. Use the classes (`.bbm-text-display-xl`) or the variables (`--bbm-text-display-xl-size`, `-line-height`, `-tracking`, `-weight`, `-family`).
+Display sizes are **fluid**: they scale between the phone and desktop sizes with `clamp()`, following the smaller of the screen's width and height, so a short laptop screen gets a smaller headline. The largest size is never more than twice the smallest and every bound is in `rem`, so text still doubles with browser zoom (WCAG 1.4.4). Use the classes (`.bbm-text-display-xl`) or the variables (`--bbm-text-display-xl-size`, `-line-height`, `-tracking`, `-weight`, `-family`).
 
 <TypeScale />
 

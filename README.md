@@ -63,7 +63,7 @@ The packages are npm workspaces in this repo. To use them from another repositor
 | Menu cards and category tiles | 16 SugarLace bakery (filters from 13) |
 | Process, marquee ribbons, FAQ | 02 Pretty OK mail club |
 | About / Meet Mom | 05 Pretty OK studios (story orbit from 01) |
-| Gallery (a reel that scrolls sideways as the page scrolls down, with occasion chips from 13), reviews, Bake Club band, journal | 01 Berloga coffeeshop |
+| Gallery (the strips open one by one as the page scrolls down, with occasion chips from 13), reviews, Bake Club band, journal | 01 Berloga coffeeshop |
 | Bake Club ticket | 10 Book Nook Society |
 | Newsletter and footer | 03 Emily Jane |
 | Link in bio, pricing packages | 08 Digital Wave taplink |

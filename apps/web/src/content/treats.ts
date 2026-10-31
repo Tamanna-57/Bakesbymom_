@@ -569,3 +569,6 @@ export const treatCategories: TreatCategory[] = [
 ];
 
 export const findTreatCategory = (slug: string) => treatCategories.find((category) => category.slug === slug);
+
+/** "1 jar", "6 cupcakes", "250 grams": the unit in the singular for one. */
+export const qtyLabel = (qty: number, unit: string) => `${qty} ${qty === 1 ? unit.replace(/s$/, '') : unit}`;

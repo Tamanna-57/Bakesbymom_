@@ -1,10 +1,11 @@
 import { beforeAll, describe, expect, it, vi } from 'vitest';
 import { matchPath, parentPath } from '../router';
+import { navLinksFor } from './site';
 import { answer, starterChips } from './assistant';
 import { inr, kgLabel, whatsappLink } from './bakery';
 import { cakes, catalogStatus, findCake, loadCatalog, occasions, type ApiCake, type ApiCategory } from './catalog';
 import { boxes, cakeOrderMessage, cakePrice, treatOrderMessage } from './order';
-import { findTreatCategory, treatCategories } from './treats';
+import { findTreatCategory, qtyLabel, treatCategories } from './treats';
 
 // Test-only rows in the shape /api/catalog sends: the site itself keeps no cakes and reads the live database.
 const cake = (id: string, category: string, name: string, prices: [number, number, number], cover: string | null) =>
@@ -227,7 +228,30 @@ describe('router', () => {
     expect(parentPath('/shop/brownies/oreo-brownie')).toBe('/shop/brownies');
     expect(parentPath('/shop/brownies')).toBe('/shop');
     expect(parentPath('/catalog/cake-spiderman')).toBe('/catalog');
-    expect(parentPath('/catalog')).toBe('/');
+    // The cakes are a category of Cakes & Treats
+    expect(parentPath('/catalog')).toBe('/shop');
+    expect(parentPath('/shop')).toBe('/');
     expect(parentPath('/about')).toBe('/');
+  });
+});
+
+describe('nav', () => {
+  const current = (path: string) => navLinksFor(path).find((link) => link.current)?.label;
+
+  it('has one link for cakes and treats, marked on every cake and treat page', () => {
+    expect(navLinksFor('/').map((link) => link.label)).toEqual(['Cakes & Treats', 'Our story', 'How to order']);
+    for (const path of ['/shop', '/shop/cookies', '/shop/brownies/oreo-brownie', '/catalog', '/catalog/cake-x']) {
+      expect(current(path)).toBe('Cakes & Treats');
+    }
+    expect(current('/about')).toBe('Our story');
+    expect(current('/')).toBeUndefined();
+  });
+});
+
+describe('qtyLabel', () => {
+  it('puts the unit in the singular for one', () => {
+    expect(qtyLabel(1, 'jars')).toBe('1 jar');
+    expect(qtyLabel(6, 'cupcakes')).toBe('6 cupcakes');
+    expect(qtyLabel(250, 'grams')).toBe('250 grams');
   });
 });

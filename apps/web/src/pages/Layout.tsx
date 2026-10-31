@@ -12,8 +12,8 @@ interface LayoutProps {
 }
 
 /**
- * Keeps `--site-header-h` on the page at the sticky header's height, so things that pin under it (the gallery
- * reel) stop just below it, whatever size the header is on this screen.
+ * Keeps `--site-header-h` on the page at the sticky header's height, so things that pin under it (the gallery)
+ * stop just below it, whatever size the header is on this screen.
  */
 function useHeaderHeight() {
   useEffect(() => {

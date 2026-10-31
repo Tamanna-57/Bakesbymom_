@@ -866,38 +866,47 @@
 }
 
 /* Gallery strips: a soft ground behind the cut-out photos */
-/* The gallery reel on the cocoa band. It pins under the sticky header (Layout measures it) and runs edge to edge,
-   its first card lined up with the page's content. */
+/* The gallery on the cocoa band. It pins under the sticky header (Layout measures it) while the page scrolls
+   through the strips. */
 .site-gallery {
-  --bbm-gallery-reel-top: var(--site-header-h, 5.25rem);
+  --bbm-gallery-pin-top: var(--site-header-h, 5.25rem);
 }
 
-.site-gallery .bbm-gallery__view {
-  margin-inline: calc(50% - 50vw);
-  --bbm-gallery-reel-inset: max(var(--bbm-layout-gutter), calc((100vw - var(--bbm-layout-container)) / 2));
+/* Gallery strips: a soft ground behind the cut-out photos */
+.site-gallery .bbm-gallery__strip {
+  background: var(--bbm-color-bg-pink);
+  border-color: var(--bbm-color-paper);
 }
 
-/* Pinned, the heading is sized from the screen's height, so the cards keep most of it */
+/* The open photo shows the whole cake, not a crop through the middle of it */
+.site-gallery .bbm-gallery__strip--open img {
+  object-fit: contain;
+  padding: var(--bbm-space-4);
+  box-sizing: border-box;
+}
+
+.site-gallery .bbm-gallery__strip--open {
+  box-shadow: 6px 6px 0 var(--bbm-color-cherry-600);
+}
+
+/* The gallery sits on the cocoa band: candy-pink bubble letters, light caption */
 .site-gallery .bbm-heading--bubble .bbm-heading__title {
   --bbm-heading-bubble-fill: var(--bbm-color-pink-300);
   -webkit-text-stroke-color: var(--bbm-color-paper);
   text-shadow: 0.05em 0.06em 0 var(--bbm-color-cherry-600);
 }
 
+/* Pinned, the heading is sized from the screen's height, so the strips keep most of it */
 .site-gallery .bbm-gallery--pinned .bbm-heading--bubble .bbm-heading__title {
-  font-size: clamp(2.75rem, 9svh, 6rem);
+  font-size: clamp(2.75rem, 10svh, 7rem);
 }
 
-.site-gallery .bbm-gallery__head .bbm-heading {
-  gap: var(--bbm-space-2);
+.site-gallery .bbm-gallery__caption,
+.site-gallery .bbm-gallery__caption a {
+  color: var(--bbm-color-pink-300);
 }
 
-.site-gallery .bbm-gallery__head .bbm-heading__description {
-  margin-block: 0;
-  color: var(--bbm-color-pink-200);
-}
-
-/* One row of occasion chips that scrolls sideways, so the cards keep the height */
+/* One row of occasion chips that scrolls sideways, so the strips keep the height */
 .site-gallery .site-gallery__filters {
   flex-wrap: nowrap;
   justify-content: flex-start;
@@ -921,105 +930,9 @@
   flex: none;
 }
 
-.site-gallery .bbm-gallery__track img {
-  border-color: var(--bbm-color-paper);
-  background-color: var(--bbm-color-bg-pink);
-  box-shadow: 5px 5px 0 var(--bbm-color-cherry-600);
-}
-
-.site-gallery .bbm-gallery__track > li:nth-child(odd) img {
-  rotate: -1.2deg;
-}
-
-.site-gallery .bbm-gallery__track > li:nth-child(even) img {
-  rotate: 1.2deg;
-}
-
-.site-gallery .bbm-gallery__track figcaption {
-  padding-inline: var(--bbm-space-1);
-  color: var(--bbm-color-paper);
-}
-
-.site-gallery .bbm-gallery__track figcaption strong {
-  font-family: var(--bbm-font-family-display);
-  font-size: var(--bbm-text-body-md-size, 1rem);
-  font-weight: var(--bbm-font-weight-semibold);
-}
-
-.site-gallery__order {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--bbm-space-2);
-}
-
-.site-gallery__price {
-  flex: none;
-  font-weight: var(--bbm-font-weight-bold);
-  color: var(--bbm-color-pink-200);
-}
-
-.site-gallery .bbm-gallery__track figcaption a {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: var(--bbm-color-pink-300);
-  font-family: var(--bbm-text-hand-sm-family);
-  font-size: var(--bbm-text-hand-sm-size);
-  font-weight: var(--bbm-text-hand-sm-weight);
-  text-underline-offset: 0.2em;
-}
-
-.site-gallery .bbm-gallery__track a:focus-visible {
-  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-pink-300);
-  outline-offset: 2px;
-  border-radius: var(--bbm-radius-sm);
-}
-
-/* The last card: every cake for the occasion */
-.site-gallery__all {
-  display: grid;
-  align-content: center;
-  justify-items: start;
-  gap: var(--bbm-space-3);
-  padding: var(--bbm-space-6);
-  border: 2px dashed var(--bbm-color-pink-300);
-  border-radius: var(--bbm-radius-lg);
-  color: var(--bbm-color-paper);
-  font-family: var(--bbm-font-family-display);
-  font-size: var(--bbm-text-heading-md-size);
-  font-weight: var(--bbm-font-weight-semibold);
-  line-height: 1.15;
-  text-decoration: none;
-  transition: background-color var(--bbm-motion-duration-base) var(--bbm-motion-easing-standard);
-}
-
-.site-gallery__all:hover {
-  background-color: rgb(255 255 255 / 0.06);
-}
-
-.site-gallery__all:focus-visible {
-  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-pink-300);
-  outline-offset: 3px;
-}
-
-.site-gallery__all-arrow {
-  display: grid;
-  place-items: center;
-  width: var(--bbm-layout-touch-target);
-  height: var(--bbm-layout-touch-target);
-  border-radius: 50%;
-  background-color: var(--bbm-color-pink-300);
-  color: var(--bbm-color-brown-900);
-  font-family: var(--bbm-font-family-body);
-  font-size: 1.25rem;
-}
-
-/* Arrows on the left, clear of the Ask Mom launcher in the bottom-right corner */
-.site-gallery .bbm-gallery__footer {
-  flex-direction: row-reverse;
-  justify-content: flex-end;
-  color: var(--bbm-color-pink-300);
+/* Pinned, the arrows sit clear of the Ask Mom launcher in the bottom-right corner */
+.site-gallery .bbm-gallery--pinned .bbm-gallery__footer {
+  padding-right: clamp(4.5rem, 10vw, 6.5rem);
 }
 
 /* Phones: swipe the chips, no scrollbar */

@@ -310,9 +310,37 @@
   rotate: -10deg;
 }
 
-/* Our story: the heading and the orbit share one pink sky */
-.site-about-intro {
-  padding-bottom: 0;
+/* Our story: the invitation into the bake (sections/bake.tsx) */
+.site-about-intro .bbm-heading__description {
+  max-width: 36rem;
+  margin-inline: auto;
+}
+
+.site-about-intro__cue {
+  display: grid;
+  justify-items: center;
+  gap: var(--bbm-space-2);
+  margin: 0;
+  font-family: var(--bbm-font-family-hand);
+  font-size: var(--bbm-text-hand-sm-size);
+  color: var(--bbm-color-text-brand);
+}
+
+.site-about-intro__arrow {
+  rotate: 90deg;
+  animation: site-cue 1.6s ease-in-out infinite;
+}
+
+@keyframes site-cue {
+  50% {
+    translate: 0 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-about-intro__arrow {
+    animation: none;
+  }
 }
 
 .site-values-band {

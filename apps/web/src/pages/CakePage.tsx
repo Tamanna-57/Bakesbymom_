@@ -63,6 +63,7 @@ export function CakePage({ cake }: { cake: Cake }) {
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
+              { label: 'Cakes & Treats', href: '/shop' },
               { label: 'Cakes', href: '/catalog' },
               ...(occasion ? [{ label: occasion.name, href: `/catalog?occasion=${occasion.slug}` }] : []),
               { label: cake.name },

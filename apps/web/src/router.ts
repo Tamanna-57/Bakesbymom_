@@ -56,8 +56,12 @@ export const canGoBack = () => (entry().depth ?? 0) > 0;
 /** The scroll position saved on this history entry, if the visitor is coming back to it. */
 export const savedScroll = () => entry().scrollY;
 
-/** One level up: "/shop/cookies/choco-chip" → "/shop/cookies", "/catalog/cake-x" → "/catalog", "/about" → "/". */
+/**
+ * One level up: "/shop/cookies/choco-chip" → "/shop/cookies", "/catalog/cake-x" → "/catalog", "/about" → "/".
+ * The cakes (/catalog) are a category of Cakes & Treats, so they go up to "/shop".
+ */
 export function parentPath(path: string) {
+  if (path === '/catalog') return '/shop';
   const parts = path.split('/').filter(Boolean);
   return '/' + parts.slice(0, -1).join('/');
 }

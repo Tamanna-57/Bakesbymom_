@@ -243,3 +243,130 @@
   font-size: var(--bbm-text-hand-md-size);
   font-weight: var(--bbm-text-hand-md-weight);
 }
+
+/* Reel: a row that moves sideways as the page scrolls (see Gallery.tsx) */
+.bbm-gallery--reel {
+  position: relative;
+}
+
+.bbm-gallery__panel {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(var(--bbm-space-3), 2.5svh, var(--bbm-space-5));
+}
+
+/* Pinned: the panel fills the screen under the header while the row slides past */
+.bbm-gallery--pinned .bbm-gallery__panel {
+  position: sticky;
+  top: var(--bbm-gallery-reel-top, 0px);
+  box-sizing: border-box;
+  height: calc(100svh - var(--bbm-gallery-reel-top, 0px));
+  padding-block: clamp(var(--bbm-space-3), 3svh, var(--bbm-space-6));
+}
+
+.bbm-gallery__head {
+  display: grid;
+  gap: clamp(var(--bbm-space-2), 2svh, var(--bbm-space-4));
+  min-width: 0;
+}
+
+/* The cards size themselves from this box's height (cqh), so a whole card always fits the screen */
+.bbm-gallery__view {
+  position: relative;
+  container-type: size;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: clip;
+}
+
+.bbm-gallery--reel:not(.bbm-gallery--pinned) .bbm-gallery__view {
+  flex: none;
+  height: clamp(20rem, 60svh, 32rem);
+  overflow: auto hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: var(--bbm-gallery-reel-inset, 0px);
+  scrollbar-width: none;
+}
+
+.bbm-gallery--reel:not(.bbm-gallery--pinned) .bbm-gallery__view::-webkit-scrollbar {
+  display: none;
+}
+
+.bbm-gallery__track {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(var(--bbm-space-3), 2vw, var(--bbm-space-6));
+  box-sizing: border-box;
+  width: max-content;
+  height: 100%;
+  margin: 0;
+  padding: var(--bbm-space-1) var(--bbm-gallery-reel-inset, 0px) 0;
+  list-style: none;
+  will-change: transform;
+}
+
+/* Photo 5:6 plus a 4rem caption, as tall as the box allows; never wider than most of the screen */
+.bbm-gallery__track > li {
+  flex: none;
+  width: min(80cqw, 24rem, max(7rem, (100cqh - 4.75rem) * 5 / 6));
+  scroll-snap-align: start;
+}
+
+.bbm-gallery__track figure {
+  margin: 0;
+}
+
+.bbm-gallery__track img {
+  aspect-ratio: 5 / 6;
+  height: auto;
+  box-sizing: border-box;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-lg);
+  background-color: var(--bbm-color-bg-sunken);
+  user-select: none;
+}
+
+.bbm-gallery__track figcaption {
+  display: grid;
+  gap: var(--bbm-space-1);
+  margin-top: var(--bbm-space-2);
+  font-size: var(--bbm-text-body-sm-size);
+  line-height: 1.35;
+}
+
+.bbm-gallery__track figcaption > * {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The last card: a link to everything, as tall as a photo */
+.bbm-gallery__end {
+  display: grid;
+  aspect-ratio: 5 / 6;
+}
+
+.bbm-gallery__progress {
+  position: relative;
+  flex: 1;
+  max-width: 20rem;
+  height: 0.375rem;
+  overflow: hidden;
+  border-radius: var(--bbm-radius-pill);
+  background-color: color-mix(in srgb, currentColor 22%, transparent);
+}
+
+.bbm-gallery__progress::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: currentColor;
+  transform-origin: left center;
+  transform: scaleX(max(0.06, var(--bbm-gallery-progress, 0)));
+}
+
+.bbm-gallery--reel .bbm-gallery__footer {
+  margin-top: 0;
+}

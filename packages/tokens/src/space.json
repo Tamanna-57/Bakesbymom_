@@ -31,9 +31,9 @@
       "$extensions": { "bbm.fluid": { "min": "16px", "max": "32px" } }
     },
     "section-y": {
-      "$value": "clamp(4rem, 2.8rem + 5vw, 7rem)",
-      "$description": "Vertical padding of a page section.",
-      "$extensions": { "bbm.fluid": { "min": "64px", "max": "112px" } }
+      "$value": "clamp(3rem, min(1.5rem + 4vw, 0.25rem + 8svh), 6rem)",
+      "$description": "Vertical padding of a page section. Follows the screen's height as well as its width, so a short laptop screen isn't half padding.",
+      "$extensions": { "bbm.fluid": { "min": "48px", "max": "96px" } }
     },
     "stack": { "$type": "dimension", "$value": "1.5rem", "$description": "Default gap between stacked blocks." },
     "touch-target": { "$type": "dimension", "$value": "2.75rem", "$description": "Minimum interactive size (44px)." }

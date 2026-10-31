@@ -49,6 +49,33 @@ describe('Gallery (strips)', () => {
   });
 });
 
+describe('Gallery (reel)', () => {
+  it('shows the head, every photo with its caption, the end card and the arrows', () => {
+    render(
+      <Gallery
+        variant="reel"
+        items={photos}
+        label="Cakes"
+        head={<h2>Gallery</h2>}
+        end={<a href="/catalog">Every cake</a>}
+      />,
+    );
+    const reel = screen.getByRole('group', { name: 'Cakes' });
+    expect(reel.querySelector('.bbm-gallery__head h2')?.textContent).toBe('Gallery');
+    expect(screen.getAllByRole('img')).toHaveLength(5);
+    expect(screen.getByText('Pie caption').tagName).toBe('FIGCAPTION');
+    expect(screen.getAllByRole('listitem')).toHaveLength(6);
+    expect(screen.getByRole('link', { name: 'Every cake' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Next photos' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Previous photos' })).toBeTruthy();
+  });
+
+  it('only pins when it can move (jsdom has no matchMedia, so it stays a swipe row)', () => {
+    render(<Gallery variant="reel" items={photos} label="Cakes" />);
+    expect(screen.getByRole('group', { name: 'Cakes' }).classList.contains('bbm-gallery--pinned')).toBe(false);
+  });
+});
+
 describe('WeekSchedule', () => {
   const days = [
     { date: 'Mon 12', label: 'Monday 12 May', closed: true },

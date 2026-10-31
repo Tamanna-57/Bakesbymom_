@@ -12,7 +12,7 @@ const meta = {
     docs: {
       description: {
         component: fromBoard(
-          '**Lead: pin 01 (Berloga), saved twice on the board.** Tall strips under a huge outlined bubble title: one strip open in color, the rest narrow and greyscale. Each strip is a button with `aria-expanded`; arrow keys move between strips, a horizontal drag moves the open one, and on phones it becomes a swipe row. Alternates: the **trio** on cocoa from pin 11 and the **Instagram grid** from pin 12.',
+          "**On the website: the reel.** The bubble title from pin 01 (Berloga) and pin 13's occasion chips pin under the header while the page scrolls, and the cakes slide past sideways, one pixel across for every pixel down. The last card opens every cake for the occasion. With reduced motion, or on a screen under 500px tall, it is a row you swipe instead; the arrows step through it either way, and tabbing to a card off to the side scrolls it into view. **Pin 01's strips**: one strip open in color, the rest narrow and greyscale, each a button with `aria-expanded`. Alternates: the **trio** on cocoa from pin 11 and the **Instagram grid** from pin 12.",
           ['01', '14', '11', '12'],
           'gallery.md',
         ),
@@ -34,11 +34,14 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** The lead: bubble title and strips. */
-export const Strips: Story = {
+/** The website's gallery: scroll the canvas and the cakes slide past sideways. */
+export const Reel: Story = {
   decorators: [(Story) => <Story />],
   render: () => <GallerySection />,
 };
+
+/** Pin 01: tall strips, one open in color. */
+export const Strips: Story = {};
 
 /** Pin 11: three photos on cocoa under a pink bubble marquee. */
 export const Trio: Story = {

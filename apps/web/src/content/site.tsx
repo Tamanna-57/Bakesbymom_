@@ -79,11 +79,18 @@ export const mobileCta = (
   </Button>
 );
 
-export const announcement = (
+/** The cocoa bar on the home page: one short line at a time. */
+export const announcement = [
   <>
-    Order your cakes and cookies now · 100% eggless, baked to order in Panipat. <a href="/catalog">See the cakes →</a>
-  </>
-);
+    Eggless, baked to order · <a href="/catalog">See the cakes</a>
+  </>,
+  <>
+    A day's notice helps · <a href="/#order">How to order</a>
+  </>,
+  <>
+    Treats by the box · <a href="/shop">See them all</a>
+  </>,
+];
 
 export const footerColumns: FooterColumn[] = [
   {

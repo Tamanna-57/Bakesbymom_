@@ -12,6 +12,23 @@ import { Button } from '@bakesbymom/ui';
 import { art } from '../content';
 import { whatsappLink } from '../content/bakery';
 import { BAKE_SECONDS, bakeSteps, type BakeStep } from '../content/story';
+import {
+  Bowl,
+  Box,
+  CakeBox,
+  Cherry,
+  Cyl,
+  Face,
+  IsoScene,
+  LayerCake,
+  Oven,
+  Sparkle,
+  Sphere,
+  Stand,
+  standHeight,
+} from '../iso';
+import { project } from '../iso/geometry';
+import { M, type Material } from '../iso/materials';
 import { glideTo } from '../motion';
 import './bake.css';
 
@@ -318,7 +335,7 @@ function StepCard({ index, eggTaken, onEgg, timer, name, setName, piped, still =
   );
 }
 
-/* The kitchen ----------------------------------------------------------- */
+/* The kitchen: an isometric diorama ------------------------------------- */
 
 interface BakeSceneProps {
   step: number;
@@ -329,20 +346,34 @@ interface BakeSceneProps {
   still?: boolean;
 }
 
-/** A row of scallops from (x, y), `count` wide across `width`, dipping `depth` below the line. */
-const scallops = (width: number, count: number, depth: number) =>
-  Array.from({ length: count }, () => `q${-width / count / 2} ${depth * 2} ${-width / count} 0`).join(' ');
+/** The camera for the kitchen: a 120 × 120 room, 92 tall, floating in a 480 × 400 frame. */
+const CAM = { k: 1.75, ox: 240, oy: 166 };
+const at = (x: number, y: number, z: number) => project(CAM, x, y, z);
 
-const FROSTING = `M158 200V186q0-8 8-8h148q8 0 8 8v14${scallops(164, 8, 7)}z`;
-const PEARLS = Array.from({ length: 11 }, (_, i) => 168 + i * 14.4);
+const ROOM = 120;
+const WALL = 92;
+/** The island everything happens on. */
+const ISLAND = { x: 24, y: 26, w: 76, d: 68, h: 36 };
+const TOP = ISLAND.h;
+const CX = ISLAND.x + ISLAND.w / 2;
+const CY = ISLAND.y + ISLAND.d / 2;
+
+/** Walls take their colour from the time of day (--_wall), set on the scene by step. */
+const WALL_MAT: Material = {
+  top: 'var(--bbm-color-paper)',
+  hi: 'var(--_wall)',
+  side: 'var(--_wall)',
+  shade: 'var(--_wall-shade)',
+  line: 'var(--_wall-line)',
+};
+const FLOOR_MAT: Material = { ...M.cream, top: 'var(--bbm-color-beige-100)' };
+const ISLAND_MAT: Material = { ...M.pink, top: 'var(--bbm-color-paper)', hi: 'var(--bbm-color-paper)' };
 
 function BakeScene({ step, name, eggTaken, timer, onEgg, still = false }: BakeSceneProps) {
-  const id = useId().replace(/:/g, '');
+  const id = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const s: BakeStep = bakeSteps[step]!;
   const label = name || 'for you';
   const tag = name ? `for ${name}` : 'for you';
-  // A rough width for the piped name, so the bag knows how far to travel and long names squeeze to fit.
-  const nameWidth = Math.min(label.length * 14, 136);
   const baking = timer !== null && timer > 0;
   const classes = [
     'bake-scene',
@@ -354,235 +385,277 @@ function BakeScene({ step, name, eggTaken, timer, onEgg, still = false }: BakeSc
     .filter(Boolean)
     .join(' ');
 
+  const sh = standHeight(27);
+  const [bx, by] = at(CX, CY, TOP + 16);
+  const [ex, ey] = at(ISLAND.x + ISLAND.w - 12, ISLAND.y + ISLAND.d - 8, TOP + 5);
+  const [lx, ly] = at(CX, CY, 104);
+  const glow = [
+    at(ISLAND.x + 6, ISLAND.y + ISLAND.d - 6, TOP),
+    at(ISLAND.x + ISLAND.w - 6, ISLAND.y + ISLAND.d - 6, TOP),
+    at(ISLAND.x + ISLAND.w - 6, ISLAND.y + 6, TOP),
+  ];
+  const [tagX, tagY] = at(CX + 23, CY + 23, TOP + 18);
+  const [hx, hy] = at(CX, CY, TOP + 52);
+
   return (
-    <svg
-      className={classes}
-      data-step={step}
-      viewBox="0 0 480 400"
-      preserveAspectRatio="xMidYMid meet"
-      role="img"
-      aria-label={s.scene}
-    >
-      <defs>
-        <pattern id={`${id}-tiles`} width="32" height="32" patternUnits="userSpaceOnUse">
-          <path d="M32 0H0v32" fill="none" stroke="currentColor" strokeWidth="2" />
-        </pattern>
-        <pattern id={`${id}-stripes`} width="32" height="10" patternUnits="userSpaceOnUse">
-          <rect width="16" height="10" className="f-pink2" stroke="none" />
-          <rect x="16" width="16" height="10" className="f-paper" stroke="none" />
-        </pattern>
-        <clipPath id={`${id}-sky`}>
-          <rect x="44" y="40" width="168" height="132" rx="6" />
-        </clipPath>
-      </defs>
+    <div className={classes} data-step={step}>
+      <IsoScene width={480} height={400} camera={CAM} label={s.scene} assemble={false} className="bake-scene__svg">
+        <defs>
+          <pattern id={`${id}-tiles`} width="10" height="10" patternUnits="userSpaceOnUse">
+            <path d="M10 0H0v10" fill="none" stroke="currentColor" strokeWidth="0.5" />
+          </pattern>
+          <clipPath id={`${id}-sky`}>
+            <rect x="26" y="14" width="58" height="40" rx="3" />
+          </clipPath>
+        </defs>
 
-      {/* The kitchen: wall, window, shelf, lamp and counter */}
-      <rect className="bk-wall" width="480" height="400" stroke="none" />
-      <rect className="bk-tiles" width="480" height="300" fill={`url(#${id}-tiles)`} stroke="none" />
+        {/* The room: floor, two walls, the window and the shelf */}
+        <Box x={0} y={0} z={-8} w={ROOM} d={ROOM} h={8} r={2} mat={FLOOR_MAT} shadow={false}>
+          <Face face="top" at={[0, 0, 0]}>
+            {Array.from({ length: 144 }, (_, i) => {
+              const cx = i % 12;
+              const cy = Math.floor(i / 12);
+              return (cx + cy) % 2 ? (
+                <rect key={i} x={cx * 10} y={cy * 10} width="10" height="10" className="bk-check" />
+              ) : null;
+            })}
+          </Face>
+        </Box>
+        <Box x={-6} y={0} z={-8} w={6} d={ROOM} h={WALL + 8} r={0.6} mat={WALL_MAT} shadow={false}>
+          <Face face="right" at={[0, ROOM, WALL]}>
+            <rect width={ROOM} height={WALL} fill={`url(#${id}-tiles)`} className="bk-tiles" />
+            {/* The window, and the sky behind it moving from sunrise to night */}
+            <g clipPath={`url(#${id}-sky)`}>
+              <rect className="bk-sky" x="26" y="14" width="58" height="40" />
+              <g className="bk-stars">
+                <circle cx="34" cy="20" r="0.8" />
+                <circle cx="48" cy="28" r="0.6" />
+                <circle cx="66" cy="19" r="0.8" />
+                <circle cx="78" cy="30" r="0.6" />
+                <circle cx="40" cy="34" r="0.6" />
+              </g>
+              <circle className="bk-sun" cx="32" cy="50" r="5.5" />
+              <g className="bk-moon">
+                <circle cx="70" cy="24" r="5" />
+                <circle cx="72.6" cy="22" r="4.4" className="bk-sky-cut" />
+              </g>
+              <path className="bk-roofs" d="M26 54v-8h9v-4h8v4h6v-7h11v7h5v-5h9v5h10v8z" />
+            </g>
+            <rect x="26" y="14" width="58" height="40" rx="3" className="bk-frame" />
+            <path d="M55 14v40M26 34h58" className="bk-frame" />
+            <rect x="23" y="54" width="64" height="3.4" rx="1" className="bk-sill" />
+            {/* Mom's tulsi on the sill */}
+            <path d="M71 47c-2-4 0-8 3-8 0 3 0 5-3 8zm3 0c1-4 4-6 6-5-1 3-3 4-6 5z" className="bk-leaf" />
+            <path d="M68 47h12l-1.5 7h-9z" className="bk-pot" />
+          </Face>
+        </Box>
+        <Box x={0} y={-6} z={-8} w={ROOM} d={6} h={WALL + 8} r={0.6} mat={WALL_MAT} shadow={false}>
+          <Face face="left" at={[0, 0, WALL]}>
+            <rect width={ROOM} height={WALL} fill={`url(#${id}-tiles)`} className="bk-tiles" />
+            {/* A framed heart over the shelf */}
+            <rect x="14" y="16" width="20" height="24" rx="1" className="bk-picture" />
+            <rect x="17" y="19" width="14" height="18" className="bk-picture__in" />
+            <path d="M24 24c-2.5-3-6 0-3 3l3 3 3-3c3-3-.5-6-3-3z" className="bk-picture__heart" />
+          </Face>
+        </Box>
+        {/* The shelf and Mom's jars */}
+        <Box x={42} y={0} z={58} w={64} d={10} h={2.4} r={0.8} mat={M.paper} shadow={0.12} />
+        <Cyl x={52} y={5} z={60.4} r={4.4} h={11} mat={M.blue} shadow={false} />
+        <Cyl x={52} y={5} z={71.4} r={4.8} h={2.4} mat={M.cocoa} shadow={false} />
+        <Cyl x={66} y={5} z={60.4} r={5} h={14} mat={M.blue} shadow={false} />
+        <Cyl x={66} y={5} z={74.4} r={5.4} h={2.4} mat={M.cherry} shadow={false} />
+        <Cyl x={80} y={5} z={60.4} r={3.8} h={9} mat={M.blue} shadow={false} />
+        <Cyl x={80} y={5} z={69.4} r={4.2} h={2.2} mat={M.gold} shadow={false} />
+        <Cyl x={95} y={5} z={60.4} r={4} h={7} mat={M.paper} shadow={false} />
 
-      <g clipPath={`url(#${id}-sky)`} stroke="none">
-        <rect className="bk-sky" x="44" y="40" width="168" height="132" />
-        <g className="bk-stars">
-          <circle cx="70" cy="62" r="2" />
-          <circle cx="104" cy="88" r="1.5" />
-          <circle cx="150" cy="58" r="2" />
-          <circle cx="196" cy="98" r="1.5" />
-          <circle cx="86" cy="112" r="1.5" />
-        </g>
-        <circle className="bk-sun" cx="60" cy="160" r="16" />
-        <g className="bk-moon">
-          <circle cx="168" cy="80" r="14" className="f-paper" />
-          <circle cx="176" cy="74" r="12" className="bk-sky-cut" />
-        </g>
-        {/* Rooftops across the lane, water tanks and all */}
-        <path
-          className="bk-roofs"
-          d="M44 172v-24h26v-10h22v10h18v-18h30v18h14v-12h24v12h34v24z M118 130v-10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10z M164 136v-8a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v8z"
+        {/* The island, in candy stripes, with a marble top */}
+        <Box
+          x={ISLAND.x}
+          y={ISLAND.y}
+          z={0}
+          w={ISLAND.w}
+          d={ISLAND.d}
+          h={ISLAND.h - 4}
+          r={3}
+          mat={ISLAND_MAT}
+          shadow={0.25}
+        >
+          <Face face="left" at={[ISLAND.x + 3, ISLAND.y + ISLAND.d, ISLAND.h - 4]}>
+            {Array.from({ length: 10 }, (_, i) => (
+              <rect key={i} x={i * 7 + 1} width="3.5" height={ISLAND.h - 4} className="bk-stripe" />
+            ))}
+          </Face>
+          <Face face="right" at={[ISLAND.x + ISLAND.w, ISLAND.y + ISLAND.d - 3, ISLAND.h - 4]}>
+            {Array.from({ length: 9 }, (_, i) => (
+              <rect key={i} x={i * 7 + 1} width="3.5" height={ISLAND.h - 4} className="bk-stripe bk-stripe--shade" />
+            ))}
+          </Face>
+        </Box>
+        <Box
+          x={ISLAND.x - 1.5}
+          y={ISLAND.y - 1.5}
+          z={ISLAND.h - 4}
+          w={ISLAND.w + 3}
+          d={ISLAND.d + 3}
+          h={4}
+          r={3.5}
+          mat={M.paper}
+          shadow={false}
         />
-      </g>
-      <rect x="44" y="40" width="168" height="132" rx="6" fill="none" />
-      <path d="M128 40v132M44 106h168" fill="none" strokeWidth="3.5" />
-      <rect x="34" y="172" width="188" height="12" rx="4" className="f-paper" />
-      {/* A tulsi pot on the sill */}
-      <path
-        d="M176 150c-6-10-2-20 6-22 0 8 0 14-6 22zm8 0c2-12 10-16 16-14-4 8-8 12-16 14z"
-        className="f-matcha"
-        strokeWidth="2.5"
-      />
-      <path d="M168 150h32l-4 22h-24z" className="f-cherry" strokeWidth="3" />
 
-      <g className="bk-shelf">
-        <rect x="304" y="58" width="30" height="40" rx="6" className="f-blue" strokeWidth="3" />
-        <rect x="302" y="50" width="34" height="10" rx="3" className="f-brown" strokeWidth="3" />
-        <rect x="308" y="70" width="22" height="24" rx="3" className="f-flour" stroke="none" />
-        <rect x="346" y="48" width="34" height="50" rx="8" className="f-blue" strokeWidth="3" />
-        <rect x="344" y="40" width="38" height="10" rx="3" className="f-cherry" strokeWidth="3" />
-        <circle cx="356" cy="72" r="5" className="f-brown" strokeWidth="2" />
-        <circle cx="370" cy="82" r="5" className="f-brown" strokeWidth="2" />
-        <circle cx="360" cy="88" r="4" className="f-brown" strokeWidth="2" />
-        <rect x="392" y="62" width="26" height="36" rx="6" className="f-blue" strokeWidth="3" />
-        <rect x="390" y="54" width="30" height="10" rx="3" className="f-butter" strokeWidth="3" />
-        <rect x="396" y="76" width="18" height="18" rx="3" className="f-pink2" stroke="none" />
-        <rect x="292" y="98" width="156" height="10" rx="3" className="f-paper" strokeWidth="3.5" />
-      </g>
+        {/* Night falls over the room; the lamp's light falls on the island */}
+        <rect className="bk-dim" width="480" height="400" />
+        <path
+          className="bk-glow"
+          d={`M${lx - 8} ${ly}L${glow[0]![0]} ${glow[0]![1]}L${glow[1]![0]} ${glow[1]![1]}L${glow[2]![0]} ${glow[2]![1]}L${lx + 8} ${ly}Z`}
+        />
 
-      <rect className="bk-counter-front" x="-4" y="310" width="488" height="94" fill={`url(#${id}-stripes)`} />
-      <rect x="-4" y="296" width="488" height="16" rx="4" className="f-sunken" />
-
-      <rect className="bk-dim" width="480" height="400" stroke="none" />
-      <path className="bk-glow" d="M226 56 150 296h180L254 56z" stroke="none" />
-      <path d="M240 0v30" fill="none" strokeWidth="3" />
-      <path d="M216 54l12-26h24l12 26z" className="f-cherry" strokeWidth="3.5" />
-      <circle className="bk-bulb" cx="240" cy="56" r="5" strokeWidth="2.5" />
-
-      {/* Steps 1–3: the bowl, the egg and the whisk */}
-      <g className="bk-piece bk-piece--bowl">
-        <g className="bk-cup">
-          <path d="M262 92h52l-6 44h-40z" className="f-paper" />
-          <path d="M314 100h8a8 8 0 0 1 0 16h-10" fill="none" />
-          <ellipse cx="288" cy="94" rx="24" ry="5" className="f-flour" strokeWidth="2.5" />
-        </g>
-        <path className="bk-stream" d="M270 134c-10 36-18 66-24 100" fill="none" />
-        <ellipse cx="240" cy="236" rx="92" ry="16" className="f-bowl-in" />
-        <path className="bk-flour" d="M172 238Q240 172 308 238z" />
-        <ellipse className="bk-batter" cx="240" cy="238" rx="88" ry="14" />
-        <path className="bk-swirl" d="M240 238m-44 0a44 7 0 1 0 88 0a30 5 0 1 0-60 0a16 3 0 1 0 32 0" fill="none" />
-        <g className="bk-whisk">
-          <g transform="translate(-4 -16)">
-            <path d="M256 222 312 120" fill="none" strokeWidth="9" className="bk-handle" />
+        {/* Steps 1–3: the bowl, the flour, the egg and the whisk */}
+        <g className="bk-piece bk-piece--bowl">
+          <Bowl x={CX} y={CY} z={TOP} r={25} h={16}>
+            <circle cx="25" cy="25" r="20" className="bk-flour" />
+            <circle cx="25" cy="25" r="22" className="bk-batter" />
+            <path className="bk-swirl" d="M25 25m-14 0a14 14 0 1 0 28 0a10 10 0 1 0-20 0a6 6 0 1 0 12 0" />
+          </Bowl>
+          <g className="bk-cup">
+            <Cyl x={CX + 30} y={CY - 26} z={TOP + 38} r={6} rTop={7} h={10} mat={M.paper} shadow={false} />
+            <Cyl x={CX + 30} y={CY - 26} z={TOP + 48} r={6.4} h={0} mat={M.cream} shadow={false} />
+          </g>
+          <path
+            className="bk-stream"
+            d={`M${at(CX + 24, CY - 22, TOP + 44).join(' ')}L${at(CX + 4, CY - 2, TOP + 18).join(' ')}`}
+          />
+          <g className="bk-whisk" style={{ transformOrigin: `${bx + 40}px ${by - 70}px` }}>
+            <path d={`M${bx + 4} ${by - 6}L${bx + 46} ${by - 78}`} className="bk-handle" />
             <path
-              d="M256 222c-34-4-46 26-22 30s34-14 22-30zm0 0c-12 10-14 32 2 30s14-22-2-30z"
-              fill="none"
-              strokeWidth="3"
+              d={`M${bx + 4} ${by - 6}c-24-2-32 18-15 21s24-10 15-21zm0 0c-8 7-10 22 1.5 21s10-15-1.5-21z`}
+              className="bk-wires"
             />
           </g>
-        </g>
-        <path d="M146 236h188c0 40-40 64-94 64s-94-24-94-64z" className="f-paper" />
-        <path d="M156 258q84 26 168 0" fill="none" className="bk-bowl-band" strokeWidth="5" />
-        <g className="bk-egg" onClick={onEgg}>
-          <ellipse cx="392" cy="279" rx="15" ry="18" className="f-paper" />
-          <path d="M386 268q-4 6-3 12" fill="none" strokeWidth="2.5" className="bk-sheen" />
-        </g>
-        <g className="bk-hand">
-          <rect x="438" y="252" width="60" height="44" rx="8" className="f-blue2" />
-          <rect x="434" y="254" width="5" height="40" rx="2" className="f-gold" strokeWidth="2" />
-          <rect x="428" y="255" width="5" height="38" rx="2" className="f-gold" strokeWidth="2" />
-          <ellipse cx="410" cy="274" rx="20" ry="17" className="f-skin" />
-          <ellipse cx="396" cy="263" rx="10" ry="6" className="f-skin" strokeWidth="3" />
-          <ellipse cx="393" cy="273" rx="10" ry="6" className="f-skin" strokeWidth="3" />
-          <ellipse cx="394" cy="291" rx="10" ry="5.5" className="f-skin" strokeWidth="3" />
-        </g>
-      </g>
-
-      {/* Step 4: the oven */}
-      <g className="bk-piece bk-piece--oven">
-        <g className="bk-heat" fill="none" strokeWidth="3">
-          <path d="M200 120q-8-10 0-20t0-20" />
-          <path d="M240 116q-8-10 0-20t0-20" />
-          <path d="M280 120q-8-10 0-20t0-20" />
-        </g>
-        <rect x="158" y="290" width="18" height="10" rx="2" className="f-brown" strokeWidth="3" />
-        <rect x="304" y="290" width="18" height="10" rx="2" className="f-brown" strokeWidth="3" />
-        <rect x="140" y="132" width="200" height="162" rx="16" className="f-blue" />
-        <path d="M140 166h200" fill="none" />
-        <circle cx="166" cy="149" r="7" className="f-paper" strokeWidth="3" />
-        <circle cx="190" cy="149" r="7" className="f-paper" strokeWidth="3" />
-        <rect x="256" y="139" width="70" height="21" rx="5" className="f-ink" strokeWidth="3" />
-        <text x="291" y="155" className="bk-timer-text" textAnchor="middle" stroke="none">
-          {timer === 0 || still ? 'DING!' : `0:0${timer ?? BAKE_SECONDS}`}
-        </text>
-        <rect x="156" y="178" width="168" height="104" rx="10" className="f-paper" />
-        <rect x="180" y="186" width="120" height="7" rx="3.5" className="f-brown" strokeWidth="2.5" />
-        <rect x="174" y="202" width="132" height="68" rx="8" className="f-oven-in" />
-        <rect className="bk-oven-glow" x="176" y="204" width="128" height="64" rx="7" stroke="none" />
-        <rect className="bk-rise" x="208" y="222" width="64" height="26" rx="10" />
-        <rect x="204" y="246" width="72" height="14" rx="3" className="f-tin" strokeWidth="3" />
-        <g className="bk-ding">
-          <path d="M340 120l4 10 10 4-10 4-4 10-4-10-10-4 10-4z" className="f-butter" strokeWidth="2.5" />
-          <path d="M356 150l3 6 6 3-6 3-3 6-3-6-6-3 6-3z" className="f-paper" strokeWidth="2" />
-        </g>
-      </g>
-
-      {/* Step 5: the cake, and a name piped across it */}
-      <g className="bk-piece bk-piece--cake">
-        <path d="M218 280h44l10 18h-64z" className="f-paper" />
-        <ellipse cx="240" cy="278" rx="104" ry="9" className="f-paper" />
-        <rect x="158" y="178" width="164" height="96" rx="10" className="f-pink2" />
-        <path d={FROSTING} className="f-paper" />
-        {PEARLS.map((x) => (
-          <circle key={x} cx={x} cy="268" r="4.5" className="f-paper" strokeWidth="2.5" />
-        ))}
-        {[204, 240, 276].map((x, i) => (
-          <g key={x}>
-            <ellipse cx={x} cy="178" rx="13" ry="8" className="f-paper" strokeWidth="3" />
-            <path d={`M${x} 164q${i === 1 ? 2 : 6}-12 ${i === 1 ? 10 : 14}-16`} fill="none" strokeWidth="2.5" />
-            <circle cx={x} cy="166" r="8.5" className="f-cherry" strokeWidth="3" />
+          <g className="bk-egg" onClick={onEgg}>
+            <Sphere
+              x={ISLAND.x + ISLAND.w - 12}
+              y={ISLAND.y + ISLAND.d - 8}
+              z={TOP + 5}
+              r={4}
+              stretch={1.3}
+              mat={M.egg}
+              shadow
+            />
           </g>
-        ))}
-        <g
-          key={`${label}-${step === 4 || still}`}
-          className="bk-name"
-          style={{ '--name-w': `${nameWidth}px` } as CSSProperties}
-        >
-          <text
-            x="240"
-            y="240"
-            className="bk-name-text"
-            textAnchor="middle"
-            stroke="none"
-            textLength={label.length * 14 > 136 ? 136 : undefined}
-            lengthAdjust="spacingAndGlyphs"
+          <g transform={`translate(${ex - 392} ${ey - 279})`}>
+            <g className="bk-hand">
+              <rect x="438" y="252" width="60" height="44" rx="8" className="bk-sleeve" />
+              <rect x="434" y="254" width="5" height="40" rx="2" className="bk-bangle" />
+              <rect x="428" y="255" width="5" height="38" rx="2" className="bk-bangle" />
+              <ellipse cx="410" cy="274" rx="20" ry="17" className="bk-skin" />
+              <ellipse cx="396" cy="263" rx="10" ry="6" className="bk-skin" />
+              <ellipse cx="393" cy="273" rx="10" ry="6" className="bk-skin" />
+              <ellipse cx="394" cy="291" rx="10" ry="5.5" className="bk-skin" />
+            </g>
+          </g>
+        </g>
+
+        {/* Step 4: the oven */}
+        <g className="bk-piece bk-piece--oven">
+          <Oven
+            x={CX - 28}
+            y={CY - 22}
+            z={TOP}
+            w={56}
+            d={42}
+            h={46}
+            timer={timer === 0 || still ? 'DING!' : `0:0${timer ?? BAKE_SECONDS}`}
           >
-            {label}
-          </text>
-          <g className="bk-bag">
-            <path d="M0 0l-6-12 30-34 18 14z" className="f-paper" strokeWidth="3" />
-            <path d="M24-46l18 14 8-10-16-12z" className="f-cherry" strokeWidth="3" />
+            <rect className="bk-rise" x="18" y="34" width="20" height="8" rx="3" />
+            <rect x="15" y="41" width="26" height="4" rx="1" className="bk-tin" />
+          </Oven>
+          <g className="bk-heat">
+            {[-18, 0, 18].map((dx) => (
+              <path key={dx} d={`M${hx + dx} ${hy}q-6-8 0-16t0-16`} />
+            ))}
+          </g>
+          <g className="bk-ding">
+            <Sparkle at={[CX + 34, CY - 30, TOP + 56]} size={9} />
+            <Sparkle at={[CX + 44, CY - 18, TOP + 40]} size={6} tone="paper" />
           </g>
         </g>
-      </g>
 
-      {/* Step 6: the box, the lid, the ribbon and the tag */}
-      <g className="bk-piece bk-piece--box">
-        <rect x="156" y="196" width="168" height="102" rx="4" className="f-pink" />
-        <rect x="174" y="220" width="88" height="56" rx="8" className="f-paper" />
-        <rect x="189" y="246" width="58" height="30" rx="5" className="f-pink2" strokeWidth="3" />
-        <circle cx="218" cy="240" r="6" className="f-cherry" strokeWidth="2.5" />
-        <g className="bk-lid">
-          <rect x="148" y="168" width="184" height="34" rx="6" className="f-pink2" />
-          <text x="214" y="192" className="bk-lid-text" textAnchor="middle" stroke="none">
-            Bakes by Mom
-          </text>
-        </g>
-        {/* Tied off-centre, like a real cake box, so the lid still reads */}
-        <g className="bk-ribbon">
-          <rect x="282" y="168" width="16" height="130" className="f-cherry" strokeWidth="3" />
-          <path
-            d="M290 166c-26-22-44-6-30 6 10 8 30 0 30-6zm0 0c26-22 44-6 30 6-10 8-30 0-30-6z"
-            className="f-cherry"
-            strokeWidth="3"
+        {/* Step 5: the cake on its stand, and a name piped across the top */}
+        <g className="bk-piece bk-piece--cake">
+          <Stand x={CX} y={CY} z={TOP} r={27} />
+          <LayerCake
+            x={CX}
+            y={CY}
+            z={TOP + sh}
+            r={21}
+            h={20}
+            coat={M.pink}
+            drip={false}
+            piping={M.paper}
+            pearls={M.paper}
+            cherries={0}
+            top={
+              <text
+                key={`${label}-${step === 4 || still}`}
+                x="21"
+                y="25"
+                textAnchor="middle"
+                className="bk-name-text"
+                textLength={label.length > 9 ? 34 : undefined}
+                lengthAdjust="spacingAndGlyphs"
+              >
+                {label}
+              </text>
+            }
           />
-          <path d="M286 168l-14 26M294 168l14 26" fill="none" strokeWidth="5" className="bk-tails" />
-          <circle cx="290" cy="167" r="6" className="f-cherry" strokeWidth="3" />
+          {[200, 225, 250].map((a) => (
+            <Cherry
+              key={a}
+              x={CX + Math.cos((a * Math.PI) / 180) * 14}
+              y={CY + Math.sin((a * Math.PI) / 180) * 14}
+              z={TOP + sh + 22.6}
+            />
+          ))}
         </g>
-        <g className="bk-tag">
-          <path d="M296 168q20 0 28-8" fill="none" strokeWidth="2" />
-          <g transform="rotate(8 360 160)">
-            <path d="M330 146h70a6 6 0 0 1 6 6v20a6 6 0 0 1-6 6h-70l-10-16z" className="f-paper" strokeWidth="3" />
-            <text
-              x="364"
-              y="168"
-              className="bk-tag-text"
-              textAnchor="middle"
-              stroke="none"
-              textLength={tag.length > 9 ? 64 : undefined}
-              lengthAdjust="spacingAndGlyphs"
-            >
-              {tag}
-            </text>
+
+        {/* Step 6: the box, the lid, the ribbon and the tag */}
+        <g className="bk-piece bk-piece--box">
+          <CakeBox
+            x={CX - 22}
+            y={CY - 22}
+            z={TOP}
+            w={44}
+            d={44}
+            h={30}
+            lidClassName="bk-lid"
+            ribbonClassName="bk-ribbon"
+          />
+          <g transform={`translate(${tagX} ${tagY}) rotate(8)`}>
+            <g className="bk-tag">
+              <path d="M-8 -4q14 -2 22 4" className="bk-tag__string" />
+              <path d="M14 -6h64a5 5 0 0 1 5 5v18a5 5 0 0 1-5 5h-64l-9-14z" className="bk-tag__card" />
+              <circle cx="14" cy="8" r="2" className="bk-tag__hole" />
+              <text
+                x="48"
+                y="13"
+                className="bk-tag-text"
+                textAnchor="middle"
+                textLength={tag.length > 9 ? 56 : undefined}
+                lengthAdjust="spacingAndGlyphs"
+              >
+                {tag}
+              </text>
+            </g>
           </g>
         </g>
-      </g>
-    </svg>
+
+        {/* The pendant lamp over the island */}
+        <path d={`M${lx} 0V${ly - 12}`} className="bk-cord" />
+        <path d={`M${lx - 14} ${ly + 2}l6-14h16l6 14z`} className="bk-shade" />
+        <ellipse cx={lx} cy={ly + 2} rx="14" ry="3.4" className="bk-shade-rim" />
+        <circle className="bk-bulb" cx={lx} cy={ly + 4} r="4" />
+      </IsoScene>
+    </div>
   );
 }

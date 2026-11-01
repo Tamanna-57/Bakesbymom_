@@ -20,10 +20,12 @@
   background-color: var(--_bg);
   color: var(--_fg);
   font-family: var(--bbm-font-family-body);
-  font-size: var(--bbm-text-body-sm-size);
-  font-weight: var(--bbm-font-weight-bold);
+  font-size: 0.8125rem;
+  font-weight: var(--bbm-font-weight-semibold);
   line-height: 1.2;
-  letter-spacing: 0.01em;
+  /* Small, spaced capitals, like the lettering on a pasticceria box */
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
@@ -37,6 +39,7 @@
 
 .bbm-button:hover {
   background-color: var(--_bg-hover);
+  box-shadow: 0 8px 18px -10px rgb(50 24 11 / 0.45);
 }
 
 .bbm-button:active {
@@ -71,21 +74,22 @@
   --_bg-active: var(--bbm-color-brown-100);
   --_fg: var(--bbm-color-action-ghost-fg);
   text-decoration: underline;
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--bbm-color-gold-500);
+  text-underline-offset: 0.45em;
 }
 
 /* Sizes */
 .bbm-button--sm {
   --_height: var(--bbm-component-button-height-sm);
   --_px: var(--bbm-component-button-padding-x-sm);
-  font-size: var(--bbm-text-caption-size);
+  font-size: 0.75rem;
 }
 
 .bbm-button--lg {
   --_height: var(--bbm-component-button-height-lg);
   --_px: var(--bbm-component-button-padding-x-lg);
-  font-size: var(--bbm-text-body-md-size);
+  font-size: 0.875rem;
 }
 
 /* Shape */
@@ -112,20 +116,20 @@
   height: 100%;
 }
 
-/* Sticker: outline + hard shadow that presses in */
+/* Sticker: a fine outline and a soft shadow that lifts on hover */
 .bbm-button--sticker {
   --_border: var(--bbm-color-border-default);
   box-shadow: var(--bbm-shadow-sticker-sm);
 }
 
 .bbm-button--sticker:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0 0 var(--bbm-color-border-default);
+  transform: translateY(-1px);
+  box-shadow: var(--bbm-shadow-sticker-md);
 }
 
 .bbm-button--sticker:active {
-  transform: translate(2px, 2px);
-  box-shadow: 0 0 0 0 var(--bbm-color-border-default);
+  transform: translateY(1px);
+  box-shadow: none;
 }
 
 /* Disabled (a loading button is also disabled but keeps its variant colors) */

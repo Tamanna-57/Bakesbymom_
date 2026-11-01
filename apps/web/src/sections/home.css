@@ -56,8 +56,9 @@
 .home-hero__burst {
   position: absolute;
   z-index: 1;
-  top: 6%;
-  left: -6%;
+  top: 5%;
+  left: -7%;
+  width: clamp(5.5rem, 9vw, 8rem);
   animation: home-wobble 6s ease-in-out infinite;
 }
 
@@ -226,18 +227,25 @@
 /* Shape ribbon (pin 13) ------------------------------------------------ */
 
 .home-ribbon__shapes {
-  display: flex;
-  justify-content: center;
-  gap: var(--bbm-space-5);
   overflow: hidden;
-  padding: var(--bbm-space-2) 0;
+  padding: var(--bbm-space-1) 0;
   border-bottom: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
-  background-color: var(--bbm-color-pink-300);
-  color: var(--bbm-color-cherry-700);
+  background-color: var(--bbm-color-pink-100);
 }
 
-.home-ribbon__shapes > svg {
-  flex: none;
+.home-ribbon__shapes {
+  height: 2.75rem;
+  /* A row of halftone cherries, like the stippled ones on the board */
+  background: url('/collage/halftone-cherries.webp') repeat-x center / auto 2.1rem;
+  background-color: var(--bbm-color-pink-100);
+}
+
+.home-ribbon__diamond {
+  display: inline-block;
+  width: 0.45em;
+  height: 0.45em;
+  rotate: 45deg;
+  background: var(--bbm-color-gold-300);
 }
 
 /* Feature strip (Sweet Crumbs) ------------------------------------------ */
@@ -327,7 +335,7 @@
   border-width: 5px;
   border-radius: var(--bbm-radius-2xl);
   background-color: var(--bbm-color-bg-canvas);
-  box-shadow: 8px 10px 0 var(--bbm-color-cherry-700);
+  box-shadow: var(--bbm-shadow-sticker-lg);
 }
 
 @media (min-width: 900px) {
@@ -668,7 +676,7 @@
 .home-shop__item:hover .home-shop__art,
 .home-shop__lead:hover {
   translate: -3px -5px;
-  box-shadow: 6px 8px 0 var(--bbm-color-border-default);
+  box-shadow: var(--bbm-shadow-sticker-lg);
 }
 
 .home-shop__art {
@@ -1088,4 +1096,12 @@
   .home-features__list > li:hover .home-features__icon {
     animation: none;
   }
+}
+
+.home-hero__burst .collage__badge-text strong {
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+}
+
+.home-hero__burst .collage__badge-text small {
+  font-size: clamp(0.55rem, 0.8vw, 0.68rem);
 }

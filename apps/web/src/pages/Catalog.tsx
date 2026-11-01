@@ -9,7 +9,7 @@ import { Breadcrumbs } from './order';
 import { replaceUrl } from '../router';
 import { SectionEdge } from '../sections/blocks';
 import { orderLink } from '../content/site';
-import { CakeStandScene } from '../iso/scenes';
+import { CakesCollage } from '../collage/scenes';
 
 const param = (name: string) => new URLSearchParams(window.location.search).get(name);
 
@@ -94,7 +94,7 @@ export function CatalogPage() {
               </ul>
             </div>
             <div className="shop-hero__art">
-              <CakeStandScene />
+              <CakesCollage />
             </div>
           </div>
           {flavour && (

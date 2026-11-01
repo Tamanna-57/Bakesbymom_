@@ -25,7 +25,7 @@
   border-radius: 50%;
   background: none;
   cursor: pointer;
-  filter: drop-shadow(3px 3px 0 var(--bbm-color-border-default));
+  filter: drop-shadow(0 6px 12px rgb(50 24 11 / 0.16));
   transition: transform var(--bbm-motion-duration-fast) var(--bbm-motion-easing-bounce);
 }
 

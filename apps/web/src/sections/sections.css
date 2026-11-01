@@ -914,7 +914,7 @@
 }
 
 .site-gallery .bbm-gallery__strip--open {
-  box-shadow: 6px 6px 0 var(--bbm-color-cherry-600);
+  box-shadow: var(--bbm-shadow-sticker-lg);
 }
 
 /* The gallery sits on the cocoa band: candy-pink bubble letters, light caption */

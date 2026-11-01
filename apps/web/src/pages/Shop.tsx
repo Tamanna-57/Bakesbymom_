@@ -4,7 +4,7 @@ import { whatsappLink } from '../content/bakery';
 import { cakes } from '../content/catalog';
 import { orderLink } from '../content/site';
 import { qtyLabel, treatCategories } from '../content/treats';
-import { ComboScene, OrderStepScene, TreatsCounterScene } from '../iso/scenes';
+import { ComboCollage, ShopCollage, StepCollage } from '../collage/scenes';
 import { SectionEdge } from '../sections/blocks';
 import { Layout } from './Layout';
 import { Breadcrumbs, EgglessNote } from './order';
@@ -76,7 +76,7 @@ export function ShopPage() {
               </ul>
             </div>
             <div className="shop-hero__art">
-              <TreatsCounterScene />
+              <ShopCollage />
             </div>
           </div>
         </div>
@@ -163,7 +163,7 @@ export function ShopPage() {
             {STEPS.map((step, i) => (
               <li key={step.scene} className="shop-step">
                 <div className="shop-step__art">
-                  <OrderStepScene step={step.scene} />
+                  <StepCollage step={step.scene} />
                 </div>
                 <p className="shop-step__num" aria-hidden="true">
                   0{i + 1}
@@ -180,7 +180,7 @@ export function ShopPage() {
         <SectionEdge color="var(--bbm-color-bg-inverse)" shape="scallop" />
         <div className="site-container">
           <div className="shop-combo__art">
-            <ComboScene />
+            <ComboCollage />
           </div>
           <div className="shop-combo__copy">
             <p className="shop-combo__kicker">can't pick one?</p>

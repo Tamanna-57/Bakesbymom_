@@ -89,6 +89,13 @@
   aspect-ratio: 1;
 }
 
+/* A restaged cake photo brings its own background: framed like the treat photos, not floated */
+.shop-item__photo--backdrop img {
+  object-fit: cover;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-lg);
+}
+
 .shop-item__photo--art {
   position: relative;
 }
@@ -512,4 +519,66 @@
 .shop-combo__ghost {
   color: var(--bbm-color-paper);
   border-color: var(--bbm-color-paper);
+}
+/* The flavour a visitor picked on the home page (/catalog?flavour=…), above the shelves */
+.catalog-flavour {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--bbm-space-4);
+  max-width: 48rem;
+  margin: var(--bbm-space-6) auto 0;
+  padding: var(--bbm-space-4);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-xl);
+  background-color: var(--bbm-color-bg-surface);
+  box-shadow: var(--bbm-shadow-sticker-sm);
+}
+
+.catalog-flavour img {
+  width: 4.5rem;
+  height: 4.5rem;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.catalog-flavour p {
+  margin: 0;
+}
+
+@media (max-width: 599px) {
+  .catalog-flavour {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .catalog-flavour .bbm-button {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}
+
+/* Cakes & Treats: a custom order, under the categories */
+.shop-custom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--bbm-space-4) var(--bbm-space-6);
+}
+
+.shop-custom > div {
+  flex: 1 1 18rem;
+}
+
+.shop-custom__title {
+  margin: 0 0 var(--bbm-space-1);
+  font-family: var(--bbm-text-heading-md-family);
+  font-size: var(--bbm-text-heading-md-size);
+  font-weight: var(--bbm-text-heading-md-weight);
+  line-height: var(--bbm-text-heading-md-line-height);
+}
+
+.shop-custom p {
+  margin: 0;
+  color: var(--bbm-color-text-secondary);
 }

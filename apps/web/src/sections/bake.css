@@ -251,10 +251,13 @@
   gap: var(--bbm-space-2);
   justify-items: start;
   padding: var(--bbm-space-5);
-  border: var(--bbm-border-width-thick) solid var(--bbm-color-border-default);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
   border-radius: var(--bbm-radius-lg);
   background: var(--bbm-color-bg-surface);
-  box-shadow: 4px 4px 0 var(--bbm-color-border-default);
+  box-shadow:
+    inset 0 0 0 5px var(--bbm-color-paper),
+    inset 0 0 0 6px var(--bbm-color-gold-300),
+    var(--bbm-shadow-sticker-lg);
   animation: bake-card-in 520ms var(--bbm-motion-easing-out) both;
 }
 
@@ -403,22 +406,21 @@
   }
 }
 
-/* The drawing: an isometric kitchen ---------------------------------------- */
+/* The drawing: an engraved kitchen ------------------------------------------ */
 
 .bake-scene {
-  --_wall-shade: color-mix(in srgb, var(--_wall), var(--bbm-color-brown-900) 16%);
-  --_wall-line: color-mix(in srgb, var(--_wall), var(--bbm-color-brown-900) 38%);
   display: block;
   /* As big as the space allows while keeping the drawing's 6:5 shape */
   width: min(100cqw, 120cqh);
   aspect-ratio: 6 / 5;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--_room), var(--bbm-color-brown-900) 14%);
-  border-radius: var(--bbm-radius-xl);
-  background:
-    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--_room), white 55%), transparent 70%), var(--_room);
+  border: 1px solid var(--bbm-color-brown-900);
+  border-radius: var(--bbm-radius-lg);
+  background: var(--_wall);
+  /* A gold rule just inside the ink one, like a framed print */
   box-shadow:
-    0 1px 0 rgb(255 255 255 / 0.6) inset,
+    inset 0 0 0 5px var(--bbm-color-paper),
+    inset 0 0 0 6px var(--bbm-color-gold-400),
     0 24px 48px -24px rgb(50 24 11 / 0.35);
   transition: background-color var(--_fade, 700ms);
 }
@@ -428,18 +430,9 @@
   height: 100%;
 }
 
-.bake-scene stop {
-  transition: stop-color var(--_fade, 700ms);
-}
-
-.bk-check {
-  fill: var(--bbm-color-pink-200);
-  opacity: 0.55;
-}
-
-.bk-tiles {
-  color: var(--bbm-color-paper);
-  opacity: 0.35;
+.bk-wall {
+  fill: var(--_wall);
+  transition: fill var(--_fade, 700ms);
 }
 
 .bk-sky,
@@ -453,54 +446,13 @@
   transition: fill var(--_fade, 700ms);
 }
 
-.bk-frame {
-  fill: none;
-  stroke: var(--bbm-color-paper);
-  stroke-width: 1.6;
-}
-
-.bk-sill {
-  fill: var(--bbm-color-paper);
-  stroke: var(--_wall-line);
-  stroke-width: 0.4;
-}
-
-.bk-leaf {
-  fill: var(--bbm-color-matcha-400);
-}
-
-.bk-pot {
-  fill: var(--bbm-color-cherry-500);
-}
-
-.bk-picture {
-  fill: var(--bbm-color-butter-300);
-  stroke: var(--bbm-color-butter-600);
-  stroke-width: 0.5;
-}
-
-.bk-picture__in {
-  fill: var(--bbm-color-paper);
-}
-
-.bk-picture__heart {
-  fill: var(--bbm-color-cherry-500);
-}
-
-.bk-stripe {
-  fill: var(--bbm-color-paper);
-  opacity: 0.7;
-}
-
-.bk-stripe--shade {
-  opacity: 0.4;
-}
-
 /* The sun climbs across the window and sets by nightfall; then the moon and stars come out */
 .bk-sun {
   --_arc: min(calc(var(--day, 0) * 1.2), 1);
   fill: var(--_sun);
-  transform: translate(calc(var(--_arc) * 46px), calc(sin(var(--_arc) * 180deg) * -30px));
+  stroke: var(--bbm-color-brown-900);
+  stroke-width: 0.8;
+  transform: translate(calc(var(--_arc) * 104px), calc(sin(var(--_arc) * 180deg) * -96px));
   transition: fill var(--_fade, 700ms);
 }
 
@@ -525,25 +477,10 @@
   transition: opacity var(--_fade, 700ms);
 }
 
-/* The pendant lamp */
-.bk-cord {
-  fill: none;
-  stroke: var(--bbm-color-brown-900);
-  stroke-width: 1.2;
-}
-
-.bk-shade {
-  fill: var(--bbm-color-cherry-600);
-  stroke: var(--bbm-color-cherry-900);
-  stroke-width: 0.8;
-}
-
-.bk-shade-rim {
-  fill: var(--bbm-color-cherry-800);
-}
-
 .bk-bulb {
   fill: var(--bbm-color-paper);
+  stroke: var(--bbm-color-brown-900);
+  stroke-width: 0.8;
   transition: fill var(--_fade, 700ms);
 }
 
@@ -552,13 +489,13 @@
   filter: drop-shadow(0 0 6px var(--bbm-color-butter-300));
 }
 
-/* Set pieces swap in and out as the steps change: each one lands on the island */
+/* Set pieces swap in and out as the steps change: each one settles onto the counter */
 .bk-piece {
   opacity: 0;
-  translate: 0 -26px;
+  translate: 0 -18px;
   transition:
     opacity 420ms var(--bbm-motion-easing-standard),
-    translate 700ms var(--bbm-motion-easing-bounce, cubic-bezier(0.34, 1.56, 0.64, 1));
+    translate 700ms var(--bbm-motion-easing-out);
 }
 
 .bake-scene:is([data-step='0'], [data-step='1'], [data-step='2']) .bk-piece--bowl,
@@ -572,17 +509,17 @@
 /* Measure: the cup tips and the flour piles up as you scroll */
 .bk-cup {
   transform-box: fill-box;
-  transform-origin: 20% 80%;
-  rotate: calc(-6deg - var(--p0, 0) * 26deg);
+  transform-origin: 10% 90%;
+  rotate: calc(-10deg - var(--p0, 0) * 30deg);
   transition: opacity 300ms;
 }
 
 .bk-stream {
   fill: none;
   stroke: var(--bbm-color-beige-100);
-  stroke-width: 5;
+  stroke-width: 6;
   stroke-linecap: round;
-  stroke-dasharray: 2 9;
+  stroke-dasharray: 2 10;
   opacity: 0;
   transition: opacity 300ms;
 }
@@ -598,12 +535,20 @@
 
 @keyframes bk-pour {
   to {
-    stroke-dashoffset: -11;
+    stroke-dashoffset: -12;
   }
+}
+
+.bk-bowl-band {
+  fill: none;
+  stroke: var(--bbm-color-blue-300);
+  stroke-width: 4;
 }
 
 .bk-flour {
   fill: var(--bbm-color-beige-100);
+  stroke: var(--bbm-color-brown-900);
+  stroke-width: 0.6;
   transform-box: fill-box;
   transform-origin: center;
   scale: calc(0.05 + var(--p0, 0) * (1 - var(--p2, 0)) * 0.95);
@@ -617,10 +562,10 @@
 
 .bk-swirl {
   fill: none;
-  stroke: var(--bbm-color-butter-500);
-  stroke-width: 0.9;
-  stroke-dasharray: 5 3;
-  stroke-dashoffset: calc(var(--p2, 0) * -120);
+  stroke: var(--bbm-color-butter-600);
+  stroke-width: 1;
+  stroke-dasharray: 8 5;
+  stroke-dashoffset: calc(var(--p2, 0) * -200);
   opacity: calc(var(--p2, 0) * 0.9);
 }
 
@@ -639,24 +584,11 @@
 
 @keyframes bk-whisk {
   from {
-    transform: translateX(-12px) rotate(-6deg);
+    transform: translateX(-14px) rotate(-6deg);
   }
   to {
-    transform: translateX(10px) rotate(5deg);
+    transform: translateX(12px) rotate(5deg);
   }
-}
-
-.bk-handle {
-  fill: none;
-  stroke: var(--bbm-color-brown-600);
-  stroke-width: 6;
-  stroke-linecap: round;
-}
-
-.bk-wires {
-  fill: none;
-  stroke: var(--bbm-color-blue-500);
-  stroke-width: 1.6;
 }
 
 /* Eggs: one egg on the counter, and Mom's hand takes it away */
@@ -689,24 +621,6 @@
   85% {
     transform: rotate(7deg);
   }
-}
-
-.bk-sleeve {
-  fill: var(--bbm-color-blue-300);
-  stroke: var(--bbm-color-blue-600);
-  stroke-width: 1.5;
-}
-
-.bk-bangle {
-  fill: var(--bbm-color-butter-400);
-  stroke: var(--bbm-color-butter-700);
-  stroke-width: 1;
-}
-
-.bk-skin {
-  fill: #e9bf9c; /* matches Mom's portrait in content/mom.svg */
-  stroke: #b98763;
-  stroke-width: 1.2;
 }
 
 .bk-hand {
@@ -748,13 +662,17 @@
   }
 }
 
-/* Bake: the oven glows, the cake rises, the timer runs down */
+/* Bake: the window glows, the cake rises, the timer runs down */
+.bk-oven-glow {
+  opacity: 0.2;
+}
+
 .is-baking .bk-oven-glow {
   animation: bk-glow 1.2s ease-in-out infinite alternate;
 }
 
 .is-baked .bk-oven-glow {
-  opacity: 0.55;
+  opacity: 0.6;
 }
 
 @keyframes bk-glow {
@@ -762,15 +680,14 @@
     opacity: 0.35;
   }
   to {
-    opacity: 0.8;
+    opacity: 0.85;
   }
 }
 
 .bk-rise {
-  fill: var(--bbm-color-butter-300);
   transform-box: fill-box;
   transform-origin: 50% 100%;
-  transform: scaleY(0.3);
+  transform: scaleY(0.35);
 }
 
 .is-baking .bk-rise {
@@ -778,7 +695,6 @@
 }
 
 .is-baked .bk-rise {
-  fill: var(--bbm-color-brown-300);
   transform: none;
 }
 
@@ -788,39 +704,13 @@
   }
 }
 
-.bk-tin {
-  fill: var(--bbm-color-blue-400);
-}
-
 .bk-heat {
-  fill: none;
-  stroke: var(--bbm-color-brown-400);
-  stroke-width: 2;
-  stroke-linecap: round;
   opacity: 0;
-}
-
-.is-baking .bk-heat path {
-  animation: bk-heat 1.4s ease-out infinite;
-}
-
-.is-baking .bk-heat path:nth-child(2) {
-  animation-delay: 0.3s;
+  transition: opacity 300ms;
 }
 
 .is-baking .bk-heat {
   opacity: 1;
-}
-
-@keyframes bk-heat {
-  from {
-    opacity: 0.8;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
 }
 
 .bk-ding {
@@ -836,7 +726,7 @@
 .bk-name-text {
   fill: var(--bbm-color-cherry-700);
   font-family: var(--bbm-font-family-script);
-  font-size: 9px;
+  font-size: 44px;
 }
 
 .bake-scene[data-step='4']:not(.is-still) .bk-name-text {
@@ -854,7 +744,7 @@
 
 /* Box it: the lid comes down, then the ribbon and the tag */
 .bk-lid {
-  transform: translateY(calc((1 - min(calc(var(--p5, 0) * 1.8), 1)) * -120px));
+  transform: translateY(calc((1 - min(calc(var(--p5, 0) * 1.8), 1)) * -110px));
 }
 
 .bk-ribbon {
@@ -865,29 +755,17 @@
   opacity: clamp(0, calc((var(--p5, 0) - 0.7) * 6), 1);
 }
 
-.bk-tag__string {
-  fill: none;
-  stroke: var(--bbm-color-cherry-700);
-  stroke-width: 1.2;
-}
-
-.bk-tag__card {
-  fill: var(--bbm-color-paper);
-  stroke: var(--bbm-color-brown-900);
-  stroke-width: 1.2;
-}
-
-.bk-tag__hole {
-  fill: var(--_room);
-  stroke: var(--bbm-color-brown-900);
-  stroke-width: 0.8;
-}
-
 .bk-tag-text {
   fill: var(--bbm-color-text-primary);
   font-family: var(--bbm-font-family-hand);
   font-size: 15px;
-  font-weight: 700;
+  font-style: italic;
+  font-weight: 600;
+}
+
+/* The still version keeps every piece where it lands */
+.is-still .bk-piece {
+  transition: none;
 }
 
 /* The still version keeps every piece where it lands */

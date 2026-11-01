@@ -1,35 +1,35 @@
 {
   "shadow": {
-    "$description": "Sticker shadows are hard offsets in cocoa: no blur, like paper cut-outs stuck to a page. Soft shadows are reserved for photographs and floating overlays.",
+    "$description": "Pasticceria shadows: soft and close, like a cake box on a marble counter. \"sticker\" keeps its name so components stay put.",
     "sticker": {
       "sm": {
         "$type": "shadow",
         "$value": {
-          "color": "{color.brown.900}",
-          "offsetX": "2px",
-          "offsetY": "2px",
-          "blur": "0px",
+          "color": "#32180b1f",
+          "offsetX": "0px",
+          "offsetY": "1px",
+          "blur": "3px",
           "spread": "0px"
         }
       },
       "md": {
         "$type": "shadow",
         "$value": {
-          "color": "{color.brown.900}",
-          "offsetX": "4px",
-          "offsetY": "4px",
-          "blur": "0px",
-          "spread": "0px"
+          "color": "#32180b38",
+          "offsetX": "0px",
+          "offsetY": "10px",
+          "blur": "26px",
+          "spread": "-14px"
         }
       },
       "lg": {
         "$type": "shadow",
         "$value": {
-          "color": "{color.brown.900}",
-          "offsetX": "6px",
-          "offsetY": "6px",
-          "blur": "0px",
-          "spread": "0px"
+          "color": "#32180b47",
+          "offsetX": "0px",
+          "offsetY": "22px",
+          "blur": "46px",
+          "spread": "-20px"
         }
       }
     },

@@ -45,25 +45,35 @@
   content: ')';
 }
 
-/* A handwritten word in an outlined oval: every section eyebrow on pin 01 */
+/* An italic word between two gold hairlines: the eyebrow of every section (Pasticceria) */
 .bbm-heading__eyebrow--pill > span {
-  display: inline-block;
-  padding: 0.05em 0.9em 0.15em;
-  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
-  border-radius: 50%;
-  background-color: var(--bbm-heading-pill-bg, var(--bbm-color-bg-surface));
-  box-shadow: var(--bbm-shadow-sticker-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
   font-family: var(--bbm-text-hand-md-family);
   font-size: var(--bbm-text-hand-md-size);
+  font-style: italic;
   font-weight: var(--bbm-text-hand-md-weight);
   line-height: var(--bbm-text-hand-md-line-height);
-  letter-spacing: 0;
+  letter-spacing: 0.01em;
   text-transform: none;
-  color: var(--bbm-color-text-primary);
+  color: var(--bbm-color-cherry-700);
+}
+
+.bbm-heading__eyebrow--pill > span::before,
+.bbm-heading__eyebrow--pill > span::after {
+  content: '';
+  width: 2.25rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--bbm-color-gold-500));
+}
+
+.bbm-heading__eyebrow--pill > span::after {
+  background: linear-gradient(90deg, var(--bbm-color-gold-500), transparent);
 }
 
 .bbm-heading--inverse .bbm-heading__eyebrow--pill > span {
-  border-color: var(--bbm-color-border-inverse);
+  color: var(--bbm-color-gold-300);
 }
 
 /* Title */

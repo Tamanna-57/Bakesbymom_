@@ -123,23 +123,6 @@
   container-type: size;
 }
 
-.bake-scene {
-  display: block;
-  /* As big as the space allows while keeping the drawing's 6:5 shape */
-  width: min(100cqw, 120cqh);
-  height: auto;
-  aspect-ratio: 6 / 5;
-  border: var(--bbm-border-width-thick) solid var(--bbm-color-border-default);
-  border-radius: var(--bbm-radius-xl);
-  background: var(--_wall);
-  box-shadow: 6px 6px 0 var(--bbm-color-border-default);
-  stroke: var(--bbm-color-border-default);
-  stroke-width: 4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: background-color var(--_fade);
-}
-
 /* The step rail */
 .bake__rail {
   grid-area: rail;
@@ -420,91 +403,105 @@
   }
 }
 
-/* The drawing ---------------------------------------------------------------- */
+/* The drawing: an isometric kitchen ---------------------------------------- */
 
-.bake-scene .f-paper {
-  fill: var(--bbm-color-paper);
+.bake-scene {
+  --_wall-shade: color-mix(in srgb, var(--_wall), var(--bbm-color-brown-900) 16%);
+  --_wall-line: color-mix(in srgb, var(--_wall), var(--bbm-color-brown-900) 38%);
+  display: block;
+  /* As big as the space allows while keeping the drawing's 6:5 shape */
+  width: min(100cqw, 120cqh);
+  aspect-ratio: 6 / 5;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--_room), var(--bbm-color-brown-900) 14%);
+  border-radius: var(--bbm-radius-xl);
+  background:
+    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--_room), white 55%), transparent 70%), var(--_room);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.6) inset,
+    0 24px 48px -24px rgb(50 24 11 / 0.35);
+  transition: background-color var(--_fade, 700ms);
 }
-.bake-scene .f-sunken {
-  fill: var(--bbm-color-beige-100);
+
+.bake-scene__svg {
+  width: 100%;
+  height: 100%;
 }
-.bake-scene .f-flour {
-  fill: var(--bbm-color-beige-100);
+
+.bake-scene stop {
+  transition: stop-color var(--_fade, 700ms);
 }
-.bake-scene .f-pink {
+
+.bk-check {
   fill: var(--bbm-color-pink-200);
-}
-.bake-scene .f-pink2 {
-  fill: var(--bbm-color-pink-300);
-}
-.bake-scene .f-cherry {
-  fill: var(--bbm-color-cherry-500);
-}
-.bake-scene .f-blue {
-  fill: var(--bbm-color-blue-100);
-}
-.bake-scene .f-blue2 {
-  fill: var(--bbm-color-blue-300);
-}
-.bake-scene .f-butter {
-  fill: var(--bbm-color-butter-300);
-}
-.bake-scene .f-gold {
-  fill: var(--bbm-color-butter-400);
-}
-.bake-scene .f-matcha {
-  fill: var(--bbm-color-matcha-400);
-}
-.bake-scene .f-brown {
-  fill: var(--bbm-color-brown-500);
-}
-.bake-scene .f-tin {
-  fill: var(--bbm-color-blue-400);
-}
-.bake-scene .f-skin {
-  fill: #e9bf9c; /* matches Mom's portrait in content/mom.svg */
-}
-.bake-scene .f-ink {
-  fill: var(--bbm-color-brown-900);
-}
-.bake-scene .f-bowl-in {
-  fill: var(--bbm-color-blue-200);
-}
-.bake-scene .f-oven-in {
-  fill: var(--bbm-color-brown-800);
-}
-
-.bk-wall,
-.bk-sky,
-.bk-sky-cut,
-.bk-sun,
-.bk-roofs {
-  transition: fill var(--_fade, 700ms);
-}
-
-.bk-wall {
-  fill: var(--_wall);
+  opacity: 0.55;
 }
 
 .bk-tiles {
   color: var(--bbm-color-paper);
-  opacity: 0.3;
+  opacity: 0.35;
 }
 
 .bk-sky,
 .bk-sky-cut {
   fill: var(--_sky);
+  transition: fill var(--_fade, 700ms);
 }
 
 .bk-roofs {
   fill: var(--_roofs);
+  transition: fill var(--_fade, 700ms);
+}
+
+.bk-frame {
+  fill: none;
+  stroke: var(--bbm-color-paper);
+  stroke-width: 1.6;
+}
+
+.bk-sill {
+  fill: var(--bbm-color-paper);
+  stroke: var(--_wall-line);
+  stroke-width: 0.4;
+}
+
+.bk-leaf {
+  fill: var(--bbm-color-matcha-400);
+}
+
+.bk-pot {
+  fill: var(--bbm-color-cherry-500);
+}
+
+.bk-picture {
+  fill: var(--bbm-color-butter-300);
+  stroke: var(--bbm-color-butter-600);
+  stroke-width: 0.5;
+}
+
+.bk-picture__in {
+  fill: var(--bbm-color-paper);
+}
+
+.bk-picture__heart {
+  fill: var(--bbm-color-cherry-500);
+}
+
+.bk-stripe {
+  fill: var(--bbm-color-paper);
+  opacity: 0.7;
+}
+
+.bk-stripe--shade {
+  opacity: 0.4;
 }
 
 /* The sun climbs across the window and sets by nightfall; then the moon and stars come out */
 .bk-sun {
   --_arc: min(calc(var(--day, 0) * 1.2), 1);
   fill: var(--_sun);
-  transform: translate(calc(var(--_arc) * 136px), calc(sin(var(--_arc) * 180deg) * -92px));
+  transform: translate(calc(var(--_arc) * 46px), calc(sin(var(--_arc) * 180deg) * -30px));
+  transition: fill var(--_fade, 700ms);
 }
 
 .bk-moon,
@@ -517,13 +514,32 @@
 .bk-dim {
   fill: var(--bbm-color-brown-900);
   opacity: var(--_dim, 0);
+  pointer-events: none;
   transition: opacity var(--_fade, 700ms);
 }
 
 .bk-glow {
   fill: var(--bbm-color-butter-200);
   opacity: var(--_glow, 0);
+  pointer-events: none;
   transition: opacity var(--_fade, 700ms);
+}
+
+/* The pendant lamp */
+.bk-cord {
+  fill: none;
+  stroke: var(--bbm-color-brown-900);
+  stroke-width: 1.2;
+}
+
+.bk-shade {
+  fill: var(--bbm-color-cherry-600);
+  stroke: var(--bbm-color-cherry-900);
+  stroke-width: 0.8;
+}
+
+.bk-shade-rim {
+  fill: var(--bbm-color-cherry-800);
 }
 
 .bk-bulb {
@@ -531,18 +547,18 @@
   transition: fill var(--_fade, 700ms);
 }
 
-.bake-scene[data-step='4'] .bk-bulb,
-.bake-scene[data-step='5'] .bk-bulb {
+.bake-scene:is([data-step='4'], [data-step='5']) .bk-bulb {
   fill: var(--bbm-color-butter-300);
+  filter: drop-shadow(0 0 6px var(--bbm-color-butter-300));
 }
 
-/* Set pieces swap in and out as the steps change */
+/* Set pieces swap in and out as the steps change: each one lands on the island */
 .bk-piece {
   opacity: 0;
-  transform: translateY(16px);
+  translate: 0 -26px;
   transition:
     opacity 420ms var(--bbm-motion-easing-standard),
-    transform 600ms var(--bbm-motion-easing-out);
+    translate 700ms var(--bbm-motion-easing-bounce, cubic-bezier(0.34, 1.56, 0.64, 1));
 }
 
 .bake-scene:is([data-step='0'], [data-step='1'], [data-step='2']) .bk-piece--bowl,
@@ -550,21 +566,23 @@
 .bake-scene[data-step='4'] .bk-piece--cake,
 .bake-scene[data-step='5'] .bk-piece--box {
   opacity: 1;
-  transform: none;
+  translate: none;
 }
 
 /* Measure: the cup tips and the flour piles up as you scroll */
 .bk-cup {
-  transform-box: view-box;
-  transform-origin: 268px 134px;
-  transform: rotate(calc(-12deg - var(--p0, 0) * 28deg));
+  transform-box: fill-box;
+  transform-origin: 20% 80%;
+  rotate: calc(-6deg - var(--p0, 0) * 26deg);
   transition: opacity 300ms;
 }
 
 .bk-stream {
+  fill: none;
   stroke: var(--bbm-color-beige-100);
-  stroke-width: 9;
-  stroke-dasharray: 2 14;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 2 9;
   opacity: 0;
   transition: opacity 300ms;
 }
@@ -580,15 +598,15 @@
 
 @keyframes bk-pour {
   to {
-    stroke-dashoffset: -16;
+    stroke-dashoffset: -11;
   }
 }
 
 .bk-flour {
   fill: var(--bbm-color-beige-100);
-  transform-box: view-box;
-  transform-origin: 240px 238px;
-  transform: scaleY(calc(var(--p0, 0) * (1 - var(--p2, 0))));
+  transform-box: fill-box;
+  transform-origin: center;
+  scale: calc(0.05 + var(--p0, 0) * (1 - var(--p2, 0)) * 0.95);
 }
 
 /* Mix: the flour becomes golden batter */
@@ -598,17 +616,16 @@
 }
 
 .bk-swirl {
+  fill: none;
   stroke: var(--bbm-color-butter-500);
-  stroke-width: 2.5;
-  stroke-dasharray: 12 8;
-  stroke-dashoffset: calc(var(--p2, 0) * -240);
+  stroke-width: 0.9;
+  stroke-dasharray: 5 3;
+  stroke-dashoffset: calc(var(--p2, 0) * -120);
   opacity: calc(var(--p2, 0) * 0.9);
 }
 
 .bk-whisk {
   opacity: 0;
-  transform-box: view-box;
-  transform-origin: 300px 140px;
   transition: opacity 300ms;
 }
 
@@ -622,19 +639,24 @@
 
 @keyframes bk-whisk {
   from {
-    transform: translateX(-18px) rotate(-8deg);
+    transform: translateX(-12px) rotate(-6deg);
   }
   to {
-    transform: translateX(14px) rotate(6deg);
+    transform: translateX(10px) rotate(5deg);
   }
 }
 
 .bk-handle {
+  fill: none;
   stroke: var(--bbm-color-brown-600);
+  stroke-width: 6;
+  stroke-linecap: round;
 }
 
-.bk-bowl-band {
-  stroke: var(--bbm-color-blue-300);
+.bk-wires {
+  fill: none;
+  stroke: var(--bbm-color-blue-500);
+  stroke-width: 1.6;
 }
 
 /* Eggs: one egg on the counter, and Mom's hand takes it away */
@@ -642,10 +664,6 @@
   opacity: 0;
   cursor: pointer;
   transition: opacity 300ms;
-}
-
-.bk-sheen {
-  stroke: var(--bbm-color-beige-300);
 }
 
 .bake-scene[data-step='1'] .bk-egg,
@@ -673,8 +691,26 @@
   }
 }
 
+.bk-sleeve {
+  fill: var(--bbm-color-blue-300);
+  stroke: var(--bbm-color-blue-600);
+  stroke-width: 1.5;
+}
+
+.bk-bangle {
+  fill: var(--bbm-color-butter-400);
+  stroke: var(--bbm-color-butter-700);
+  stroke-width: 1;
+}
+
+.bk-skin {
+  fill: #e9bf9c; /* matches Mom's portrait in content/mom.svg */
+  stroke: #b98763;
+  stroke-width: 1.2;
+}
+
 .bk-hand {
-  transform: translateX(130px);
+  transform: translateX(280px);
 }
 
 .is-egg-taken .bk-hand {
@@ -691,14 +727,14 @@
 
 @keyframes bk-hand {
   0% {
-    transform: translateX(130px);
+    transform: translateX(280px);
   }
   35%,
   55% {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(140px);
+    transform: translateX(290px);
   }
 }
 
@@ -708,16 +744,11 @@
     transform: translateX(0);
   }
   100% {
-    transform: translateX(140px);
+    transform: translateX(290px);
   }
 }
 
 /* Bake: the oven glows, the cake rises, the timer runs down */
-.bk-oven-glow {
-  fill: var(--bbm-color-butter-300);
-  opacity: 0.15;
-}
-
 .is-baking .bk-oven-glow {
   animation: bk-glow 1.2s ease-in-out infinite alternate;
 }
@@ -757,25 +788,28 @@
   }
 }
 
-.bk-timer-text {
-  fill: var(--bbm-color-butter-300);
-  font-family: var(--bbm-font-family-body);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+.bk-tin {
+  fill: var(--bbm-color-blue-400);
 }
 
 .bk-heat {
+  fill: none;
   stroke: var(--bbm-color-brown-400);
+  stroke-width: 2;
+  stroke-linecap: round;
   opacity: 0;
 }
 
-.is-baking .bk-heat {
+.is-baking .bk-heat path {
   animation: bk-heat 1.4s ease-out infinite;
 }
 
 .is-baking .bk-heat path:nth-child(2) {
   animation-delay: 0.3s;
+}
+
+.is-baking .bk-heat {
+  opacity: 1;
 }
 
 @keyframes bk-heat {
@@ -791,36 +825,22 @@
 
 .bk-ding {
   opacity: 0;
-  transform-box: fill-box;
-  transform-origin: center;
-  transform: scale(0.4);
-  transition:
-    opacity 300ms,
-    transform 500ms var(--bbm-motion-easing-bounce);
+  transition: opacity 300ms;
 }
 
 .is-baked .bk-ding {
   opacity: 1;
-  transform: none;
 }
 
-/* Decorate: the name is piped across the cake, left to right */
+/* Decorate: the name is piped across the top of the cake */
 .bk-name-text {
   fill: var(--bbm-color-cherry-700);
   font-family: var(--bbm-font-family-script);
-  font-size: 34px;
-}
-
-.bk-bag {
-  opacity: 0;
+  font-size: 9px;
 }
 
 .bake-scene[data-step='4']:not(.is-still) .bk-name-text {
-  animation: bk-pipe 1.8s 0.35s ease-in-out both;
-}
-
-.bake-scene[data-step='4']:not(.is-still) .bk-bag {
-  animation: bk-bag 1.8s 0.35s ease-in-out both;
+  animation: bk-pipe 1.8s 0.45s ease-in-out both;
 }
 
 @keyframes bk-pipe {
@@ -832,49 +852,47 @@
   }
 }
 
-@keyframes bk-bag {
-  0% {
-    opacity: 1;
-    transform: translate(calc(240px - var(--name-w) / 2), 228px);
-  }
-  90% {
-    opacity: 1;
-    transform: translate(calc(240px + var(--name-w) / 2), 228px);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(calc(252px + var(--name-w) / 2), 208px);
-  }
-}
-
 /* Box it: the lid comes down, then the ribbon and the tag */
 .bk-lid {
-  transform: translateY(calc((1 - min(calc(var(--p5, 0) * 1.8), 1)) * -150px));
-}
-
-.bk-lid-text {
-  fill: var(--bbm-color-cherry-700);
-  font-family: var(--bbm-font-family-script);
-  font-size: 20px;
+  transform: translateY(calc((1 - min(calc(var(--p5, 0) * 1.8), 1)) * -120px));
 }
 
 .bk-ribbon {
   opacity: clamp(0, calc((var(--p5, 0) - 0.55) * 6), 1);
 }
 
-.bk-tails {
-  stroke: var(--bbm-color-cherry-500);
-}
-
 .bk-tag {
   opacity: clamp(0, calc((var(--p5, 0) - 0.7) * 6), 1);
+}
+
+.bk-tag__string {
+  fill: none;
+  stroke: var(--bbm-color-cherry-700);
+  stroke-width: 1.2;
+}
+
+.bk-tag__card {
+  fill: var(--bbm-color-paper);
+  stroke: var(--bbm-color-brown-900);
+  stroke-width: 1.2;
+}
+
+.bk-tag__hole {
+  fill: var(--_room);
+  stroke: var(--bbm-color-brown-900);
+  stroke-width: 0.8;
 }
 
 .bk-tag-text {
   fill: var(--bbm-color-text-primary);
   font-family: var(--bbm-font-family-hand);
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 700;
+}
+
+/* The still version keeps every piece where it lands */
+.is-still .bk-piece {
+  transition: none;
 }
 
 /* The still version: the six steps as an illustrated recipe card --------- */

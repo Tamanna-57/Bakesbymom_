@@ -336,6 +336,190 @@
   gap: var(--bbm-space-6);
 }
 
+/* The Treats page ---------------------------------------------------------- */
+
+.shop-hero {
+  overflow: hidden;
+}
+
+.shop-hero__grid {
+  display: grid;
+  gap: var(--bbm-space-6);
+  align-items: center;
+}
+
+@media (min-width: 960px) {
+  .shop-hero__grid {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: var(--bbm-space-10);
+  }
+}
+
+.shop-hero__copy {
+  display: grid;
+  gap: var(--bbm-space-6);
+  justify-items: start;
+}
+
+.shop-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bbm-space-3);
+}
+
+.shop-hero__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bbm-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.shop-hero__facts li {
+  padding: var(--bbm-space-2) var(--bbm-space-4);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-pill);
+  background: var(--bbm-color-bg-surface);
+  font-size: var(--bbm-text-body-sm-size);
+}
+
+.shop-hero__facts strong {
+  font-family: var(--bbm-font-family-display);
+  font-size: 1.15em;
+  color: var(--bbm-color-text-brand);
+}
+
+.shop-hero__art {
+  position: relative;
+  margin-inline: calc(var(--bbm-space-4) * -1);
+}
+
+/* A soft halo behind the drawing */
+.shop-hero__art::before {
+  content: '';
+  position: absolute;
+  inset: 8% 6% 4%;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(255 253 246 / 0.75), rgb(255 253 246 / 0));
+}
+
+.shop-hero__art > svg {
+  position: relative;
+}
+
+/* The grid: Cakes leads, twice as wide on a wide screen */
+@media (min-width: 1100px) {
+  .shop-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* How it works */
+.shop-steps__list {
+  display: grid;
+  gap: var(--bbm-space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+@media (min-width: 820px) {
+  .shop-steps__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.shop-step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-content: start;
+  gap: var(--bbm-space-1) var(--bbm-space-3);
+  padding: var(--bbm-space-4) var(--bbm-space-5) var(--bbm-space-6);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-xl);
+  background: var(--bbm-color-bg-surface);
+  box-shadow: var(--bbm-shadow-sticker-md);
+}
+
+.shop-step__art {
+  grid-column: 1 / -1;
+  margin: calc(var(--bbm-space-2) * -1) calc(var(--bbm-space-3) * -1) var(--bbm-space-2);
+  border-radius: var(--bbm-radius-lg);
+  background: radial-gradient(ellipse at 50% 40%, var(--bbm-color-blue-50), transparent 70%);
+}
+
+.shop-step__num {
+  grid-row: span 2;
+  margin: 0;
+  font-family: var(--bbm-font-family-display);
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--bbm-color-pink-500);
+}
+
+.shop-step__title {
+  margin: 0;
+  font-family: var(--bbm-font-family-display);
+  font-size: var(--bbm-text-heading-md-size);
+  line-height: 1.15;
+}
+
+.shop-step__body {
+  margin: 0;
+  color: var(--bbm-color-text-secondary);
+}
+
+/* Make it a combo */
+.shop-combo > .site-container {
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .shop-combo > .site-container {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.shop-combo__copy {
+  display: grid;
+  gap: var(--bbm-space-4);
+  justify-items: start;
+  max-width: 34rem;
+}
+
+.shop-combo__copy p {
+  margin: 0;
+  color: var(--bbm-color-beige-200);
+}
+
+.shop-combo__kicker {
+  font-family: var(--bbm-font-family-hand);
+  font-size: 1.5rem;
+  color: var(--bbm-color-butter-300) !important;
+}
+
+.shop-combo__title {
+  margin: 0;
+  font-family: var(--bbm-font-family-display);
+  font-size: var(--bbm-text-display-md-size);
+  line-height: var(--bbm-text-display-md-line-height);
+  color: var(--bbm-color-paper);
+}
+
+.shop-combo__title em {
+  font-family: var(--bbm-font-family-script);
+  font-style: normal;
+  font-weight: 400;
+  color: var(--bbm-color-pink-300);
+}
+
+.shop-combo__ghost {
+  color: var(--bbm-color-paper);
+  border-color: var(--bbm-color-paper);
+}
 /* The flavour a visitor picked on the home page (/catalog?flavour=…), above the shelves */
 .catalog-flavour {
   display: grid;

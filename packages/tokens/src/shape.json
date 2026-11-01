@@ -3,10 +3,10 @@
     "none": { "$type": "dimension", "$value": "0px" },
     "xs": { "$type": "dimension", "$value": "4px", "$description": "Tape labels, tiny tags." },
     "sm": { "$type": "dimension", "$value": "8px", "$description": "Step cards, small panels." },
-    "md": { "$type": "dimension", "$value": "14px", "$description": "Menu and filling cards." },
-    "lg": { "$type": "dimension", "$value": "20px", "$description": "Default card and product image." },
-    "xl": { "$type": "dimension", "$value": "28px", "$description": "Feature panels." },
-    "2xl": { "$type": "dimension", "$value": "40px", "$description": "Hero and showcase panels." },
+    "md": { "$type": "dimension", "$value": "10px", "$description": "Menu and filling cards." },
+    "lg": { "$type": "dimension", "$value": "14px", "$description": "Default card and product image." },
+    "xl": { "$type": "dimension", "$value": "18px", "$description": "Feature panels." },
+    "2xl": { "$type": "dimension", "$value": "26px", "$description": "Hero and showcase panels." },
     "pill": { "$type": "dimension", "$value": "9999px", "$description": "Every button, input, badge and chip." },
     "arch": { "$value": "9999px 9999px 0 0", "$description": "Arch-topped photo frames (Berloga blog cards)." }
   },
@@ -15,11 +15,11 @@
       "hairline": { "$type": "dimension", "$value": "1px", "$description": "Rules and dividers." },
       "thin": {
         "$type": "dimension",
-        "$value": "1.5px",
-        "$description": "Sticker outline on cards, buttons and inputs."
+        "$value": "1px",
+        "$description": "Fine ink rule on cards, buttons and inputs."
       },
-      "thick": { "$type": "dimension", "$value": "2px", "$description": "Emphasis outlines and the focus ring." },
-      "heavy": { "$type": "dimension", "$value": "4px", "$description": "Brand frames." }
+      "thick": { "$type": "dimension", "$value": "1.5px", "$description": "Emphasis outlines and the focus ring." },
+      "heavy": { "$type": "dimension", "$value": "2px", "$description": "Brand frames." }
     }
   },
   "focus": {

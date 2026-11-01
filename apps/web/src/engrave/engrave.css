@@ -1,0 +1,196 @@
+/* The engravings (kit.tsx): cocoa ink over soft washes, contour hatching and gold foil. When a drawing scrolls
+   into view its outlines draw themselves in, then the hatching and the washes settle under them. */
+
+.eg {
+  --eg-ink: var(--bbm-color-brown-900);
+  --eg-hatch: var(--bbm-color-brown-800);
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.eg-ink {
+  fill: none;
+  stroke: var(--eg-ink);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.eg-ink--hair {
+  stroke-width: 0.6;
+}
+
+.eg-ink--fine {
+  stroke-width: 1.1;
+}
+
+.eg-ink--bold {
+  stroke-width: 1.8;
+}
+
+.eg-hatchline {
+  stroke: var(--eg-hatch);
+  stroke-width: 0.55;
+}
+
+.eg-stipple {
+  fill: var(--eg-hatch);
+}
+
+.eg-shade {
+  opacity: var(--shade-o, 0.75);
+}
+
+/* Gold leaf strokes and text */
+.eg-gold-ink {
+  fill: none;
+  stroke: var(--bbm-color-gold-600);
+  stroke-width: 0.8;
+}
+
+.eg-gold-text {
+  fill: var(--bbm-color-gold-700);
+  font-family: var(--bbm-font-family-display);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+}
+
+.eg-script {
+  fill: var(--bbm-color-cherry-700);
+  font-family: var(--bbm-font-family-script);
+}
+
+.eg-caps {
+  fill: var(--eg-ink);
+  font-family: var(--bbm-font-family-display);
+  font-weight: 500;
+  letter-spacing: 0.24em;
+}
+
+.eg-italic {
+  fill: var(--eg-ink);
+  font-family: var(--bbm-font-family-hand);
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* Draw in ------------------------------------------------------------------ */
+
+.eg[data-armed]:not([data-in]) .eg-ink {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+}
+
+.eg[data-armed]:not([data-in]) :is(.eg-wash, .eg-shade, .eg-fade) {
+  opacity: 0;
+}
+
+.eg[data-armed][data-in] .eg-ink {
+  stroke-dasharray: 1 1;
+  animation: eg-draw 1.6s var(--bbm-motion-easing-standard) calc(var(--i, 0) * 160ms) both;
+}
+
+.eg[data-armed][data-in] :is(.eg-wash, .eg-fade) {
+  animation: eg-fade 900ms ease-out calc(var(--i, 0) * 160ms + 500ms) both;
+}
+
+.eg[data-armed][data-in] .eg-shade {
+  animation: eg-fade-shade 900ms ease-out calc(var(--i, 0) * 160ms + 800ms) both;
+}
+
+/* `--i` is set on .eg-step groups and inherited by the ink inside them */
+.eg-step {
+  --i: 0;
+}
+
+@keyframes eg-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes eg-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes eg-fade-shade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: var(--shade-o, 0.75);
+  }
+}
+
+.eg-drift {
+  animation: eg-drift 5s ease-in-out var(--delay, 0s) infinite alternate;
+}
+
+@keyframes eg-drift {
+  to {
+    translate: 0 -4px;
+  }
+}
+
+.eg-twinkle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: eg-twinkle 3.2s ease-in-out infinite;
+}
+
+@keyframes eg-twinkle {
+  50% {
+    scale: 0.6;
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eg *,
+  .eg-drift,
+  .eg-twinkle {
+    animation: none !important;
+  }
+}
+
+.eg-glow-window {
+  fill: var(--bbm-color-butter-300);
+  opacity: 0.35;
+}
+
+.eg-glass-hi {
+  stroke: #fff;
+  opacity: 0.8;
+}
+
+/* Halftone screen: flat colour, a finer outline, and shade printed as dots */
+.eg--halftone {
+  --eg-ink: var(--bbm-color-brown-800);
+  --eg-hatch: var(--bbm-color-cherry-800);
+}
+
+.eg--halftone .eg-ink--fine {
+  stroke-width: 0.8;
+}
+
+.eg--halftone .eg-ink--bold {
+  stroke-width: 1.3;
+}
+
+.eg--halftone .eg-shade {
+  opacity: var(--shade-o, 0.55);
+}
+
+.eg--halftone .eg-contour {
+  stroke: var(--eg-hatch);
+  stroke-width: 1.5;
+  stroke-dasharray: 0 3.2;
+  stroke-linecap: round;
+  opacity: 0.55;
+}

@@ -43,7 +43,7 @@ const occasionPatterns: Array<[RegExp, string]> = [
   [/\b(romantic|love|valentine)\b/, 'romantic'],
 ];
 
-const byPrice = [...cakes].sort((a, b) => a.price - b.price);
+const byPrice = () => [...cakes].sort((a, b) => a.price - b.price);
 const haystack = (cake: Cake) => {
   const occasion = findOccasion(cake.occasion);
   return `${cake.name} ${cake.description} ${occasion?.name ?? ''} ${occasion?.description ?? ''}`.toLowerCase();
@@ -141,13 +141,14 @@ export function answer(input: string): Answer {
     };
   }
 
-  if (/cheapest|lowest price|least expensive|budget|price range|how much/.test(text) && !budget(text)) {
+  if (/cheapest|lowest price|least expensive|budget|price range|how much/.test(text) && !budget(text) && cakes.length) {
+    const list = byPrice();
     return {
       text: [
-        `Cakes run from ${inr(byPrice[0]!.price)} up to ${inr(byPrice[byPrice.length - 1]!.price)}, depending on size and how much handwork goes on top.`,
+        `Cakes run from ${inr(list[0]!.price)} up to ${inr(list[list.length - 1]!.price)}, depending on size and how much handwork goes on top.`,
         'Here are the gentlest on the wallet:',
       ],
-      cakes: byPrice.slice(0, 3),
+      cakes: list.slice(0, 3),
       chips: ['Cakes under ₹1500', 'What sizes do you do?'],
     };
   }
@@ -216,7 +217,9 @@ export function answer(input: string): Answer {
     }
     const what = asked.join(', ');
     if (!matches.length) {
-      const closest = byPrice.filter((cake) => (occ ? cake.occasion === occ.slug : true)).slice(0, 3);
+      const closest = byPrice()
+        .filter((cake) => (occ ? cake.occasion === occ.slug : true))
+        .slice(0, 3);
       return {
         text: [
           `Nothing on the shelf matches ${what} right now.`,

@@ -37,7 +37,7 @@ function ThisWeek() {
         variant="menu"
         className="site-cake-card"
         name={featuredCake.name}
-        image={{ src: featuredCake.photos[0]!.src, alt: featuredCake.name }}
+        image={{ src: featuredCake.photos[0]!.thumb, alt: featuredCake.name }}
         description={featuredCake.description}
         price={inr(featuredCake.price)}
         style={{ width: 250 }}

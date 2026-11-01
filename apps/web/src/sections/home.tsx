@@ -1,7 +1,7 @@
 /**
  * The home page sections, after pin 16 (SugarLace: stripes, the outlined about card, the flavour grid,
  * the order card and cherry tiles) and pin 13 (Puzzle Pantry: the shape ribbon, shop by the box with
- * filter pills, the occasion row, the split about). The feature strip, the starburst and the checker
+ * filter pills, the split about). The feature strip, the starburst and the checker
  * quote come from other bakery sites on Pinterest (Sweet Crumbs, joe & dough, Sunday Bakehouse).
  * Photos here are stock (content/index.ts `stock`, `treatArt`, `flavours`); the photos of the cakes we sell are
  * kept for the catalog and the gallery.
@@ -21,8 +21,7 @@ import {
   type DoodleName,
 } from '@bakesbymom/ui';
 import { flavours, stock, treatArt } from '../content';
-import { bakery, cakeFlavours, cakeSizes, whatsappLink } from '../content/bakery';
-import { occasions } from '../content/catalog';
+import { bakery, cakeFlavours, cakeSizes, flavourSlug, whatsappLink } from '../content/bakery';
 import { howToOrder, orderLink } from '../content/site';
 import { SectionEdge } from './blocks';
 import { treatCategories } from '../content/treats';
@@ -86,8 +85,8 @@ export function HomeHero() {
             <Button size="lg" href={orderLink} {...external}>
               Order on WhatsApp
             </Button>
-            <Button size="lg" variant="secondary" href="/catalog">
-              See the cakes
+            <Button size="lg" variant="secondary" href="/shop">
+              Cakes & treats
             </Button>
           </div>
         </div>
@@ -236,9 +235,8 @@ export function FlavoursSection() {
                     <span className="home-flavour__pill">any cake</span>
                     <a
                       className="home-flavour__ask"
-                      href={whatsappLink(`Hello Bakes by Mom! I'd like a ${flavour.toLowerCase()} cake 🎂`)}
-                      {...external}
-                      aria-label={`Ask for a ${flavour.toLowerCase()} cake on WhatsApp`}
+                      href={`/catalog?flavour=${flavourSlug(flavour)}`}
+                      aria-label={`See every cake in ${flavour.toLowerCase()}`}
                     >
                       <span aria-hidden="true">↗</span>
                     </a>
@@ -257,7 +255,7 @@ export function FlavoursSection() {
   );
 }
 
-/* Shop by the box (pin 13's bestsellers, with filter pills) ----------- */
+/* Shop cakes & treats (pin 13's bestsellers, with filter pills); every category is also on /shop ---- */
 
 const boxFilters = [
   { value: 'all', label: 'All' },
@@ -282,7 +280,7 @@ export function ShopByBoxSection() {
       <div className="site-container">
         <div className="home-shop__head">
           <h2 className="home-shop__title">
-            <span className="home-script">Shop</span> by the box
+            <span className="home-script">Shop</span> cakes & treats
           </h2>
           <FilterChips label="Show treats for" options={boxFilters} value={filter} onChange={setFilter} />
         </div>
@@ -312,49 +310,6 @@ export function ShopByBoxSection() {
               </a>
             </li>
           ))}
-        </ul>
-      </div>
-    </section>
-  );
-}
-
-/* Occasions (pin 13's category row on a curved pale blue band) ---------- */
-
-const occasionIcons: Record<string, { name: DoodleName; color: string }> = {
-  'birthday-kids': { name: 'star', color: 'var(--bbm-color-butter-400)' },
-  'birthday-parents': { name: 'daisy', color: 'var(--bbm-color-pink-500)' },
-  'birthday-partner': { name: 'heart', color: 'var(--bbm-color-cherry-500)' },
-  'birthday-classic': { name: 'cupcake', color: 'var(--bbm-color-pink-500)' },
-  engagement: { name: 'sparkle', color: 'var(--bbm-color-butter-400)' },
-  anniversary: { name: 'bow', color: 'var(--bbm-color-cherry-500)' },
-  'parents-day': { name: 'heart', color: 'var(--bbm-color-pink-500)' },
-  romantic: { name: 'cherry', color: 'var(--bbm-color-cherry-500)' },
-  farewell: { name: 'daisy', color: 'var(--bbm-color-blue-600)' },
-  festival: { name: 'sparkle', color: 'var(--bbm-color-cherry-500)' },
-  teachers: { name: 'star', color: 'var(--bbm-color-blue-600)' },
-};
-
-export function OccasionBand() {
-  return (
-    <section className="home-occasions" aria-labelledby="home-occasions-title">
-      <div className="site-container">
-        <h2 id="home-occasions-title" className="home-occasions__title">
-          A cake for <span className="home-script">every</span> occasion
-        </h2>
-        <ul className="home-occasions__list">
-          {occasions.map((occasion) => {
-            const icon = occasionIcons[occasion.slug] ?? { name: 'heart', color: 'currentColor' };
-            return (
-              <li key={occasion.slug}>
-                <a href={`/catalog?occasion=${occasion.slug}`}>
-                  <span className="home-occasions__icon" aria-hidden="true">
-                    <Doodle name={icon.name} size={34} color={icon.color} />
-                  </span>
-                  <span className="home-occasions__label">{occasion.name}</span>
-                </a>
-              </li>
-            );
-          })}
         </ul>
       </div>
     </section>
@@ -393,7 +348,7 @@ const craftTiles = [
     label: 'Custom cake',
     href: whatsappLink("Hello Bakes by Mom! I'd like to plan a custom cake 🎂"),
     // One of Mom's own: a cut-out photo, shown whole on a pink card
-    image: '/photos/heart-pearl-1.webp',
+    image: '/photos/thumbs/IMG-20260206-WA0062.webp',
     cutout: true,
     externalLink: true,
   },
@@ -488,6 +443,10 @@ export function CraftedSection() {
 
 /* Mom's kitchen (pin 13's split about, with the cartouche frame) -------- */
 
+/**
+ * Not on the home page for now (it repeated the about us card and Our story), but kept, with its styles in
+ * home.css and its story in Storybook (Sections/Home/Moms Kitchen), for another page or design.
+ */
 export function KitchenSplit() {
   return (
     <section id="story" className="home-kitchen">

@@ -22,9 +22,48 @@ export function usePath() {
   return path;
 }
 
-export function navigate(url: string) {
-  window.history.pushState(null, '', url);
+/** What this site keeps on each history entry. */
+interface EntryState {
+  /** Pages into this visit: 0 for the page the visitor landed on. */
+  depth?: number;
+  /** Where the visitor had scrolled to when they left this page. */
+  scrollY?: number;
+}
+
+const entry = (): EntryState => (window.history.state as EntryState | null) ?? {};
+
+/** Goes to another page of the site. `replace` swaps the current page instead of adding one to the history. */
+export function navigate(url: string, { replace = false } = {}) {
+  const depth = entry().depth ?? 0;
+  if (replace) {
+    window.history.replaceState({ depth }, '', url);
+  } else {
+    // Remember the scroll position, so coming back lands in the same spot.
+    window.history.replaceState({ ...entry(), scrollY: window.scrollY }, '');
+    window.history.pushState({ depth: depth + 1 }, '', url);
+  }
   window.dispatchEvent(new Event(NAVIGATE));
+}
+
+/** Changes the address without a new history entry (filters kept in the URL), keeping the entry's state. */
+export function replaceUrl(url: string) {
+  window.history.replaceState(window.history.state, '', url);
+}
+
+/** Whether the previous history entry is a page of this site, rather than wherever the visitor came from. */
+export const canGoBack = () => (entry().depth ?? 0) > 0;
+
+/** The scroll position saved on this history entry, if the visitor is coming back to it. */
+export const savedScroll = () => entry().scrollY;
+
+/**
+ * One level up: "/shop/cookies/choco-chip" → "/shop/cookies", "/catalog/cake-x" → "/catalog", "/about" → "/".
+ * The cakes (/catalog) are a category of Cakes & Treats, so they go up to "/shop".
+ */
+export function parentPath(path: string) {
+  if (path === '/catalog') return '/shop';
+  const parts = path.split('/').filter(Boolean);
+  return '/' + parts.slice(0, -1).join('/');
 }
 
 /** Turns clicks on links to other pages of this site into client-side navigation. */

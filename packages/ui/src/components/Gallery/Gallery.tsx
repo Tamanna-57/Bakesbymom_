@@ -1,4 +1,5 @@
 import {
+  useEffect,
   useId,
   useRef,
   useState,
@@ -33,6 +34,14 @@ export interface GalleryProps extends HTMLAttributes<HTMLDivElement> {
   marquee?: string[];
   /** `grid`: link under the squares, e.g. `{ label: 'Follow @bakesbymom', href: '…' }`. */
   follow?: { label: string; href: string };
+  /** `strips`: what sits above the strips, such as the heading and filter chips (it pins with them). */
+  head?: ReactNode;
+  /**
+   * `strips`: pin the gallery under the header (`--bbm-gallery-pin-top`) and let the page's scroll open the strips
+   * one after another, left to right, before the page carries on. Clicks, drags and arrows scroll the page to that
+   * strip. Off with reduced motion, or on a screen under 500px tall.
+   */
+  pinOnScroll?: boolean;
 }
 
 function Arrow({ dir }: { dir: 'prev' | 'next' }) {
@@ -58,16 +67,11 @@ export function Gallery({
   defaultIndex,
   marquee,
   follow,
+  head,
+  pinOnScroll = false,
   className,
   ...rest
 }: GalleryProps) {
-  const [open, setOpen] = useState(() => Math.min(defaultIndex ?? Math.floor(items.length / 2), items.length - 1));
-  const buttons = useRef<Array<HTMLButtonElement | null>>([]);
-  const dragStart = useRef<number | null>(null);
-  // A drag ends with a click on whichever strip is under the pointer; skip that click.
-  const dragged = useRef(false);
-  const captionId = `bbm-gallery-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
-
   if (variant === 'trio') {
     return (
       <div {...rest} role="group" aria-label={label} className={cx('bbm-gallery', 'bbm-gallery--trio', className)}>
@@ -105,10 +109,135 @@ export function Gallery({
     );
   }
 
+  return (
+    <GalleryStrips
+      {...rest}
+      items={items}
+      label={label}
+      defaultIndex={defaultIndex}
+      head={head}
+      pinOnScroll={pinOnScroll}
+      className={className}
+    />
+  );
+}
+
+const media = (query: string) =>
+  typeof window !== 'undefined' && typeof window.matchMedia === 'function' ? window.matchMedia(query) : null;
+
+/** How far the page scrolls to move the open strip on by one. */
+const stepPx = () => Math.max(160, Math.round(window.innerHeight * 0.32));
+
+/** Pin 01's strips. With `pinOnScroll`, the page's scroll picks the open strip (see GalleryProps). */
+function GalleryStrips({
+  items,
+  label,
+  defaultIndex,
+  head,
+  pinOnScroll,
+  className,
+  ...rest
+}: Pick<GalleryProps, 'items' | 'label' | 'defaultIndex' | 'head' | 'pinOnScroll' | 'className'> &
+  HTMLAttributes<HTMLDivElement>) {
+  const middle = () => Math.min(defaultIndex ?? Math.floor(items.length / 2), items.length - 1);
+  const [open, setOpen] = useState(middle);
+  const [pinned, setPinned] = useState(false);
+  const buttons = useRef<Array<HTMLButtonElement | null>>([]);
+  const outer = useRef<HTMLDivElement>(null);
+  const panel = useRef<HTMLDivElement>(null);
+  const dragStart = useRef<number | null>(null);
+  // A drag ends with a click on whichever strip is under the pointer; skip that click.
+  const dragged = useRef(false);
+  const captionId = `bbm-gallery-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
+
+  // Pin only when the visitor hasn't asked for reduced motion and the screen is tall enough for the panel.
+  useEffect(() => {
+    if (!pinOnScroll) return;
+    const still = media('(prefers-reduced-motion: reduce)');
+    const tall = media('(min-height: 500px)');
+    if (!still || !tall) return;
+    const update = () => setPinned(!still.matches && tall.matches);
+    update();
+    still.addEventListener('change', update);
+    tall.addEventListener('change', update);
+    return () => {
+      still.removeEventListener('change', update);
+      tall.removeEventListener('change', update);
+      setPinned(false);
+    };
+  }, [pinOnScroll]);
+
+  /** Where the panel sticks, from its own `top`. */
+  const stickTop = () => (panel.current ? parseFloat(getComputedStyle(panel.current).top) || 0 : 0);
+  /** How far the page has scrolled into the gallery's runway. */
+  const scrolled = () => (outer.current ? stickTop() - outer.current.getBoundingClientRect().top : 0);
+
+  // Pinned: a runway of one step per strip; the page's scroll picks the open one.
+  useEffect(() => {
+    const o = outer.current;
+    const p = panel.current;
+    if (!pinned || !o || !p) return;
+    let frame = 0;
+    const pick = () => {
+      frame = 0;
+      const index = Math.min(items.length - 1, Math.max(0, Math.round(scrolled() / stepPx())));
+      setOpen(index);
+    };
+    const measure = () => {
+      o.style.height = `${p.offsetHeight + stepPx() * Math.max(0, items.length - 1)}px`;
+      pick();
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(pick);
+    };
+    const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(measure) : null;
+    observer?.observe(p);
+    measure();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', measure);
+    return () => {
+      cancelAnimationFrame(frame);
+      observer?.disconnect();
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', measure);
+      o.style.height = '';
+    };
+  }, [pinned, items.length]);
+
+  // New photos (a filter changed): pinned, start again from the first strip; otherwise open the middle one.
+  const photos = items.map((item) => item.src).join('|');
+  const shownPhotos = useRef(photos);
+  useEffect(() => {
+    if (photos === shownPhotos.current) return;
+    shownPhotos.current = photos;
+    if (!pinned) {
+      setOpen(middle());
+      return;
+    }
+    const past = scrolled();
+    if (past > 0) window.scrollTo({ top: window.scrollY - past });
+    setOpen(0);
+  }, [photos, pinned]);
+
+  // On a phone the strips are a swipe row: keep the open one in view.
+  useEffect(() => {
+    if (!pinned) return;
+    const button = buttons.current[open];
+    const row = button?.parentElement;
+    if (!button || !row || row.scrollWidth <= row.clientWidth) return;
+    row.scrollTo({ left: button.offsetLeft - (row.clientWidth - button.offsetWidth) / 2, behavior: 'smooth' });
+  }, [open, pinned]);
+
   const select = (index: number, focus = false) => {
-    const next = (index + items.length) % items.length;
+    // Pinned, the ends stop rather than wrap round (wrapping would throw the page back up the gallery).
+    const next = pinned ? Math.min(items.length - 1, Math.max(0, index)) : (index + items.length) % items.length;
+    if (focus) buttons.current[next]?.focus({ preventScroll: true });
+    if (pinned) {
+      // Scroll the page to where this strip opens; the scroll handler opens it.
+      window.scrollTo({ top: window.scrollY - scrolled() + next * stepPx(), behavior: 'smooth' });
+      return;
+    }
     setOpen(next);
-    if (focus) buttons.current[next]?.focus();
     buttons.current[next]?.scrollIntoView?.({ block: 'nearest', inline: 'center', behavior: 'smooth' });
   };
 
@@ -142,52 +271,61 @@ export function Gallery({
   const current = items[open];
 
   return (
-    <div {...rest} role="group" aria-label={label} className={cx('bbm-gallery', 'bbm-gallery--strips', className)}>
-      <div className="bbm-gallery__row" onKeyDown={onKeyDown} onPointerDown={onPointerDown} onPointerUp={onPointerUp}>
-        {items.map((item, i) => (
-          <button
-            key={i}
-            ref={(el) => {
-              buttons.current[i] = el;
-            }}
-            type="button"
-            className={cx('bbm-gallery__strip', i === open && 'bbm-gallery__strip--open')}
-            aria-expanded={i === open}
-            aria-describedby={i === open && current?.caption ? captionId : undefined}
-            onClick={() => {
-              if (dragged.current) {
-                dragged.current = false;
-                return;
-              }
-              select(i);
-            }}
-          >
-            <img src={item.src} alt={item.alt} loading="lazy" draggable={false} />
-            {i === open && (
-              <span className="bbm-gallery__chip" aria-hidden="true">
-                <span className="bbm-gallery__chip-drag">Drag</span>
-                <span className="bbm-gallery__chip-swipe">Swipe</span>
-              </span>
-            )}
-          </button>
-        ))}
-      </div>
-      <div className="bbm-gallery__footer">
-        <p id={captionId} className="bbm-gallery__caption">
-          {current?.caption}
-        </p>
-        <div className="bbm-gallery__controls">
-          <button
-            type="button"
-            className="bbm-gallery__nav"
-            aria-label="Previous photo"
-            onClick={() => select(open - 1)}
-          >
-            <Arrow dir="prev" />
-          </button>
-          <button type="button" className="bbm-gallery__nav" aria-label="Next photo" onClick={() => select(open + 1)}>
-            <Arrow dir="next" />
-          </button>
+    <div
+      {...rest}
+      ref={outer}
+      role="group"
+      aria-label={label}
+      className={cx('bbm-gallery', 'bbm-gallery--strips', pinned && 'bbm-gallery--pinned', className)}
+    >
+      <div ref={panel} className="bbm-gallery__panel">
+        {head && <div className="bbm-gallery__head">{head}</div>}
+        <div className="bbm-gallery__row" onKeyDown={onKeyDown} onPointerDown={onPointerDown} onPointerUp={onPointerUp}>
+          {items.map((item, i) => (
+            <button
+              key={i}
+              ref={(el) => {
+                buttons.current[i] = el;
+              }}
+              type="button"
+              className={cx('bbm-gallery__strip', i === open && 'bbm-gallery__strip--open')}
+              aria-expanded={i === open}
+              aria-describedby={i === open && current?.caption ? captionId : undefined}
+              onClick={() => {
+                if (dragged.current) {
+                  dragged.current = false;
+                  return;
+                }
+                select(i);
+              }}
+            >
+              <img src={item.src} alt={item.alt} loading="lazy" draggable={false} />
+              {i === open && (
+                <span className="bbm-gallery__chip" aria-hidden="true">
+                  <span className="bbm-gallery__chip-drag">{pinned ? 'Scroll' : 'Drag'}</span>
+                  <span className="bbm-gallery__chip-swipe">{pinned ? 'Scroll' : 'Swipe'}</span>
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+        <div className="bbm-gallery__footer">
+          <p id={captionId} className="bbm-gallery__caption">
+            {current?.caption}
+          </p>
+          <div className="bbm-gallery__controls">
+            <button
+              type="button"
+              className="bbm-gallery__nav"
+              aria-label="Previous photo"
+              onClick={() => select(open - 1)}
+            >
+              <Arrow dir="prev" />
+            </button>
+            <button type="button" className="bbm-gallery__nav" aria-label="Next photo" onClick={() => select(open + 1)}>
+              <Arrow dir="next" />
+            </button>
+          </div>
         </div>
       </div>
     </div>

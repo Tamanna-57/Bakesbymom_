@@ -131,6 +131,40 @@
   height: 1rem;
 }
 
+/* Optional head (heading, filters) above the strips */
+.bbm-gallery__panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.bbm-gallery__head {
+  display: grid;
+  gap: clamp(var(--bbm-space-3), 2.5svh, var(--bbm-space-6));
+  min-width: 0;
+  margin-bottom: clamp(var(--bbm-space-4), 4svh, var(--bbm-space-10));
+}
+
+/* pinOnScroll: the panel fills the screen under the header while the page scrolls through the strips */
+.bbm-gallery--pinned .bbm-gallery__panel {
+  position: sticky;
+  top: var(--bbm-gallery-pin-top, 0px);
+  box-sizing: border-box;
+  height: calc(100svh - var(--bbm-gallery-pin-top, 0px));
+  justify-content: center;
+  padding-block: clamp(var(--bbm-space-3), 3svh, var(--bbm-space-6));
+}
+
+.bbm-gallery--pinned .bbm-gallery__head {
+  margin-bottom: clamp(var(--bbm-space-3), 3svh, var(--bbm-space-6));
+}
+
+.bbm-gallery--pinned .bbm-gallery__row {
+  flex: 1 1 auto;
+  height: auto;
+  min-height: 0;
+  max-height: 34rem;
+}
+
 /* Phones: a swipe row with every photo in color */
 @media (max-width: 767.98px) {
   .bbm-gallery__row {
@@ -158,6 +192,11 @@
 
   .bbm-gallery__chip-swipe {
     display: inline;
+  }
+
+  /* Pinned, the page's scroll moves the row, so it doesn't snap under the visitor's thumb */
+  .bbm-gallery--pinned .bbm-gallery__row {
+    scroll-snap-type: none;
   }
 }
 

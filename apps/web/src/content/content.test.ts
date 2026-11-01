@@ -1,21 +1,89 @@
-import { describe, expect, it } from 'vitest';
-import { matchPath } from '../router';
+import { beforeAll, describe, expect, it, vi } from 'vitest';
+import { matchPath, parentPath } from '../router';
+import { navLinksFor } from './site';
 import { answer, starterChips } from './assistant';
 import { inr, kgLabel, whatsappLink } from './bakery';
-import { cakes, findCake, occasions } from './catalog';
+import { cakes, catalogStatus, findCake, loadCatalog, occasions, type ApiCake, type ApiCategory } from './catalog';
 import { boxes, cakeOrderMessage, cakePrice, treatOrderMessage } from './order';
-import { findTreatCategory, treatCategories } from './treats';
+import { findTreatCategory, qtyLabel, treatCategories } from './treats';
 
-describe('catalog data from the old site', () => {
-  it('has every occasion and cake, each with a photo', () => {
-    expect(occasions).toHaveLength(11);
-    expect(cakes).toHaveLength(21);
-    for (const cake of cakes) expect(cake.photos.length).toBeGreaterThan(0);
-  });
+// Test-only rows in the shape /api/catalog sends: the site itself keeps no cakes and reads the live database.
+const cake = (id: string, category: string, name: string, prices: [number, number, number], cover: string | null) =>
+  ({
+    id,
+    category_id: category,
+    name,
+    description: null,
+    per_pound_price: prices[0],
+    weight_kg: prices[1],
+    fixed_price: prices[2],
+    sort_order: 1,
+    cover_url: cover,
+  }) satisfies ApiCake;
+const category = (id: string, name: string, list: ApiCake[]): ApiCategory => ({
+  id,
+  name,
+  description: null,
+  sort_order: 1,
+  cakes: list,
+});
+const rows = [
+  category('cat-birthday-kids', 'Kids & Character Birthdays', [
+    cake(
+      'cake-spiderman',
+      'cat-birthday-kids',
+      'Spiderman Web Cake',
+      [800, 1, 1450],
+      '/api/photos/uploads/IMG-20260913-WA0002.png',
+    ),
+  ]),
+  category('cat-birthday-classic', 'Classic Birthday', [
+    cake(
+      'cake-choco-drip',
+      'cat-birthday-classic',
+      'Loaded Chocolate Drip',
+      [800, 1, 1500],
+      '/api/photos/uploads/IMG-20260913-WA0011.png',
+    ),
+    cake('a-new-cake', 'cat-birthday-classic', 'A New Cake', [700, 1, 1200], null),
+  ]),
+  category('cat-anniversary', 'Anniversary', [
+    cake(
+      'cake-anniversary-maroon',
+      'cat-anniversary',
+      'Maroon & Gold Anniversary',
+      [900, 1, 1750],
+      '/api/photos/uploads/IMG-20260913-WA0003.png',
+    ),
+    cake(
+      'cake-anniversary-50',
+      'cat-anniversary',
+      'Golden Jubilee Two-Tier',
+      [950, 2, 3200],
+      'https://bakesbymom.snehagupta.workers.dev/api/photos/cake-anniversary-50/new.webp',
+    ),
+  ]),
+];
 
-  it('keeps the old URLs and prices', () => {
-    const spiderman = findCake('cake-spiderman')!;
-    expect(spiderman).toMatchObject({ perPound: 800, weightKg: 1, price: 1450 });
+beforeAll(async () => {
+  vi.stubGlobal('fetch', async (url: string) =>
+    url === '/api/catalog' ? new Response(JSON.stringify(rows)) : new Response('null', { status: 404 }),
+  );
+  await loadCatalog();
+  vi.unstubAllGlobals();
+});
+
+describe('catalog from the API', () => {
+  it('loads the occasions and cakes, keeping the old URLs and prices', () => {
+    expect(catalogStatus()).toBe('ready');
+    expect(occasions.map((o) => o.slug)).toEqual(['birthday-kids', 'birthday-classic', 'anniversary']);
+    expect(cakes).toHaveLength(5);
+    expect(findCake('cake-spiderman')).toMatchObject({
+      occasion: 'birthday-kids',
+      perPound: 800,
+      weightKg: 1,
+      price: 1450,
+    });
     expect(treatCategories.map((c) => c.slug)).toEqual([
       'brownies',
       'cookies',
@@ -25,6 +93,26 @@ describe('catalog data from the old site', () => {
       'bento-cakes',
       'combos',
     ]);
+  });
+
+  it("shows photos the way the old site does: restaged, else the photo, with a small cover where there's one", () => {
+    expect(findCake('cake-anniversary-maroon')!.photos).toEqual([
+      {
+        src: '/photos/restaged/anniversary-maroon.jpg',
+        thumb: '/photos/thumbs/IMG-20260913-WA0003.webp',
+        backdrop: true,
+      },
+    ]);
+    expect(findCake('cake-spiderman')!.photos).toEqual([
+      {
+        src: '/api/photos/uploads/IMG-20260913-WA0002.png',
+        thumb: '/photos/thumbs/IMG-20260913-WA0002.webp',
+        backdrop: false,
+      },
+    ]);
+    const uploaded = 'https://bakesbymom.snehagupta.workers.dev/api/photos/cake-anniversary-50/new.webp';
+    expect(findCake('cake-anniversary-50')!.photos).toEqual([{ src: uploaded, thumb: uploaded, backdrop: false }]);
+    expect(findCake('a-new-cake')!.photos).toEqual([]);
   });
 });
 
@@ -40,6 +128,18 @@ describe('prices and labels', () => {
     const cake = findCake('cake-spiderman')!;
     expect(cakePrice(cake, 1)).toEqual({ amount: 1450, exact: true });
     expect(cakePrice(cake, 2)).toEqual({ amount: 3200, exact: false }); // 4 pounds × ₹800
+  });
+
+  it("adds the price of a cake's own flavours and add-ons", () => {
+    const cake = {
+      ...findCake('cake-spiderman')!,
+      flavours: [{ name: 'Belgian dark', priceDelta: 100 }],
+      addons: [{ name: 'Fresh flowers', priceDelta: 250 }],
+    };
+    expect(cakePrice(cake, 1, { flavour: 'Belgian dark', addons: ['Fresh flowers', 'Gift box'] })).toEqual({
+      amount: 1800,
+      exact: true,
+    });
   });
 
   it('counts boxes the way the old site did', () => {
@@ -122,5 +222,36 @@ describe('router', () => {
     });
     expect(matchPath('/catalog/:cake', '/catalog')).toBeNull();
     expect(matchPath('/shop/:category', '/about/x')).toBeNull();
+  });
+
+  it('goes one level up for the back button when there is no previous page', () => {
+    expect(parentPath('/shop/brownies/oreo-brownie')).toBe('/shop/brownies');
+    expect(parentPath('/shop/brownies')).toBe('/shop');
+    expect(parentPath('/catalog/cake-spiderman')).toBe('/catalog');
+    // The cakes are a category of Cakes & Treats
+    expect(parentPath('/catalog')).toBe('/shop');
+    expect(parentPath('/shop')).toBe('/');
+    expect(parentPath('/about')).toBe('/');
+  });
+});
+
+describe('nav', () => {
+  const current = (path: string) => navLinksFor(path).find((link) => link.current)?.label;
+
+  it('has one link for cakes and treats, marked on every cake and treat page', () => {
+    expect(navLinksFor('/').map((link) => link.label)).toEqual(['Cakes & Treats', 'Our story', 'How to order']);
+    for (const path of ['/shop', '/shop/cookies', '/shop/brownies/oreo-brownie', '/catalog', '/catalog/cake-x']) {
+      expect(current(path)).toBe('Cakes & Treats');
+    }
+    expect(current('/about')).toBe('Our story');
+    expect(current('/')).toBeUndefined();
+  });
+});
+
+describe('qtyLabel', () => {
+  it('puts the unit in the singular for one', () => {
+    expect(qtyLabel(1, 'jars')).toBe('1 jar');
+    expect(qtyLabel(6, 'cupcakes')).toBe('6 cupcakes');
+    expect(qtyLabel(250, 'grams')).toBe('250 grams');
   });
 });

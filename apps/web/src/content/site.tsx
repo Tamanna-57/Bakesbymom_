@@ -14,18 +14,22 @@ import { cakes, findOccasion } from './catalog';
 import { treatCategories } from './treats';
 import '../sections/sections.css';
 
+/** Cakes and treats share one link: /shop lists every category, cakes (/catalog) among them. */
 export const navLinks: NavLink[] = [
-  { label: 'Cakes', href: '/catalog' },
-  { label: 'Treats', href: '/shop' },
+  { label: 'Cakes & Treats', href: '/shop' },
   { label: 'Our story', href: '/about' },
   { label: 'How to order', href: '/#order' },
 ];
+
+/** Which nav link a page sits under: the cake pages belong to Cakes & Treats. */
+const navSection = (path: string) => (path === '/catalog' || path.startsWith('/catalog/') ? '/shop' : path);
 
 /** The nav with the link for the current section marked (`aria-current`). */
 export const navLinksFor = (path: string): NavLink[] =>
   navLinks.map((link) => ({
     ...link,
-    current: !link.href.includes('#') && (path === link.href || path.startsWith(`${link.href}/`)),
+    current:
+      !link.href.includes('#') && (navSection(path) === link.href || navSection(path).startsWith(`${link.href}/`)),
   }));
 
 /** The opening line of every WhatsApp chat started from the site. */
@@ -82,13 +86,13 @@ export const mobileCta = (
 /** The cocoa bar on the home page: one short line at a time. */
 export const announcement = [
   <>
-    Eggless, baked to order · <a href="/catalog">See the cakes</a>
+    Eggless, baked to order · <a href="/shop">Cakes & treats</a>
   </>,
   <>
     A day's notice helps · <a href="/#order">How to order</a>
   </>,
   <>
-    Treats by the box · <a href="/shop">See them all</a>
+    Cakes for every occasion · <a href="/catalog">See the cakes</a>
   </>,
 ];
 
@@ -96,6 +100,7 @@ export const footerColumns: FooterColumn[] = [
   {
     title: 'Cakes & treats',
     links: [
+      { label: 'Every cake & treat', href: '/shop' },
       { label: 'Cakes by occasion', href: '/catalog' },
       ...treatCategories.map((category) => ({ label: category.name, href: `/shop/${category.slug}` })),
     ],
@@ -130,13 +135,14 @@ export const footerBottom = (
 );
 
 /** One photo per cake, captioned with its name and occasion. */
-export const galleryItems: GalleryItem[] = cakes
-  .filter((cake) => cake.photos.length)
-  .map((cake) => ({
-    src: cake.photos[0]!.src,
-    alt: cake.name,
-    caption: `${cake.name} · ${findOccasion(cake.occasion)?.name ?? ''}`,
-  }));
+export const galleryItems = (): GalleryItem[] =>
+  cakes
+    .filter((cake) => cake.photos.length)
+    .map((cake) => ({
+      src: cake.photos[0]!.thumb,
+      alt: cake.name,
+      caption: `${cake.name} · ${findOccasion(cake.occasion)?.name ?? ''}`,
+    }));
 
 export const faqItems: AccordionItem[] = [
   {

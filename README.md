@@ -58,12 +58,12 @@ The packages are npm workspaces in this repo. To use them from another repositor
 | Section | From |
 |---|---|
 | Home page: hero stripes, about us card, flavours, order card and cherry tiles | 16 SugarLace bakery |
-| Home page: ribbon, shop by the box, occasion row, Mom's kitchen | 13 Puzzle Pantry |
+| Home page: ribbon, shop by the box, Mom's kitchen | 13 Puzzle Pantry |
 | Find us, custom cakes, the scalloped nav | 15 Nectar candy cart |
 | Menu cards and category tiles | 16 SugarLace bakery (filters from 13) |
 | Process, marquee ribbons, FAQ | 02 Pretty OK mail club |
 | About / Meet Mom | 05 Pretty OK studios (story orbit from 01) |
-| Gallery, reviews, Bake Club band, journal | 01 Berloga coffeeshop |
+| Gallery (the strips open one by one as the page scrolls down, with occasion chips from 13), reviews, Bake Club band, journal | 01 Berloga coffeeshop |
 | Bake Club ticket | 10 Book Nook Society |
 | Newsletter and footer | 03 Emily Jane |
 | Link in bio, pricing packages | 08 Digital Wave taplink |
@@ -73,12 +73,23 @@ The reasoning, with alternates for every section, is in [`design/board/README.md
 
 ## On Vercel
 
-| Site | Address | Project settings |
+| Site | Root Directory | Config |
 |---|---|---|
-| The website | https://bakesbymom-site.vercel.app | Root directory `apps/web`; [`apps/web/vercel.json`](./apps/web/vercel.json) builds the packages and the site and sends every path to `index.html` |
-| Storybook | https://bakesbymom-gilt.vercel.app | Root directory `./`; [`vercel.json`](./vercel.json) runs `npm run build-storybook` and serves `storybook-static` |
+| The website | `./` (Vercel's default) | [`vercel.json`](./vercel.json) builds the packages and the site into `apps/web/dist`, sends `/api` to the catalog Worker and every other path to `index.html` |
+| Storybook | `apps/storybook` | [`apps/storybook/vercel.json`](./apps/storybook/vercel.json) runs `npm run build-storybook` and serves `storybook-static` |
 
-Both are deployed from this repository. To redeploy on every push automatically, give Vercel's GitHub app access to `Tamanna-57/Bakesbymom_` and connect the two projects to it.
+To put the website on a Vercel account: **Add New → Project**, import `Tamanna-57/Bakesbymom_`, leave the Root Directory as it is and deploy. The framework preset, build command and output directory come from `vercel.json`, and no environment variables are needed. The canonical link, link preview and sitemap use the project's production address on their own; set `SITE_URL` (e.g. `https://bakesbymom.in`) once a custom domain is added. A project whose Root Directory is `apps/web` works too, through [`apps/web/vercel.json`](./apps/web/vercel.json); keep its `headers` and `rewrites` the same as the root file's.
+
+`https://bakesbymom.vercel.app` is the old site. Its admin page edits the cake catalog both sites read.
+
+Connected through Vercel's GitHub app, a project deploys every push to `main` by itself. [`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml) is the other way, for projects that aren't connected: it deploys both projects every time `main` changes, using four repository secrets (Settings → Secrets and variables → Actions), and skips until they are set:
+
+| Secret | Where to find it |
+|---|---|
+| `VERCEL_TOKEN` | https://vercel.com/account/tokens |
+| `VERCEL_ORG_ID` | `orgId` in `.vercel/project.json` after running `npx vercel link` in the repo |
+| `VERCEL_SITE_PROJECT_ID` | `projectId` after `npx vercel link` to the website project |
+| `VERCEL_STORYBOOK_PROJECT_ID` | `projectId` after `npx vercel link` to the Storybook project |
 
 [`.github/workflows/ci.yml`](./.github/workflows/ci.yml) runs `npm run check` on every push.
 

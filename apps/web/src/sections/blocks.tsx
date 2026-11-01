@@ -2,7 +2,7 @@
  * Page sections, built only from library components and filled with the bakery's real content
  * (src/content). The website assembles them into pages; Storybook's Sections stories show the same files.
  */
-import { useMemo, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import {
   Accordion,
   Badge,
@@ -29,6 +29,7 @@ import {
   Ticket,
   WeekSchedule,
   type ChatMessage,
+  type DoodleName,
   type EdgeShape,
   type GalleryItem,
   type HeadingLevel,
@@ -36,7 +37,7 @@ import {
 import { art, stock, treatArt } from '../content';
 import { answer, starterChips, type Answer } from '../content/assistant';
 import { bakery, chefsPicks, giftAddons, inr, kgLabel, mostOrdered, timeSlots, whatsappLink } from '../content/bakery';
-import { cakes, findCake, occasions, type Cake } from '../content/catalog';
+import { cakes, catalogStatus, findCake, occasions, type Cake } from '../content/catalog';
 import { journalPosts, scheduleDays } from '../content/samples';
 import {
   faqItems,
@@ -81,13 +82,14 @@ const TONES = ['pink', 'blue', 'beige', 'butter'] as const;
 const external = { target: '_blank', rel: 'noreferrer' } as const;
 
 /** Most-ordered first, then the chef's picks, then the rest of the catalog. */
-const featured = [
-  ...mostOrdered,
-  ...chefsPicks,
-  ...cakes.map((cake) => cake.slug).filter((slug) => !mostOrdered.includes(slug) && !chefsPicks.includes(slug)),
-]
-  .map(findCake)
-  .filter(Boolean) as Cake[];
+const featured = () =>
+  [
+    ...mostOrdered,
+    ...chefsPicks,
+    ...cakes.map((cake) => cake.slug).filter((slug) => !mostOrdered.includes(slug) && !chefsPicks.includes(slug)),
+  ]
+    .map(findCake)
+    .filter(Boolean) as Cake[];
 
 /* Marquee (pin 02) -------------------------------------------------- */
 
@@ -109,21 +111,24 @@ export function CakeCard({
   cake,
   index = 0,
   headingLevel = 3,
+  flavour,
 }: {
   cake: Cake;
   index?: number;
   headingLevel?: HeadingLevel;
+  /** A flavour slug: the cake's page opens with that flavour picked. */
+  flavour?: string;
 }) {
   return (
     <ProductCard
       as="div"
       variant="menu"
-      className="site-cake-card"
+      className={cake.photos[0]?.backdrop ? 'site-cake-card site-cake-card--backdrop' : 'site-cake-card'}
       name={cake.name}
-      image={{ src: cake.photos[0]?.src ?? art.strawberryCake, alt: '' }}
+      image={{ src: cake.photos[0]?.thumb ?? art.strawberryCake, alt: '' }}
       description={cake.description}
       price={inr(cake.price)}
-      href={`/catalog/${cake.slug}`}
+      href={flavour ? `/catalog/${cake.slug}?flavour=${flavour}` : `/catalog/${cake.slug}`}
       tone={TONES[index % TONES.length]}
       headingLevel={headingLevel}
       badge={
@@ -142,26 +147,40 @@ export function CakeCard({
   );
 }
 
-export const occasionOptions = [
+export const occasionOptions = () => [
   { value: 'all', label: 'All' },
   ...occasions.map((occasion) => ({ value: occasion.slug, label: occasion.name })),
 ];
+
+/** What a cake shelf says before the catalog arrives, or if it couldn't be loaded. */
+export function CatalogNote() {
+  const status = catalogStatus();
+  if (status === 'ready') return null;
+  return (
+    <p className="site-center" role="status">
+      {status === 'loading'
+        ? 'Bringing the cakes out of the kitchen…'
+        : "The cakes didn't load. Please refresh the page, or ask Mom on WhatsApp."}
+    </p>
+  );
+}
 
 /** The cake shelf, filterable by occasion. On the home page it shows the first few with a link to the rest. */
 export function MenuSection({ level = 2, limit }: { level?: 1 | 2; limit?: number }) {
   const [filter, setFilter] = useState<string[]>(['all']);
   const slug = filter[0] ?? 'all';
-  const list = useMemo(() => (slug === 'all' ? featured : cakes.filter((cake) => cake.occasion === slug)), [slug]);
+  const list = slug === 'all' ? featured() : cakes.filter((cake) => cake.occasion === slug);
   const shown = limit ? list.slice(0, limit) : list;
   return (
     <Band id="cakes" className="site-section--blue">
       <SectionHeading variant="ribbon" level={level} title="Cakes" ribbonText="baked to order" />
       <div className="site-menu__filters">
-        <FilterChips label="Filter cakes by occasion" options={occasionOptions} value={filter} onChange={setFilter} />
+        <FilterChips label="Filter cakes by occasion" options={occasionOptions()} value={filter} onChange={setFilter} />
         <p className="bbm-visually-hidden" aria-live="polite">
           Showing {shown.length} of {list.length} cakes
         </p>
       </div>
+      <CatalogNote />
       <ul className="site-menu__grid">
         {shown.map((cake, i) => (
           <li key={cake.slug}>
@@ -325,11 +344,11 @@ export function FindUsSection() {
 
 /* Custom cakes (pin 15) and sizes (pin 08 packages) ------------------- */
 
-const cheapest = Math.min(...cakes.map((cake) => cake.price));
-const lowestRate = Math.min(...cakes.map((cake) => cake.perPound));
-
 export function CustomCakesSection() {
-  const showcase = findCake('cake-anniversary-50') ?? cakes[0]!;
+  const showcase = findCake('cake-anniversary-50') ?? cakes.find((cake) => cake.photos.length);
+  if (!showcase) return null;
+  const cheapest = Math.min(...cakes.map((cake) => cake.price));
+  const lowestRate = Math.min(...cakes.map((cake) => cake.perPound));
   return (
     <Band id="custom" className="site-custom">
       <div className="site-custom__copy">
@@ -353,13 +372,13 @@ export function CustomCakesSection() {
       </div>
       <PatternSurface pattern="pinstripe" tone="pink" className="site-custom__panel">
         <Polaroid
-          src={showcase.photos[0]!.src}
+          src={showcase.photos[0]?.thumb ?? art.strawberryCake}
           alt={`${showcase.name}: ${showcase.description}`}
           tape="cherry"
           rotate={4}
           width={300}
           aspect="4/5"
-          className="site-cutout"
+          className={showcase.photos[0]?.backdrop ? undefined : 'site-cutout'}
         />
         <Seal className="site-custom__seal" text="Baked to order • 100% eggless • " size={104} tone="cherry">
           <Doodle name="heart" size={24} color="var(--bbm-color-pink-300)" />
@@ -489,8 +508,8 @@ export function OrbitSection() {
     'cake-hbd-wifey',
   ]
     .map(findCake)
-    .filter(Boolean)
-    .map((cake) => ({ src: cake!.photos[0]!.src, alt: cake!.name }));
+    .filter((cake) => cake?.photos.length)
+    .map((cake) => ({ src: cake!.photos[0]!.thumb, alt: cake!.name }));
   return (
     <Band className="site-orbit site-section--pink">
       {/* A pink sky of twinkling sparkles behind the orbit (pin 01) */}
@@ -563,7 +582,7 @@ export function AboutCardSection() {
 const photoItems = (list: Cake[], firstOnly = false): GalleryItem[] =>
   list.flatMap((cake) =>
     (firstOnly ? cake.photos.slice(0, 1) : cake.photos).map((photo, i) => ({
-      src: photo.src,
+      src: photo.thumb,
       alt: i === 0 ? `${cake.name}: ${cake.description}` : `${cake.name}, another view`,
       caption: (
         <>
@@ -573,29 +592,70 @@ const photoItems = (list: Cake[], firstOnly = false): GalleryItem[] =>
     })),
   );
 
-/** Photos of real cakes, filterable by occasion. */
+/** Each occasion's doodle, on its filter chip in the gallery. */
+export const occasionIcons: Record<string, { name: DoodleName; color: string }> = {
+  'birthday-kids': { name: 'star', color: 'var(--bbm-color-butter-400)' },
+  'birthday-parents': { name: 'daisy', color: 'var(--bbm-color-pink-500)' },
+  'birthday-partner': { name: 'heart', color: 'var(--bbm-color-cherry-500)' },
+  'birthday-classic': { name: 'cupcake', color: 'var(--bbm-color-pink-500)' },
+  engagement: { name: 'sparkle', color: 'var(--bbm-color-butter-400)' },
+  anniversary: { name: 'bow', color: 'var(--bbm-color-cherry-500)' },
+  'parents-day': { name: 'heart', color: 'var(--bbm-color-pink-500)' },
+  romantic: { name: 'cherry', color: 'var(--bbm-color-cherry-500)' },
+  farewell: { name: 'daisy', color: 'var(--bbm-color-blue-600)' },
+  festival: { name: 'sparkle', color: 'var(--bbm-color-cherry-500)' },
+  teachers: { name: 'star', color: 'var(--bbm-color-blue-600)' },
+};
+
+/**
+ * The gallery, and the home page's one place for occasions: pick an occasion, then keep scrolling and the strips
+ * open one after another, left to right (Gallery's `pinOnScroll`).
+ */
 export function GallerySection() {
-  const withPhotos = occasionOptions.filter(
-    (option) => option.value === 'all' || cakes.some((cake) => cake.occasion === option.value && cake.photos.length),
-  );
+  const withPhotos = occasionOptions()
+    .filter(
+      (option) => option.value === 'all' || cakes.some((cake) => cake.occasion === option.value && cake.photos.length),
+    )
+    .map((option) => {
+      const icon = occasionIcons[option.value];
+      return icon
+        ? {
+            ...option,
+            label: (
+              <>
+                <Doodle name={icon.name} size="1.15em" color={icon.color} className="site-gallery__chip-icon" />
+                {option.label}
+              </>
+            ),
+          }
+        : option;
+    });
   const [filter, setFilter] = useState<string[]>(['all']);
   const slug = filter[0] ?? 'all';
-  const items = useMemo(
-    () =>
-      slug === 'all' ? photoItems(featured.slice(0, 9), true) : photoItems(cakes.filter((c) => c.occasion === slug)),
-    [slug],
-  );
+  const items =
+    slug === 'all' ? photoItems(featured().slice(0, 9), true) : photoItems(cakes.filter((c) => c.occasion === slug));
   return (
     <Band id="gallery" className="site-gallery site-section--cocoa" edge={{ color: 'var(--bbm-color-bg-inverse)' }}>
-      <SectionHeading variant="bubble" title="Gallery" />
-      <FilterChips
-        label="Show cakes for"
-        options={withPhotos}
-        value={filter}
-        onChange={setFilter}
-        className="site-gallery__filters"
-      />
-      <Gallery key={slug} items={items} label="Photos of cakes from Mom's kitchen" />
+      <CatalogNote />
+      {items.length > 0 && (
+        <Gallery
+          items={items}
+          label="Photos of cakes from Mom's kitchen"
+          pinOnScroll
+          head={
+            <>
+              <SectionHeading variant="bubble" title="Gallery" />
+              <FilterChips
+                label="Show cakes for"
+                options={withPhotos}
+                value={filter}
+                onChange={setFilter}
+                className="site-gallery__filters"
+              />
+            </>
+          }
+        />
+      )}
     </Band>
   );
 }
@@ -705,7 +765,7 @@ export function InstagramSection() {
       />
       <Gallery
         variant="grid"
-        items={photoItems(featured.slice(0, 6), true)}
+        items={photoItems(featured().slice(0, 6), true)}
         label="Recent cakes"
         follow={{ label: `Follow ${bakery.instagramHandle}`, href: bakery.instagram }}
       />

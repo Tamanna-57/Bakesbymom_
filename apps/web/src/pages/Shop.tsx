@@ -1,14 +1,17 @@
-import { Button, ProductCard, SectionHeading } from '@bakesbymom/ui';
+import { Button, Card, Doodle, ProductCard, SectionHeading } from '@bakesbymom/ui';
 import { stock, treatArt } from '../content';
+import { whatsappLink } from '../content/bakery';
 import { cakes } from '../content/catalog';
 import { orderLink } from '../content/site';
-import { treatCategories } from '../content/treats';
-import { OrderStepScene, TreatsCounterScene, ComboScene } from '../iso/scenes';
+import { qtyLabel, treatCategories } from '../content/treats';
+import { ComboScene, OrderStepScene, TreatsCounterScene } from '../iso/scenes';
 import { SectionEdge } from '../sections/blocks';
 import { Layout } from './Layout';
 import { Breadcrumbs, EgglessNote } from './order';
 
 const TONES = ['pink', 'blue', 'beige', 'butter'] as const;
+
+const customLink = whatsappLink("Hello Bakes by Mom! I'd like to plan a custom cake or box 🎂");
 
 const STEPS = [
   {
@@ -28,36 +31,41 @@ const STEPS = [
   },
 ];
 
-/** Every kind of bake, by the box. */
+/**
+ * Cakes & Treats: the one place to order from. Every category, cakes first; each opens its own page (the cakes by
+ * occasion, or a treat type), where you pick a bake, make it yours and send the order on WhatsApp. For anything not
+ * on the menu, a custom order goes straight to Mom. Around the menu: an illustrated hero, how an order works, and
+ * the combo.
+ */
 export function ShopPage() {
   return (
     <Layout path="/shop">
       <section className="site-section site-section--pink shop-hero">
         <div className="site-container">
-          <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Treats' }]} />
+          <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Cakes & Treats' }]} />
           <div className="shop-hero__grid">
             <div className="shop-hero__copy">
               <SectionHeading
                 level={1}
                 size="xl"
-                eyebrow="products"
+                eyebrow="order here"
                 eyebrowStyle="pill"
                 title={
                   <>
-                    Treats, <em>by the box</em>
+                    Cakes & <em>treats</em>
                   </>
                 }
-                description="Brownies, cookies, jar cakes, tea cakes, cupcakes, bentos and combos, all baked to order in Mom's kitchen."
+                description="Pick a category, choose a cake or a treat, make it yours, and send the order on WhatsApp. Cakes for every occasion, and brownies, cookies, jar cakes, tea cakes, cupcakes, bentos and combos by the box, all baked to order."
               />
               <div className="shop-hero__actions">
-                <Button href="#treats">See every treat</Button>
+                <Button href="#menu">See the menu</Button>
                 <Button variant="secondary" href={orderLink} target="_blank" rel="noreferrer">
                   Order on WhatsApp
                 </Button>
               </div>
               <ul className="shop-hero__facts" aria-label="At a glance">
                 <li>
-                  <strong>{treatCategories.length}</strong> kinds of treat
+                  <strong>{treatCategories.length + 1}</strong> categories
                 </li>
                 <li>
                   <strong>100%</strong> eggless
@@ -74,29 +82,29 @@ export function ShopPage() {
         </div>
       </section>
 
-      <section id="treats" className="site-section site-section--edged site-section--beige">
+      <section id="menu" className="site-section site-section--edged site-section--beige">
         <SectionEdge color="var(--bbm-color-bg-beige)" shape="scallop" />
         <div className="site-container">
           <SectionHeading
             align="center"
-            eyebrow="pick a box"
+            eyebrow="pick a category"
             title={
               <>
                 Something for <em>every craving</em>
               </>
             }
-            description="Open one to see the sizes, the flavours and what a box costs, then send it to Mom."
+            description="Open one to see the bakes, the sizes and what they cost, then send your order to Mom."
           />
           <EgglessNote />
           <ul className="site-menu__grid shop-grid">
-            <li className="shop-grid__feature">
+            <li>
               <ProductCard
                 as="div"
                 variant="menu"
                 name="Cakes"
                 image={{ src: stock.occasions.src, alt: '' }}
                 description="Every cake, by occasion: birthdays, anniversaries, festivals and more."
-                price={`${cakes.length} cakes`}
+                price={cakes.length ? `${cakes.length} cakes` : 'By occasion'}
                 href="/catalog"
                 tone="pink"
                 headingLevel={3}
@@ -110,7 +118,7 @@ export function ShopPage() {
                   name={category.name}
                   image={{ src: treatArt[category.slug]?.src ?? stock.cupcakes.src, alt: '' }}
                   description={category.blurb}
-                  price={`From ${category.minQty} ${category.unit}`}
+                  price={`From ${qtyLabel(category.minQty, category.unit)}`}
                   href={`/shop/${category.slug}`}
                   tone={TONES[(i + 1) % TONES.length]}
                   headingLevel={3}
@@ -118,6 +126,19 @@ export function ShopPage() {
               </li>
             ))}
           </ul>
+          <Card tone="beige" outline padding="md" className="shop-custom">
+            <Doodle name="sparkle" size={40} color="var(--bbm-color-cherry-500)" />
+            <div>
+              <h2 className="shop-custom__title">Something of your own?</h2>
+              <p>
+                A theme, a photo, a size or a box that isn't on the menu: tell Mom the idea and the date, and she'll
+                plan it with you.
+              </p>
+            </div>
+            <Button href={customLink} target="_blank" rel="noreferrer">
+              Plan a custom order
+            </Button>
+          </Card>
         </div>
       </section>
 

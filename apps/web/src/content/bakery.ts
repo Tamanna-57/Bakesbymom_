@@ -41,6 +41,16 @@ export const cakeFlavours = [
   'Rasmalai',
 ];
 
+/** "Chocolate truffle" → "chocolate-truffle", for links like /catalog?flavour=chocolate-truffle. */
+export const flavourSlug = (name: string) =>
+  name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+
+/** The flavour a link names (?flavour=chocolate-truffle), if it is one of ours. */
+export const findFlavour = (slug: string | null) => cakeFlavours.find((name) => flavourSlug(name) === slug);
+
 export const cakeAddons = ['Message piped on top', 'Candles', 'Name plaque', 'Fresh flowers', 'Photo print on top'];
 
 export const giftAddons = ['Gift wrapping', 'Gift box', 'Greeting card note'];

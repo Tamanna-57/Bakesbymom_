@@ -12,14 +12,14 @@ const meta = {
     docs: {
       description: {
         component: fromBoard(
-          '**Lead: pin 01 (Berloga), saved twice on the board.** Tall strips under a huge outlined bubble title: one strip open in color, the rest narrow and greyscale. Each strip is a button with `aria-expanded`; arrow keys move between strips, a horizontal drag moves the open one, and on phones it becomes a swipe row. Alternates: the **trio** on cocoa from pin 11 and the **Instagram grid** from pin 12.',
+          "**Lead: pin 01 (Berloga), saved twice on the board.** Tall strips under a huge outlined bubble title: one strip open in color, the rest narrow and greyscale. Each strip is a button with `aria-expanded`; arrow keys move between strips, a horizontal drag moves the open one, and on phones it becomes a swipe row. **On the website** (`pinOnScroll`) the title, pin 13's occasion chips and the strips pin under the header, and scrolling the page opens the strips one after another, left to right; clicks, drags and arrows scroll the page to that strip. Off with reduced motion or on a screen under 500px tall. Alternates: the **trio** on cocoa from pin 11 and the **Instagram grid** from pin 12.",
           ['01', '14', '11', '12'],
           'gallery.md',
         ),
       },
     },
   },
-  args: { items: galleryItems, label: "Photos from Mom's kitchen" },
+  args: { items: galleryItems(), label: "Photos from Mom's kitchen" },
   decorators: [
     (Story) => (
       <div className="site-section">
@@ -34,7 +34,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** The lead: bubble title and strips. */
+/** The lead, as on the website: scroll the canvas and the strips open one after another. */
 export const Strips: Story = {
   decorators: [(Story) => <Story />],
   render: () => <GallerySection />,
@@ -44,7 +44,7 @@ export const Strips: Story = {
 export const Trio: Story = {
   args: {
     variant: 'trio',
-    items: galleryItems.slice(1, 4),
+    items: galleryItems().slice(1, 4),
     marquee: ['fresh from the oven', 'baked with love'],
   },
 };
@@ -53,7 +53,7 @@ export const Trio: Story = {
 export const InstagramGrid: Story = {
   args: {
     variant: 'grid',
-    items: galleryItems.slice(0, 6),
+    items: galleryItems().slice(0, 6),
     follow: { label: 'Follow @bakesbymom', href: '#instagram' },
   },
 };

@@ -1,7 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Card, PatternSurface, SectionHeading, Select, TextField } from '@bakesbymom/ui';
-import { cakeAddons, cakeFlavours, cakeSizes, giftAddons, inr, kgLabel, whatsappLink } from '../content/bakery';
-import { findOccasion, type Cake } from '../content/catalog';
+import {
+  cakeAddons,
+  cakeFlavours,
+  cakeSizes,
+  findFlavour,
+  flavourSlug,
+  giftAddons,
+  inr,
+  kgLabel,
+  whatsappLink,
+} from '../content/bakery';
+import { findOccasion, refreshCake, type Cake } from '../content/catalog';
 import { cakeOrderMessage, cakePrice } from '../content/order';
 import { CakeCard } from '../sections/blocks';
 import { Layout } from './Layout';
@@ -13,14 +23,27 @@ export function CakePage({ cake }: { cake: Cake }) {
   const occasion = findOccasion(cake.occasion);
   const [photo, setPhoto] = useState(0);
   const [weightKg, setWeightKg] = useState(cake.weightKg);
-  const [flavour, setFlavour] = useState('');
+  // A link from a flavour card (?flavour=vanilla) opens the cake with that flavour picked. The cake's own list of
+  // flavours arrives a moment after the page (refreshCake), so the pick follows it until the visitor chooses.
+  const linked = findFlavour(new URLSearchParams(window.location.search).get('flavour'));
+  const flavourNames = cake.flavours.length ? cake.flavours.map((f) => f.name) : cakeFlavours;
+  const linkedOption = linked ? (flavourNames.find((name) => flavourSlug(name) === flavourSlug(linked)) ?? '') : '';
+  const [flavour, setFlavour] = useState(linkedOption);
+  const chosen = useRef(false);
+  useEffect(() => {
+    if (!chosen.current) setFlavour(linkedOption);
+  }, [linkedOption]);
   const [addons, setAddons] = useState<string[]>([]);
   const [message, setMessage] = useState('');
   const [when, setWhen] = useState<WhenWhere>({ date: '', slot: '', fulfilment: { method: 'Pickup' } });
   const [name, setName] = useState('');
   const [notes, setNotes] = useState('');
 
-  const price = cakePrice(cake, weightKg);
+  useEffect(() => {
+    void refreshCake(cake.slug);
+  }, [cake.slug]);
+
+  const price = cakePrice(cake, weightKg, { flavour, addons });
   const order = cakeOrderMessage(cake, occasion?.name ?? '', {
     weightKg,
     flavour,
@@ -40,6 +63,7 @@ export function CakePage({ cake }: { cake: Cake }) {
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
+              { label: 'Cakes & Treats', href: '/shop' },
               { label: 'Cakes', href: '/catalog' },
               ...(occasion ? [{ label: occasion.name, href: `/catalog?occasion=${occasion.slug}` }] : []),
               { label: cake.name },
@@ -47,15 +71,13 @@ export function CakePage({ cake }: { cake: Cake }) {
           />
           <div className="shop-item">
             <div className="shop-item__media">
-              <PatternSurface pattern="dots" tone="pink" ground="var(--bbm-color-bg-pink)" className="shop-item__photo">
-                {current && (
-                  <img
-                    src={current.src}
-                    width={current.width}
-                    height={current.height}
-                    alt={`${cake.name}: ${cake.description}`}
-                  />
-                )}
+              <PatternSurface
+                pattern="dots"
+                tone="pink"
+                ground="var(--bbm-color-bg-pink)"
+                className={current?.backdrop ? 'shop-item__photo shop-item__photo--backdrop' : 'shop-item__photo'}
+              >
+                {current && <img src={current.src} alt={`${cake.name}: ${cake.description}`} />}
               </PatternSurface>
               {cake.photos.length > 1 && (
                 <div className="shop-item__thumbs" role="group" aria-label="Photos">
@@ -67,7 +89,7 @@ export function CakePage({ cake }: { cake: Cake }) {
                       aria-label={`Photo ${i + 1} of ${cake.photos.length}`}
                       onClick={() => setPhoto(i)}
                     >
-                      <img src={p.src} alt="" />
+                      <img src={p.thumb} alt="" />
                     </button>
                   ))}
                 </div>
@@ -123,17 +145,30 @@ export function CakePage({ cake }: { cake: Cake }) {
                     <Select
                       label="Flavour"
                       value={flavour}
-                      onChange={(event) => setFlavour(event.target.value)}
+                      onChange={(event) => {
+                        chosen.current = true;
+                        setFlavour(event.target.value);
+                      }}
+                      hint={
+                        linked && !linkedOption
+                          ? `${linked} isn't made in this design. Pick another flavour, or ask Mom.`
+                          : undefined
+                      }
                       options={[
                         { value: '', label: 'Ask Mom to suggest' },
-                        ...cakeFlavours.map((f) => ({ value: f, label: f })),
+                        ...(cake.flavours.length
+                          ? cake.flavours.map((f) => ({
+                              value: f.name,
+                              label: f.priceDelta ? `${f.name} (+${inr(f.priceDelta)})` : f.name,
+                            }))
+                          : cakeFlavours.map((f) => ({ value: f, label: f }))),
                       ]}
                     />
                   </div>
                   <Chips
                     label="Make it yours"
                     multiple
-                    options={[...cakeAddons, ...giftAddons]}
+                    options={[...(cake.addons.length ? cake.addons.map((a) => a.name) : cakeAddons), ...giftAddons]}
                     value={addons}
                     onChange={setAddons}
                   />

@@ -49,6 +49,23 @@ describe('Gallery (strips)', () => {
   });
 });
 
+describe('Gallery (strips, pinned on scroll)', () => {
+  it('puts the head above the strips and keeps the strips as they are', () => {
+    render(<Gallery items={photos} label="Cakes" head={<h2>Gallery</h2>} pinOnScroll />);
+    const gallery = screen.getByRole('group', { name: 'Cakes' });
+    expect(gallery.querySelector('.bbm-gallery__head h2')?.textContent).toBe('Gallery');
+    expect(screen.getByRole('button', { name: 'Pie', expanded: true })).toBeTruthy();
+    expect(screen.getAllByRole('button', { expanded: false })).toHaveLength(4);
+  });
+
+  it('only pins when it can move (jsdom has no matchMedia), so clicks still open strips', () => {
+    render(<Gallery items={photos} label="Cakes" pinOnScroll />);
+    expect(screen.getByRole('group', { name: 'Cakes' }).classList.contains('bbm-gallery--pinned')).toBe(false);
+    fireEvent.click(screen.getByRole('button', { name: 'Cookies' }));
+    expect(screen.getByRole('button', { name: 'Cookies' }).getAttribute('aria-expanded')).toBe('true');
+  });
+});
+
 describe('WeekSchedule', () => {
   const days = [
     { date: 'Mon 12', label: 'Monday 12 May', closed: true },

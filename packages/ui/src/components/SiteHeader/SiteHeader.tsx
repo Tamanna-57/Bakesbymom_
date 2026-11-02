@@ -18,8 +18,13 @@ export interface SiteHeaderProps extends HTMLAttributes<HTMLElement> {
   actions?: ReactNode;
   /** Shown at the bottom of the mobile menu, e.g. a full-width "Order a cake" button. */
   mobileCta?: ReactNode;
-  /** One short line on a cocoa bar above the header (pin 13): "Order by Wednesday for Saturday pick-up". */
-  announcement?: ReactNode;
+  /**
+   * One short line on a cocoa bar above the header (pin 13): "Order by Wednesday for Saturday pick-up". Pass a
+   * list to rotate through them, one at a time, on a single line.
+   */
+  announcement?: ReactNode | ReactNode[];
+  /** Let visitors close the announcement bar (remembered for the visit). */
+  announcementDismissible?: boolean;
   /**
    * - `split`: links split evenly around a centered logo, actions far right (pin 15). The lead.
    * - `center`: links left, logo centered, actions right (pin 13).
@@ -60,6 +65,7 @@ export function SiteHeader({
   actions,
   mobileCta,
   announcement,
+  announcementDismissible = true,
   layout = 'split',
   variant = 'bar',
   tone = 'pink',
@@ -108,7 +114,7 @@ export function SiteHeader({
 
   return (
     <>
-      {announcement && <div className="bbm-announcement">{announcement}</div>}
+      {announcement && <Announcement messages={announcement} dismissible={announcementDismissible} />}
       <header
         {...rest}
         data-tone={tone}
@@ -156,5 +162,83 @@ export function SiteHeader({
         )}
       </header>
     </>
+  );
+}
+
+const DISMISS_KEY = 'bbm-announcement-closed';
+const ROTATE_MS = 5000;
+
+const CloseIcon = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path d="M7 7l10 10M17 7 7 17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
+/** The cocoa bar: one line, rotating through its messages; pauses on hover or focus and can be closed. */
+function Announcement({ messages, dismissible }: { messages: ReactNode | ReactNode[]; dismissible: boolean }) {
+  const list = (Array.isArray(messages) ? messages : [messages]).filter(Boolean);
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [closed, setClosed] = useState(() => {
+    try {
+      return dismissible && window.sessionStorage.getItem(DISMISS_KEY) === '1';
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    if (list.length < 2 || paused) return;
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+    const id = window.setInterval(() => setIndex((i) => (i + 1) % list.length), ROTATE_MS);
+    return () => window.clearInterval(id);
+  }, [list.length, paused]);
+
+  if (closed || !list.length) return null;
+
+  const close = () => {
+    setClosed(true);
+    try {
+      window.sessionStorage.setItem(DISMISS_KEY, '1');
+    } catch {
+      /* private mode: closed for this page only */
+    }
+  };
+
+  return (
+    <div
+      className="bbm-announcement"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
+      <div className="bbm-announcement__track">
+        {list.map((message, i) => (
+          <p
+            key={i}
+            className={cx('bbm-announcement__item', i === index && 'bbm-announcement__item--on')}
+            aria-hidden={i === index ? undefined : true}
+            // Off-screen messages keep their links out of the tab order
+            inert={i === index ? undefined : true}
+          >
+            {message}
+          </p>
+        ))}
+      </div>
+      {list.length > 1 && (
+        <div className="bbm-announcement__dots" aria-hidden="true">
+          {list.map((_, i) => (
+            <span key={i} className={cx(i === index && 'is-on')} />
+          ))}
+        </div>
+      )}
+      {dismissible && (
+        <button type="button" className="bbm-announcement__close" onClick={close}>
+          <span className="bbm-visually-hidden">Close announcement</span>
+          <CloseIcon />
+        </button>
+      )}
+    </div>
   );
 }

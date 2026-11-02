@@ -3,8 +3,8 @@
     "family": {
       "display": {
         "$type": "fontFamily",
-        "$value": ["Fraunces", "Iowan Old Style", "Georgia", "serif"],
-        "$description": "Soft serif for headlines, prices and the logo (pins 02, 05, 11, 13, 15). Variable: opsz, wght 100-900, SOFT 0-100, WONK 0-1."
+        "$value": ["Bodoni Moda", "Didot", "Bodoni 72", "Georgia", "serif"],
+        "$description": "Bodoni Moda, the Italian Didone: headlines, prices and the logo. Variable: opsz 6-96, wght 400-900, italic."
       },
       "body": {
         "$type": "fontFamily",
@@ -18,13 +18,13 @@
       },
       "hand": {
         "$type": "fontFamily",
-        "$value": ["Caveat", "Bradley Hand", "cursive"],
-        "$description": "Handwritten notes, captions and pill labels (pins 01, 04, 13, 15). 20px and up."
+        "$value": ["Cormorant Garamond", "Garamond", "Georgia", "serif"],
+        "$description": "Cormorant Garamond for Mom's notes, captions and eyebrow labels: a fine old-style serif, set in italic."
       },
       "bubble": {
         "$type": "fontFamily",
-        "$value": ["Cherry Bomb One", "Arial Rounded MT Bold", "system-ui", "sans-serif"],
-        "$description": "Bubble display for one word per page, always outlined (pins 01, 11). 64px and up."
+        "$value": ["Bodoni Moda", "Didot", "Georgia", "serif"],
+        "$description": "Retired bubble face: now the display serif, so old uses stay elegant."
       }
     },
     "weight": {
@@ -95,7 +95,7 @@
       },
       "weight": {
         "$type": "fontWeight",
-        "$value": "{font.weight.semibold}"
+        "$value": "{font.weight.medium}"
       }
     },
     "display-lg": {
@@ -122,7 +122,7 @@
       },
       "weight": {
         "$type": "fontWeight",
-        "$value": "{font.weight.semibold}"
+        "$value": "{font.weight.medium}"
       }
     },
     "display-md": {
@@ -149,7 +149,7 @@
       },
       "weight": {
         "$type": "fontWeight",
-        "$value": "{font.weight.semibold}"
+        "$value": "{font.weight.medium}"
       }
     },
     "heading-lg": {
@@ -171,7 +171,7 @@
       },
       "weight": {
         "$type": "fontWeight",
-        "$value": "{font.weight.semibold}"
+        "$value": "{font.weight.medium}"
       }
     },
     "heading-md": {
@@ -193,7 +193,7 @@
       },
       "weight": {
         "$type": "fontWeight",
-        "$value": "{font.weight.semibold}"
+        "$value": "{font.weight.medium}"
       }
     },
     "heading-sm": {
@@ -353,7 +353,7 @@
     "price": {
       "family": {
         "$type": "fontFamily",
-        "$value": "{font.family.body}"
+        "$value": "{font.family.display}"
       },
       "size": {
         "$type": "dimension",
@@ -369,13 +369,13 @@
       },
       "weight": {
         "$type": "fontWeight",
-        "$value": "{font.weight.bold}"
+        "$value": "{font.weight.semibold}"
       }
     },
     "heavy": {
       "family": {
         "$type": "fontFamily",
-        "$value": "{font.family.body}"
+        "$value": "{font.family.display}"
       },
       "size": {
         "$value": "clamp(1.875rem, min(1.4rem + 2vw, 0.5rem + 5svh), 3.25rem)",
@@ -392,11 +392,11 @@
       },
       "tracking": {
         "$type": "dimension",
-        "$value": "-0.02em"
+        "$value": "-0.015em"
       },
       "weight": {
         "$type": "fontWeight",
-        "$value": "{font.weight.black}"
+        "$value": "{font.weight.medium}"
       }
     },
     "script-lg": {
@@ -489,7 +489,7 @@
       },
       "weight": {
         "$type": "fontWeight",
-        "$value": "{font.weight.semibold}"
+        "$value": "{font.weight.medium}"
       }
     },
     "hand-sm": {
@@ -511,7 +511,7 @@
       },
       "weight": {
         "$type": "fontWeight",
-        "$value": "{font.weight.semibold}"
+        "$value": "{font.weight.medium}"
       }
     },
     "bubble": {

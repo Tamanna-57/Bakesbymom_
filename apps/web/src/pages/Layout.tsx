@@ -8,6 +8,8 @@ interface LayoutProps {
   path: string;
   /** Show the cocoa announcement bar above the header (home page only). */
   withAnnouncement?: boolean;
+  /** The page opens on a full-bleed photo: the header's edge becomes a wave that hangs over its top. */
+  photoHero?: boolean;
   children: ReactNode;
 }
 
@@ -29,7 +31,7 @@ function useHeaderHeight() {
 }
 
 /** Header, main, footer and the Ask Mom chat: the frame every site page shares. */
-export function Layout({ path, withAnnouncement = false, children }: LayoutProps) {
+export function Layout({ path, withAnnouncement = false, photoHero = false, children }: LayoutProps) {
   useHeaderHeight();
   return (
     <>
@@ -42,6 +44,9 @@ export function Layout({ path, withAnnouncement = false, children }: LayoutProps
         mobileCta={mobileCta}
         announcement={withAnnouncement ? announcement : undefined}
         scallop
+        edge={photoHero ? 'wave' : 'scallop'}
+        edgeSize={photoHero ? 'md' : 'sm'}
+        edgeOverlay={photoHero}
         sticky
         capsuleOnScroll={withAnnouncement}
       />

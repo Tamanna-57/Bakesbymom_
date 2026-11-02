@@ -1,5 +1,5 @@
-/* The showcase layout for a treat type's page (TreatShowcase.tsx), in the board's palette: cocoa shade over the
-   photo, cherry for headlines and buttons, butter for the bands that the reference has in orange. */
+/* The showcase layout for a treat type's page (TreatShowcase.tsx), on the site's own colored bands: a cherry wash
+   over the photo, pink polka dots, baby blue for the cards and butter for the band the reference has in orange. */
 
 /* Hero: the photo full-bleed, a cocoa shade behind the words ---------------------------------------------- */
 
@@ -12,7 +12,7 @@
   padding: clamp(var(--bbm-space-6), 4svh, var(--bbm-space-10)) var(--bbm-layout-gutter)
     calc(var(--bbm-space-16) + var(--bbm-space-4));
   overflow: hidden;
-  background-color: var(--bbm-color-brown-900);
+  background-color: var(--bbm-color-cherry-900);
   color: var(--bbm-color-paper);
 }
 
@@ -26,18 +26,28 @@
   object-position: 60% 40%;
 }
 
-/* Dark enough under the words for AA contrast on any part of the photo, clear on the right */
+/* A pink tint over the whole photo, so it sits in the site's palette... */
 .treat-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--bbm-color-pink-300);
+  mix-blend-mode: multiply;
+}
+
+/* ...and a cherry wash under the words, deep enough for AA contrast on any part of the photo */
+.treat-hero::after {
   content: '';
   position: absolute;
   inset: 0;
   z-index: -1;
   background: linear-gradient(
     100deg,
-    rgb(50 24 11 / 0.88) 0%,
-    rgb(50 24 11 / 0.74) 38%,
-    rgb(50 24 11 / 0.25) 68%,
-    rgb(50 24 11 / 0.05) 100%
+    rgb(67 14 23 / 0.92) 0%,
+    rgb(128 16 38 / 0.8) 40%,
+    rgb(148 25 57 / 0.3) 70%,
+    rgb(148 25 57 / 0) 100%
   );
 }
 
@@ -113,8 +123,8 @@
 }
 
 @media (max-width: 639.98px) {
-  .treat-hero::before {
-    background: linear-gradient(180deg, rgb(50 24 11 / 0.8) 0%, rgb(50 24 11 / 0.7) 70%, rgb(50 24 11 / 0.5) 100%);
+  .treat-hero::after {
+    background: linear-gradient(180deg, rgb(67 14 23 / 0.88) 0%, rgb(128 16 38 / 0.78) 70%, rgb(128 16 38 / 0.6) 100%);
   }
 
   .treat-hero__burst {
@@ -123,10 +133,6 @@
 }
 
 /* Only the good stuff ----------------------------------------------------------------------------------- */
-
-.treat-good {
-  background-color: var(--bbm-color-bg-canvas);
-}
 
 .treat-good > .treat-good__inner {
   grid-template-columns: minmax(0, 1fr);
@@ -166,60 +172,17 @@
   color: var(--bbm-color-cherry-800);
 }
 
-.treat-good__mascot {
+.treat-good__art {
+  position: relative;
   justify-self: center;
-  width: min(100%, 16rem);
-  height: auto;
+  width: min(100%, 20rem);
 }
 
-/* The mascot: a cookie with a face on a butter starburst. Line art in cocoa, like the doodles. */
-.treat-mascot {
-  overflow: visible;
-}
-
-.treat-mascot__rays {
-  fill: var(--bbm-color-butter-300);
-  stroke: var(--bbm-color-brown-900);
-  stroke-width: 3;
-  stroke-linejoin: round;
-  transform-origin: 100px 100px;
-  animation: treat-spin 40s linear infinite;
-}
-
-.treat-mascot__cookie {
-  fill: var(--bbm-color-brown-200);
-  stroke: var(--bbm-color-brown-900);
-  stroke-width: 4;
-}
-
-.treat-mascot__chips {
-  fill: var(--bbm-color-brown-700);
-}
-
-.treat-mascot__white {
-  fill: var(--bbm-color-paper);
-  stroke: var(--bbm-color-brown-900);
-  stroke-width: 3;
-}
-
-.treat-mascot__pupil {
-  fill: var(--bbm-color-brown-900);
-}
-
-.treat-mascot__eyes {
-  transform-origin: 100px 94px;
-  animation: treat-blink 5s ease-in-out infinite;
-}
-
-.treat-mascot__cheek {
-  fill: var(--bbm-color-cherry-300);
-}
-
-.treat-mascot__smile {
-  fill: none;
-  stroke: var(--bbm-color-brown-900);
-  stroke-width: 4;
-  stroke-linecap: round;
+.treat-good__tag {
+  position: absolute;
+  bottom: -1rem;
+  left: -1.5rem;
+  animation: treat-wobble 6s ease-in-out infinite;
 }
 
 /* Two ribbons, cherry over butter -------------------------------------------------------------------------- */
@@ -235,7 +198,6 @@
 .treat-sig {
   position: relative;
   overflow: clip;
-  background-color: var(--bbm-color-bg-canvas);
 }
 
 .treat-sig > .site-container {
@@ -357,17 +319,14 @@
   transition: scale 0.6s var(--bbm-motion-easing-out);
 }
 
-/* A close-up of one cookie in the category photo (a 2:3 photo; see TreatShowcase.crops): the photo at 2.4 times
-   the frame's width, moved so the chosen spot sits in the middle. */
-.treat-card__frame .treat-card__crop {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 240%;
-  max-width: none;
-  height: auto;
-  aspect-ratio: 2 / 3;
-  translate: calc(var(--crop-x, 0.5) * -100%) calc(var(--crop-y, 0.5) * -100%);
+/* A drawing shows whole on the card's tone; a photo fills the frame */
+.treat-card__frame .treat-card__drawing {
+  object-fit: contain;
+  scale: 1.18;
+}
+
+.treat-card:hover .treat-card__frame .treat-card__drawing {
+  scale: 1.24;
 }
 
 .treat-card:hover .treat-card__frame img {
@@ -458,7 +417,7 @@
   height: 5.5rem;
   border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
   border-radius: 50%;
-  background-color: var(--bbm-color-paper);
+  background-color: var(--_tone-bg, var(--bbm-color-paper));
   box-shadow: var(--bbm-shadow-sticker-sm);
   color: var(--bbm-color-brown-900);
 }
@@ -473,23 +432,6 @@
 }
 
 /* Motion ----------------------------------------------------------------------------------------------- */
-
-@keyframes treat-spin {
-  to {
-    rotate: 360deg;
-  }
-}
-
-@keyframes treat-blink {
-  0%,
-  92%,
-  100% {
-    scale: 1 1;
-  }
-  95% {
-    scale: 1 0.1;
-  }
-}
 
 @keyframes treat-float {
   0%,
@@ -514,10 +456,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .treat-mascot__rays,
-  .treat-mascot__eyes,
   .treat-sig__deco,
-  .treat-hero__burst {
+  .treat-hero__burst,
+  .treat-good__tag {
     animation: none;
   }
 

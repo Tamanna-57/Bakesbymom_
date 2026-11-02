@@ -1,56 +1,28 @@
 /**
  * The showcase layout for a treat type's page (the cookies first), after a cookie shop on Pinterest (The Crumb
- * Culture), redrawn in the board's palette and type: a photo hero between wavy edges, "only the good stuff" with a
- * mascot, a double ribbon, the treats as framed cards, and a "we keep it simple" band. Everything it says comes from
- * the category in content/treats.ts.
+ * Culture), redrawn in the board's palette and type, on the site's own colored bands: a photo hero in a cherry wash,
+ * "only the good stuff" on pink polka dots with a drawing, a double ribbon, the treats as framed cards on the baby
+ * blue band (each with its own drawing), and a butter "we keep it simple" band. The words come from content/treats.ts.
  */
-import type { CSSProperties, ReactNode } from 'react';
-import { Button, Doodle, Marquee, PriceTag, SectionHeading, type DoodleName } from '@bakesbymom/ui';
-import { stock, treatArt } from '../content';
+import type { ReactNode } from 'react';
+import {
+  Button,
+  Doodle,
+  Marquee,
+  PatternSurface,
+  Polaroid,
+  PriceTag,
+  SectionHeading,
+  type DoodleName,
+} from '@bakesbymom/ui';
+import { showcaseArt, stock, treatArt, treatItemArt } from '../content';
 import { qtyLabel, type TreatCategory, type TreatShowcase as Showcase } from '../content/treats';
 import { SectionEdge } from '../sections/blocks';
 import { Breadcrumbs } from './order';
 import './treat-showcase.css';
 
-const TONES = ['pink', 'blue', 'beige', 'butter'] as const;
-
-/** A smiling cookie on a butter starburst: the page's mascot (the reference's sun, as one of ours). */
-export function CookieMascot({ className }: { className?: string }) {
-  // A 16-point starburst around the cookie
-  const rays = Array.from({ length: 32 }, (_, i) => {
-    const r = i % 2 ? 72 : 96;
-    const a = (i / 32) * Math.PI * 2;
-    return `${(100 + r * Math.cos(a)).toFixed(1)},${(100 + r * Math.sin(a)).toFixed(1)}`;
-  }).join(' ');
-  return (
-    <svg className={['treat-mascot', className].filter(Boolean).join(' ')} viewBox="0 0 200 200" aria-hidden="true">
-      <polygon className="treat-mascot__rays" points={rays} />
-      <circle className="treat-mascot__cookie" cx="100" cy="100" r="60" />
-      <g className="treat-mascot__chips">
-        <ellipse cx="70" cy="76" rx="7" ry="5.5" transform="rotate(-20 70 76)" />
-        <ellipse cx="128" cy="70" rx="6" ry="5" />
-        <ellipse cx="140" cy="118" rx="7" ry="5.5" transform="rotate(25 140 118)" />
-        <ellipse cx="66" cy="126" rx="6" ry="5" />
-        <ellipse cx="100" cy="146" rx="6.5" ry="5" />
-      </g>
-      <g className="treat-mascot__eyes">
-        <circle className="treat-mascot__white" cx="84" cy="94" r="13" />
-        <circle className="treat-mascot__white" cx="116" cy="94" r="13" />
-        <circle className="treat-mascot__pupil" cx="88" cy="96" r="6" />
-        <circle className="treat-mascot__pupil" cx="120" cy="96" r="6" />
-      </g>
-      <ellipse className="treat-mascot__cheek" cx="68" cy="112" rx="8" ry="5.5" />
-      <ellipse className="treat-mascot__cheek" cx="132" cy="112" rx="8" ry="5.5" />
-      <path className="treat-mascot__smile" d="M84 118 Q100 134 116 118" />
-    </svg>
-  );
-}
-
-/** A close-up of one spot in the category photo, for a card with no photo of its own. */
-function cropStyle(crop: [number, number] | undefined): CSSProperties | undefined {
-  if (!crop) return undefined;
-  return { '--crop-x': crop[0], '--crop-y': crop[1] } as CSSProperties;
-}
+/** Card grounds on the blue band: every tone but blue. */
+const TONES = ['pink', 'butter', 'beige'] as const;
 
 export function TreatShowcase({
   category,
@@ -63,26 +35,36 @@ export function TreatShowcase({
   more: ReactNode;
 }) {
   const photo = treatArt[category.slug] ?? stock.cupcakes;
+  const jar = showcaseArt[category.slug];
   const smallest = qtyLabel(category.minQty, category.unit);
-  const features: Array<{ icon: ReactNode; label: string }> = [
-    { icon: <span className="site-veg-dot site-veg-dot--lg" />, label: '100% eggless' },
+  const features: Array<{ icon: ReactNode; label: string; tone: string }> = [
+    { icon: <span className="site-veg-dot site-veg-dot--lg" />, label: '100% eggless', tone: 'pink' },
     {
       icon: <Doodle name="whisk" size={48} />,
       label: category.choiceLabel ? `Choose your ${category.choiceLabel.toLowerCase()}` : 'Make it yours',
+      tone: 'blue',
     },
-    { icon: <Doodle name="heart" size={44} color="var(--bbm-color-cherry-700)" />, label: 'Baked to order' },
-    { icon: <Doodle name="bow" size={48} color="var(--bbm-color-cherry-700)" />, label: `From ${smallest}` },
+    {
+      icon: <Doodle name="heart" size={44} color="var(--bbm-color-cherry-500)" />,
+      label: 'Baked to order',
+      tone: 'beige',
+    },
+    {
+      icon: <Doodle name="bow" size={48} color="var(--bbm-color-cherry-700)" />,
+      label: `From ${smallest}`,
+      tone: 'pink',
+    },
   ];
   const decorations: Array<{ name: DoodleName; className: string; color: string; size: number }> = [
     { name: 'heart', className: 'treat-sig__deco--a', color: 'var(--bbm-color-cherry-500)', size: 40 },
-    { name: 'sparkle', className: 'treat-sig__deco--b', color: 'var(--bbm-color-butter-400)', size: 44 },
-    { name: 'sparkle', className: 'treat-sig__deco--c', color: 'var(--bbm-color-cherry-500)', size: 34 },
-    { name: 'heart', className: 'treat-sig__deco--d', color: 'var(--bbm-color-pink-500)', size: 36 },
+    { name: 'sparkle', className: 'treat-sig__deco--b', color: 'var(--bbm-color-butter-300)', size: 48 },
+    { name: 'sparkle', className: 'treat-sig__deco--c', color: 'var(--bbm-color-paper)', size: 34 },
+    { name: 'heart', className: 'treat-sig__deco--d', color: 'var(--bbm-color-pink-300)', size: 38 },
   ];
 
   return (
     <>
-      {/* Hero: the photo full-bleed under a cocoa shade, the wave of the next band along its foot */}
+      {/* Hero: the photo full-bleed in a cherry wash, the wave of the pink band along its foot */}
       <section className="treat-hero" aria-labelledby="treat-hero-title">
         <img className="treat-hero__photo" src={photo.src} alt="" width={900} height={1349} />
         <div className="treat-hero__inner">
@@ -112,9 +94,15 @@ export function TreatShowcase({
         />
       </section>
 
-      {/* Only the good stuff, with the mascot */}
-      <section className="site-section site-section--edged treat-good">
-        <SectionEdge color="var(--bbm-color-bg-canvas)" shape="wave" />
+      {/* Only the good stuff, on the pink polka dots of the home page */}
+      <PatternSurface
+        as="section"
+        pattern="dots"
+        tone="pink"
+        ground="var(--bbm-color-bg-pink)"
+        className="site-section site-section--edged treat-good"
+      >
+        <SectionEdge color="var(--bbm-color-bg-pink)" shape="wave" />
         <div className="site-container treat-good__inner">
           <div className="treat-good__copy">
             <h2 className="treat-good__title">{showcase.goodStuff.title}</h2>
@@ -123,9 +111,30 @@ export function TreatShowcase({
               See the {category.name.toLowerCase()}
             </Button>
           </div>
-          <CookieMascot className="treat-good__mascot" />
+          {jar && (
+            <div className="treat-good__art">
+              <Polaroid
+                frame="scallop"
+                tone="butter"
+                src={jar.src}
+                alt={jar.alt}
+                rotate={3}
+                aspect="1/1"
+                width="100%"
+              />
+              <PriceTag
+                className="treat-good__tag"
+                shape="burst"
+                tone="pink"
+                amount="fresh"
+                label="every tin"
+                size={96}
+                rotate={-10}
+              />
+            </div>
+          )}
         </div>
-      </section>
+      </PatternSurface>
 
       <div className="treat-ribbons">
         <Marquee
@@ -145,8 +154,8 @@ export function TreatShowcase({
         />
       </div>
 
-      {/* The treats, as framed cards */}
-      <section id="menu" className="site-section treat-sig">
+      {/* The treats, as framed cards on the baby blue band (the Cakes band's color) */}
+      <section id="menu" className="site-section site-section--blue treat-sig">
         {decorations.map((d) => (
           <Doodle
             key={d.className}
@@ -164,39 +173,38 @@ export function TreatShowcase({
             description={`Open one to pick your ${category.choiceLabel?.toLowerCase() ?? 'box'}, make it yours and send the order on WhatsApp.`}
           />
           <ul className="treat-sig__grid">
-            {category.items.map((treat, i) => (
-              <li key={treat.slug}>
-                <article className="treat-card">
-                  <a
-                    className="treat-card__frame"
-                    href={`/shop/${category.slug}/${treat.slug}`}
-                    data-bbm-tone={TONES[i % TONES.length]}
-                    tabIndex={-1}
-                    aria-hidden="true"
-                  >
-                    {treat.photo ? (
-                      <img src={treat.photo.src} alt="" loading="lazy" />
-                    ) : (
+            {category.items.map((treat, i) => {
+              const own = treat.photo;
+              const drawing = treatItemArt[treat.slug];
+              return (
+                <li key={treat.slug}>
+                  <article className="treat-card">
+                    <a
+                      className="treat-card__frame"
+                      href={`/shop/${category.slug}/${treat.slug}`}
+                      data-bbm-tone={TONES[i % TONES.length]}
+                      tabIndex={-1}
+                      aria-hidden="true"
+                    >
                       <img
-                        className="treat-card__crop"
-                        src={photo.src}
+                        className={own || !drawing ? undefined : 'treat-card__drawing'}
+                        src={(own ?? drawing ?? photo).src}
                         alt=""
                         loading="lazy"
-                        style={cropStyle(showcase.crops[i % showcase.crops.length])}
                       />
-                    )}
-                  </a>
-                  <h3 className="treat-card__name">{treat.name}</h3>
-                  <p className="treat-card__blurb">{treat.blurb}</p>
-                  <Button size="sm" fullWidth href={`/shop/${category.slug}/${treat.slug}`}>
-                    Customise & order
-                  </Button>
-                </article>
-              </li>
-            ))}
+                    </a>
+                    <h3 className="treat-card__name">{treat.name}</h3>
+                    <p className="treat-card__blurb">{treat.blurb}</p>
+                    <Button size="sm" fullWidth href={`/shop/${category.slug}/${treat.slug}`}>
+                      Customise & order
+                    </Button>
+                  </article>
+                </li>
+              );
+            })}
           </ul>
           <p className="treat-sig__note">
-            Sold from {smallest}, priced on WhatsApp. Photos for reference; every box is baked to order.
+            Sold from {smallest}, priced on WhatsApp. Drawings for reference; every box is baked to order.
           </p>
         </div>
       </section>
@@ -214,7 +222,7 @@ export function TreatShowcase({
           <ul className="treat-simple__list">
             {features.map((feature) => (
               <li key={feature.label}>
-                <span className="treat-simple__icon" aria-hidden="true">
+                <span className="treat-simple__icon" data-bbm-tone={feature.tone} aria-hidden="true">
                   {feature.icon}
                 </span>
                 {feature.label}

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { PatternSurface, SectionHeading, Select, TextField } from '@bakesbymom/ui';
-import { stock, treatArt } from '../content';
+import { stock, treatArt, treatItemArt } from '../content';
 import { whatsappLink } from '../content/bakery';
 import { boxes, treatOrderMessage } from '../content/order';
 import { qtyLabel, type Treat, type TreatCategory } from '../content/treats';
@@ -19,7 +19,9 @@ import { SectionEdge } from '../sections/blocks';
 
 /** One treat (the old site's /shop/<type>/<item>): what it is, and an order that opens in WhatsApp. */
 export function TreatPage({ category, treat }: { category: TreatCategory; treat: Treat }) {
-  const image = treatArt[category.slug] ?? stock.cupcakes;
+  // The treat's own photo, else its drawing, else the photo for its type
+  const image = treat.photo ?? treatItemArt[treat.slug] ?? treatArt[category.slug] ?? stock.cupcakes;
+  const drawn = !treat.photo && Boolean(treatItemArt[treat.slug]);
   const step = category.unit === 'grams' ? 50 : 1;
   const [quantity, setQuantity] = useState(category.minQty);
   const [choice, setChoice] = useState(category.choices?.[0] ?? '');
@@ -47,7 +49,9 @@ export function TreatPage({ category, treat }: { category: TreatCategory; treat:
             <div className="shop-item__media">
               <PatternSurface pattern="gingham" tone="pink" className="shop-item__photo shop-item__photo--art">
                 <img src={image.src} alt={image.alt} width={400} height={400} />
-                <p className="shop-photo-note">Photo for reference. Every box is baked to order.</p>
+                <p className="shop-photo-note">
+                  {drawn ? 'Drawing' : 'Photo'} for reference. Every box is baked to order.
+                </p>
               </PatternSurface>
               <p className="order-hint">An illustration for now; our own photo is coming soon.</p>
             </div>

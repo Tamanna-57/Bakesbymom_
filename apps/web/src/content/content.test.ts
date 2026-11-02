@@ -257,15 +257,11 @@ describe('qtyLabel', () => {
 });
 
 describe('treat showcases', () => {
-  it('give the cookies a showcase whose close-ups stay inside the photo', () => {
-    const showcase = findTreatCategory('cookies')?.showcase;
-    expect(showcase).toBeTruthy();
-    expect(showcase!.ribbon[0].length).toBeGreaterThan(0);
-    for (const [x, y] of showcase!.crops) {
-      expect(x).toBeGreaterThanOrEqual(0.25);
-      expect(x).toBeLessThanOrEqual(0.75);
-      expect(y).toBeGreaterThan(0.15);
-      expect(y).toBeLessThan(0.85);
-    }
+  it('give the cookies a showcase, and every cookie a drawing of itself', async () => {
+    const { treatItemArt, showcaseArt } = await import('./index');
+    const cookies = findTreatCategory('cookies')!;
+    expect(cookies.showcase?.ribbon[0].length).toBeGreaterThan(0);
+    expect(showcaseArt.cookies?.src).toBeTruthy();
+    for (const treat of cookies.items) expect(treatItemArt[treat.slug]?.alt, treat.slug).toBeTruthy();
   });
 });

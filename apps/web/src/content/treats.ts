@@ -7,7 +7,7 @@ export interface Treat {
   blurb: string;
   description: string;
   details: string[];
-  /** A photo of this treat. Without one, its drawing (content/index.ts, `treatItemArt`) or the category's photo. */
+  /** A photo of this treat. Without one, the category's photo. */
   photo?: { src: string; alt: string };
 }
 
@@ -21,8 +21,8 @@ export interface TreatShowcase {
   script: string;
   /** The uppercase line under the headline. */
   tagline: string;
-  /** The hero's photo (a path in public/). Without one, the category's stock photo. */
-  hero?: { src: string; alt: string };
+  /** Up to three photos (paths in public/) fanned out as tilted cards beside the headline, the middle one largest. */
+  heroPhotos: Array<{ src: string; alt: string }>;
   goodStuff: { title: string; text: string };
   /** Words for the two ribbons. */
   ribbon: [string[], string[]];
@@ -156,7 +156,11 @@ export const treatCategories: TreatCategory[] = [
       title: 'Cookies worth',
       script: 'every crumb',
       tagline: 'Your flour, your flavour, baked for your date',
-      hero: { src: '/stock/cookies-hero.webp', alt: '' },
+      heroPhotos: [
+        { src: '/photos/cookies/berries.webp', alt: 'Raspberry and white chocolate cookies' },
+        { src: '/photos/cookies/choco-chip.webp', alt: 'A stack of chocolate chip cookies' },
+        { src: '/photos/cookies/double-chocolate.webp', alt: 'Double chocolate cookies with melted chocolate inside' },
+      ],
       goodStuff: {
         title: 'Only the good stuff goes in',
         text: 'We bake fewer things and bake them properly. Your pick of maida, wheat, ragi, oats or jowar, no eggs, ever, and every tin baked for your date instead of taken off a shelf.',
@@ -258,19 +262,6 @@ export const treatCategories: TreatCategory[] = [
           "Baked to order — please give us a day's notice where you can.",
           'Best within 12 days. Airtight at room temperature.',
           'Contains nuts, dairy.',
-        ],
-      },
-      {
-        slug: 'jeera-cookie',
-        name: 'Jeera Cookie',
-        blurb: 'Salted, not sweet. For the chai people.',
-        description:
-          "Roasted cumin through a savoury short dough, with a pinch of salt on top. The answer when somebody in the house doesn't like sweet things.",
-        details: [
-          '100% eggless, like everything else that leaves this kitchen.',
-          "Baked to order — please give us a day's notice where you can.",
-          'Best within 14 days. Airtight at room temperature.',
-          'Contains dairy.',
         ],
       },
       {

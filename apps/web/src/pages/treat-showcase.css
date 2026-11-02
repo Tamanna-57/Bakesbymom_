@@ -1,70 +1,40 @@
 /* The showcase layout for a treat type's page (TreatShowcase.tsx), on the site's own colored bands: a cherry wash
    over the photo, pink polka dots, baby blue for the cards and butter for the band the reference has in orange. */
 
-/* Hero: the wide photo full-bleed under a cherry wash, the words over it in light type ------------------------ */
+/* Hero: solid cherry, the words on the left, a fan of photo cards on the right --------------------------------- */
 
 .treat-hero {
   position: relative;
-  isolation: isolate;
   display: grid;
   align-items: center;
   min-height: clamp(26rem, calc(100svh - 10rem), 40rem);
-  /* Room at the top for the header's wave, which hangs over the photo */
+  /* Room at the top for the header's wave, which hangs over the hero */
   padding: calc(var(--bbm-space-10) + 1rem) var(--bbm-layout-gutter) calc(var(--bbm-space-16) + var(--bbm-space-4));
   overflow: hidden;
   background-color: var(--bbm-color-cherry-800);
   color: var(--bbm-color-paper);
 }
 
-.treat-hero__photo {
-  position: absolute;
-  inset: 0;
-  z-index: -3;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 60% 55%;
-}
-
-/* Cherry under the words, clearing to the cookies on the right; deep enough for AA contrast on any part of the photo */
-.treat-hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(
-    90deg,
-    rgb(67 14 23 / 0.92) 0%,
-    rgb(128 16 38 / 0.84) 38%,
-    rgb(128 16 38 / 0.6) 50%,
-    rgb(128 16 38 / 0) 70%
-  );
-}
-
-/* Phones: the stack sits behind the words, so the wash runs top to bottom */
-@media (max-width: 767.98px) {
-  .treat-hero__photo {
-    object-position: 68% 50%;
-  }
-
-  .treat-hero::after {
-    background: linear-gradient(180deg, rgb(67 14 23 / 0.88) 0%, rgb(128 16 38 / 0.78) 65%, rgb(128 16 38 / 0.55) 100%);
-  }
-}
-
 .treat-hero__inner {
   display: grid;
-  justify-items: start;
-  gap: clamp(var(--bbm-space-3), 2.5svh, var(--bbm-space-5));
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: var(--bbm-space-10);
   width: 100%;
   max-width: var(--bbm-layout-container);
   margin-inline: auto;
 }
 
-@media (min-width: 768px) {
-  .treat-hero__inner > * {
-    max-width: 50%;
+@media (min-width: 900px) {
+  .treat-hero__inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
+}
+
+.treat-hero__copy {
+  display: grid;
+  justify-items: start;
+  gap: clamp(var(--bbm-space-3), 2.5svh, var(--bbm-space-5));
 }
 
 .treat-hero .shop-crumbs ol {
@@ -125,16 +95,84 @@
   color: var(--bbm-color-pink-200);
 }
 
+/* Three photo cards, fanned like prints on a table; the middle one largest and on top. Sized from the screen's
+   height too, so the whole fan fits under the header on a laptop. */
+.treat-hero__fan {
+  position: relative;
+  justify-self: center;
+  width: min(100%, 40rem, max(18rem, (100svh - 14rem) * 1.25));
+  aspect-ratio: 5 / 4;
+}
+
+.treat-hero__card {
+  position: absolute;
+  top: 12%;
+  width: 42%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  box-sizing: border-box;
+  border: 6px solid var(--bbm-color-paper);
+  border-radius: var(--bbm-radius-lg);
+  background-color: var(--bbm-color-paper);
+  box-shadow: 8px 8px 0 var(--bbm-color-cherry-900);
+  transition:
+    translate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce),
+    rotate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
+}
+
+.treat-hero__card--1 {
+  left: 0;
+  rotate: -9deg;
+}
+
+.treat-hero__card--3 {
+  right: 0;
+  rotate: 8deg;
+}
+
+.treat-hero__card--2 {
+  top: 0;
+  left: 23%;
+  z-index: 1;
+  width: 54%;
+  rotate: -2deg;
+}
+
+.treat-hero__fan:hover .treat-hero__card--1 {
+  translate: -6px -4px;
+  rotate: -12deg;
+}
+
+.treat-hero__fan:hover .treat-hero__card--3 {
+  translate: 6px -4px;
+  rotate: 11deg;
+}
+
 .treat-hero__burst {
   position: absolute;
-  top: clamp(var(--bbm-space-12), 16%, var(--bbm-space-24));
-  right: max(var(--bbm-layout-gutter), calc((100vw - var(--bbm-layout-container)) / 2));
+  z-index: 2;
+  top: -6%;
+  right: 2%;
   animation: treat-wobble 6s ease-in-out infinite;
 }
 
-@media (max-width: 639.98px) {
+/* Phones and narrow tablets: the fan sits under the words */
+@media (max-width: 899.98px) {
+  .treat-hero {
+    min-height: 0;
+  }
+
+  .treat-hero__fan {
+    width: min(100%, 26rem);
+  }
+}
+
+@media (max-width: 479.98px) {
   .treat-hero__burst {
-    display: none;
+    top: -10%;
+    right: -2%;
+    scale: 0.8;
   }
 }
 
@@ -316,16 +354,6 @@
   transition: scale 0.6s var(--bbm-motion-easing-out);
 }
 
-/* A drawing shows whole on the card's tone; a photo fills the frame */
-.treat-card__frame .treat-card__drawing {
-  object-fit: contain;
-  scale: 1.18;
-}
-
-.treat-card:hover .treat-card__frame .treat-card__drawing {
-  scale: 1.24;
-}
-
 .treat-card:hover .treat-card__frame img {
   scale: 1.05;
 }
@@ -386,6 +414,7 @@
     animation: none;
   }
 
+  .treat-hero__card,
   .treat-card__frame,
   .treat-card__frame img {
     transition: none;

@@ -4,12 +4,9 @@ Chosen by the bakery for the cookies page (`/shop/cookies`), and set on each coo
 
 | File                    | Used for                                                     |
 | ----------------------- | ------------------------------------------------------------ |
-| `choco-chip.webp`       | Choco Chip Cookie                                            |
-| `double-chocolate.webp` | Double Chocolate Cookie                                      |
+| `choco-chip.webp`       | Choco Chip Cookie, and the middle card in the hero           |
+| `double-chocolate.webp` | Double Chocolate Cookie, and the right card in the hero      |
 | `oats.webp`             | Rolled Oats Cookie                                           |
 | `coconut.webp`          | Coconut Cookie                                               |
 | `almond-berry.webp`     | Almond & Berry Cookie                                        |
-| `berries.webp`          | Berries & White Chocolate Cookie, and "Only the good stuff" |
-
-The Jeera Cookie still shows a drawing (`src/content/cookies/`) until it has a photo. The hero's wide photo is
-`public/stock/cookies-hero.webp` (see `public/stock/CREDITS.md`).
+| `berries.webp`          | Berries & White Chocolate Cookie, the left card in the hero, and "Only the good stuff" |

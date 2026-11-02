@@ -15,7 +15,6 @@ import mom from './mom.svg';
 import sourdough from './sourdough.svg';
 import strawberryCake from './strawberry-cake.svg';
 import teaCake from './tea-cake.svg';
-import jeeraCookie from './cookies/jeera-cookie.svg';
 import { inr, kgLabel, mostOrdered } from './bakery';
 import { cakes, findOccasion } from './catalog';
 
@@ -69,14 +68,6 @@ export const treatArt: Record<string, StockPhoto> = {
   cupcakes: photo('treat-cupcakes', 'A cupcake with pink frosting and a cherry'),
   'bento-cakes': photo('treat-bento-cakes', 'A small bento cake that says happy birthday, in its box with a candle'),
   combos: photo('treat-combos', 'A pink rose-piped cake on a stand with matching cupcakes'),
-};
-
-/**
- * A drawing of a treat that has no photo yet, by its slug, in the board's palette (content/cookies/), so its card still
- * shows the treat its name says. A photo (Treat.photo in treats.ts) takes over as soon as there is one.
- */
-export const treatItemArt: Record<string, StockPhoto> = {
-  'jeera-cookie': { src: jeeraCookie, alt: 'Savoury jeera cookies with cumin seeds, next to a cup of chai' },
 };
 
 /** The photo beside "only the good stuff" on a treat type's showcase page, by its /shop slug. */

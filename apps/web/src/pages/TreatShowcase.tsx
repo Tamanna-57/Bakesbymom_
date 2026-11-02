@@ -21,9 +21,6 @@ import { SectionEdge } from '../sections/blocks';
 import { Breadcrumbs } from './order';
 import './treat-showcase.css';
 
-/** Card grounds on the blue band: every tone but blue. */
-const TONES = ['pink', 'butter', 'beige'] as const;
-
 export function TreatShowcase({
   category,
   showcase,
@@ -169,13 +166,16 @@ export function TreatShowcase({
         ))}
         <div className="site-container">
           <SectionHeading
-            variant="bubble"
             align="center"
-            title={`Our ${category.name.toLowerCase()}`}
+            title={
+              <>
+                Our <em>{category.name.toLowerCase()}</em>
+              </>
+            }
             description={`Open one to pick your ${category.choiceLabel?.toLowerCase() ?? 'box'}, make it yours and send the order on WhatsApp.`}
           />
           <ul className="treat-sig__grid">
-            {category.items.map((treat, i) => {
+            {category.items.map((treat) => {
               const own = treat.photo;
               const drawing = treatItemArt[treat.slug];
               return (
@@ -184,7 +184,6 @@ export function TreatShowcase({
                     <a
                       className="treat-card__frame"
                       href={`/shop/${category.slug}/${treat.slug}`}
-                      data-bbm-tone={TONES[i % TONES.length]}
                       tabIndex={-1}
                       aria-hidden="true"
                     >

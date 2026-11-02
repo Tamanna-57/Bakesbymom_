@@ -11,8 +11,8 @@ const meta = {
     docs: {
       description: {
         component: fromBoard(
-          "The About page: pin 01's **orbit** for the story, pin 05's **Meet Mom** and **values**, pin 16's **about card** with halftone cherries, and pin 04's **checkbox row** as a timeline.",
-          ['01', '05', '16', '04'],
+          "The About page: **Bake it with Mom**, the story told as a cake you bake with her while the kitchen light goes from sunrise to night (scroll through it; it's a still recipe card under reduced motion), then pin 05's **Meet Mom** and **values**.",
+          ['05'],
           'about.md',
         ),
       },

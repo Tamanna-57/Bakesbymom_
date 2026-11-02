@@ -255,3 +255,17 @@ describe('qtyLabel', () => {
     expect(qtyLabel(250, 'grams')).toBe('250 grams');
   });
 });
+
+describe('treat showcases', () => {
+  it('give the cookies a showcase whose close-ups stay inside the photo', () => {
+    const showcase = findTreatCategory('cookies')?.showcase;
+    expect(showcase).toBeTruthy();
+    expect(showcase!.ribbon[0].length).toBeGreaterThan(0);
+    for (const [x, y] of showcase!.crops) {
+      expect(x).toBeGreaterThanOrEqual(0.25);
+      expect(x).toBeLessThanOrEqual(0.75);
+      expect(y).toBeGreaterThan(0.15);
+      expect(y).toBeLessThan(0.85);
+    }
+  });
+});

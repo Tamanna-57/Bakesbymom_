@@ -12,7 +12,7 @@
   padding: clamp(var(--bbm-space-6), 4svh, var(--bbm-space-10)) var(--bbm-layout-gutter)
     calc(var(--bbm-space-16) + var(--bbm-space-4));
   overflow: hidden;
-  background-color: var(--bbm-color-cherry-900);
+  background-color: var(--bbm-color-cherry-800);
   color: var(--bbm-color-paper);
 }
 
@@ -23,32 +23,44 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 60% 40%;
+  object-position: 50% 45%;
 }
 
-/* A pink tint over the whole photo, so it sits in the site's palette... */
-.treat-hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-color: var(--bbm-color-pink-300);
-  mix-blend-mode: multiply;
-}
-
-/* ...and a cherry wash under the words, deep enough for AA contrast on any part of the photo */
+/* A cherry wash under the words, deep enough for AA contrast on any part of the photo */
 .treat-hero::after {
   content: '';
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(
-    100deg,
-    rgb(67 14 23 / 0.92) 0%,
-    rgb(128 16 38 / 0.8) 40%,
-    rgb(148 25 57 / 0.3) 70%,
-    rgb(148 25 57 / 0) 100%
-  );
+  background: linear-gradient(180deg, rgb(67 14 23 / 0.86) 0%, rgb(128 16 38 / 0.76) 70%, rgb(128 16 38 / 0.6) 100%);
+}
+
+/* Wider screens: the words on solid cherry in the left of the content column, the photo from there to the right
+   edge, fading in from the left */
+@media (min-width: 768px) {
+  .treat-hero {
+    --photo-left: calc(
+      max(var(--bbm-layout-gutter), (100% - var(--bbm-layout-container)) / 2) +
+        min(100% - 2 * var(--bbm-layout-gutter), var(--bbm-layout-container)) * 0.46
+    );
+  }
+
+  /* An image sized only by left and right shrinks to its own width, so the width is spelled out */
+  .treat-hero__photo {
+    left: var(--photo-left);
+    width: calc(100% - var(--photo-left));
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 22%);
+    mask-image: linear-gradient(90deg, transparent, #000 22%);
+  }
+
+  .treat-hero::after {
+    content: none;
+  }
+
+  /* The words keep to the left of the content column, clear of the photo */
+  .treat-hero__inner > * {
+    max-width: 52%;
+  }
 }
 
 .treat-hero__inner {
@@ -74,7 +86,7 @@
 }
 
 .treat-hero__title {
-  max-width: 11ch;
+  max-width: 13ch;
   margin: 0;
   font-family: var(--bbm-text-heavy-family);
   font-size: clamp(2.75rem, min(1.4rem + 5vw, 0.5rem + 10svh), 5.5rem);
@@ -123,10 +135,6 @@
 }
 
 @media (max-width: 639.98px) {
-  .treat-hero::after {
-    background: linear-gradient(180deg, rgb(67 14 23 / 0.88) 0%, rgb(128 16 38 / 0.78) 70%, rgb(128 16 38 / 0.6) 100%);
-  }
-
   .treat-hero__burst {
     display: none;
   }

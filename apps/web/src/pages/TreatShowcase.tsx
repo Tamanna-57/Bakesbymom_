@@ -1,6 +1,6 @@
 /**
  * The showcase layout for a treat type's page (the cookies first), after a cookie shop on Pinterest (The Crumb
- * Culture), redrawn in the board's palette and type, on the site's own colored bands: a photo hero in a cherry wash,
+ * Culture), redrawn in the board's palette and type, on the site's own colored bands: a cherry hero with a photo,
  * "only the good stuff" on pink polka dots with a drawing, a double ribbon, the treats as framed cards on the baby
  * blue band (each with its own drawing), and a butter "we keep it simple" band. The words come from content/treats.ts.
  */
@@ -35,7 +35,8 @@ export function TreatShowcase({
   more: ReactNode;
 }) {
   const photo = treatArt[category.slug] ?? stock.cupcakes;
-  const jar = showcaseArt[category.slug];
+  const hero = showcase.hero ?? photo;
+  const goodPhoto = showcaseArt[category.slug];
   const smallest = qtyLabel(category.minQty, category.unit);
   const features: Array<{ icon: ReactNode; label: string; tone: string }> = [
     { icon: <span className="site-veg-dot site-veg-dot--lg" />, label: '100% eggless', tone: 'pink' },
@@ -64,9 +65,10 @@ export function TreatShowcase({
 
   return (
     <>
-      {/* Hero: the photo full-bleed in a cherry wash, the wave of the pink band along its foot */}
+      {/* Hero: cherry on the left for the words, the photo on the right (full-bleed on phones), the wave of the
+          pink band along its foot */}
       <section className="treat-hero" aria-labelledby="treat-hero-title">
-        <img className="treat-hero__photo" src={photo.src} alt="" width={900} height={1349} />
+        <img className="treat-hero__photo" src={hero.src} alt="" />
         <div className="treat-hero__inner">
           <Breadcrumbs
             items={[{ label: 'Home', href: '/' }, { label: 'Cakes & Treats', href: '/shop' }, { label: category.name }]}
@@ -111,15 +113,15 @@ export function TreatShowcase({
               See the {category.name.toLowerCase()}
             </Button>
           </div>
-          {jar && (
+          {goodPhoto && (
             <div className="treat-good__art">
               <Polaroid
                 frame="scallop"
                 tone="butter"
-                src={jar.src}
-                alt={jar.alt}
+                src={goodPhoto.src}
+                alt={goodPhoto.alt}
                 rotate={3}
-                aspect="1/1"
+                aspect="4/5"
                 width="100%"
               />
               <PriceTag
@@ -204,7 +206,7 @@ export function TreatShowcase({
             })}
           </ul>
           <p className="treat-sig__note">
-            Sold from {smallest}, priced on WhatsApp. Drawings for reference; every box is baked to order.
+            Sold from {smallest}, priced on WhatsApp. Photos for reference; every box is baked to order.
           </p>
         </div>
       </section>

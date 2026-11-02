@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 
 // A tiny client-side router: four pages don't need a routing library.
 
@@ -7,11 +8,31 @@ const NAVIGATE = 'bbm:navigate';
 /** The current path without a trailing slash ("/" for the home page). */
 const currentPath = () => window.location.pathname.replace(/(.)\/+$/, '$1');
 
+type ViewTransitionDocument = Document & { startViewTransition?: (update: () => void) => unknown };
+
+/**
+ * Swaps the page inside a view transition where the browser has them, so the old page fades out and the new one
+ * fades in (site.css) instead of jumping. The swap is flushed at once so the browser captures the new page, already
+ * scrolled to where it should open. Visitors who ask for reduced motion get the plain swap.
+ */
+function swapPage(update: () => void) {
+  const doc = document as ViewTransitionDocument;
+  const still = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  if (!doc.startViewTransition || still) {
+    update();
+    return;
+  }
+  doc.startViewTransition(() => flushSync(update));
+}
+
 /** The current path, kept in sync with the address bar. */
 export function usePath() {
   const [path, setPath] = useState(currentPath);
   useEffect(() => {
-    const update = () => setPath(currentPath());
+    const update = () => {
+      const next = currentPath();
+      swapPage(() => setPath(next));
+    };
     window.addEventListener('popstate', update);
     window.addEventListener(NAVIGATE, update);
     return () => {

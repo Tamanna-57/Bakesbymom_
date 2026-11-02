@@ -1,8 +1,8 @@
 /**
  * The showcase layout for a treat type's page (the cookies first), after a cookie shop on Pinterest (The Crumb
  * Culture), redrawn in the board's palette and type, on the site's own colored bands: a cherry hero with a photo,
- * "only the good stuff" on pink polka dots with a drawing, a double ribbon, the treats as framed cards on the baby
- * blue band (each with its own drawing), and a butter "we keep it simple" band. The words come from content/treats.ts.
+ * "only the good stuff" on pink polka dots with a photo, a double ribbon, the treats as framed cards on the baby
+ * blue band (each with its photo). The words come from content/treats.ts.
  */
 import type { ReactNode } from 'react';
 import {
@@ -13,9 +13,7 @@ import {
   Polaroid,
   PriceTag,
   SectionHeading,
-  StickerIcon,
   type DoodleName,
-  type StickerIconName,
 } from '@bakesbymom/ui';
 import { showcaseArt, stock, treatArt, treatItemArt } from '../content';
 import { qtyLabel, type TreatCategory, type TreatShowcase as Showcase } from '../content/treats';
@@ -37,15 +35,6 @@ export function TreatShowcase({
   const hero = showcase.hero ?? photo;
   const goodPhoto = showcaseArt[category.slug];
   const smallest = qtyLabel(category.minQty, category.unit);
-  const features: Array<{ icon: StickerIconName; label: string }> = [
-    { icon: 'sprout', label: '100% eggless' },
-    {
-      icon: 'flour',
-      label: category.choiceLabel ? `Choose your ${category.choiceLabel.toLowerCase()}` : 'Make it yours',
-    },
-    { icon: 'mitt', label: 'Baked to order' },
-    { icon: 'gift', label: `From ${smallest}` },
-  ];
   const decorations: Array<{ name: DoodleName; className: string; color: string; size: number }> = [
     { name: 'heart', className: 'treat-sig__deco--a', color: 'var(--bbm-color-cherry-500)', size: 40 },
     { name: 'sparkle', className: 'treat-sig__deco--b', color: 'var(--bbm-color-butter-300)', size: 48 },
@@ -200,33 +189,6 @@ export function TreatShowcase({
           <p className="treat-sig__note">
             Sold from {smallest}, priced on WhatsApp. Photos for reference; every box is baked to order.
           </p>
-        </div>
-      </section>
-
-      {/* We keep it simple */}
-      <section className="site-section site-section--edged treat-simple" aria-labelledby="treat-simple-title">
-        <SectionEdge color="var(--bbm-color-butter-300)" shape="wave" />
-        <div className="site-container">
-          <div className="treat-simple__head">
-            <h2 id="treat-simple-title" className="treat-simple__title">
-              We keep it simple
-            </h2>
-            <p className="treat-simple__lead">Fewer things, baked better</p>
-          </div>
-          <ul className="treat-simple__list">
-            {features.map((feature) => (
-              <li key={feature.label}>
-                <StickerIcon name={feature.icon} size={72} className="treat-simple__icon" />
-                {feature.label}
-              </li>
-            ))}
-          </ul>
-          {category.choices && (
-            <p className="treat-simple__extra">
-              <strong>{category.choiceLabel}:</strong> {category.choices.join(', ')}. <strong>Make it yours:</strong>{' '}
-              {category.extras.join(', ').toLowerCase()}.
-            </p>
-          )}
         </div>
       </section>
 

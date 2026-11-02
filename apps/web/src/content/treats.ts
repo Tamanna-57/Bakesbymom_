@@ -7,7 +7,7 @@ export interface Treat {
   blurb: string;
   description: string;
   details: string[];
-  /** A photo of this treat. Without one, its card shows a close-up of the category's photo. */
+  /** A photo of this treat. Without one, its drawing (content/index.ts, `treatItemArt`) or the category's photo. */
   photo?: { src: string; alt: string };
 }
 
@@ -24,11 +24,6 @@ export interface TreatShowcase {
   goodStuff: { title: string; text: string };
   /** Words for the two ribbons. */
   ribbon: [string[], string[]];
-  /**
-   * Cards without a photo of their own close in on the category photo: where each one centres, as fractions of the
-   * photo's width and height. Keep x between about 0.25 and 0.75 so the close-up fills the frame.
-   */
-  crops: Array<[number, number]>;
 }
 
 export interface TreatCategory {
@@ -166,14 +161,6 @@ export const treatCategories: TreatCategory[] = [
       ribbon: [
         ['Baked to order', '100% eggless', 'Pick your flour', 'Chunks, not chips', 'Less sweet on request'],
         ['Good with chai', 'Crisp edge, soft middle', 'Mixed boxes', 'Made in Mom’s kitchen'],
-      ],
-      crops: [
-        [0.6, 0.43],
-        [0.32, 0.2],
-        [0.33, 0.7],
-        [0.75, 0.2],
-        [0.72, 0.8],
-        [0.45, 0.58],
       ],
     },
     extras: [

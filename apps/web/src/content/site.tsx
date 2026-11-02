@@ -3,6 +3,7 @@
 import {
   Button,
   Doodle,
+  StickerIcon,
   type AccordionItem,
   type FooterColumn,
   type FooterSocial,
@@ -49,31 +50,27 @@ const whatsappIcon = (
   <Icon d="M4 20l1.3-4A8 8 0 1 1 8 18.7zM9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.5-2-1-1 .8a4.5 4.5 0 0 1-2.3-2.3l.8-1-1-2z" />
 );
 
-/** Instagram and WhatsApp, where the bakery actually lives. */
+/** Instagram and WhatsApp, where the bakery actually lives: the system's sticker icons, standing on their own. */
 export const headerActions = (
   <>
-    <Button
-      variant="secondary"
-      shape="circle"
-      size="sm"
+    <a
+      className="site-icon-link"
       aria-label="Instagram (opens in a new tab)"
       href={bakery.instagram}
       target="_blank"
       rel="noreferrer"
     >
-      {instagramIcon}
-    </Button>
-    <Button
-      variant="secondary"
-      shape="circle"
-      size="sm"
+      <StickerIcon name="instagram" size={36} />
+    </a>
+    <a
+      className="site-icon-link"
       aria-label="Order on WhatsApp (opens WhatsApp)"
       href={orderLink}
       target="_blank"
       rel="noreferrer"
     >
-      {whatsappIcon}
-    </Button>
+      <StickerIcon name="whatsapp" size={36} />
+    </a>
   </>
 );
 

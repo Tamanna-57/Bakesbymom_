@@ -14,6 +14,12 @@ export {
 } from './components/PatternSurface/PatternSurface';
 export { EdgeDivider, EDGE_SHAPES, type EdgeDividerProps, type EdgeShape } from './components/EdgeDivider/EdgeDivider';
 export { Doodle, DOODLES, type DoodleName, type DoodleProps } from './components/Doodle/Doodle';
+export {
+  StickerIcon,
+  STICKER_ICONS,
+  type StickerIconName,
+  type StickerIconProps,
+} from './components/StickerIcon/StickerIcon';
 export { Seal, type SealProps } from './components/Seal/Seal';
 export { FilterChips, type FilterChipOption, type FilterChipsProps } from './components/FilterChips/FilterChips';
 export { Logo, type LogoProps } from './components/Logo/Logo';

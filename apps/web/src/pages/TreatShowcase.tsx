@@ -1,8 +1,8 @@
 /**
  * The showcase layout for a treat type's page (the cookies first), after a cookie shop on Pinterest (The Crumb
- * Culture), redrawn in the board's palette and type, on the site's own colored bands: a cherry hero with a photo,
- * "only the good stuff" on pink polka dots with a drawing, a double ribbon, the treats as framed cards on the baby
- * blue band (each with its own drawing), and a butter "we keep it simple" band. The words come from content/treats.ts.
+ * Culture), redrawn in the board's palette and type, on the site's own colored bands: a cherry hero with a fan of photos,
+ * "only the good stuff" on pink polka dots with a photo, a double ribbon, the treats as framed cards on the baby
+ * blue band (each with its photo). The words come from content/treats.ts.
  */
 import type { ReactNode } from 'react';
 import {
@@ -15,7 +15,7 @@ import {
   SectionHeading,
   type DoodleName,
 } from '@bakesbymom/ui';
-import { showcaseArt, stock, treatArt, treatItemArt } from '../content';
+import { showcaseArt, stock, treatArt } from '../content';
 import { qtyLabel, type TreatCategory, type TreatShowcase as Showcase } from '../content/treats';
 import { SectionEdge } from '../sections/blocks';
 import { Breadcrumbs } from './order';
@@ -32,27 +32,8 @@ export function TreatShowcase({
   more: ReactNode;
 }) {
   const photo = treatArt[category.slug] ?? stock.cupcakes;
-  const hero = showcase.hero ?? photo;
   const goodPhoto = showcaseArt[category.slug];
   const smallest = qtyLabel(category.minQty, category.unit);
-  const features: Array<{ icon: ReactNode; label: string; tone: string }> = [
-    { icon: <span className="site-veg-dot site-veg-dot--lg" />, label: '100% eggless', tone: 'pink' },
-    {
-      icon: <Doodle name="whisk" size={48} />,
-      label: category.choiceLabel ? `Choose your ${category.choiceLabel.toLowerCase()}` : 'Make it yours',
-      tone: 'blue',
-    },
-    {
-      icon: <Doodle name="heart" size={44} color="var(--bbm-color-cherry-500)" />,
-      label: 'Baked to order',
-      tone: 'beige',
-    },
-    {
-      icon: <Doodle name="bow" size={48} color="var(--bbm-color-cherry-700)" />,
-      label: `From ${smallest}`,
-      tone: 'pink',
-    },
-  ];
   const decorations: Array<{ name: DoodleName; className: string; color: string; size: number }> = [
     { name: 'heart', className: 'treat-sig__deco--a', color: 'var(--bbm-color-cherry-500)', size: 40 },
     { name: 'sparkle', className: 'treat-sig__deco--b', color: 'var(--bbm-color-butter-300)', size: 48 },
@@ -62,35 +43,51 @@ export function TreatShowcase({
 
   return (
     <>
-      {/* Hero: cherry on the left for the words, the photo on the right (full-bleed on phones), the wave of the
-          pink band along its foot */}
+      {/* Hero: solid cherry, the words on the left and a fan of photo cards on the right, a wave at the top (the
+          header's) and the foot (the pink band's) */}
       <section className="treat-hero" aria-labelledby="treat-hero-title">
-        <img className="treat-hero__photo" src={hero.src} alt="" />
         <div className="treat-hero__inner">
-          <Breadcrumbs
-            items={[{ label: 'Home', href: '/' }, { label: 'Cakes & Treats', href: '/shop' }, { label: category.name }]}
-          />
-          <h1 id="treat-hero-title" className="treat-hero__title">
-            <span className="bbm-visually-hidden">{category.name}: </span>
-            {showcase.title} <span className="treat-hero__script">{showcase.script}</span>
-          </h1>
-          <p className="treat-hero__tagline">{showcase.tagline}</p>
-          <div className="treat-hero__actions">
-            <Button size="lg" href="#menu">
-              Pick your {category.name.toLowerCase()}
-            </Button>
+          <div className="treat-hero__copy">
+            <Breadcrumbs
+              items={[
+                { label: 'Home', href: '/' },
+                { label: 'Cakes & Treats', href: '/shop' },
+                { label: category.name },
+              ]}
+            />
+            <h1 id="treat-hero-title" className="treat-hero__title">
+              <span className="bbm-visually-hidden">{category.name}: </span>
+              {showcase.title} <span className="treat-hero__script">{showcase.script}</span>
+            </h1>
+            <p className="treat-hero__tagline">{showcase.tagline}</p>
+            <div className="treat-hero__actions">
+              <Button size="lg" href="#menu">
+                Pick your {category.name.toLowerCase()}
+              </Button>
+            </div>
+            <p className="treat-hero__note">Photos for reference. Every box is baked to order.</p>
           </div>
-          <p className="treat-hero__note">Photo for reference. Every box is baked to order.</p>
+          <div className="treat-hero__fan">
+            {showcase.heroPhotos.slice(0, 3).map((shot, i) => (
+              <img
+                key={shot.src}
+                className={`treat-hero__card treat-hero__card--${i + 1}`}
+                src={shot.src}
+                alt={shot.alt}
+                fetchPriority={i === 1 ? 'high' : undefined}
+              />
+            ))}
+            <PriceTag
+              className="treat-hero__burst"
+              shape="burst"
+              tone="butter"
+              amount="100%"
+              label="eggless"
+              size={104}
+              rotate={-12}
+            />
+          </div>
         </div>
-        <PriceTag
-          className="treat-hero__burst"
-          shape="burst"
-          tone="butter"
-          amount="100%"
-          label="eggless"
-          size={112}
-          rotate={-12}
-        />
       </section>
 
       {/* Only the good stuff, on the pink polka dots of the home page */}
@@ -176,8 +173,6 @@ export function TreatShowcase({
           />
           <ul className="treat-sig__grid">
             {category.items.map((treat) => {
-              const own = treat.photo;
-              const drawing = treatItemArt[treat.slug];
               return (
                 <li key={treat.slug}>
                   <article className="treat-card">
@@ -187,12 +182,7 @@ export function TreatShowcase({
                       tabIndex={-1}
                       aria-hidden="true"
                     >
-                      <img
-                        className={own || !drawing ? undefined : 'treat-card__drawing'}
-                        src={(own ?? drawing ?? photo).src}
-                        alt=""
-                        loading="lazy"
-                      />
+                      <img src={(treat.photo ?? photo).src} alt="" loading="lazy" />
                     </a>
                     <h3 className="treat-card__name">{treat.name}</h3>
                     <p className="treat-card__blurb">{treat.blurb}</p>
@@ -207,35 +197,6 @@ export function TreatShowcase({
           <p className="treat-sig__note">
             Sold from {smallest}, priced on WhatsApp. Photos for reference; every box is baked to order.
           </p>
-        </div>
-      </section>
-
-      {/* We keep it simple */}
-      <section className="site-section site-section--edged treat-simple" aria-labelledby="treat-simple-title">
-        <SectionEdge color="var(--bbm-color-butter-300)" shape="wave" />
-        <div className="site-container">
-          <div className="treat-simple__head">
-            <h2 id="treat-simple-title" className="treat-simple__title">
-              We keep it simple
-            </h2>
-            <p className="treat-simple__lead">Fewer things, baked better</p>
-          </div>
-          <ul className="treat-simple__list">
-            {features.map((feature) => (
-              <li key={feature.label}>
-                <span className="treat-simple__icon" data-bbm-tone={feature.tone} aria-hidden="true">
-                  {feature.icon}
-                </span>
-                {feature.label}
-              </li>
-            ))}
-          </ul>
-          {category.choices && (
-            <p className="treat-simple__extra">
-              <strong>{category.choiceLabel}:</strong> {category.choices.join(', ')}. <strong>Make it yours:</strong>{' '}
-              {category.extras.join(', ').toLowerCase()}.
-            </p>
-          )}
         </div>
       </section>
 

@@ -37,9 +37,19 @@ body {
   translate: 0 0;
 }
 
-/* Room under the footer so the floating Ask Mom launcher never covers its last links and buttons */
+/* The footer's last line, kept clear of the floating Back button (bottom left) and Ask Mom launcher (bottom right).
+   On wider screens it sits centered between them, so it needs no extra room underneath; on phones, where the two
+   span the width, it gets just enough room below them. */
 .bbm-footer__bottom {
-  padding-bottom: calc(var(--bbm-space-8) + 6rem);
+  padding-bottom: calc(var(--bbm-space-6) + 4.5rem);
+}
+
+@media (min-width: 900px) {
+  .bbm-footer__bottom {
+    padding-inline: 12rem;
+    padding-bottom: var(--bbm-space-8);
+    text-align: center;
+  }
 }
 
 /* Back button (back-button.tsx): a paper pill in the bottom-left corner, opposite the Ask Mom launcher.
@@ -133,5 +143,77 @@ body {
   .site-back,
   .site-back svg {
     transition: none;
+  }
+}
+
+/* Header actions: the sticker icons on their own (content/site.tsx), with a 44px target and a little wiggle */
+.site-icon-link {
+  display: inline-grid;
+  place-items: center;
+  width: var(--bbm-layout-touch-target);
+  height: var(--bbm-layout-touch-target);
+  border-radius: 50%;
+  transition:
+    rotate var(--bbm-motion-duration-fast) var(--bbm-motion-easing-bounce),
+    translate var(--bbm-motion-duration-fast) var(--bbm-motion-easing-bounce);
+}
+
+.site-icon-link:hover {
+  translate: 0 -2px;
+  rotate: -8deg;
+}
+
+.site-icon-link:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-icon-link {
+    transition: none;
+  }
+}
+
+/* Page changes (router.ts, View Transitions): the old page fades out, the new one fades in and rises a little.
+   The header keeps its own name, so it stays put while the page under it changes. */
+.bbm-header {
+  view-transition-name: site-header;
+}
+
+#main {
+  view-transition-name: site-main;
+}
+
+/* The two pages are different heights: no stretching between them, just the fade */
+::view-transition-group(site-main) {
+  animation: none;
+}
+
+::view-transition-old(site-main) {
+  animation: site-page-out 0.22s var(--bbm-motion-easing-standard) both;
+}
+
+::view-transition-new(site-main) {
+  animation: site-page-in 0.45s var(--bbm-motion-easing-out) both;
+}
+
+@keyframes site-page-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes site-page-in {
+  from {
+    opacity: 0;
+    translate: 0 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none;
   }
 }

@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState, type HTMLAttributes, type ReactNode } from 'react';
 import { cx } from '../../utils/cx';
-import { EdgeDivider } from '../EdgeDivider/EdgeDivider';
+import { EdgeDivider, type EdgeShape } from '../EdgeDivider/EdgeDivider';
 import { Logo } from '../Logo/Logo';
 
 export interface NavLink {
@@ -37,6 +37,15 @@ export interface SiteHeaderProps extends HTMLAttributes<HTMLElement> {
   tone?: 'pink' | 'beige' | 'blue' | 'surface';
   /** Scalloped bottom edge in the bar color (pin 15). Bar variant only. */
   scallop?: boolean;
+  /** Shape of that edge: scallops (the default) or any EdgeDivider shape, such as a wave. */
+  edge?: EdgeShape;
+  /** Size of the edge's shapes. */
+  edgeSize?: 'sm' | 'md' | 'lg';
+  /**
+   * Hang the edge over the top of the content below (a photo hero) instead of giving it its own strip, so the
+   * page's background never shows between the shapes.
+   */
+  edgeOverlay?: boolean;
   /** Keep the header at the top while scrolling. */
   sticky?: boolean;
   /** After 120px of scroll, shrink the bar into the capsule (implies `sticky`). */
@@ -70,6 +79,9 @@ export function SiteHeader({
   variant = 'bar',
   tone = 'pink',
   scallop = false,
+  edge = 'scallop',
+  edgeSize = 'sm',
+  edgeOverlay = false,
   sticky = false,
   capsuleOnScroll = false,
   navLabel = 'Main',
@@ -158,7 +170,12 @@ export function SiteHeader({
           </div>
         </div>
         {scallop && !capsule && (
-          <EdgeDivider className="bbm-header__edge" shape="scallop" size="sm" color="var(--_header-bg)" />
+          <EdgeDivider
+            className={cx('bbm-header__edge', edgeOverlay && 'bbm-header__edge--overlay')}
+            shape={edge}
+            size={edgeSize}
+            color="var(--_header-bg)"
+          />
         )}
       </header>
     </>

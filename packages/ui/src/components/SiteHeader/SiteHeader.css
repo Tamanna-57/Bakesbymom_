@@ -155,6 +155,16 @@
   margin-top: -1px;
 }
 
+/* edgeOverlay: the edge hangs over the top of the content below instead of taking its own strip */
+.bbm-header__edge--overlay {
+  position: absolute;
+  top: calc(100% - 1px);
+  left: 0;
+  width: 100%;
+  margin-top: 0;
+  pointer-events: none;
+}
+
 .bbm-header__bar {
   display: grid;
   grid-template-columns: auto 1fr auto;

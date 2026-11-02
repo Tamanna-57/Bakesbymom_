@@ -8,6 +8,7 @@ import { ReviewCard } from './ReviewCard/ReviewCard';
 import { Seal } from './Seal/Seal';
 import { StepList } from './StepList/StepList';
 import { Doodle } from './Doodle/Doodle';
+import { STICKER_ICONS, StickerIcon } from './StickerIcon/StickerIcon';
 
 describe('content components', () => {
   it('ProductCard renders a heading link that covers the card', () => {
@@ -82,5 +83,27 @@ describe('content components', () => {
     expect(container.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true');
     render(<Doodle name="cherry" title="Cherry" />);
     expect(screen.getByRole('img', { name: 'Cherry' })).toBeTruthy();
+  });
+});
+
+describe('StickerIcon', () => {
+  it('draws every icon, hidden from screen readers unless it has a title', () => {
+    for (const name of STICKER_ICONS) {
+      const { container, unmount } = render(<StickerIcon name={name} />);
+      const svg = container.querySelector('svg')!;
+      expect(svg.getAttribute('aria-hidden')).toBe('true');
+      expect(svg.querySelectorAll('path, rect, circle, ellipse').length).toBeGreaterThan(0);
+      unmount();
+    }
+    render(<StickerIcon name="cookie" title="A cookie" />);
+    expect(screen.getByRole('img', { name: 'A cookie' })).toBeTruthy();
+  });
+
+  it('takes its fills and ink from props', () => {
+    const { container } = render(<StickerIcon name="gift" size={40} tones={['red']} ink="blue" />);
+    const style = container.querySelector('svg')!.style;
+    expect(style.getPropertyValue('--_f1')).toBe('red');
+    expect(style.getPropertyValue('--_ink')).toBe('blue');
+    expect(style.width).toBe('40px');
   });
 });

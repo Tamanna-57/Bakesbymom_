@@ -3,13 +3,18 @@
 
 /* Hero: solid cherry, the words on the left, a fan of photo cards on the right --------------------------------- */
 
+/* Exactly one screen under the header, so the header's wave at the top and the pink band's wave at the foot are
+   both in view at once. Layout keeps --site-header-h at the header's height. */
 .treat-hero {
+  --hero-h: calc(100svh - var(--site-header-h, 5.5rem));
   position: relative;
   display: grid;
   align-items: center;
-  min-height: clamp(26rem, calc(100svh - 10rem), 40rem);
-  /* Room at the top for the header's wave, which hangs over the hero */
-  padding: calc(var(--bbm-space-10) + 1rem) var(--bbm-layout-gutter) calc(var(--bbm-space-16) + var(--bbm-space-4));
+  box-sizing: border-box;
+  min-height: var(--hero-h);
+  /* Room at the top for the header's wave, which hangs over the hero, and at the foot for the next band's */
+  padding: clamp(var(--bbm-space-8), 7svh, var(--bbm-space-16)) var(--bbm-layout-gutter)
+    clamp(var(--bbm-space-8), 7svh, var(--bbm-space-16));
   overflow: hidden;
   background-color: var(--bbm-color-cherry-800);
   color: var(--bbm-color-paper);
@@ -100,7 +105,8 @@
 .treat-hero__fan {
   position: relative;
   justify-self: center;
-  width: min(100%, 40rem, max(18rem, (100svh - 14rem) * 1.25));
+  /* As wide as the space allows, but never taller than the hero has room for (the fan is 4:5 tall) */
+  width: min(100%, 46rem, max(16rem, (var(--hero-h) - 2 * clamp(2rem, 7svh, 4rem) - 2rem) * 1.25));
   aspect-ratio: 5 / 4;
 }
 
@@ -159,12 +165,12 @@
 
 /* Phones and narrow tablets: the fan sits under the words */
 @media (max-width: 899.98px) {
-  .treat-hero {
-    min-height: 0;
+  .treat-hero__inner {
+    gap: var(--bbm-space-6);
   }
 
   .treat-hero__fan {
-    width: min(100%, 26rem);
+    width: min(100%, 22rem, max(11rem, (var(--hero-h) - 30rem) * 1.25));
   }
 }
 

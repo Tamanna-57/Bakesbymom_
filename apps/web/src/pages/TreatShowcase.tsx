@@ -1,6 +1,6 @@
 /**
  * The showcase layout for a treat type's page (the cookies first), after a cookie shop on Pinterest (The Crumb
- * Culture), redrawn in the board's palette and type, on the site's own colored bands: a cherry hero with a photo,
+ * Culture), redrawn in the board's palette and type, on the site's own colored bands: a cherry hero with a fan of photos,
  * "only the good stuff" on pink polka dots with a photo, a double ribbon, the treats as framed cards on the baby
  * blue band (each with its photo). The words come from content/treats.ts.
  */
@@ -15,7 +15,7 @@ import {
   SectionHeading,
   type DoodleName,
 } from '@bakesbymom/ui';
-import { showcaseArt, stock, treatArt, treatItemArt } from '../content';
+import { showcaseArt, stock, treatArt } from '../content';
 import { qtyLabel, type TreatCategory, type TreatShowcase as Showcase } from '../content/treats';
 import { SectionEdge } from '../sections/blocks';
 import { Breadcrumbs } from './order';
@@ -32,7 +32,6 @@ export function TreatShowcase({
   more: ReactNode;
 }) {
   const photo = treatArt[category.slug] ?? stock.cupcakes;
-  const hero = showcase.hero ?? photo;
   const goodPhoto = showcaseArt[category.slug];
   const smallest = qtyLabel(category.minQty, category.unit);
   const decorations: Array<{ name: DoodleName; className: string; color: string; size: number }> = [
@@ -44,35 +43,51 @@ export function TreatShowcase({
 
   return (
     <>
-      {/* Hero: the wide photo full-bleed under a pink tint, the words over it, a wave at the top (the header's)
-          and the foot (the pink band's) */}
+      {/* Hero: solid cherry, the words on the left and a fan of photo cards on the right, a wave at the top (the
+          header's) and the foot (the pink band's) */}
       <section className="treat-hero" aria-labelledby="treat-hero-title">
-        <img className="treat-hero__photo" src={hero.src} alt="" />
         <div className="treat-hero__inner">
-          <Breadcrumbs
-            items={[{ label: 'Home', href: '/' }, { label: 'Cakes & Treats', href: '/shop' }, { label: category.name }]}
-          />
-          <h1 id="treat-hero-title" className="treat-hero__title">
-            <span className="bbm-visually-hidden">{category.name}: </span>
-            {showcase.title} <span className="treat-hero__script">{showcase.script}</span>
-          </h1>
-          <p className="treat-hero__tagline">{showcase.tagline}</p>
-          <div className="treat-hero__actions">
-            <Button size="lg" href="#menu">
-              Pick your {category.name.toLowerCase()}
-            </Button>
+          <div className="treat-hero__copy">
+            <Breadcrumbs
+              items={[
+                { label: 'Home', href: '/' },
+                { label: 'Cakes & Treats', href: '/shop' },
+                { label: category.name },
+              ]}
+            />
+            <h1 id="treat-hero-title" className="treat-hero__title">
+              <span className="bbm-visually-hidden">{category.name}: </span>
+              {showcase.title} <span className="treat-hero__script">{showcase.script}</span>
+            </h1>
+            <p className="treat-hero__tagline">{showcase.tagline}</p>
+            <div className="treat-hero__actions">
+              <Button size="lg" href="#menu">
+                Pick your {category.name.toLowerCase()}
+              </Button>
+            </div>
+            <p className="treat-hero__note">Photos for reference. Every box is baked to order.</p>
           </div>
-          <p className="treat-hero__note">Photo for reference. Every box is baked to order.</p>
+          <div className="treat-hero__fan">
+            {showcase.heroPhotos.slice(0, 3).map((shot, i) => (
+              <img
+                key={shot.src}
+                className={`treat-hero__card treat-hero__card--${i + 1}`}
+                src={shot.src}
+                alt={shot.alt}
+                fetchPriority={i === 1 ? 'high' : undefined}
+              />
+            ))}
+            <PriceTag
+              className="treat-hero__burst"
+              shape="burst"
+              tone="butter"
+              amount="100%"
+              label="eggless"
+              size={104}
+              rotate={-12}
+            />
+          </div>
         </div>
-        <PriceTag
-          className="treat-hero__burst"
-          shape="burst"
-          tone="butter"
-          amount="100%"
-          label="eggless"
-          size={112}
-          rotate={-12}
-        />
       </section>
 
       {/* Only the good stuff, on the pink polka dots of the home page */}
@@ -158,8 +173,6 @@ export function TreatShowcase({
           />
           <ul className="treat-sig__grid">
             {category.items.map((treat) => {
-              const own = treat.photo;
-              const drawing = treatItemArt[treat.slug];
               return (
                 <li key={treat.slug}>
                   <article className="treat-card">
@@ -169,12 +182,7 @@ export function TreatShowcase({
                       tabIndex={-1}
                       aria-hidden="true"
                     >
-                      <img
-                        className={own || !drawing ? undefined : 'treat-card__drawing'}
-                        src={(own ?? drawing ?? photo).src}
-                        alt=""
-                        loading="lazy"
-                      />
+                      <img src={(treat.photo ?? photo).src} alt="" loading="lazy" />
                     </a>
                     <h3 className="treat-card__name">{treat.name}</h3>
                     <p className="treat-card__blurb">{treat.blurb}</p>

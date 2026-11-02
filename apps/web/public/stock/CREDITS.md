@@ -27,4 +27,3 @@ From [Unsplash](https://unsplash.com), under the [Unsplash License](https://unsp
 | `home-cupcakes.webp`             | Sara Cervera         | [cupcake with white icing on top](https://unsplash.com/photos/cupcake-with-white-icing-on-top-Syv73NRZk7E)                                                         |
 | `home-occasions.webp`            | Ron James            | [round white cake on cake stand](https://unsplash.com/photos/round-white-cake-on-cake-stand-K9v6ACaGuvQ)                                                           |
 | `home-kitchen.webp`              | Karina Syrotiuk      | [Hand sifting yellow flour into a bowl](https://unsplash.com/photos/hand-sifting-yellow-flour-into-a-bowl-TRxdJIa0-BA)                                             |
-| `cookies-hero.webp` | Unsplash (photographer not recorded) | [chocolate chip cookies stacked beside a glass of milk](https://images.unsplash.com/photo-1548365328-8c6db3220e4c), mirrored |

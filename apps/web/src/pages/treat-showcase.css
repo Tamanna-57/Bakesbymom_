@@ -1,7 +1,7 @@
 /* The showcase layout for a treat type's page (TreatShowcase.tsx), on the site's own colored bands: a cherry wash
    over the photo, pink polka dots, baby blue for the cards and butter for the band the reference has in orange. */
 
-/* Hero: the photo full-bleed, a cocoa shade behind the words ---------------------------------------------- */
+/* Hero: cherry with the photo on the right (full-bleed under a cherry wash on phones) ----------------------- */
 
 .treat-hero {
   position: relative;
@@ -45,12 +45,17 @@
     );
   }
 
-  /* An image sized only by left and right shrinks to its own width, so the width is spelled out */
+  /* Close to the photo's own shape (4:5, the photo is about 2:3), so it is only trimmed a little top and bottom
+     instead of being blown up to fill a wide box. Never past the words. */
   .treat-hero__photo {
-    left: var(--photo-left);
-    width: calc(100% - var(--photo-left));
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 22%);
-    mask-image: linear-gradient(90deg, transparent, #000 22%);
+    inset: 0 0 0 auto;
+    width: auto;
+    max-width: calc(100% - var(--photo-left));
+    height: 100%;
+    aspect-ratio: 4 / 5;
+    object-position: 50% 50%;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%);
+    mask-image: linear-gradient(90deg, transparent, #000 18%);
   }
 
   .treat-hero::after {
@@ -85,14 +90,15 @@
   color: var(--bbm-color-paper);
 }
 
+/* The site's display style: Bodoni at its medium weight, with the script word in Pinyon */
 .treat-hero__title {
   max-width: 13ch;
   margin: 0;
-  font-family: var(--bbm-text-heavy-family);
-  font-size: clamp(2.75rem, min(1.4rem + 5vw, 0.5rem + 10svh), 5.5rem);
-  font-weight: var(--bbm-font-weight-black);
-  line-height: 0.95;
-  letter-spacing: -0.02em;
+  font-family: var(--bbm-text-display-xl-family);
+  font-size: var(--bbm-text-display-xl-size);
+  font-weight: var(--bbm-text-display-xl-weight);
+  line-height: var(--bbm-text-display-xl-line-height);
+  letter-spacing: var(--bbm-text-display-xl-tracking);
   text-wrap: balance;
 }
 
@@ -107,13 +113,15 @@
   color: var(--bbm-color-pink-300);
 }
 
+/* Mom's note: the hand style (Cormorant italic), like the kickers on the other pages */
 .treat-hero__tagline {
   max-width: 30rem;
   margin: 0;
-  font-size: var(--bbm-text-body-md-size);
-  font-weight: var(--bbm-font-weight-bold);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-family: var(--bbm-text-hand-md-family);
+  font-size: var(--bbm-text-hand-md-size);
+  font-style: italic;
+  font-weight: var(--bbm-text-hand-md-weight);
+  line-height: 1.2;
   color: var(--bbm-color-butter-200);
 }
 
@@ -161,22 +169,19 @@
 
 .treat-good__title {
   margin: 0;
-  font-family: var(--bbm-text-heavy-family);
-  font-size: var(--bbm-text-heavy-size);
-  font-weight: var(--bbm-font-weight-black);
-  line-height: 1;
-  letter-spacing: -0.015em;
+  font-family: var(--bbm-text-display-lg-family);
+  font-size: var(--bbm-text-display-lg-size);
+  font-weight: var(--bbm-text-display-lg-weight);
+  line-height: var(--bbm-text-display-lg-line-height);
+  letter-spacing: var(--bbm-text-display-lg-tracking);
   color: var(--bbm-color-cherry-700);
 }
 
 .treat-good__text {
   max-width: 34rem;
   margin: 0;
-  font-size: var(--bbm-text-body-md-size);
-  font-weight: var(--bbm-font-weight-bold);
-  line-height: 1.5;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: var(--bbm-text-body-lg-size);
+  line-height: var(--bbm-text-body-lg-line-height);
   color: var(--bbm-color-cherry-800);
 }
 
@@ -210,13 +215,6 @@
 
 .treat-sig > .site-container {
   max-width: 62rem;
-}
-
-.treat-sig .bbm-heading--bubble .bbm-heading__title {
-  --bbm-heading-bubble-fill: var(--bbm-color-butter-300);
-  font-size: var(--bbm-text-display-lg-size);
-  -webkit-text-stroke: 5px var(--bbm-color-cherry-800);
-  text-shadow: 0.05em 0.06em 0 var(--bbm-color-cherry-800);
 }
 
 .treat-sig__deco {
@@ -307,7 +305,8 @@
   margin-bottom: var(--bbm-space-2);
   border: 3px solid var(--bbm-color-cherry-700);
   border-radius: var(--bbm-radius-lg);
-  background-color: var(--_tone-bg, var(--bbm-color-bg-pink));
+  /* One soft cream behind every cookie, photo or drawing, so the row reads as a set */
+  background-color: var(--bbm-color-beige-100);
   box-shadow: 5px 5px 0 var(--bbm-color-cherry-800);
   transition:
     translate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce),
@@ -343,11 +342,10 @@
 
 .treat-card__name {
   margin: 0;
-  font-family: var(--bbm-font-family-body);
-  font-size: var(--bbm-text-body-md-size);
-  font-weight: var(--bbm-font-weight-black);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-family: var(--bbm-text-heading-md-family);
+  font-size: var(--bbm-text-heading-md-size);
+  font-weight: var(--bbm-text-heading-md-weight);
+  line-height: var(--bbm-text-heading-md-line-height);
   color: var(--bbm-color-text-primary);
 }
 
@@ -381,18 +379,20 @@
 
 .treat-simple__title {
   margin: 0;
-  font-family: var(--bbm-text-heavy-family);
-  font-size: var(--bbm-text-heavy-size);
-  font-weight: var(--bbm-font-weight-black);
-  line-height: 1;
+  font-family: var(--bbm-text-display-lg-family);
+  font-size: var(--bbm-text-display-lg-size);
+  font-weight: var(--bbm-text-display-lg-weight);
+  line-height: var(--bbm-text-display-lg-line-height);
+  letter-spacing: var(--bbm-text-display-lg-tracking);
   color: var(--bbm-color-cherry-800);
 }
 
 .treat-simple__lead {
   margin: 0;
-  font-weight: var(--bbm-font-weight-bold);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-family: var(--bbm-text-hand-md-family);
+  font-size: var(--bbm-text-hand-md-size);
+  font-style: italic;
+  font-weight: var(--bbm-text-hand-md-weight);
   color: var(--bbm-color-brown-900);
 }
 
@@ -406,13 +406,15 @@
   list-style: none;
 }
 
+/* Labels in the site's eyebrow style (small uppercase DM Sans) */
 .treat-simple__list li {
   display: grid;
   justify-items: center;
   gap: var(--bbm-space-3);
-  font-size: var(--bbm-text-body-sm-size);
-  font-weight: var(--bbm-font-weight-black);
-  letter-spacing: 0.08em;
+  font-family: var(--bbm-text-eyebrow-family);
+  font-size: var(--bbm-text-eyebrow-size);
+  font-weight: var(--bbm-text-eyebrow-weight);
+  letter-spacing: var(--bbm-text-eyebrow-tracking);
   text-align: center;
   text-transform: uppercase;
   color: var(--bbm-color-brown-900);

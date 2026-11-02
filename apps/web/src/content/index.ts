@@ -15,13 +15,7 @@ import mom from './mom.svg';
 import sourdough from './sourdough.svg';
 import strawberryCake from './strawberry-cake.svg';
 import teaCake from './tea-cake.svg';
-import chocoChipCookie from './cookies/choco-chip-cookie.svg';
-import coconutCookie from './cookies/coconut-cookie.svg';
-import customFlavourCookie from './cookies/custom-flavour-cookie.svg';
-import dryFruitCookie from './cookies/dry-fruit-cookie.svg';
 import jeeraCookie from './cookies/jeera-cookie.svg';
-import nankhatai from './cookies/nankhatai.svg';
-import rolledOatsCookie from './cookies/rolled-oats-cookie.svg';
 import { inr, kgLabel, mostOrdered } from './bakery';
 import { cakes, findOccasion } from './catalog';
 
@@ -78,17 +72,11 @@ export const treatArt: Record<string, StockPhoto> = {
 };
 
 /**
- * A drawing of each treat, by its slug, in the board's palette (content/cookies/), so every card shows the treat its
- * name says. Mom's own photos replace them as they come in (Treat.photo in treats.ts).
+ * A drawing of a treat that has no photo yet, by its slug, in the board's palette (content/cookies/), so its card still
+ * shows the treat its name says. A photo (Treat.photo in treats.ts) takes over as soon as there is one.
  */
 export const treatItemArt: Record<string, StockPhoto> = {
-  'choco-chip-cookie': { src: chocoChipCookie, alt: 'Two golden cookies with big chocolate chunks' },
-  'rolled-oats-cookie': { src: rolledOatsCookie, alt: 'Two chewy oat cookies scattered with rolled oats' },
-  'coconut-cookie': { src: coconutCookie, alt: 'Pale coconut cookies, toasted at the edge, with half a coconut' },
-  nankhatai: { src: nankhatai, alt: 'Three crackled butter nankhatai, each with a pistachio on top' },
-  'dry-fruit-cookie': { src: dryFruitCookie, alt: 'A big cookie loaded with almonds, cashews and raisins' },
   'jeera-cookie': { src: jeeraCookie, alt: 'Savoury jeera cookies with cumin seeds, next to a cup of chai' },
-  'custom-flavour-cookie': { src: customFlavourCookie, alt: 'A cookie with a pink drizzle, berries and coffee beans' },
 };
 
 /** The photo beside "only the good stuff" on a treat type's showcase page, by its /shop slug. */

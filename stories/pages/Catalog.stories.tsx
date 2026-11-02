@@ -38,8 +38,16 @@ export const Cake: Story = { render: () => <CakePage cake={findCake('cake-spider
 /** /shop: Cakes & Treats, every category in one place, and a custom order. */
 export const CakesAndTreats: Story = { render: () => <ShopPage /> };
 
-/** /shop/cookies: one treat type. */
+/**
+ * /shop/cookies: the showcase layout (after The Crumb Culture on Pinterest, in our palette): photo hero, "only the
+ * good stuff" with the cookie mascot, two ribbons, the cookies as framed cards and the "we keep it simple" band.
+ */
 export const TreatType: Story = { render: () => <TreatCategoryPage category={findTreatCategory('cookies')!} /> };
+
+/** /shop/brownies: a treat type without a showcase keeps the plain page. */
+export const TreatTypePlain: Story = {
+  render: () => <TreatCategoryPage category={findTreatCategory('brownies')!} />,
+};
 
 /** /shop/brownies/oreo-brownie: one treat and its order builder. */
 export const Treat: Story = {

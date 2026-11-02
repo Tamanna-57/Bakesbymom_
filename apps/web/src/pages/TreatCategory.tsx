@@ -4,12 +4,51 @@ import { qtyLabel, treatCategories, type TreatCategory } from '../content/treats
 import { Layout } from './Layout';
 import { Breadcrumbs, EgglessNote } from './order';
 import { SectionEdge } from '../sections/blocks';
+import { TreatShowcase } from './TreatShowcase';
 
 const TONES = ['pink', 'blue', 'beige', 'butter'] as const;
 
-/** One kind of treat (the old site's /shop/<type>): what to know, then every item. */
+/** The other kinds of bake, as buttons, at the foot of a treat type's page. */
+function MoreFromTheKitchen({ category }: { category: TreatCategory }) {
+  return (
+    <section className="site-section site-section--pink site-section--edged">
+      <SectionEdge color="var(--bbm-color-bg-pink)" />
+      <div className="site-container">
+        <SectionHeading title="More from the kitchen" size="md" align="center" />
+        <div className="shop-more">
+          <Button variant="secondary" href="/catalog">
+            Cakes
+          </Button>
+          {treatCategories
+            .filter((other) => other.slug !== category.slug)
+            .map((other) => (
+              <Button key={other.slug} variant="secondary" href={`/shop/${other.slug}`}>
+                {other.name}
+              </Button>
+            ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * One kind of treat (the old site's /shop/<type>): what to know, then every item. A type with a `showcase` (the
+ * cookies) gets the showcase layout instead (TreatShowcase.tsx).
+ */
 export function TreatCategoryPage({ category }: { category: TreatCategory }) {
   const image = treatArt[category.slug] ?? stock.cupcakes;
+  if (category.showcase) {
+    return (
+      <Layout path="/shop">
+        <TreatShowcase
+          category={category}
+          showcase={category.showcase}
+          more={<MoreFromTheKitchen category={category} />}
+        />
+      </Layout>
+    );
+  }
   return (
     <Layout path="/shop">
       <section className="site-section site-section--blue">
@@ -72,24 +111,7 @@ export function TreatCategoryPage({ category }: { category: TreatCategory }) {
         </div>
       </section>
 
-      <section className="site-section site-section--pink site-section--edged">
-        <SectionEdge color="var(--bbm-color-bg-pink)" />
-        <div className="site-container">
-          <SectionHeading title="More from the kitchen" size="md" align="center" />
-          <div className="shop-more">
-            <Button variant="secondary" href="/catalog">
-              Cakes
-            </Button>
-            {treatCategories
-              .filter((other) => other.slug !== category.slug)
-              .map((other) => (
-                <Button key={other.slug} variant="secondary" href={`/shop/${other.slug}`}>
-                  {other.name}
-                </Button>
-              ))}
-          </div>
-        </div>
-      </section>
+      <MoreFromTheKitchen category={category} />
     </Layout>
   );
 }

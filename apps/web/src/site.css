@@ -135,3 +135,31 @@ body {
     transition: none;
   }
 }
+
+/* Header actions: the sticker icons on their own (content/site.tsx), with a 44px target and a little wiggle */
+.site-icon-link {
+  display: inline-grid;
+  place-items: center;
+  width: var(--bbm-layout-touch-target);
+  height: var(--bbm-layout-touch-target);
+  border-radius: 50%;
+  transition:
+    rotate var(--bbm-motion-duration-fast) var(--bbm-motion-easing-bounce),
+    translate var(--bbm-motion-duration-fast) var(--bbm-motion-easing-bounce);
+}
+
+.site-icon-link:hover {
+  translate: 0 -2px;
+  rotate: -8deg;
+}
+
+.site-icon-link:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-icon-link {
+    transition: none;
+  }
+}

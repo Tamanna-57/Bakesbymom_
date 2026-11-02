@@ -156,7 +156,7 @@ export const treatCategories: TreatCategory[] = [
       title: 'Cookies worth',
       script: 'every crumb',
       tagline: 'Your flour, your flavour, baked for your date',
-      hero: { src: '/photos/cookies/choco-chip.webp', alt: '' },
+      hero: { src: '/stock/cookies-hero.webp', alt: '' },
       goodStuff: {
         title: 'Only the good stuff goes in',
         text: 'We bake fewer things and bake them properly. Your pick of maida, wheat, ragi, oats or jowar, no eggs, ever, and every tin baked for your date instead of taken off a shelf.',

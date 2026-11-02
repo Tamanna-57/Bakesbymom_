@@ -43,6 +43,8 @@ const ITEM_SELECTORS = [
   '.home-flavours__grid > li',
   '.home-shop__row > li',
   '.home-crafted__tiles > li',
+  '.treat-sig__grid > li',
+  '.treat-simple__list > li',
   '.site-menu__grid > li',
   '.site-tiles > li',
   '.site-values > *',

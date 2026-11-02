@@ -1,80 +1,40 @@
 /* The showcase layout for a treat type's page (TreatShowcase.tsx), on the site's own colored bands: a cherry wash
    over the photo, pink polka dots, baby blue for the cards and butter for the band the reference has in orange. */
 
-/* Hero: cherry with the photo on the right (full-bleed under a cherry wash on phones) ----------------------- */
+/* Hero: solid cherry, the words on the left, a fan of photo cards on the right --------------------------------- */
 
 .treat-hero {
   position: relative;
-  isolation: isolate;
   display: grid;
   align-items: center;
   min-height: clamp(26rem, calc(100svh - 10rem), 40rem);
-  padding: clamp(var(--bbm-space-6), 4svh, var(--bbm-space-10)) var(--bbm-layout-gutter)
-    calc(var(--bbm-space-16) + var(--bbm-space-4));
+  /* Room at the top for the header's wave, which hangs over the hero */
+  padding: calc(var(--bbm-space-10) + 1rem) var(--bbm-layout-gutter) calc(var(--bbm-space-16) + var(--bbm-space-4));
   overflow: hidden;
   background-color: var(--bbm-color-cherry-800);
   color: var(--bbm-color-paper);
 }
 
-.treat-hero__photo {
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 45%;
-}
-
-/* A cherry wash under the words, deep enough for AA contrast on any part of the photo */
-.treat-hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(180deg, rgb(67 14 23 / 0.86) 0%, rgb(128 16 38 / 0.76) 70%, rgb(128 16 38 / 0.6) 100%);
-}
-
-/* Wider screens: the words on solid cherry in the left of the content column, the photo from there to the right
-   edge, fading in from the left */
-@media (min-width: 768px) {
-  .treat-hero {
-    --photo-left: calc(
-      max(var(--bbm-layout-gutter), (100% - var(--bbm-layout-container)) / 2) +
-        min(100% - 2 * var(--bbm-layout-gutter), var(--bbm-layout-container)) * 0.46
-    );
-  }
-
-  /* Close to the photo's own shape (4:5, the photo is about 2:3), so it is only trimmed a little top and bottom
-     instead of being blown up to fill a wide box. Never past the words. */
-  .treat-hero__photo {
-    inset: 0 0 0 auto;
-    width: auto;
-    max-width: calc(100% - var(--photo-left));
-    height: 100%;
-    aspect-ratio: 4 / 5;
-    object-position: 50% 50%;
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%);
-    mask-image: linear-gradient(90deg, transparent, #000 18%);
-  }
-
-  .treat-hero::after {
-    content: none;
-  }
-
-  /* The words keep to the left of the content column, clear of the photo */
-  .treat-hero__inner > * {
-    max-width: 52%;
-  }
-}
-
 .treat-hero__inner {
   display: grid;
-  justify-items: start;
-  gap: clamp(var(--bbm-space-3), 2.5svh, var(--bbm-space-5));
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: var(--bbm-space-10);
   width: 100%;
   max-width: var(--bbm-layout-container);
   margin-inline: auto;
+}
+
+@media (min-width: 900px) {
+  .treat-hero__inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.treat-hero__copy {
+  display: grid;
+  justify-items: start;
+  gap: clamp(var(--bbm-space-3), 2.5svh, var(--bbm-space-5));
 }
 
 .treat-hero .shop-crumbs ol {
@@ -135,16 +95,84 @@
   color: var(--bbm-color-pink-200);
 }
 
+/* Three photo cards, fanned like prints on a table; the middle one largest and on top. Sized from the screen's
+   height too, so the whole fan fits under the header on a laptop. */
+.treat-hero__fan {
+  position: relative;
+  justify-self: center;
+  width: min(100%, 40rem, max(18rem, (100svh - 14rem) * 1.25));
+  aspect-ratio: 5 / 4;
+}
+
+.treat-hero__card {
+  position: absolute;
+  top: 12%;
+  width: 42%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  box-sizing: border-box;
+  border: 6px solid var(--bbm-color-paper);
+  border-radius: var(--bbm-radius-lg);
+  background-color: var(--bbm-color-paper);
+  box-shadow: 8px 8px 0 var(--bbm-color-cherry-900);
+  transition:
+    translate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce),
+    rotate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
+}
+
+.treat-hero__card--1 {
+  left: 0;
+  rotate: -9deg;
+}
+
+.treat-hero__card--3 {
+  right: 0;
+  rotate: 8deg;
+}
+
+.treat-hero__card--2 {
+  top: 0;
+  left: 23%;
+  z-index: 1;
+  width: 54%;
+  rotate: -2deg;
+}
+
+.treat-hero__fan:hover .treat-hero__card--1 {
+  translate: -6px -4px;
+  rotate: -12deg;
+}
+
+.treat-hero__fan:hover .treat-hero__card--3 {
+  translate: 6px -4px;
+  rotate: 11deg;
+}
+
 .treat-hero__burst {
   position: absolute;
-  top: clamp(var(--bbm-space-8), 12%, var(--bbm-space-20));
-  right: max(var(--bbm-layout-gutter), calc((100vw - var(--bbm-layout-container)) / 2));
+  z-index: 2;
+  top: -6%;
+  right: 2%;
   animation: treat-wobble 6s ease-in-out infinite;
 }
 
-@media (max-width: 639.98px) {
+/* Phones and narrow tablets: the fan sits under the words */
+@media (max-width: 899.98px) {
+  .treat-hero {
+    min-height: 0;
+  }
+
+  .treat-hero__fan {
+    width: min(100%, 26rem);
+  }
+}
+
+@media (max-width: 479.98px) {
   .treat-hero__burst {
-    display: none;
+    top: -10%;
+    right: -2%;
+    scale: 0.8;
   }
 }
 
@@ -326,16 +354,6 @@
   transition: scale 0.6s var(--bbm-motion-easing-out);
 }
 
-/* A drawing shows whole on the card's tone; a photo fills the frame */
-.treat-card__frame .treat-card__drawing {
-  object-fit: contain;
-  scale: 1.18;
-}
-
-.treat-card:hover .treat-card__frame .treat-card__drawing {
-  scale: 1.24;
-}
-
 .treat-card:hover .treat-card__frame img {
   scale: 1.05;
 }
@@ -363,82 +381,6 @@
   font-size: var(--bbm-text-body-sm-size);
   color: var(--bbm-color-text-secondary);
   text-align: center;
-}
-
-/* We keep it simple: the butter band -------------------------------------------------------------------- */
-
-.treat-simple {
-  background-color: var(--bbm-color-butter-300);
-}
-
-.treat-simple__head {
-  display: grid;
-  gap: var(--bbm-space-2);
-  text-align: center;
-}
-
-.treat-simple__title {
-  margin: 0;
-  font-family: var(--bbm-text-display-lg-family);
-  font-size: var(--bbm-text-display-lg-size);
-  font-weight: var(--bbm-text-display-lg-weight);
-  line-height: var(--bbm-text-display-lg-line-height);
-  letter-spacing: var(--bbm-text-display-lg-tracking);
-  color: var(--bbm-color-cherry-800);
-}
-
-.treat-simple__lead {
-  margin: 0;
-  font-family: var(--bbm-text-hand-md-family);
-  font-size: var(--bbm-text-hand-md-size);
-  font-style: italic;
-  font-weight: var(--bbm-text-hand-md-weight);
-  color: var(--bbm-color-brown-900);
-}
-
-.treat-simple__list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(9rem, 100%), 1fr));
-  gap: var(--bbm-space-6) var(--bbm-space-4);
-  max-width: 52rem;
-  margin: 0 auto;
-  padding: 0;
-  list-style: none;
-}
-
-/* Labels in the site's eyebrow style (small uppercase DM Sans) */
-.treat-simple__list li {
-  display: grid;
-  justify-items: center;
-  gap: var(--bbm-space-3);
-  font-family: var(--bbm-text-eyebrow-family);
-  font-size: var(--bbm-text-eyebrow-size);
-  font-weight: var(--bbm-text-eyebrow-weight);
-  letter-spacing: var(--bbm-text-eyebrow-tracking);
-  text-align: center;
-  text-transform: uppercase;
-  color: var(--bbm-color-brown-900);
-}
-
-.treat-simple__icon {
-  display: grid;
-  place-items: center;
-  width: 5.5rem;
-  height: 5.5rem;
-  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
-  border-radius: 50%;
-  background-color: var(--_tone-bg, var(--bbm-color-paper));
-  box-shadow: var(--bbm-shadow-sticker-sm);
-  color: var(--bbm-color-brown-900);
-}
-
-.treat-simple__extra {
-  max-width: 44rem;
-  margin: 0 auto;
-  font-size: var(--bbm-text-body-sm-size);
-  line-height: 1.6;
-  text-align: center;
-  color: var(--bbm-color-brown-900);
 }
 
 /* Motion ----------------------------------------------------------------------------------------------- */
@@ -472,6 +414,7 @@
     animation: none;
   }
 
+  .treat-hero__card,
   .treat-card__frame,
   .treat-card__frame img {
     transition: none;

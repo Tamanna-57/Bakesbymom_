@@ -7,7 +7,7 @@ export interface Treat {
   blurb: string;
   description: string;
   details: string[];
-  /** A photo of this treat. Without one, its drawing (content/index.ts, `treatItemArt`) or the category's photo. */
+  /** A photo of this treat. Without one, the category's photo. */
   photo?: { src: string; alt: string };
 }
 
@@ -21,8 +21,8 @@ export interface TreatShowcase {
   script: string;
   /** The uppercase line under the headline. */
   tagline: string;
-  /** The hero's photo (a path in public/). Without one, the category's stock photo. */
-  hero?: { src: string; alt: string };
+  /** Up to three photos (paths in public/) fanned out as tilted cards beside the headline, the middle one largest. */
+  heroPhotos: Array<{ src: string; alt: string }>;
   goodStuff: { title: string; text: string };
   /** Words for the two ribbons. */
   ribbon: [string[], string[]];
@@ -156,7 +156,11 @@ export const treatCategories: TreatCategory[] = [
       title: 'Cookies worth',
       script: 'every crumb',
       tagline: 'Your flour, your flavour, baked for your date',
-      hero: { src: '/photos/cookies/choco-chip.webp', alt: '' },
+      heroPhotos: [
+        { src: '/photos/cookies/berries.webp', alt: 'Raspberry and white chocolate cookies' },
+        { src: '/photos/cookies/choco-chip.webp', alt: 'A stack of chocolate chip cookies' },
+        { src: '/photos/cookies/double-chocolate.webp', alt: 'Double chocolate cookies with melted chocolate inside' },
+      ],
       goodStuff: {
         title: 'Only the good stuff goes in',
         text: 'We bake fewer things and bake them properly. Your pick of maida, wheat, ragi, oats or jowar, no eggs, ever, and every tin baked for your date instead of taken off a shelf.',
@@ -193,6 +197,23 @@ export const treatCategories: TreatCategory[] = [
         ],
       },
       {
+        slug: 'double-chocolate-cookie',
+        name: 'Double Chocolate Cookie',
+        blurb: 'Cocoa dough, melting chocolate chips.',
+        description:
+          'A dark cocoa dough with chocolate chips through it, baked soft so the middle stays fudgy and the chips melt when you break one open.',
+        photo: {
+          src: '/photos/cookies/double-chocolate.webp',
+          alt: 'Two halves of a double chocolate cookie, melted chocolate inside, stacked on a whole one',
+        },
+        details: [
+          '100% eggless, like everything else that leaves this kitchen.',
+          "Baked to order — please give us a day's notice where you can.",
+          'Best within 10 days. Airtight at room temperature.',
+          'Contains wheat or your chosen flour, dairy.',
+        ],
+      },
+      {
         slug: 'rolled-oats-cookie',
         name: 'Rolled Oats Cookie',
         blurb: 'Chewy, wholesome, good with chai.',
@@ -215,6 +236,10 @@ export const treatCategories: TreatCategory[] = [
         blurb: 'Desiccated coconut, toasted golden.',
         description:
           'Coconut folded through a short, buttery dough and baked until the edges toast. Light, and not too sweet.',
+        photo: {
+          src: '/photos/cookies/coconut.webp',
+          alt: 'A plate of golden coconut cookies scattered with coconut flakes',
+        },
         details: [
           '100% eggless, like everything else that leaves this kitchen.',
           "Baked to order — please give us a day's notice where you can.",
@@ -223,27 +248,14 @@ export const treatCategories: TreatCategory[] = [
         ],
       },
       {
-        slug: 'nankhatai',
-        name: 'Butter Nankhatai',
-        blurb: 'The one that crumbles before you bite it.',
+        slug: 'almond-berry-cookie',
+        name: 'Almond & Berry Cookie',
+        blurb: 'Flaked almonds and tart dried berries.',
         description:
-          'Short, melt-in-the-mouth nankhatai with a touch of cardamom and a pistachio pressed on top. Baked the way it has always been baked.',
-        details: [
-          '100% eggless, like everything else that leaves this kitchen.',
-          "Baked to order — please give us a day's notice where you can.",
-          'Best within 14 days. Airtight at room temperature.',
-          'Contains dairy, nuts.',
-        ],
-      },
-      {
-        slug: 'dry-fruit-cookie',
-        name: 'Dry Fruit Cookie',
-        blurb: 'Almonds, cashews and raisins in every one.',
-        description:
-          'Loaded with chopped almonds, cashews and raisins. The tin people ask for at Diwali and then again in January.',
+          'A chewy, oaty dough packed with flaked almonds and dried berries, so every bite is a little nutty and a little tart. The tin people ask for at Diwali and then again in January.',
         photo: {
-          src: '/photos/cookies/cherry-almond.webp',
-          alt: 'Cookies with dried cherries and flaked almonds on a speckled plate',
+          src: '/photos/cookies/almond-berry.webp',
+          alt: 'Cookies with dried berries and flaked almonds on a speckled plate',
         },
         details: [
           '100% eggless, like everything else that leaves this kitchen.',
@@ -253,24 +265,11 @@ export const treatCategories: TreatCategory[] = [
         ],
       },
       {
-        slug: 'jeera-cookie',
-        name: 'Jeera Cookie',
-        blurb: 'Salted, not sweet. For the chai people.',
+        slug: 'berry-white-chocolate-cookie',
+        name: 'Berries & White Chocolate Cookie',
+        blurb: 'Raspberries and white chocolate chunks.',
         description:
-          "Roasted cumin through a savoury short dough, with a pinch of salt on top. The answer when somebody in the house doesn't like sweet things.",
-        details: [
-          '100% eggless, like everything else that leaves this kitchen.',
-          "Baked to order — please give us a day's notice where you can.",
-          'Best within 14 days. Airtight at room temperature.',
-          'Contains dairy.',
-        ],
-      },
-      {
-        slug: 'custom-flavour-cookie',
-        name: 'Tell Us the Flavour',
-        blurb: "Berries, coffee, anything you've had before.",
-        description:
-          "If it isn't on the shelf, ask. Berries, coffee, orange zest, a flavour you had somewhere and want again — tell us in the order message and we'll say whether we can bake it.",
+          'Raspberries folded through a buttery dough with chunks of white chocolate, baked until the edges turn golden and the berries just start to jam.',
         photo: {
           src: '/photos/cookies/berries.webp',
           alt: 'A stack of raspberry and white chocolate cookies on a plate',
@@ -278,7 +277,8 @@ export const treatCategories: TreatCategory[] = [
         details: [
           '100% eggless, like everything else that leaves this kitchen.',
           "Baked to order — please give us a day's notice where you can.",
-          'Write the flavour in the order message.',
+          'Best within 7 days. Airtight at room temperature.',
+          'Contains wheat or your chosen flour, dairy.',
         ],
       },
     ],

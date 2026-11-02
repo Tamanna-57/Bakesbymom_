@@ -1,7 +1,7 @@
 /* The showcase layout for a treat type's page (TreatShowcase.tsx), on the site's own colored bands: a cherry wash
    over the photo, pink polka dots, baby blue for the cards and butter for the band the reference has in orange. */
 
-/* Hero: cherry with the photo on the right (full-bleed under a cherry wash on phones) ----------------------- */
+/* Hero: the wide photo full-bleed, tinted pink like the reference's backdrop, the words over it ---------------- */
 
 .treat-hero {
   position: relative;
@@ -9,62 +9,55 @@
   display: grid;
   align-items: center;
   min-height: clamp(26rem, calc(100svh - 10rem), 40rem);
-  padding: clamp(var(--bbm-space-6), 4svh, var(--bbm-space-10)) var(--bbm-layout-gutter)
-    calc(var(--bbm-space-16) + var(--bbm-space-4));
+  /* Room at the top for the header's wave, which hangs over the photo */
+  padding: calc(var(--bbm-space-10) + 1rem) var(--bbm-layout-gutter) calc(var(--bbm-space-16) + var(--bbm-space-4));
   overflow: hidden;
-  background-color: var(--bbm-color-cherry-800);
-  color: var(--bbm-color-paper);
+  background-color: var(--bbm-color-pink-200);
+  color: var(--bbm-color-brown-900);
 }
 
 .treat-hero__photo {
   position: absolute;
   inset: 0;
-  z-index: -2;
+  z-index: -3;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 45%;
+  object-position: 60% 55%;
 }
 
-/* A cherry wash under the words, deep enough for AA contrast on any part of the photo */
+/* The photo's white table turns the site's pink... */
+.treat-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-color: var(--bbm-color-pink-300);
+  mix-blend-mode: multiply;
+}
+
+/* ...and a soft pink veil on the left keeps the words clear where they cross the photo */
 .treat-hero::after {
   content: '';
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(180deg, rgb(67 14 23 / 0.86) 0%, rgb(128 16 38 / 0.76) 70%, rgb(128 16 38 / 0.6) 100%);
+  background: linear-gradient(90deg, rgb(245 215 213 / 0.78) 0%, rgb(245 215 213 / 0.55) 34%, rgb(245 215 213 / 0) 58%);
 }
 
-/* Wider screens: the words on solid cherry in the left of the content column, the photo from there to the right
-   edge, fading in from the left */
-@media (min-width: 768px) {
-  .treat-hero {
-    --photo-left: calc(
-      max(var(--bbm-layout-gutter), (100% - var(--bbm-layout-container)) / 2) +
-        min(100% - 2 * var(--bbm-layout-gutter), var(--bbm-layout-container)) * 0.46
-    );
-  }
-
-  /* Close to the photo's own shape (4:5, the photo is about 2:3), so it is only trimmed a little top and bottom
-     instead of being blown up to fill a wide box. Never past the words. */
+/* Phones: the stack sits behind the words, so the veil runs top to bottom */
+@media (max-width: 767.98px) {
   .treat-hero__photo {
-    inset: 0 0 0 auto;
-    width: auto;
-    max-width: calc(100% - var(--photo-left));
-    height: 100%;
-    aspect-ratio: 4 / 5;
-    object-position: 50% 50%;
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%);
-    mask-image: linear-gradient(90deg, transparent, #000 18%);
+    object-position: 68% 50%;
   }
 
   .treat-hero::after {
-    content: none;
-  }
-
-  /* The words keep to the left of the content column, clear of the photo */
-  .treat-hero__inner > * {
-    max-width: 52%;
+    background: linear-gradient(
+      180deg,
+      rgb(245 215 213 / 0.86) 0%,
+      rgb(245 215 213 / 0.72) 62%,
+      rgb(245 215 213 / 0.3) 100%
+    );
   }
 }
 
@@ -77,17 +70,15 @@
   margin-inline: auto;
 }
 
+@media (min-width: 768px) {
+  .treat-hero__inner > * {
+    max-width: 56%;
+  }
+}
+
 .treat-hero .shop-crumbs ol {
   margin-bottom: var(--bbm-space-2);
-  color: var(--bbm-color-pink-200);
-}
-
-.treat-hero .shop-crumbs li + li::before {
-  color: var(--bbm-color-pink-300);
-}
-
-.treat-hero .shop-crumbs [aria-current] {
-  color: var(--bbm-color-paper);
+  color: var(--bbm-color-brown-800);
 }
 
 /* The site's display style: Bodoni at its medium weight, with the script word in Pinyon */
@@ -99,6 +90,7 @@
   font-weight: var(--bbm-text-display-xl-weight);
   line-height: var(--bbm-text-display-xl-line-height);
   letter-spacing: var(--bbm-text-display-xl-tracking);
+  color: var(--bbm-color-cherry-800);
   text-wrap: balance;
 }
 
@@ -110,7 +102,7 @@
   font-weight: var(--bbm-font-weight-regular);
   letter-spacing: 0;
   line-height: 1.05;
-  color: var(--bbm-color-pink-300);
+  color: var(--bbm-color-cherry-700);
 }
 
 /* Mom's note: the hand style (Cormorant italic), like the kickers on the other pages */
@@ -122,7 +114,7 @@
   font-style: italic;
   font-weight: var(--bbm-text-hand-md-weight);
   line-height: 1.2;
-  color: var(--bbm-color-butter-200);
+  color: var(--bbm-color-brown-900);
 }
 
 .treat-hero__actions {
@@ -132,12 +124,12 @@
 .treat-hero__note {
   margin: 0;
   font-size: var(--bbm-text-caption-size);
-  color: var(--bbm-color-pink-200);
+  color: var(--bbm-color-brown-800);
 }
 
 .treat-hero__burst {
   position: absolute;
-  top: clamp(var(--bbm-space-8), 12%, var(--bbm-space-20));
+  top: clamp(var(--bbm-space-12), 16%, var(--bbm-space-24));
   right: max(var(--bbm-layout-gutter), calc((100vw - var(--bbm-layout-container)) / 2));
   animation: treat-wobble 6s ease-in-out infinite;
 }
@@ -421,15 +413,11 @@
 }
 
 .treat-simple__icon {
-  display: grid;
-  place-items: center;
-  width: 5.5rem;
-  height: 5.5rem;
-  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
-  border-radius: 50%;
-  background-color: var(--_tone-bg, var(--bbm-color-paper));
-  box-shadow: var(--bbm-shadow-sticker-sm);
-  color: var(--bbm-color-brown-900);
+  transition: rotate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
+}
+
+.treat-simple__list li:hover .treat-simple__icon {
+  rotate: -8deg;
 }
 
 .treat-simple__extra {

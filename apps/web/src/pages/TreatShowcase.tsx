@@ -13,7 +13,9 @@ import {
   Polaroid,
   PriceTag,
   SectionHeading,
+  StickerIcon,
   type DoodleName,
+  type StickerIconName,
 } from '@bakesbymom/ui';
 import { showcaseArt, stock, treatArt, treatItemArt } from '../content';
 import { qtyLabel, type TreatCategory, type TreatShowcase as Showcase } from '../content/treats';
@@ -35,23 +37,14 @@ export function TreatShowcase({
   const hero = showcase.hero ?? photo;
   const goodPhoto = showcaseArt[category.slug];
   const smallest = qtyLabel(category.minQty, category.unit);
-  const features: Array<{ icon: ReactNode; label: string; tone: string }> = [
-    { icon: <span className="site-veg-dot site-veg-dot--lg" />, label: '100% eggless', tone: 'pink' },
+  const features: Array<{ icon: StickerIconName; label: string }> = [
+    { icon: 'sprout', label: '100% eggless' },
     {
-      icon: <Doodle name="whisk" size={48} />,
+      icon: 'flour',
       label: category.choiceLabel ? `Choose your ${category.choiceLabel.toLowerCase()}` : 'Make it yours',
-      tone: 'blue',
     },
-    {
-      icon: <Doodle name="heart" size={44} color="var(--bbm-color-cherry-500)" />,
-      label: 'Baked to order',
-      tone: 'beige',
-    },
-    {
-      icon: <Doodle name="bow" size={48} color="var(--bbm-color-cherry-700)" />,
-      label: `From ${smallest}`,
-      tone: 'pink',
-    },
+    { icon: 'mitt', label: 'Baked to order' },
+    { icon: 'gift', label: `From ${smallest}` },
   ];
   const decorations: Array<{ name: DoodleName; className: string; color: string; size: number }> = [
     { name: 'heart', className: 'treat-sig__deco--a', color: 'var(--bbm-color-cherry-500)', size: 40 },
@@ -62,8 +55,8 @@ export function TreatShowcase({
 
   return (
     <>
-      {/* Hero: cherry on the left for the words, the photo on the right (full-bleed on phones), the wave of the
-          pink band along its foot */}
+      {/* Hero: the wide photo full-bleed under a pink tint, the words over it, a wave at the top (the header's)
+          and the foot (the pink band's) */}
       <section className="treat-hero" aria-labelledby="treat-hero-title">
         <img className="treat-hero__photo" src={hero.src} alt="" />
         <div className="treat-hero__inner">
@@ -223,9 +216,7 @@ export function TreatShowcase({
           <ul className="treat-simple__list">
             {features.map((feature) => (
               <li key={feature.label}>
-                <span className="treat-simple__icon" data-bbm-tone={feature.tone} aria-hidden="true">
-                  {feature.icon}
-                </span>
+                <StickerIcon name={feature.icon} size={72} className="treat-simple__icon" />
                 {feature.label}
               </li>
             ))}

@@ -40,7 +40,7 @@ export function TreatCategoryPage({ category }: { category: TreatCategory }) {
   const image = treatArt[category.slug] ?? stock.cupcakes;
   if (category.showcase) {
     return (
-      <Layout path="/shop">
+      <Layout path="/shop" photoHero>
         <TreatShowcase
           category={category}
           showcase={category.showcase}

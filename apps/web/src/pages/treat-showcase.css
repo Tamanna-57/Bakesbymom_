@@ -1,7 +1,7 @@
 /* The showcase layout for a treat type's page (TreatShowcase.tsx), on the site's own colored bands: a cherry wash
    over the photo, pink polka dots, baby blue for the cards and butter for the band the reference has in orange. */
 
-/* Hero: the wide photo full-bleed, tinted pink like the reference's backdrop, the words over it ---------------- */
+/* Hero: the wide photo full-bleed under a cherry wash, the words over it in light type ------------------------ */
 
 .treat-hero {
   position: relative;
@@ -12,8 +12,8 @@
   /* Room at the top for the header's wave, which hangs over the photo */
   padding: calc(var(--bbm-space-10) + 1rem) var(--bbm-layout-gutter) calc(var(--bbm-space-16) + var(--bbm-space-4));
   overflow: hidden;
-  background-color: var(--bbm-color-pink-200);
-  color: var(--bbm-color-brown-900);
+  background-color: var(--bbm-color-cherry-800);
+  color: var(--bbm-color-paper);
 }
 
 .treat-hero__photo {
@@ -26,38 +26,29 @@
   object-position: 60% 55%;
 }
 
-/* The photo's white table turns the site's pink... */
-.treat-hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  background-color: var(--bbm-color-pink-300);
-  mix-blend-mode: multiply;
-}
-
-/* ...and a soft pink veil on the left keeps the words clear where they cross the photo */
+/* Cherry under the words, clearing to the cookies on the right; deep enough for AA contrast on any part of the photo */
 .treat-hero::after {
   content: '';
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(90deg, rgb(245 215 213 / 0.78) 0%, rgb(245 215 213 / 0.55) 34%, rgb(245 215 213 / 0) 58%);
+  background: linear-gradient(
+    90deg,
+    rgb(67 14 23 / 0.92) 0%,
+    rgb(128 16 38 / 0.84) 38%,
+    rgb(128 16 38 / 0.6) 50%,
+    rgb(128 16 38 / 0) 70%
+  );
 }
 
-/* Phones: the stack sits behind the words, so the veil runs top to bottom */
+/* Phones: the stack sits behind the words, so the wash runs top to bottom */
 @media (max-width: 767.98px) {
   .treat-hero__photo {
     object-position: 68% 50%;
   }
 
   .treat-hero::after {
-    background: linear-gradient(
-      180deg,
-      rgb(245 215 213 / 0.86) 0%,
-      rgb(245 215 213 / 0.72) 62%,
-      rgb(245 215 213 / 0.3) 100%
-    );
+    background: linear-gradient(180deg, rgb(67 14 23 / 0.88) 0%, rgb(128 16 38 / 0.78) 65%, rgb(128 16 38 / 0.55) 100%);
   }
 }
 
@@ -72,13 +63,21 @@
 
 @media (min-width: 768px) {
   .treat-hero__inner > * {
-    max-width: 56%;
+    max-width: 50%;
   }
 }
 
 .treat-hero .shop-crumbs ol {
   margin-bottom: var(--bbm-space-2);
-  color: var(--bbm-color-brown-800);
+  color: var(--bbm-color-pink-200);
+}
+
+.treat-hero .shop-crumbs li + li::before {
+  color: var(--bbm-color-pink-300);
+}
+
+.treat-hero .shop-crumbs [aria-current] {
+  color: var(--bbm-color-paper);
 }
 
 /* The site's display style: Bodoni at its medium weight, with the script word in Pinyon */
@@ -90,7 +89,6 @@
   font-weight: var(--bbm-text-display-xl-weight);
   line-height: var(--bbm-text-display-xl-line-height);
   letter-spacing: var(--bbm-text-display-xl-tracking);
-  color: var(--bbm-color-cherry-800);
   text-wrap: balance;
 }
 
@@ -102,7 +100,7 @@
   font-weight: var(--bbm-font-weight-regular);
   letter-spacing: 0;
   line-height: 1.05;
-  color: var(--bbm-color-cherry-700);
+  color: var(--bbm-color-pink-300);
 }
 
 /* Mom's note: the hand style (Cormorant italic), like the kickers on the other pages */
@@ -114,7 +112,7 @@
   font-style: italic;
   font-weight: var(--bbm-text-hand-md-weight);
   line-height: 1.2;
-  color: var(--bbm-color-brown-900);
+  color: var(--bbm-color-butter-200);
 }
 
 .treat-hero__actions {
@@ -124,7 +122,7 @@
 .treat-hero__note {
   margin: 0;
   font-size: var(--bbm-text-caption-size);
-  color: var(--bbm-color-brown-800);
+  color: var(--bbm-color-pink-200);
 }
 
 .treat-hero__burst {
@@ -355,78 +353,6 @@
   font-size: var(--bbm-text-body-sm-size);
   color: var(--bbm-color-text-secondary);
   text-align: center;
-}
-
-/* We keep it simple: the butter band -------------------------------------------------------------------- */
-
-.treat-simple {
-  background-color: var(--bbm-color-butter-300);
-}
-
-.treat-simple__head {
-  display: grid;
-  gap: var(--bbm-space-2);
-  text-align: center;
-}
-
-.treat-simple__title {
-  margin: 0;
-  font-family: var(--bbm-text-display-lg-family);
-  font-size: var(--bbm-text-display-lg-size);
-  font-weight: var(--bbm-text-display-lg-weight);
-  line-height: var(--bbm-text-display-lg-line-height);
-  letter-spacing: var(--bbm-text-display-lg-tracking);
-  color: var(--bbm-color-cherry-800);
-}
-
-.treat-simple__lead {
-  margin: 0;
-  font-family: var(--bbm-text-hand-md-family);
-  font-size: var(--bbm-text-hand-md-size);
-  font-style: italic;
-  font-weight: var(--bbm-text-hand-md-weight);
-  color: var(--bbm-color-brown-900);
-}
-
-.treat-simple__list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(9rem, 100%), 1fr));
-  gap: var(--bbm-space-6) var(--bbm-space-4);
-  max-width: 52rem;
-  margin: 0 auto;
-  padding: 0;
-  list-style: none;
-}
-
-/* Labels in the site's eyebrow style (small uppercase DM Sans) */
-.treat-simple__list li {
-  display: grid;
-  justify-items: center;
-  gap: var(--bbm-space-3);
-  font-family: var(--bbm-text-eyebrow-family);
-  font-size: var(--bbm-text-eyebrow-size);
-  font-weight: var(--bbm-text-eyebrow-weight);
-  letter-spacing: var(--bbm-text-eyebrow-tracking);
-  text-align: center;
-  text-transform: uppercase;
-  color: var(--bbm-color-brown-900);
-}
-
-.treat-simple__icon {
-  transition: rotate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
-}
-
-.treat-simple__list li:hover .treat-simple__icon {
-  rotate: -8deg;
-}
-
-.treat-simple__extra {
-  max-width: 44rem;
-  margin: 0 auto;
-  font-size: var(--bbm-text-body-sm-size);
-  line-height: 1.6;
-  text-align: center;
-  color: var(--bbm-color-brown-900);
 }
 
 /* Motion ----------------------------------------------------------------------------------------------- */

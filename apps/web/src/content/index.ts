@@ -17,7 +17,6 @@ import strawberryCake from './strawberry-cake.svg';
 import teaCake from './tea-cake.svg';
 import chocoChipCookie from './cookies/choco-chip-cookie.svg';
 import coconutCookie from './cookies/coconut-cookie.svg';
-import cookieJar from './cookies/cookie-jar.svg';
 import customFlavourCookie from './cookies/custom-flavour-cookie.svg';
 import dryFruitCookie from './cookies/dry-fruit-cookie.svg';
 import jeeraCookie from './cookies/jeera-cookie.svg';
@@ -92,9 +91,9 @@ export const treatItemArt: Record<string, StockPhoto> = {
   'custom-flavour-cookie': { src: customFlavourCookie, alt: 'A cookie with a pink drizzle, berries and coffee beans' },
 };
 
-/** The drawing beside "only the good stuff" on a treat type's showcase page, by its /shop slug. */
+/** The photo beside "only the good stuff" on a treat type's showcase page, by its /shop slug. */
 export const showcaseArt: Record<string, StockPhoto> = {
-  cookies: { src: cookieJar, alt: 'A glass jar stacked with cookies, with a cherry lid and a heart label' },
+  cookies: { src: '/photos/cookies/berries.webp', alt: 'A stack of raspberry and white chocolate cookies on a plate' },
 };
 
 /** A cut slice of each flavour from bakery.cakeFlavours, with what's inside it. */

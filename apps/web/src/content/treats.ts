@@ -21,6 +21,8 @@ export interface TreatShowcase {
   script: string;
   /** The uppercase line under the headline. */
   tagline: string;
+  /** The hero's photo (a path in public/). Without one, the category's stock photo. */
+  hero?: { src: string; alt: string };
   goodStuff: { title: string; text: string };
   /** Words for the two ribbons. */
   ribbon: [string[], string[]];
@@ -154,6 +156,7 @@ export const treatCategories: TreatCategory[] = [
       title: 'Cookies worth',
       script: 'every crumb',
       tagline: 'Your flour, your flavour, baked for your date',
+      hero: { src: '/photos/cookies/choco-chip.webp', alt: '' },
       goodStuff: {
         title: 'Only the good stuff goes in',
         text: 'We bake fewer things and bake them properly. Your pick of maida, wheat, ragi, oats or jowar, no eggs, ever, and every tin baked for your date instead of taken off a shelf.',
@@ -178,6 +181,10 @@ export const treatCategories: TreatCategory[] = [
         blurb: 'Chunks, not chips. Soft middle, crisp edge.',
         description:
           "Proper chocolate chunks rather than chips, so they pool rather than stud. Bakes soft in the middle with a crisp rim — say the word and we'll take it crisper all the way through.",
+        photo: {
+          src: '/photos/cookies/choco-chip.webp',
+          alt: 'A stack of chocolate chip cookies, the top one broken open with melted chocolate',
+        },
         details: [
           '100% eggless, like everything else that leaves this kitchen.',
           "Baked to order — please give us a day's notice where you can.",
@@ -191,6 +198,10 @@ export const treatCategories: TreatCategory[] = [
         blurb: 'Chewy, wholesome, good with chai.',
         description:
           'Rolled oats through and through, lightly sweetened, with a chew that holds. The one that disappears fastest out of the tin at teatime.',
+        photo: {
+          src: '/photos/cookies/oats.webp',
+          alt: 'A stack of oat cookies with chocolate chips on a wooden plate',
+        },
         details: [
           '100% eggless, like everything else that leaves this kitchen.',
           "Baked to order — please give us a day's notice where you can.",
@@ -230,6 +241,10 @@ export const treatCategories: TreatCategory[] = [
         blurb: 'Almonds, cashews and raisins in every one.',
         description:
           'Loaded with chopped almonds, cashews and raisins. The tin people ask for at Diwali and then again in January.',
+        photo: {
+          src: '/photos/cookies/cherry-almond.webp',
+          alt: 'Cookies with dried cherries and flaked almonds on a speckled plate',
+        },
         details: [
           '100% eggless, like everything else that leaves this kitchen.',
           "Baked to order — please give us a day's notice where you can.",
@@ -256,6 +271,10 @@ export const treatCategories: TreatCategory[] = [
         blurb: "Berries, coffee, anything you've had before.",
         description:
           "If it isn't on the shelf, ask. Berries, coffee, orange zest, a flavour you had somewhere and want again — tell us in the order message and we'll say whether we can bake it.",
+        photo: {
+          src: '/photos/cookies/berries.webp',
+          alt: 'A stack of raspberry and white chocolate cookies on a plate',
+        },
         details: [
           '100% eggless, like everything else that leaves this kitchen.',
           "Baked to order — please give us a day's notice where you can.",

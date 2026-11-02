@@ -332,6 +332,92 @@
         "$type": "color",
         "$value": "#232d10"
       }
+    },
+    "gold": {
+      "$description": "Gold foil (Pasticceria). Hairline rules, seals, monograms and the foil in the engravings. Never for body text.",
+      "50": {
+        "$type": "color",
+        "$value": "#fbf6e9"
+      },
+      "100": {
+        "$type": "color",
+        "$value": "#f4e9c8"
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#e9d6a0"
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#dcc078"
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#c9a659"
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#b08d43"
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#8f7035"
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#6f5629"
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#4f3d1d"
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#332711"
+      }
+    },
+    "pistachio": {
+      "$description": "Pistachio (Pasticceria). A quiet accent: leaves, the green dot, one band at most.",
+      "50": {
+        "$type": "color",
+        "$value": "#f4f6ec"
+      },
+      "100": {
+        "$type": "color",
+        "$value": "#e7edd5"
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#d3ddb4"
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#bccb8f"
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#a3b56e"
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#879a55"
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#6b7b43"
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#515e33"
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#394224"
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#232915"
+      }
     }
   }
 }

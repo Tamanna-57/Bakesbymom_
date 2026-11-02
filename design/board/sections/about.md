@@ -2,7 +2,7 @@
 
 **Pick: [05 · Pretty OK Studios](../pins/05-pretty-ok-studios-shop.md), "Meet Elia".** A scalloped photo frame on a polka-dot square, beside a tilted note card with a candy-striped border.
 
-**Our-story block (About page):** the orbit from [01 · Berloga](../pins/01-berloga-coffeeshop.md).
+**Our-story block (About page):** **Bake it with Mom** (see below). The orbit from [01 · Berloga](../pins/01-berloga-coffeeshop.md) is kept in Storybook as an alternate.
 
 **Values row:** the two value cards from [05](../pins/05-pretty-ok-studios-shop.md).
 
@@ -42,7 +42,18 @@
 | Signature | Pinyon Script 40px "with love, Mom" | `text.brand` |
 | Button | Secondary "Read our story" | — |
 
-## Anatomy: Our story orbit (About page)
+## Anatomy: Bake it with Mom (About page)
+
+The story as a cake you bake with Mom. The old page said "began as a hobby in a home kitchen" five times and never told a story; this tells it once, one line per step, while you do something.
+
+- **One pinned kitchen**, framed like a window (thick cocoa outline, hard shadow). Scrolling walks six steps, 80% of a screen each.
+- **The light is the clock.** The site's band colours make the day: blue dawn (6 am), bright noon, butter afternoon, pink sunset, cocoa night (9 pm). The sun crosses the window, then the moon, stars and the pendant lamp come on.
+- **Steps:** measure (flour piles up with the scroll) · eggs (tap the egg and Mom's hand, in gold bangles, takes it: "Not in my kitchen, beta", the eggless promise) · mix (flour turns to batter) · bake (a real 5-second timer, then DING) · decorate (type a name, it's piped on in icing) · box it (lid, ribbon, a "for Riya" tag, and a WhatsApp button with the name already in the message).
+- **Card:** time · step, Fraunces title, a scroll hint, Mom's line in Caveat beside her portrait. The step rail jumps to any step; "Skip ahead" jumps past.
+- **Reduced motion:** the same six steps as a still, illustrated recipe card.
+- **Copy:** `apps/web/src/content/story.ts`. Mom's lines are built from what the site already says; replace them with her real details (first cake, the year, the order that made it a business).
+
+## Anatomy: Our story orbit (alternate)
 
 From [01](../pins/01-berloga-coffeeshop.md): a 360px center photo of Mom's kitchen, arc text "Every bake is a little bit of home", a tilted ellipse with 5 satellite photos (cookies, pie, bread, cupcakes, Mom's hands). Underneath: 2 sentences and a button "Find us this week".
 

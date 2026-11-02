@@ -18,8 +18,8 @@ import {
   PriceTag,
   SectionHeading,
   Ticket,
-  type DoodleName,
 } from '@bakesbymom/ui';
+import { Badge, Collage } from '../collage/Collage';
 import { flavours, stock, treatArt } from '../content';
 import { bakery, cakeFlavours, cakeSizes, flavourSlug, whatsappLink } from '../content/bakery';
 import { howToOrder, orderLink } from '../content/site';
@@ -53,23 +53,11 @@ export function HomeHero() {
             height={1100}
             data-parallax="-0.06"
           />
-          <PriceTag
-            className="home-hero__burst"
-            shape="burst"
-            tone="butter"
-            amount="100%"
-            label="eggless"
-            size={118}
-            rotate={-12}
-          />
-          <Doodle name="sparkle" size={44} color="var(--bbm-color-cherry-700)" className="home-hero__spark" />
-          <Doodle
-            name="sparkle"
-            size={26}
-            color="var(--bbm-color-butter-400)"
-            className="home-hero__spark home-hero__spark--b"
-          />
-          <Doodle name="heart" size={30} color="var(--bbm-color-cherry-500)" className="home-hero__heart" />
+          <div className="home-hero__burst">
+            <Collage ratio={1} label="100% eggless">
+              <Badge value="100%" label="eggless" tone="cherry" place={{ x: 0, y: 0, w: 100, r: -10 }} />
+            </Collage>
+          </div>
         </div>
         <div className="home-hero__card">
           <p className="home-hero__eyebrow">Home bakery · {bakery.place}</p>
@@ -97,8 +85,6 @@ export function HomeHero() {
 
 /* Shape ribbon (pin 13's puzzle-piece strip, in doodles) -------------- */
 
-const ribbonShapes: DoodleName[] = ['cupcake', 'heart', 'cherry', 'daisy', 'star', 'bow'];
-
 export function ShapeRibbon() {
   return (
     <div className="home-ribbon">
@@ -107,13 +93,9 @@ export function ShapeRibbon() {
         size="sm"
         label="What we bake"
         items={['Cakes', ...treatCategories.map((category) => category.name)]}
-        separator={<Doodle name="daisy" size="1em" />}
+        separator={<span className="home-ribbon__diamond" aria-hidden="true" />}
       />
-      <div className="home-ribbon__shapes" aria-hidden="true">
-        {Array.from({ length: 30 }, (_, i) => (
-          <Doodle key={i} name={ribbonShapes[i % ribbonShapes.length]!} size={26} />
-        ))}
-      </div>
+      <div className="home-ribbon__shapes" aria-hidden="true" />
     </div>
   );
 }

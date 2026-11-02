@@ -1,7 +1,7 @@
 /*
  * Text styles from the brand-kit type scale (tokens: --bbm-text-<style>-*).
  * Serif styles use Fraunces at full softness; label and eyebrow are uppercase;
- * bubble is always outlined with a hard cocoa shadow (pin 01).
+ * bubble, once outlined, is now a large Bodoni italic (Pasticceria).
  */
 
 .bbm-text-display-xl {
@@ -180,8 +180,6 @@
   line-height: var(--bbm-text-bubble-line-height);
   letter-spacing: var(--bbm-text-bubble-tracking);
   font-weight: var(--bbm-text-bubble-weight);
+  font-style: italic;
   color: var(--bbm-color-bg-surface);
-  -webkit-text-stroke: 6px var(--bbm-color-border-default);
-  paint-order: stroke fill;
-  text-shadow: 0.05em 0.05em 0 var(--bbm-color-border-default);
 }

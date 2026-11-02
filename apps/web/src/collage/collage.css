@@ -1,0 +1,305 @@
+/* The collage kit (Collage.tsx). Pieces are placed in percent, so a collage scales as one picture. */
+
+.collage {
+  position: relative;
+  width: 100%;
+  container-type: inline-size;
+}
+
+.collage__piece {
+  position: absolute;
+  rotate: var(--r, 0deg);
+}
+
+.collage__piece img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Die-cut stickers: the white border is in the art; the shadow is soft and close, like paper on paper */
+.collage__sticker img {
+  filter: drop-shadow(0 1px 1px rgb(50 24 11 / 0.18)) drop-shadow(0 12px 18px rgb(50 24 11 / 0.18));
+}
+
+.collage__halftone img {
+  mix-blend-mode: multiply;
+}
+
+/* On a dark band the dots print as they are */
+.site-section--cocoa .collage__halftone img {
+  mix-blend-mode: normal;
+}
+
+/* Postage stamp: perforated edges cut with a mask, a photo inside a thin margin */
+.collage__stamp-paper {
+  position: relative;
+  padding: 0.65rem;
+  background: var(--bbm-color-paper);
+  /* Holes centred on the edge every 1rem; the inside stays solid */
+  --_perf:
+    linear-gradient(#000 0 0) content-box no-repeat,
+    radial-gradient(circle at center, transparent 0.3rem, #000 0.32rem) -0.5rem -0.5rem / 1rem 1rem round;
+  -webkit-mask: var(--_perf);
+  mask: var(--_perf);
+  filter: drop-shadow(0 10px 16px rgb(50 24 11 / 0.22));
+}
+
+.collage__stamp-paper img {
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  outline: 1px solid rgb(50 24 11 / 0.12);
+}
+
+.collage__stamp-caption {
+  display: block;
+  padding-top: 0.4em;
+  font-family: var(--bbm-font-family-hand);
+  font-size: clamp(0.8rem, 3.2cqi, 1.1rem);
+  font-style: italic;
+  text-align: center;
+  color: var(--bbm-color-text-secondary);
+}
+
+/* Washi tape: translucent, striped, with nicked ends */
+.collage__tape {
+  position: absolute;
+  left: 50%;
+  top: -0.6rem;
+  width: 42%;
+  height: 1.5rem;
+  translate: -50% 0;
+  rotate: -4deg;
+  background: repeating-linear-gradient(90deg, rgb(243 197 200 / 0.85) 0 8px, rgb(255 253 246 / 0.85) 8px 16px);
+  clip-path: polygon(0 8%, 4% 0, 8% 10%, 12% 0, 100% 0, 97% 50%, 100% 100%, 6% 100%, 2% 86%, 0 100%, 3% 50%);
+  box-shadow: 0 1px 2px rgb(50 24 11 / 0.12);
+}
+
+.collage__tape--loose {
+  left: auto;
+  top: auto;
+  height: auto;
+  aspect-ratio: 5 / 1;
+  translate: none;
+  rotate: var(--r, 0deg);
+}
+
+.collage__tape--butter {
+  background: repeating-linear-gradient(90deg, rgb(242 219 135 / 0.85) 0 8px, rgb(255 253 246 / 0.85) 8px 16px);
+}
+
+.collage__tape--blue {
+  background: repeating-linear-gradient(90deg, rgb(196 215 232 / 0.9) 0 8px, rgb(255 253 246 / 0.85) 8px 16px);
+}
+
+/* Scalloped badge */
+.collage__badge {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  filter: drop-shadow(0 8px 12px rgb(50 24 11 / 0.22));
+}
+
+.collage__badge svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.collage__badge path {
+  fill: var(--_badge-bg);
+  stroke: var(--_badge-line);
+  stroke-width: 1.2;
+}
+
+.collage__badge-text {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  line-height: 1;
+  color: var(--_badge-fg);
+  text-align: center;
+}
+
+.collage__badge-text strong {
+  font-family: var(--bbm-font-family-display);
+  font-size: clamp(0.95rem, 4.2cqi, 1.75rem);
+  font-weight: 500;
+}
+
+.collage__badge-text small {
+  margin-top: 0.25em;
+  font-family: var(--bbm-font-family-body);
+  max-width: 7em;
+  font-size: clamp(0.5rem, 1.5cqi, 0.66rem);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.collage__badge--cherry {
+  --_badge-bg: var(--bbm-color-cherry-700);
+  --_badge-line: var(--bbm-color-cherry-900);
+  --_badge-fg: var(--bbm-color-paper);
+}
+
+.collage__badge--pink {
+  --_badge-bg: var(--bbm-color-pink-300);
+  --_badge-line: var(--bbm-color-pink-500);
+  --_badge-fg: var(--bbm-color-cherry-800);
+}
+
+.collage__badge--butter {
+  --_badge-bg: var(--bbm-color-butter-300);
+  --_badge-line: var(--bbm-color-butter-500);
+  --_badge-fg: var(--bbm-color-brown-900);
+}
+
+.collage__badge--cocoa {
+  --_badge-bg: var(--bbm-color-brown-900);
+  --_badge-line: var(--bbm-color-brown-900);
+  --_badge-fg: var(--bbm-color-butter-200);
+}
+
+/* Gift tag on a curled string */
+.collage__tag {
+  display: flex;
+  align-items: center;
+}
+
+.collage__tag-string {
+  flex: none;
+  width: 22%;
+  overflow: visible;
+}
+
+.collage__tag-string path {
+  fill: none;
+  stroke: var(--bbm-color-cherry-500);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.collage__tag-card {
+  position: relative;
+  flex: 1;
+  padding: 0.55em 1em 0.55em 1.6em;
+  background: var(--bbm-color-paper);
+  clip-path: polygon(12% 0, 100% 0, 100% 100%, 12% 100%, 0 50%);
+  filter: drop-shadow(0 6px 10px rgb(50 24 11 / 0.18));
+  font-family: var(--bbm-font-family-hand);
+  font-size: clamp(0.85rem, 3.4cqi, 1.25rem);
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--bbm-color-text-primary);
+}
+
+/* A punched hole near the point */
+.collage__tag-card::before {
+  content: '';
+  position: absolute;
+  left: 8%;
+  top: 50%;
+  width: 0.45em;
+  height: 0.45em;
+  margin-top: -0.225em;
+  border-radius: 50%;
+  background: var(--bbm-color-pink-200);
+  box-shadow: inset 0 0 0 1px rgb(50 24 11 / 0.25);
+}
+
+/* Handwritten note and arrow */
+.collage__note {
+  display: grid;
+  gap: 0.2em;
+  font-family: var(--bbm-font-family-script);
+  font-size: clamp(1rem, 4.4cqi, 1.75rem);
+  line-height: 1.05;
+  color: var(--bbm-color-cherry-700);
+}
+
+.collage__arrow {
+  width: 46%;
+  overflow: visible;
+}
+
+.collage__arrow path {
+  fill: none;
+  stroke: var(--bbm-color-cherry-700);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.collage__note--right .collage__arrow {
+  justify-self: end;
+  scale: -1 1;
+}
+
+.collage__note--down .collage__arrow {
+  rotate: -70deg;
+  justify-self: center;
+}
+
+/* Chat bubbles */
+.collage__bubble {
+  padding: 0.6em 0.9em;
+  border-radius: 1.1em;
+  font-family: var(--bbm-font-family-body);
+  font-size: clamp(0.72rem, 3.6cqi, 0.95rem);
+  line-height: 1.3;
+  color: var(--bbm-color-text-primary);
+  box-shadow: 0 8px 16px -8px rgb(50 24 11 / 0.3);
+}
+
+.collage__bubble--you {
+  border-bottom-right-radius: 0.3em;
+  background: var(--bbm-color-pistachio-100);
+}
+
+.collage__bubble--mom {
+  border-bottom-left-radius: 0.3em;
+  background: var(--bbm-color-paper);
+}
+
+/* Motion: pieces stick down one after another, then the stickers breathe */
+.collage[data-armed]:not([data-in]) .collage__piece {
+  opacity: 0;
+  scale: 1.12;
+  rotate: calc(var(--r, 0deg) + 6deg);
+}
+
+.collage[data-armed][data-in] .collage__piece {
+  transition:
+    opacity 380ms ease-out calc(var(--i, 0) * 120ms),
+    scale 620ms cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i, 0) * 120ms),
+    rotate 620ms cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i, 0) * 120ms);
+}
+
+.collage__piece--float img {
+  animation: collage-float 6s ease-in-out infinite alternate;
+}
+
+@keyframes collage-float {
+  to {
+    translate: 0 -6px;
+  }
+}
+
+/* Stickers lift a little under the pointer */
+@media (hover: hover) {
+  .collage__sticker {
+    transition: scale 300ms var(--bbm-motion-easing-out);
+  }
+
+  .collage__sticker:hover {
+    scale: 1.03;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collage__piece--float img {
+    animation: none;
+  }
+}

@@ -1,13 +1,112 @@
 /* Announcement bar (pin 13): one short line on cocoa */
 .bbm-announcement {
-  padding: var(--bbm-space-2) var(--bbm-layout-gutter);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bbm-space-3);
+  min-height: 2.25rem;
+  padding: 0 calc(var(--bbm-layout-gutter) + 1.5rem);
   background-color: var(--bbm-color-bg-inverse);
   color: var(--bbm-color-text-inverse);
   font-family: var(--bbm-font-family-body);
-  font-size: var(--bbm-text-body-sm-size);
+  font-size: var(--bbm-text-caption-size);
   font-weight: var(--bbm-font-weight-medium);
+  letter-spacing: 0.02em;
   line-height: 1.3;
   text-align: center;
+}
+
+/* Every message sits in the same cell; only the current one shows, and it slides up into place */
+.bbm-announcement__track {
+  display: grid;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.bbm-announcement__item {
+  grid-area: 1 / 1;
+  margin: 0;
+  padding-block: var(--bbm-space-2);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  opacity: 0;
+  translate: 0 100%;
+  transition:
+    opacity 400ms var(--bbm-motion-easing-standard),
+    translate 500ms var(--bbm-motion-easing-out);
+}
+
+.bbm-announcement__item--on {
+  opacity: 1;
+  translate: none;
+}
+
+.bbm-announcement__dots {
+  display: none;
+  gap: 4px;
+}
+
+.bbm-announcement__dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.35;
+  transition: opacity 300ms;
+}
+
+.bbm-announcement__dots .is-on {
+  opacity: 1;
+}
+
+@media (min-width: 640px) {
+  .bbm-announcement {
+    font-size: var(--bbm-text-body-sm-size);
+  }
+
+  .bbm-announcement__dots {
+    display: flex;
+  }
+}
+
+.bbm-announcement__close {
+  position: absolute;
+  inset-inline-end: calc(var(--bbm-layout-gutter) - 0.5rem);
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-top: -1rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.75;
+}
+
+.bbm-announcement__close:hover {
+  opacity: 1;
+}
+
+.bbm-announcement__close svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.bbm-announcement__close:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-inverse);
+  outline-offset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bbm-announcement__item {
+    transition: none;
+  }
 }
 
 .bbm-announcement a {

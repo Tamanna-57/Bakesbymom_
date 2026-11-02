@@ -14,6 +14,12 @@ export function jumpTo(top: number) {
   else window.scrollTo(0, top);
 }
 
+/** Glides to a scroll position (for in-page controls like the bake steps). */
+export function glideTo(top: number) {
+  if (lenis) lenis.scrollTo(top);
+  else window.scrollTo({ top, behavior: reducedMotion() ? 'auto' : 'smooth' });
+}
+
 /** Smooth, weighted scrolling for the whole page (Lenis). Nested scrollers like the chat keep their own scroll. */
 export function useSmoothScroll() {
   useEffect(() => {

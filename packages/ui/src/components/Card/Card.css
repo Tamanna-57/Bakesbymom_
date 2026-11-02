@@ -79,7 +79,7 @@
 .bbm-card-scallop--sticker {
   filter: drop-shadow(1.5px 0 0 var(--bbm-color-border-default)) drop-shadow(-1.5px 0 0 var(--bbm-color-border-default))
     drop-shadow(0 1.5px 0 var(--bbm-color-border-default)) drop-shadow(0 -1.5px 0 var(--bbm-color-border-default))
-    drop-shadow(4px 4px 0 var(--bbm-color-border-default));
+    drop-shadow(0 6px 12px rgb(50 24 11 / 0.16));
 }
 
 /* Candy-stripe frame around a paper panel (pin 05). */

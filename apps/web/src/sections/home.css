@@ -1105,3 +1105,251 @@
 .home-hero__burst .collage__badge-text small {
   font-size: clamp(0.55rem, 0.8vw, 0.68rem);
 }
+
+/* Cakes & Treats wheel (CakesTreatsWheel) ----------------------------------------------------------------- */
+
+/* The band's color blends in from the blue band above (--wheel-in) and out to the pink below (--wheel-out) as
+   the page scrolls; home.tsx sets both. */
+.home-wheel {
+  --card-w: clamp(9rem, min(20vw, 32svh), 19rem);
+  /* Far enough below for gaps between the cards at their feet as well as their tops */
+  --radius: calc(var(--card-w) * 5);
+  position: relative;
+  overflow-x: clip;
+  background-color: color-mix(
+    in srgb,
+    var(--bbm-color-pink-200) calc(var(--wheel-out, 0) * 100%),
+    color-mix(in srgb, var(--bbm-color-cherry-800) calc(var(--wheel-in, 1) * 100%), var(--bbm-color-bg-blue))
+  );
+  color: var(--bbm-color-paper);
+}
+
+/* Phones: bigger cards, and the whole wheel centered on the screen with the button right under it */
+@media (max-width: 639.98px) {
+  .home-wheel {
+    --card-w: min(56vw, 34svh);
+  }
+
+  .home-wheel__panel {
+    justify-content: center;
+  }
+
+  .home-wheel__stage {
+    margin-top: var(--bbm-space-2);
+  }
+}
+
+.home-wheel__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: calc(var(--card-w) * 1.3 + 22rem);
+  padding: clamp(var(--bbm-space-6), 5svh, var(--bbm-space-12)) 0 var(--bbm-space-20);
+}
+
+/* Pinned: one screen under the header while the wheel turns */
+.home-wheel--pinned .home-wheel__panel {
+  position: sticky;
+  top: var(--site-header-h, 5.25rem);
+  height: calc(100svh - var(--site-header-h, 5.25rem));
+  min-height: 0;
+}
+
+/* The label pill, cut like a ticket */
+.home-wheel__pill {
+  margin: 0 0 var(--bbm-space-3);
+  padding: var(--bbm-space-2) var(--bbm-space-5);
+  background-color: var(--bbm-color-beige-200);
+  color: var(--bbm-color-brown-900);
+  font-family: var(--bbm-text-eyebrow-family);
+  font-size: var(--bbm-text-eyebrow-size);
+  font-weight: var(--bbm-text-eyebrow-weight);
+  letter-spacing: var(--bbm-text-eyebrow-tracking);
+  text-transform: uppercase;
+  --notch: 0.4rem;
+}
+
+/* Four notched corners, for the pill and the cards (each sets its own --notch) */
+.home-wheel__pill,
+.home-wheel__ticket {
+  -webkit-mask:
+    radial-gradient(var(--notch) at 0 0, #0000 98%, #000) top left / 51% 51% no-repeat,
+    radial-gradient(var(--notch) at 100% 0, #0000 98%, #000) top right / 51% 51% no-repeat,
+    radial-gradient(var(--notch) at 0 100%, #0000 98%, #000) bottom left / 51% 51% no-repeat,
+    radial-gradient(var(--notch) at 100% 100%, #0000 98%, #000) bottom right / 51% 51% no-repeat;
+  mask:
+    radial-gradient(var(--notch) at 0 0, #0000 98%, #000) top left / 51% 51% no-repeat,
+    radial-gradient(var(--notch) at 100% 0, #0000 98%, #000) top right / 51% 51% no-repeat,
+    radial-gradient(var(--notch) at 0 100%, #0000 98%, #000) bottom left / 51% 51% no-repeat,
+    radial-gradient(var(--notch) at 100% 100%, #0000 98%, #000) bottom right / 51% 51% no-repeat;
+}
+
+/* The words in the background: the site's Bodoni, with "and" in the Pinyon script */
+.home-wheel__title {
+  position: relative;
+  z-index: 0;
+  margin: 0;
+  font-family: var(--bbm-font-family-display);
+  font-size: clamp(2.25rem, min(10.5vw, 17svh), 11.5rem);
+  font-weight: var(--bbm-text-display-xl-weight);
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.home-wheel__amp {
+  padding-inline: 0.06em;
+  font-family: var(--bbm-font-family-script);
+  font-size: 0.78em;
+  font-weight: var(--bbm-font-weight-regular);
+  letter-spacing: 0;
+  color: var(--bbm-color-pink-300);
+}
+
+/* The cards hang from the top of the stage and turn around a point far below it, so they sit on a rainbow arc;
+   they overlap the bottom of the words */
+.home-wheel__stage {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  width: 100%;
+  height: calc(var(--card-w) * 1.3 + 3rem);
+  margin: calc(var(--card-w) * -0.1) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-wheel__card {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: var(--card-w);
+  margin-left: calc(var(--card-w) / -2);
+  opacity: var(--fade, 1);
+  transform: rotate(var(--angle, 0deg));
+  transform-origin: 50% var(--radius);
+  will-change: transform;
+}
+
+/* Without the pin, the arrows turn the wheel a card at a time */
+.home-wheel:not(.home-wheel--pinned) .home-wheel__card {
+  transition:
+    transform 0.7s var(--bbm-motion-easing-out),
+    opacity 0.5s var(--bbm-motion-easing-standard);
+}
+
+.home-wheel__card a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  filter: drop-shadow(0 0.75rem 1.25rem rgb(30 4 10 / 0.35));
+  transition: translate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
+}
+
+.home-wheel__card a:hover {
+  translate: 0 -0.5rem;
+}
+
+.home-wheel__card a:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-butter-300);
+  outline-offset: 6px;
+  border-radius: var(--bbm-radius-md);
+}
+
+.home-wheel__ticket {
+  --notch: 0.9rem;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 10 / 13;
+  background-color: var(--bbm-color-pink-300);
+}
+
+.home-wheel__ticket img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+}
+
+/* "B" and "M", for Bakes by Mom, in the top corners like the reference's ticket letters */
+.home-wheel__mark {
+  position: absolute;
+  top: 0.7rem;
+  font-family: var(--bbm-font-family-display);
+  font-size: calc(var(--card-w) * 0.11);
+  font-weight: var(--bbm-font-weight-bold);
+  line-height: 1;
+  color: var(--bbm-color-paper);
+  text-shadow: 0 1px 6px rgb(30 4 10 / 0.55);
+}
+
+.home-wheel__mark--b {
+  left: 1rem;
+}
+
+.home-wheel__mark--m {
+  right: 1rem;
+}
+
+.home-wheel__name {
+  display: block;
+  margin-top: var(--bbm-space-3);
+  font-size: clamp(1rem, calc(var(--card-w) * 0.075), 1.3rem);
+  font-weight: var(--bbm-font-weight-bold);
+  text-align: center;
+  color: var(--bbm-color-paper);
+}
+
+/* Right under the front card's name, as in the reference; the tilted cards either side hang lower */
+.home-wheel__foot {
+  position: relative;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: var(--bbm-space-4);
+  margin-top: var(--bbm-space-3);
+}
+
+/* The reference's glowing button, in butter */
+.home-wheel .home-wheel__cta {
+  --_bg: var(--bbm-color-butter-300);
+  --_bg-hover: var(--bbm-color-butter-200);
+  --_bg-active: var(--bbm-color-butter-400);
+  --_fg: var(--bbm-color-brown-900);
+  box-shadow: 0 0 1.75rem rgb(242 219 135 / 0.45);
+  white-space: nowrap;
+}
+
+.home-wheel__arrow {
+  display: grid;
+  place-items: center;
+  width: var(--bbm-layout-touch-target);
+  height: var(--bbm-layout-touch-target);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-paper);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--bbm-color-paper);
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.home-wheel__arrow:hover {
+  background-color: rgb(255 255 255 / 0.12);
+}
+
+.home-wheel__arrow:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-butter-300);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-wheel__card,
+  .home-wheel__card a {
+    transition: none !important;
+  }
+}

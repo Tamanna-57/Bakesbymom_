@@ -50,15 +50,24 @@ describe('Gallery (strips)', () => {
 });
 
 describe('Gallery (strips, sideways scroll)', () => {
-  it('opens the next strip on a sideways scroll and leaves up-and-down to the page', () => {
+  it('opens one strip per sideways swipe and leaves up-and-down to the page', () => {
+    let now = 1_000;
+    const clock = vi.spyOn(Date, 'now').mockImplementation(() => now);
     const { container } = render(<Gallery items={photos} label="Cakes" />);
     const row = container.querySelector('.bbm-gallery__row')!;
     fireEvent.wheel(row, { deltaY: 200 });
     expect(screen.getByRole('button', { name: 'Pie' }).getAttribute('aria-expanded')).toBe('true');
-    fireEvent.wheel(row, { deltaX: 120 });
+    // One long swipe, momentum and all: one strip
+    for (let i = 0; i < 20; i++) {
+      now += 16;
+      fireEvent.wheel(row, { deltaX: 30 });
+    }
     expect(screen.getByRole('button', { name: 'Bread' }).getAttribute('aria-expanded')).toBe('true');
+    // A new swipe after a pause: the next one; shift and the wheel count as sideways
+    now += 500;
     fireEvent.wheel(row, { deltaY: 120, shiftKey: true });
     expect(screen.getByRole('button', { name: 'Cupcakes' }).getAttribute('aria-expanded')).toBe('true');
+    clock.mockRestore();
   });
 });
 

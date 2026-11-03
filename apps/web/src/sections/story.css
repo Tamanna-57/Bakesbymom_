@@ -531,7 +531,8 @@
 .story-tray__cakes {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* Five stickers: three on top, two below sitting in the gaps, like a tray laid by hand */
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: clamp(0.75rem, 3vw, 2.5rem) clamp(0.5rem, 2.5vw, 2.5rem);
   margin: 0;
   padding: 0;
@@ -540,11 +541,16 @@
 
 .story-tray__cakes li {
   position: relative;
+  grid-column: span 2;
   display: grid;
   place-items: center;
   transition:
     scale 300ms var(--bbm-motion-easing-out),
     rotate 300ms var(--bbm-motion-easing-out);
+}
+
+.story-tray__cakes li:nth-child(4) {
+  grid-column: 2 / span 2;
 }
 
 .story-tray__cakes img {
@@ -639,8 +645,17 @@
 }
 
 @media (max-width: 640px) {
+  /* Two by two, the fifth centred underneath */
   .story-tray__cakes {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .story-tray__cakes li:nth-child(4) {
+    grid-column: span 2;
+  }
+
+  .story-tray__cakes li:nth-child(5) {
+    grid-column: 2 / span 2;
   }
 
   .story-tray__oval {
@@ -713,7 +728,7 @@
     display: block;
     grid-area: art-b;
     justify-self: center;
-    width: 56%;
+    width: 42%;
     rotate: 5deg;
   }
 

@@ -58,7 +58,7 @@ The packages are npm workspaces in this repo. To use them from another repositor
 | Section | From |
 |---|---|
 | Home page: hero stripes, about us card, flavours, order card and cherry tiles | 16 SugarLace bakery |
-| Home page: ribbon, shop by the box, Mom's kitchen | 13 Puzzle Pantry |
+| Home page: ribbon, Mom's kitchen (the Cakes & Treats wheel comes from a tea shop's products carousel) | 13 Puzzle Pantry |
 | Find us, custom cakes, the scalloped nav | 15 Nectar candy cart |
 | Menu cards and category tiles | 16 SugarLace bakery (filters from 13) |
 | Process, marquee ribbons, FAQ | 02 Pretty OK mail club |

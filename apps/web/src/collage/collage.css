@@ -23,6 +23,7 @@
 }
 
 .collage__halftone img {
+  opacity: var(--o, 1);
   mix-blend-mode: multiply;
 }
 

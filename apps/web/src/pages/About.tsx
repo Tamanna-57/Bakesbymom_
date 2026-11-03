@@ -1,40 +1,22 @@
-import { Doodle, SectionHeading } from '@bakesbymom/ui';
 import { BakeWithMomSection } from '../sections/bake';
-import { MeetMomSection, ValuesRow } from '../sections/blocks';
+import { SignOffRibbon } from '../sections/home';
+import { StoryHero, StoryMeetMom, StoryPromises, StoryRibbon } from '../sections/story';
 import { Layout } from './Layout';
 
-/** Our story: bake a cake with Mom from sunrise to night while she tells it, then meet her, then what she stands by. */
+/**
+ * Our story, dressed like the home page: the arch hero on pink stripes and the cherry ribbon, then bake a cake
+ * with Mom from sunrise to night while she tells it (on the home hero's blue stripes), then meet her beside a few
+ * of her cakes, her three promises, and the home page's sign-off ribbon.
+ */
 export function AboutPage() {
   return (
     <Layout path="/about">
-      <section className="site-section site-section--pink site-about-intro">
-        <div className="site-container">
-          <SectionHeading
-            eyebrow="our story"
-            eyebrowStyle="pill"
-            size="xl"
-            level={1}
-            align="center"
-            title={
-              <>
-                Bake one with <em>Mom</em>
-              </>
-            }
-            description="The best way to hear how Bakes by Mom began is in her kitchen, with your sleeves rolled up. One cake, sunrise to night. She'll tell you the story while you bake."
-          />
-          <p className="site-about-intro__cue">
-            <Doodle name="arrow" size={56} className="site-about-intro__arrow" />
-            Scroll to start
-          </p>
-        </div>
-      </section>
+      <StoryHero />
+      <StoryRibbon />
       <BakeWithMomSection />
-      <MeetMomSection action={false} />
-      <section className="site-section site-section--beige site-values-band">
-        <div className="site-container">
-          <ValuesRow />
-        </div>
-      </section>
+      <StoryMeetMom />
+      <StoryPromises />
+      <SignOffRibbon />
     </Layout>
   );
 }

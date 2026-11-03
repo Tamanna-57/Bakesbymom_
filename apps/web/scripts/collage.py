@@ -4,7 +4,7 @@
 - Halftone prints: a dot screen in cherry ink, like the stippled cherries on the SugarLace board pin, made from
   the cut-outs and from two shapes drawn here (a pair of cherries and an egg).
 
-Needs Pillow and NumPy. The outputs are committed; run this again only when a source photo changes.
+Needs Pillow and NumPy, and opencv-python for the watercolour stickers. The outputs are committed; run this again only when a source photo changes.
 """
 
 from collections import deque
@@ -194,7 +194,7 @@ def save(img: Image.Image, name: str, max_side=900):
     print(f"{name}.webp", img.size)
 
 
-# Mom's own cakes, already cut out in photos/thumbs, as stickers for Our story's tray (story.tsx)
+# Mom's own cakes, already cut out in photos/thumbs, painted as watercolour stickers for Our story (story.tsx)
 MOMS_CAKES = {
     "papa": "IMG-20260808-WA0045",
     "yatharth": "IMG-20260913-WA0002",
@@ -202,14 +202,106 @@ MOMS_CAKES = {
     "janmashtami": "IMG-20260913-WA0013",
     "teacher": "IMG-20260913-WA0014",
     "wifey": "IMG-20260913-WA0009",
+    "heart": "IMG-20260206-WA0062",
 }
 
 
-def moms_stickers():
+rng = np.random.default_rng(7)  # the same paper grain every run
+
+
+def paper(h, w, scale=1.0):
+    import cv2
+
+    """Cold-press paper grain: soft blotches plus fine tooth, ~1.0 mean."""
+    big = cv2.GaussianBlur(rng.normal(0, 1, (h, w)).astype(np.float32), (0, 0), 18 * scale)
+    mid = cv2.GaussianBlur(rng.normal(0, 1, (h, w)).astype(np.float32), (0, 0), 4 * scale)
+    fine = cv2.GaussianBlur(rng.normal(0, 1, (h, w)).astype(np.float32), (0, 0), 0.8)
+    t = big / (big.std() + 1e-6) * 0.06 + mid / (mid.std() + 1e-6) * 0.035 + fine / (fine.std() + 1e-6) * 0.02
+    return 1 + t
+
+
+def watercolour(rgba: Image.Image) -> Image.Image:
+    """A cut-out bake painted in watercolour (flat washes, pooled edges, paper grain, a sepia pencil line), on a
+    white die-cut sticker like the watercolour stickers on the reference menu."""
+    import cv2  # only the watercolour stickers need OpenCV
+
+    rgba = rgba.convert("RGBA")
+    rgba = rgba.crop(rgba.getchannel("A").point(lambda v: 255 if v > 40 else 0).getbbox())
+    rgba.thumbnail((620, 620))
+    w, h = rgba.size
+    pad = 40
+    canvas = Image.new("RGBA", (w + 2 * pad, h + 2 * pad), (255, 253, 246, 0))
+    canvas.paste(rgba, (pad, pad), rgba)
+    a = np.asarray(canvas).astype(np.float32)
+    alpha = a[..., 3] / 255
+    rgb = a[..., :3]
+    # Composite on paper white so the washes fade out, not to black
+    rgb = rgb * alpha[..., None] + 250 * (1 - alpha[..., None])
+    bgr = cv2.cvtColor(rgb.astype(np.uint8), cv2.COLOR_RGB2BGR)
+
+    # 1. Flatten into washes
+    flat = cv2.pyrMeanShiftFiltering(bgr, 13, 36)
+    flat = cv2.edgePreservingFilter(flat, flags=cv2.RECURS_FILTER, sigma_s=40, sigma_r=0.35)
+    flat = cv2.cvtColor(flat, cv2.COLOR_BGR2RGB).astype(np.float32) / 255
+
+    # 2. Translucent pigment: lift toward paper, keep hue; a little more saturation
+    hsv = cv2.cvtColor((flat * 255).astype(np.uint8), cv2.COLOR_RGB2HSV).astype(np.float32)
+    hsv[..., 1] = np.clip(hsv[..., 1] * 1.15, 0, 255)
+    hsv[..., 2] = np.clip(hsv[..., 2] * 0.86 + 255 * 0.17, 0, 255)
+    col = cv2.cvtColor(hsv.astype(np.uint8), cv2.COLOR_HSV2RGB).astype(np.float32) / 255
+
+    # 3. Edge darkening where washes meet (pigment pools at the rim)
+    lum = cv2.cvtColor((col * 255).astype(np.uint8), cv2.COLOR_RGB2GRAY).astype(np.float32)
+    soft = cv2.GaussianBlur(lum, (0, 0), 3)
+    rim = np.clip((soft - lum) / 30, 0, 1)
+    col = col * (1 - rim[..., None] * 0.45)
+
+    # 4. Granulation: paper grain, stronger in darker pigment
+    g = paper(*col.shape[:2])
+    dark = 1 - col.mean(axis=2, keepdims=True)
+    col = np.clip(col * (1 - (1 - g[..., None]) * (0.6 + dark)), 0, 1)
+
+    # 5. A soft sepia pencil line from the photo's edges
+    edges = cv2.Canny(cv2.GaussianBlur(bgr, (0, 0), 1.6), 40, 110).astype(np.float32) / 255
+    edges = cv2.GaussianBlur(edges, (0, 0), 0.7)
+    ink = np.array([0.42, 0.25, 0.17])
+    col = col * (1 - edges[..., None] * 0.45) + ink * edges[..., None] * 0.45
+
+    # 6. A painted, slightly ragged edge: blur the mask, wobble it with noise, threshold
+    m = cv2.GaussianBlur(alpha, (0, 0), 3)
+    wob = cv2.GaussianBlur(rng.normal(0, 1, m.shape).astype(np.float32), (0, 0), 6)
+    wob = wob / (wob.std() + 1e-6) * 0.12
+    mask = np.clip((m + wob - 0.45) * 6, 0, 1)
+    # Only the bake itself: drop stray flecks the wobble cut loose
+    n, labels, stats, _ = cv2.connectedComponentsWithStats((mask > 0.5).astype(np.uint8))
+    if n > 2:
+        biggest = 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA]))
+        keep = stats[:, cv2.CC_STAT_AREA] >= stats[biggest, cv2.CC_STAT_AREA] * 0.04
+        keep[0] = False
+        mask = mask * cv2.dilate(keep[labels].astype(np.uint8), np.ones((5, 5), np.uint8))
+    # Wash bleeds a little lighter at the very edge
+    feather = cv2.GaussianBlur(mask, (0, 0), 4)
+    col = col * feather[..., None] + (1 - feather[..., None]) * np.array([1, 0.99, 0.965])
+
+    out = np.dstack([col * 255, mask * 255]).astype(np.uint8)
+    painted = Image.fromarray(out, "RGBA")
+
+    # 7. White die-cut sticker border, like the reference stickers
+    al = painted.getchannel("A").point(lambda v: 255 if v > 60 else 0)
+    grown = al.filter(ImageFilter.MaxFilter(23)).filter(ImageFilter.GaussianBlur(4)).point(lambda v: 255 if v > 110 else 0)
+    grown = grown.filter(ImageFilter.GaussianBlur(0.8))
+    base = Image.new("RGBA", painted.size, (255, 253, 246, 0))
+    base.putalpha(grown)
+    base.alpha_composite(painted)
+    return base.crop(base.getbbox())
+
+
+
+def watercolour_stickers():
     for name, photo in MOMS_CAKES.items():
-        cut = Image.open(ROOT / "photos" / "thumbs" / f"{photo}.webp").convert("RGBA")
-        cut = cut.crop(cut.getchannel("A").point(lambda v: 255 if v > 40 else 0).getbbox())
-        save(sticker(cut, border=12), f"mom-{name}", 520)
+        save(watercolour(Image.open(ROOT / "photos" / "thumbs" / f"{photo}.webp")), f"wc-{name}", 560)
+    save(watercolour(cutout("stock/home-hero.webp", crop=(0.12, 0, 1, 0.93), tol=24, min_share=0.05)), "wc-cherry-cake", 560)
+    save(watercolour(cutout("stock/treat-jar-cakes.webp", tol=26, min_share=0.2)), "wc-jar-cakes", 560)
 
 
 def main():
@@ -226,11 +318,11 @@ def main():
     save(halftone(drawn_cherries(), cell=12), "halftone-cherries", 700)
     save(halftone(drawn_cherries(), cell=12, ink=(243, 197, 200)), "halftone-cherries-pink", 700)
     save(halftone(drawn_egg(), cell=10, ink=COCOA_INK), "halftone-egg", 500)
-    moms_stickers()
+    watercolour_stickers()
 
 
 if __name__ == "__main__":
     import sys
 
-    # `python scripts/collage.py moms` makes only the stickers of Mom's cakes
-    moms_stickers() if sys.argv[1:] == ["moms"] else main()
+    # `python scripts/collage.py watercolour` makes only the watercolour stickers (needs opencv-python)
+    watercolour_stickers() if sys.argv[1:] == ["watercolour"] else main()

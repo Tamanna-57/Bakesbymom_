@@ -55,7 +55,7 @@
   color: var(--bbm-color-paper);
 }
 
-/* The site's display style: Bodoni at its medium weight, with the script word in Pinyon */
+/* The site's display style: Playfair at its medium weight, with the script word in Parisienne */
 .treat-hero__title {
   max-width: 13ch;
   margin: 0;

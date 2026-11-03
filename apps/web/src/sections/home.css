@@ -1108,46 +1108,38 @@
 
 /* Cakes & Treats wheel (CakesTreatsWheel) ----------------------------------------------------------------- */
 
-/* The band's color blends in from the blue band above (--wheel-in) and out to the pink below (--wheel-out) as
-   the page scrolls; home.tsx sets both. */
+/* One solid color at a time (home.tsx sets data-tone as the page scrolls): the Flavours blue while the wheel comes
+   into view, cherry once it is in place, the cream of the band below on the way out. No line at either edge. The
+   type changes with it, to stay readable. */
 .home-wheel {
   --card-w: clamp(9rem, min(20vw, 32svh), 19rem);
   /* Far enough below for gaps between the cards at their feet as well as their tops */
   --radius: calc(var(--card-w) * 5);
+  --wheel-ink: var(--bbm-color-paper);
+  --wheel-script: var(--bbm-color-pink-300);
   position: relative;
-  overflow-x: clip;
-  background-color: color-mix(
-    in srgb,
-    var(--bbm-color-pink-200) calc(var(--wheel-out, 0) * 100%),
-    color-mix(in srgb, var(--bbm-color-cherry-800) calc(var(--wheel-in, 1) * 100%), var(--bbm-color-bg-blue))
-  );
-  color: var(--bbm-color-paper);
+  /* The tilted cards at the sides stay inside the band */
+  overflow: clip;
+  background-color: var(--bbm-color-cherry-800);
+  color: var(--wheel-ink);
+  transition:
+    background-color 0.7s var(--bbm-motion-easing-standard),
+    color 0.7s var(--bbm-motion-easing-standard);
+}
+
+.home-wheel[data-tone='enter'] {
+  --wheel-ink: var(--bbm-color-cherry-800);
+  --wheel-script: var(--bbm-color-cherry-600);
+  background-color: var(--bbm-color-bg-blue);
+}
+
+.home-wheel[data-tone='leave'] {
+  --wheel-ink: var(--bbm-color-cherry-800);
+  --wheel-script: var(--bbm-color-cherry-600);
+  background-color: var(--bbm-color-bg-canvas);
 }
 
 /* Phones: bigger cards, and the whole wheel centered on the screen with the button right under it */
-/* No hard line at either edge: the top fades in from the Flavours band's blue, the foot out to the cream of the band
-   below, while the band keeps its own color in between */
-.home-wheel::before,
-.home-wheel::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  z-index: 0;
-  height: clamp(6rem, 22svh, 14rem);
-  pointer-events: none;
-}
-
-.home-wheel::before {
-  top: 0;
-  background: linear-gradient(to bottom, var(--bbm-color-bg-blue), transparent);
-}
-
-.home-wheel::after {
-  bottom: 0;
-  background: linear-gradient(to top, var(--bbm-color-bg-canvas), transparent);
-}
-
 @media (max-width: 639.98px) {
   .home-wheel {
     --card-w: min(56vw, 34svh);
@@ -1170,7 +1162,8 @@
   align-items: center;
   box-sizing: border-box;
   min-height: calc(var(--card-w) * 1.3 + 22rem);
-  padding: clamp(var(--bbm-space-6), 5svh, var(--bbm-space-12)) 0 var(--bbm-space-20);
+  /* Room under the stage for the tilted cards either side, so the band holds them */
+  padding: clamp(var(--bbm-space-6), 5svh, var(--bbm-space-12)) 0 calc(var(--card-w) * 0.5 + var(--bbm-space-6));
 }
 
 /* The label pill, cut like a ticket */
@@ -1221,7 +1214,8 @@
   font-size: 0.78em;
   font-weight: var(--bbm-font-weight-regular);
   letter-spacing: 0;
-  color: var(--bbm-color-pink-300);
+  color: var(--wheel-script);
+  transition: color 0.7s var(--bbm-motion-easing-standard);
 }
 
 /* The cards hang from the top of the stage and turn around a point far below it, so they sit on a rainbow arc;
@@ -1330,7 +1324,8 @@
   font-size: clamp(1rem, calc(var(--card-w) * 0.075), 1.3rem);
   font-weight: var(--bbm-font-weight-bold);
   text-align: center;
-  color: var(--bbm-color-paper);
+  color: var(--wheel-ink);
+  transition: color 0.7s var(--bbm-motion-easing-standard);
 }
 
 /* Right under the front card's name, as in the reference; the tilted cards either side hang lower */
@@ -1358,10 +1353,10 @@
   place-items: center;
   width: var(--bbm-layout-touch-target);
   height: var(--bbm-layout-touch-target);
-  border: var(--bbm-border-width-thin) solid var(--bbm-color-paper);
+  border: var(--bbm-border-width-thin) solid currentColor;
   border-radius: 50%;
   background: transparent;
-  color: var(--bbm-color-paper);
+  color: var(--wheel-ink);
   font-size: 1.25rem;
   cursor: pointer;
 }
@@ -1376,6 +1371,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .home-wheel,
+  .home-wheel__amp,
+  .home-wheel__name,
   .home-wheel__card,
   .home-wheel__card a {
     transition: none !important;

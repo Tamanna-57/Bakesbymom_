@@ -3,8 +3,8 @@
     "family": {
       "display": {
         "$type": "fontFamily",
-        "$value": ["Playfair Display", "Didot", "Georgia", "serif"],
-        "$description": "Playfair Display: headlines, prices and the logo. A high-contrast transitional serif that keeps its hairlines on every screen (Bodoni Moda lost them on Windows). Variable: wght 400-900, italic."
+        "$value": ["Fraunces", "Iowan Old Style", "Georgia", "serif"],
+        "$description": "Fraunces, the soft serif the brand kit started with: headlines, prices and the logo (pins 02, 05, 11, 13, 15). Variable: opsz, wght 100-900, SOFT 0-100, WONK 0-1."
       },
       "body": {
         "$type": "fontFamily",
@@ -13,17 +13,17 @@
       },
       "script": {
         "$type": "fontFamily",
-        "$value": ["Parisienne", "Snell Roundhand", "cursive"],
-        "$description": "Parisienne, an easy-reading formal script: one accent word, the \"by Mom\" in the logo and signatures (pins 10, 16). 28px and up."
+        "$value": ["Pinyon Script", "Snell Roundhand", "cursive"],
+        "$description": "Formal script for one accent word, the \"by Mom\" in the logo and signatures (pins 10, 16). 32px and up."
       },
       "hand": {
         "$type": "fontFamily",
-        "$value": ["Cormorant Garamond", "Garamond", "Georgia", "serif"],
-        "$description": "Cormorant Garamond for Mom's notes, captions and eyebrow labels: a fine old-style serif, set in italic."
+        "$value": ["Fraunces", "Iowan Old Style", "Georgia", "serif"],
+        "$description": "Mom's notes, captions and eyebrow labels: Fraunces in italic, so the site keeps to the three families it started with."
       },
       "bubble": {
         "$type": "fontFamily",
-        "$value": ["Playfair Display", "Didot", "Georgia", "serif"],
+        "$value": ["Fraunces", "Iowan Old Style", "Georgia", "serif"],
         "$description": "Retired bubble face: now the display serif, so old uses stay elegant."
       }
     },

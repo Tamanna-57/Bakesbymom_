@@ -147,20 +147,47 @@ body {
 }
 
 /* Header actions: the sticker icons on their own (content/site.tsx), with a 44px target and a little wiggle */
+/* The header's two icons: slim cherry line icons in a fine ring, filled cherry on hover */
 .site-icon-link {
   display: inline-grid;
   place-items: center;
-  width: var(--bbm-layout-touch-target);
-  height: var(--bbm-layout-touch-target);
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid rgb(148 25 57 / 0.35);
   border-radius: 50%;
+  color: var(--bbm-color-cherry-700);
   transition:
-    rotate var(--bbm-motion-duration-fast) var(--bbm-motion-easing-bounce),
-    translate var(--bbm-motion-duration-fast) var(--bbm-motion-easing-bounce);
+    background-color var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard),
+    border-color var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard),
+    color var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard);
+}
+
+.site-icon-link svg {
+  width: 1.1rem;
+  height: 1.1rem;
 }
 
 .site-icon-link:hover {
-  translate: 0 -2px;
-  rotate: -8deg;
+  border-color: var(--bbm-color-cherry-700);
+  background-color: var(--bbm-color-cherry-700);
+  color: var(--bbm-color-paper);
+}
+
+/* A size between the system's sm and md: present in the middle of the bar, smaller on phones */
+.site-header-logo {
+  --_logo-size: clamp(1.6rem, 1.2rem + 0.8vw, 1.95rem);
+}
+
+/* The order button sits with the icons on wide screens; on phones it's in the menu */
+.site-header-order {
+  margin-inline-start: var(--bbm-space-2);
+}
+
+@media (max-width: 899.98px) {
+  .site-header-order,
+  .site-icon-link[href*='instagram'] {
+    display: none;
+  }
 }
 
 .site-icon-link:focus-visible {

@@ -608,8 +608,8 @@ export const occasionIcons: Record<string, { name: DoodleName; color: string }> 
 };
 
 /**
- * The gallery, and the home page's one place for occasions: pick an occasion, then keep scrolling and the strips
- * open one after another, left to right (Gallery's `pinOnScroll`).
+ * The gallery, and the home page's one place for occasions: pick an occasion, then open the strips with a click, a
+ * drag, the arrows or a sideways scroll. The page itself scrolls straight past.
  */
 export function GallerySection() {
   const withPhotos = occasionOptions()
@@ -641,7 +641,6 @@ export function GallerySection() {
         <Gallery
           items={items}
           label="Photos of cakes from Mom's kitchen"
-          pinOnScroll
           head={
             <>
               <SectionHeading variant="bubble" title="Gallery" />

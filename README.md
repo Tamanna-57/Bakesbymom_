@@ -49,7 +49,7 @@ The packages are npm workspaces in this repo. To use them from another repositor
 ## The system at a glance
 
 - **Color.** Five core scales measured from the board (`blue`, `pink`, `beige`, `cherry`, `brown`) plus two small helpers (`butter`, `matcha`), a semantic layer (`bg`, `text`, `border`, `action`, `status`) and seven **tones** that components switch between. Approved text pairings pass WCAG AA, enforced by `packages/tokens/test`.
-- **Type.** Playfair Display for headlines, prices and the logo · DM Sans for reading and the nav · Parisienne for one script word or Mom's signature · Cormorant Garamond italic for Mom's notes. Display sizes are fluid.
+- **Type.** Fraunces for headlines, prices and the logo (and in italic for Mom's notes) · DM Sans for reading and the nav · Pinyon Script for one script word or Mom's signature. Display sizes are fluid.
 - **Shape.** Pills for anything you can tap, rounded, scalloped and cloud cards, scallop, flower and cartouche photo frames, and 1.5px cocoa sticker outlines with hard, blur-free shadows.
 - **Patterns.** Stripes (plain, dotted, wavy), pinstripes, gingham, checkerboard, grid paper and polka dots; scallop, wave, torn-paper, dot and checker edges, all generated from tokens.
 

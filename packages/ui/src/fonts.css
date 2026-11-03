@@ -1,9 +1,7 @@
 /*
- * Bakes by Mom web fonts (Google Fonts, all SIL Open Font License). See design/board/brand-kit.md.
- *   Playfair Display    headlines, prices, the logo: wght 400–900, italic
- *   Cormorant Garamond  Mom's notes, captions and eyebrow labels, in italic
- *   DM Sans             body, UI and labels
- *   Parisienne          one accent word, "by Mom", signatures
- * Prefer self-hosting (e.g. @fontsource-variable/playfair-display) for production performance.
+ * Bakes by Mom web fonts (Google Fonts, all SIL Open Font License): the three the brand kit started with.
+ *   Fraunces       headlines, prices and the logo, and in italic Mom's notes: opsz, wght 300–900, SOFT, WONK
+ *   DM Sans        body, UI and labels
+ *   Pinyon Script  one accent word, "by Mom", signatures
  */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Cormorant+Garamond:ital,wght@0,400..700;1,400..700&family=DM+Sans:ital,opsz,wght@0,9..40,300..900;1,9..40,300..900&family=Parisienne&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=DM+Sans:ital,opsz,wght@0,9..40,300..900;1,9..40,300..900&family=Pinyon+Script&display=swap');

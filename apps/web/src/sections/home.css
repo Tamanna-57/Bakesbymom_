@@ -1191,7 +1191,7 @@
     radial-gradient(var(--notch) at 100% 100%, #0000 98%, #000) bottom right / 51% 51% no-repeat;
 }
 
-/* The words in the background: the site's Playfair, with "and" in the Parisienne script */
+/* The words in the background: the site's Fraunces, with "and" in the Pinyon script */
 .home-wheel__title {
   position: relative;
   z-index: 0;

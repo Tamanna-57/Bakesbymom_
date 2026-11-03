@@ -50,8 +50,9 @@ export const Flavours: Story = { render: () => <FlavoursSection /> };
 
 /**
  * The home page's Cakes & Treats: every kind of bake as a ticket card on a rainbow arc over the words, turning right
- * to left as the page scrolls (pinned under the header), the band blending in from blue and out to pink. After a
- * tea shop's "Our products" section; with reduced motion the arrows turn it instead.
+ * to left when the visitor drags, swipes, scrolls sideways or uses the arrows (the page itself scrolls on as usual),
+ * the band blending in from blue and out to pink as the page scrolls past. After a
+ * tea shop's "Our products" section.
  */
 export const CakesAndTreats: Story = { render: () => <CakesTreatsWheel /> };
 

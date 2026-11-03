@@ -49,6 +49,19 @@ describe('Gallery (strips)', () => {
   });
 });
 
+describe('Gallery (strips, sideways scroll)', () => {
+  it('opens the next strip on a sideways scroll and leaves up-and-down to the page', () => {
+    const { container } = render(<Gallery items={photos} label="Cakes" />);
+    const row = container.querySelector('.bbm-gallery__row')!;
+    fireEvent.wheel(row, { deltaY: 200 });
+    expect(screen.getByRole('button', { name: 'Pie' }).getAttribute('aria-expanded')).toBe('true');
+    fireEvent.wheel(row, { deltaX: 120 });
+    expect(screen.getByRole('button', { name: 'Bread' }).getAttribute('aria-expanded')).toBe('true');
+    fireEvent.wheel(row, { deltaY: 120, shiftKey: true });
+    expect(screen.getByRole('button', { name: 'Cupcakes' }).getAttribute('aria-expanded')).toBe('true');
+  });
+});
+
 describe('Gallery (strips, pinned on scroll)', () => {
   it('puts the head above the strips and keeps the strips as they are', () => {
     render(<Gallery items={photos} label="Cakes" head={<h2>Gallery</h2>} pinOnScroll />);

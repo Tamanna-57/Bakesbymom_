@@ -57,6 +57,31 @@ export const stock = {
   cupcakes: photo('home-cupcakes', 'Cupcakes with pink frosting and a cherry on top'),
   occasions: photo('home-occasions', 'A white cake on a stand, surrounded by little sweets'),
   kitchen: photo('home-kitchen', 'A hand sifting flour into a mixing bowl'),
+  // Our story's bake
+  batter: photo('story-batter', 'Pink cake batter in a bowl'),
+  mixing: photo('story-mix', 'A baker in an apron mixing batter in a white bowl'),
+  tin: photo('story-tin', 'Cake batter poured into a baking tin'),
+};
+
+/** Mom's own cakes, photographed in her kitchen: the ones with a name piped on, for Our story. */
+export const momsCakes = {
+  hbdMom: {
+    src: '/photos/restaged/mom-photo-clothesline.jpg',
+    alt: 'A "HBD Mom" cake with little photos pegged on a string above it',
+  },
+  hbdMomButterfly: {
+    src: '/photos/restaged/mom-butterfly.jpg',
+    alt: 'A white "HBD Mom" cake with pink roses and butterflies',
+  },
+  brideToBe: { src: '/photos/restaged/bride-to-be.jpg', alt: 'A bride-to-be cake with roses and a painted bride' },
+  anniversary: {
+    src: '/photos/restaged/anniversary-maroon.jpg',
+    alt: 'An anniversary cake in white and maroon with gold hearts',
+  },
+  engaged: { src: '/photos/restaged/engaged-hands.jpg', alt: 'An engagement cake painted with two hands and a ring' },
+  papa: { src: '/photos/thumbs/IMG-20260808-WA0045.webp', alt: 'A "HBD Papa" cake with a Super Dad topper' },
+  yatharth: { src: '/photos/thumbs/IMG-20260913-WA0002.webp', alt: 'A Spider-Man cake that says HBD Yatharth' },
+  wifey: { src: '/photos/thumbs/IMG-20260913-WA0009.webp', alt: 'A "HBD Wifey" cake with a painted portrait' },
 };
 
 /** A photo for each treat type, by its /shop slug. */

@@ -201,7 +201,8 @@ export function AboutUsCard() {
 export function FlavoursSection() {
   return (
     <section id="flavours" className="site-section site-section--blue site-section--edged home-flavours">
-      <SectionEdge color="var(--bbm-color-bg-blue)" />
+      {/* Blue, turning cherry together with the Cakes & Treats wheel below as it scrolls in (--home-blend) */}
+      <SectionEdge color="var(--home-blend, var(--bbm-color-bg-blue))" />
       <div className="site-container">
         <SectionHeading variant="ribbon" title="Flavours" ribbonText="baked to order" />
         <ul className="home-flavours__grid">
@@ -292,18 +293,23 @@ function useWheel(count: number) {
 
   useEffect(() => place(turn), [turn]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // One solid color at a time, so there is never a line at either edge: the blue of the band above while the wheel
-  // comes into view, cherry once it has scrolled up into place, and the cream of the band below as that one comes
-  // in. The color changes over a moment (home.css), as in the reference.
+  // As in the reference, the color behind the Flavours band and the wheel changes together with the scroll: blue
+  // while the wheel is below the screen, a little redder with every step it rises, and solid cherry once its top
+  // reaches the header. The two bands always share the color, so there is never a line between them on screen.
+  // --wheel-in goes on the page (home.css turns it into --home-blend for both bands).
   useEffect(() => {
     const o = outer.current;
     if (!o) return;
+    const root = document.documentElement;
     let frame = 0;
     const tick = () => {
       frame = 0;
-      const rect = o.getBoundingClientRect();
+      const top = o.getBoundingClientRect().top;
       const vh = window.innerHeight;
-      o.dataset.tone = rect.bottom < vh * 0.82 ? 'leave' : rect.top > vh * 0.22 ? 'enter' : 'on';
+      const header = parseFloat(getComputedStyle(root).getPropertyValue('--site-header-h')) || 84;
+      const t = Math.min(1, Math.max(0, (vh - top) / Math.max(1, vh - header)));
+      // Eased, so the change is gentle at the start and the end
+      root.style.setProperty('--wheel-in', (t * t * (3 - 2 * t)).toFixed(3));
     };
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(tick);
@@ -315,6 +321,7 @@ function useWheel(count: number) {
       cancelAnimationFrame(frame);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
+      root.style.removeProperty('--wheel-in');
     };
   }, []);
 
@@ -413,7 +420,7 @@ function useWheel(count: number) {
 export function CakesTreatsWheel() {
   const { outer, stage, cards, setTurn, onFocus } = useWheel(wheelItems.length);
   return (
-    <section ref={outer} id="treats" className="home-wheel" data-tone="enter" aria-labelledby="home-wheel-title">
+    <section ref={outer} id="treats" className="home-wheel" aria-labelledby="home-wheel-title">
       <div className="home-wheel__panel">
         <p className="home-wheel__pill">the menu</p>
         <h2 id="home-wheel-title" className="home-wheel__title">

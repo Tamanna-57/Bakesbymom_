@@ -2,12 +2,11 @@
  * Our story, short, after three references:
  * - a letter from Mom on linen paper with red-and-olive flourishes, a script title, little photo squares,
  *   postage stamps and a wax seal (the "Dawning Drift" tri-fold flyer);
- * - her cakes as die-cut stickers on a silver tray over pink polka dots, with a lettered key in an oval
- *   on blue pinstripes (the "Sweet Rise Surprises" poster);
+ * - painted dessert stickers on a silver tray over pink polka dots, with a lettered key in an oval on
+ *   blue pinstripes (the "Sweet Rise Surprises" poster);
  * - her promises as a menu card on a red gingham border, with hairline rules and stickers for pictures
  *   (the "desserts & Pastries" menu).
- * The watercolour stickers are Mom's own cakes (and two stock bakes), painted from their cut-out photos by
- * python scripts/collage.py watercolour.
+ * The painted stickers (public/collage/paint-*.webp) are original art generated in Canva Dream Lab.
  */
 import { Button, Doodle } from '@bakesbymom/ui';
 import { bakery } from '../content/bakery';
@@ -75,7 +74,7 @@ export function StoryLetter() {
       </div>
 
       <div className="story-letter__envelope">
-        <img className="story-letter__sticker" src="/collage/wc-heart.webp" alt="" />
+        <img className="story-letter__sticker" src="/collage/paint-cupcake.webp" alt="" />
         <article className="story-letter__card">
           <span className="story-stamp story-stamp--a">
             <img src="/photos/restaged/mom-photo-clothesline.jpg" alt="" />
@@ -118,14 +117,13 @@ export function StoryLetter() {
 /* 2. The tray ------------------------------------------------------------- */
 
 const tray = [
-  { key: 'A', sticker: 'wc-papa', name: 'Super Dad', who: 'for Papa' },
-  { key: 'B', sticker: 'wc-yatharth', name: 'Spider-Man', who: 'for Yatharth' },
-  { key: 'C', sticker: 'wc-maa', name: 'Angel wings', who: 'for Maa' },
-  { key: 'D', sticker: 'wc-janmashtami', name: 'Little Krishna', who: 'for Janmashtami' },
-  { key: 'E', sticker: 'wc-teacher', name: 'Yellow roses', who: "for Teacher's Day" },
-  { key: 'F', sticker: 'wc-wifey', name: 'A portrait', who: 'for a wife' },
+  { key: 'A', sticker: 'paint-teacake', name: 'Vanilla tea cake', note: 'a strawberry on top' },
+  { key: 'B', sticker: 'paint-cherry-slice', name: 'Chocolate cherry cake', note: 'by the slice' },
+  { key: 'C', sticker: 'paint-shortcake', name: 'Strawberry cream cake', note: 'layered by hand' },
+  { key: 'D', sticker: 'paint-jar-cake', name: 'Jar cakes', note: 'tied with a bow' },
+  { key: 'E', sticker: 'paint-cupcake', name: 'Cupcakes', note: 'a cherry on each' },
 ];
-const TILT = [-4, 3, -2, 4, -3, 2];
+const TILT = [-4, 3, -3, 4, -2];
 
 /** Sprinkles on the paper: [left %, top %, turn, colour]. */
 const SPRINKLES: [number, number, number, string][] = [
@@ -149,11 +147,11 @@ export function StoryTray() {
     <section className="story-tray" aria-labelledby="tray-title">
       <div className="story-tray__top">
         <h2 id="tray-title" className="story-tray__title">
-          <svg viewBox="0 0 1000 230" role="img" aria-label="Every cake has a name">
+          <svg viewBox="0 0 1000 230" role="img" aria-label="Fresh from Mom's oven">
             <path id="story-tray-arc" d="M40 215Q500 15 960 215" fill="none" />
             <text>
               <textPath href="#story-tray-arc" startOffset="50%" textAnchor="middle">
-                Every cake has a name
+                Fresh from Mom&rsquo;s oven
               </textPath>
             </text>
           </svg>
@@ -171,7 +169,7 @@ export function StoryTray() {
             <ul className="story-tray__cakes">
               {tray.map((cake, i) => (
                 <li key={cake.key} style={{ rotate: `${TILT[i]}deg` }}>
-                  <img src={`/collage/${cake.sticker}.webp`} alt={`${cake.name} cake, ${cake.who}`} loading="lazy" />
+                  <img src={`/collage/${cake.sticker}.webp`} alt={`${cake.name}, ${cake.note}`} loading="lazy" />
                   <span className="story-tray__key" aria-hidden="true">
                     {cake.key}.
                   </span>
@@ -187,14 +185,14 @@ export function StoryTray() {
             <path id="story-oval-arc" d="M60 100Q400 0 740 100" fill="none" />
             <text>
               <textPath href="#story-oval-arc" startOffset="50%" textAnchor="middle">
-                Who Mom baked them for
+                What&rsquo;s on the tray today?
               </textPath>
             </text>
           </svg>
-          <ol className="story-tray__list" aria-label="Who Mom baked them for">
+          <ol className="story-tray__list" aria-label="What's on the tray today?">
             {tray.map((cake) => (
               <li key={cake.key}>
-                <span aria-hidden="true">{cake.key}.</span> {cake.name}, {cake.who}
+                <span aria-hidden="true">{cake.key}.</span> {cake.name}, {cake.note}
               </li>
             ))}
           </ol>
@@ -229,8 +227,8 @@ export function StoryMenu() {
   return (
     <section className="story-menu" aria-labelledby="menu-title">
       <div className="story-menu__card">
-        <img className="story-menu__art story-menu__art--a" src="/collage/wc-cherry-cake.webp" alt="" />
-        <img className="story-menu__art story-menu__art--b" src="/collage/wc-jar-cakes.webp" alt="" />
+        <img className="story-menu__art story-menu__art--a" src="/collage/paint-shortcake.webp" alt="" />
+        <img className="story-menu__art story-menu__art--b" src="/collage/paint-jar-cake.webp" alt="" />
         <span className="story-menu__doodle story-menu__doodle--a" aria-hidden="true">
           <Doodle name="star" size={30} color="var(--bbm-color-cherry-600)" />
         </span>

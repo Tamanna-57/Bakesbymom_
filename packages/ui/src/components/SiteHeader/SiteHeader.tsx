@@ -31,8 +31,9 @@ export interface SiteHeaderProps extends HTMLAttributes<HTMLElement> {
    * - `start`: logo left, links and actions right.
    * - `masthead`: two rows, like a patisserie's shopfront: the tagline, the logo centred and the actions on
    *   top; under a hairline, the links centred with small diamonds between them.
+   * - `inline`: one slim row: logo left, links truly centred, actions right.
    */
-  layout?: 'split' | 'center' | 'start' | 'masthead';
+  layout?: 'split' | 'center' | 'start' | 'masthead' | 'inline';
   /** A short line at the top left of the `masthead` layout, e.g. "Eggless home bakery · Panipat". */
   tagline?: ReactNode;
   /** `bar` = full-width band; `capsule` = the whole nav inside one outlined pill (pin 03). */
@@ -54,6 +55,8 @@ export interface SiteHeaderProps extends HTMLAttributes<HTMLElement> {
   sticky?: boolean;
   /** After 120px of scroll, shrink the bar into the capsule (implies `sticky`). */
   capsuleOnScroll?: boolean;
+  /** Once the page scrolls, tighten the bar's height and give it a fine bottom rule (with `sticky`). */
+  condenseOnScroll?: boolean;
   /** Accessible name of the navigation landmark. */
   navLabel?: string;
 }
@@ -88,6 +91,7 @@ export function SiteHeader({
   edgeOverlay = false,
   sticky = false,
   capsuleOnScroll = false,
+  condenseOnScroll = false,
   navLabel = 'Main',
   tagline,
   className,
@@ -99,12 +103,13 @@ export function SiteHeader({
   const navId = `bbm-nav-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
 
   useEffect(() => {
-    if (!capsuleOnScroll) return;
-    const onScroll = () => setScrolled(window.scrollY > 120);
+    if (!capsuleOnScroll && !condenseOnScroll) return;
+    const at = capsuleOnScroll ? 120 : 8;
+    const onScroll = () => setScrolled(window.scrollY > at);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, [capsuleOnScroll]);
+  }, [capsuleOnScroll, condenseOnScroll]);
 
   useEffect(() => {
     if (!open) return;
@@ -127,7 +132,7 @@ export function SiteHeader({
         </a>
       </li>
     ));
-  const capsule = variant === 'capsule' || scrolled;
+  const capsule = variant === 'capsule' || (capsuleOnScroll && scrolled);
 
   return (
     <>
@@ -141,6 +146,7 @@ export function SiteHeader({
           capsule ? 'bbm-header--capsule' : 'bbm-header--bar',
           (sticky || capsuleOnScroll) && 'bbm-header--sticky',
           scrolled && 'bbm-header--scrolled',
+          condenseOnScroll && scrolled && 'bbm-header--condensed',
           className,
         )}
       >

@@ -260,8 +260,6 @@ const wheelItems: WheelItem[] = [
 /** Degrees between two cards on the arc. */
 const WHEEL_STEP = 17;
 
-const reducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
-
 /**
  * The wheel turns only when the visitor turns it: the arrows, a drag or swipe across the cards, or a sideways
  * scroll (a trackpad, or shift and the mouse wheel). The page itself scrolls past as usual, and the band's color
@@ -294,7 +292,9 @@ function useWheel(count: number) {
 
   useEffect(() => place(turn), [turn]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // The band's color follows the page's scroll in and out
+  // One solid color at a time, so there is never a line at either edge: the blue of the band above while the wheel
+  // comes into view, cherry once it has scrolled up into place, and the cream of the band below as that one comes
+  // in. The color changes over a moment (home.css), as in the reference.
   useEffect(() => {
     const o = outer.current;
     if (!o) return;
@@ -303,10 +303,7 @@ function useWheel(count: number) {
       frame = 0;
       const rect = o.getBoundingClientRect();
       const vh = window.innerHeight;
-      const fadeIn = reducedMotion() ? 1 : Math.min(1, Math.max(0, (vh - rect.top) / (vh * 0.7)));
-      const fadeOut = reducedMotion() ? 0 : Math.min(1, Math.max(0, (vh * 0.85 - rect.bottom) / (vh * 0.45)));
-      o.style.setProperty('--wheel-in', fadeIn.toFixed(3));
-      o.style.setProperty('--wheel-out', fadeOut.toFixed(3));
+      o.dataset.tone = rect.bottom < vh * 0.82 ? 'leave' : rect.top > vh * 0.22 ? 'enter' : 'on';
     };
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(tick);
@@ -416,7 +413,7 @@ function useWheel(count: number) {
 export function CakesTreatsWheel() {
   const { outer, stage, cards, setTurn, onFocus } = useWheel(wheelItems.length);
   return (
-    <section ref={outer} id="treats" className="home-wheel" aria-labelledby="home-wheel-title">
+    <section ref={outer} id="treats" className="home-wheel" data-tone="enter" aria-labelledby="home-wheel-title">
       <div className="home-wheel__panel">
         <p className="home-wheel__pill">the menu</p>
         <h2 id="home-wheel-title" className="home-wheel__title">

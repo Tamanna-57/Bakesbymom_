@@ -1,5 +1,5 @@
 import { useEffect, type ReactNode } from 'react';
-import { SiteHeader } from '@bakesbymom/ui';
+import { Logo, SiteHeader } from '@bakesbymom/ui';
 import { announcement, headerActions, mobileCta, navLinksFor } from '../content/site';
 import { ChatDemo, Footer } from '../sections/blocks';
 
@@ -50,6 +50,8 @@ export function Layout({
         links={navLinksFor(path)}
         actions={headerActions}
         mobileCta={mobileCta}
+        layout="center"
+        logo={<Logo size="md" className="site-header-logo" />}
         announcement={withAnnouncement ? announcement : undefined}
         scallop
         edge={photoHero ? 'wave' : 'scallop'}

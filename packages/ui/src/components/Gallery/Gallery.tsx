@@ -238,8 +238,43 @@ function GalleryStrips({
       return;
     }
     setOpen(next);
-    buttons.current[next]?.scrollIntoView?.({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+    // On phones the strips are a row that scrolls sideways: center the open one in it. Never scroll the page.
+    const button = buttons.current[next];
+    const strip = button?.parentElement;
+    if (button && strip && strip.scrollWidth > strip.clientWidth) {
+      strip.scrollTo?.({ left: button.offsetLeft - (strip.clientWidth - button.offsetWidth) / 2, behavior: 'smooth' });
+    }
   };
+
+  // A sideways scroll (a trackpad, or shift and the mouse wheel) over the strips opens the next or previous one.
+  // Up and down is left to the page; on phones, where the row scrolls itself, so is sideways.
+  const row = useRef<HTMLDivElement>(null);
+  const selectRef = useRef(select);
+  selectRef.current = select;
+  const openRef = useRef(open);
+  openRef.current = open;
+  useEffect(() => {
+    const el = row.current;
+    if (!el || pinned) return;
+    let sum = 0;
+    let last = 0;
+    const onWheel = (event: WheelEvent) => {
+      const dx = event.shiftKey && !event.deltaX ? event.deltaY : event.deltaX;
+      if (Math.abs(dx) <= Math.abs(event.shiftKey ? 0 : event.deltaY)) return;
+      if (el.scrollWidth > el.clientWidth + 1) return;
+      event.preventDefault();
+      const now = Date.now();
+      if (now - last > 250) sum = 0;
+      last = now;
+      sum += dx;
+      if (Math.abs(sum) >= 90) {
+        selectRef.current(openRef.current + Math.sign(sum));
+        sum = 0;
+      }
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
+  }, [pinned]);
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const current = buttons.current.findIndex((b) => b === document.activeElement);
@@ -280,7 +315,13 @@ function GalleryStrips({
     >
       <div ref={panel} className="bbm-gallery__panel">
         {head && <div className="bbm-gallery__head">{head}</div>}
-        <div className="bbm-gallery__row" onKeyDown={onKeyDown} onPointerDown={onPointerDown} onPointerUp={onPointerUp}>
+        <div
+          ref={row}
+          className="bbm-gallery__row"
+          onKeyDown={onKeyDown}
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
+        >
           {items.map((item, i) => (
             <button
               key={i}

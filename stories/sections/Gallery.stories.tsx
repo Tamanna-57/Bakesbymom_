@@ -12,7 +12,7 @@ const meta = {
     docs: {
       description: {
         component: fromBoard(
-          "**Lead: pin 01 (Berloga), saved twice on the board.** Tall strips under a huge outlined bubble title: one strip open in color, the rest narrow and greyscale. Each strip is a button with `aria-expanded`; arrow keys move between strips, a horizontal drag moves the open one, and on phones it becomes a swipe row. **On the website** (`pinOnScroll`) the title, pin 13's occasion chips and the strips pin under the header, and scrolling the page opens the strips one after another, left to right; clicks, drags and arrows scroll the page to that strip. Off with reduced motion or on a screen under 500px tall. Alternates: the **trio** on cocoa from pin 11 and the **Instagram grid** from pin 12.",
+          "**Lead: pin 01 (Berloga), saved twice on the board.** Tall strips under a huge outlined bubble title: one strip open in color, the rest narrow and greyscale. Each strip is a button with `aria-expanded`; arrow keys move between strips, a horizontal drag moves the open one, and on phones it becomes a swipe row. **On the website** the title and pin 13's occasion chips sit above the strips, and the page scrolls straight past: a click, a drag, the arrows or a sideways scroll (a trackpad, or shift and the mouse wheel) opens the next strip. The `pinOnScroll` option instead pins the gallery and lets the page's scroll open the strips one after another. Alternates: the **trio** on cocoa from pin 11 and the **Instagram grid** from pin 12.",
           ['01', '14', '11', '12'],
           'gallery.md',
         ),

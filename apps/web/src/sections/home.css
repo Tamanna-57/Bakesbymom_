@@ -1125,6 +1125,29 @@
 }
 
 /* Phones: bigger cards, and the whole wheel centered on the screen with the button right under it */
+/* No hard line at either edge: the top fades in from the Flavours band's blue, the foot out to the cream of the band
+   below, while the band keeps its own color in between */
+.home-wheel::before,
+.home-wheel::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  height: clamp(6rem, 22svh, 14rem);
+  pointer-events: none;
+}
+
+.home-wheel::before {
+  top: 0;
+  background: linear-gradient(to bottom, var(--bbm-color-bg-blue), transparent);
+}
+
+.home-wheel::after {
+  bottom: 0;
+  background: linear-gradient(to top, var(--bbm-color-bg-canvas), transparent);
+}
+
 @media (max-width: 639.98px) {
   .home-wheel {
     --card-w: min(56vw, 34svh);
@@ -1141,20 +1164,13 @@
 
 .home-wheel__panel {
   position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
   min-height: calc(var(--card-w) * 1.3 + 22rem);
   padding: clamp(var(--bbm-space-6), 5svh, var(--bbm-space-12)) 0 var(--bbm-space-20);
-}
-
-/* Pinned: one screen under the header while the wheel turns */
-.home-wheel--pinned .home-wheel__panel {
-  position: sticky;
-  top: var(--site-header-h, 5.25rem);
-  height: calc(100svh - var(--site-header-h, 5.25rem));
-  min-height: 0;
 }
 
 /* The label pill, cut like a ticket */
@@ -1219,6 +1235,14 @@
   margin: calc(var(--card-w) * -0.1) 0 0;
   padding: 0;
   list-style: none;
+  /* Up and down still scrolls the page on a phone; sideways swipes turn the wheel */
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+}
+
+.home-wheel__stage.is-turning {
+  cursor: grabbing;
 }
 
 .home-wheel__card {
@@ -1233,11 +1257,15 @@
   will-change: transform;
 }
 
-/* Without the pin, the arrows turn the wheel a card at a time */
-.home-wheel:not(.home-wheel--pinned) .home-wheel__card {
+/* The wheel glides to each card; while a hand is turning it (drag, swipe, sideways scroll) it follows directly */
+.home-wheel__card {
   transition:
     transform 0.7s var(--bbm-motion-easing-out),
     opacity 0.5s var(--bbm-motion-easing-standard);
+}
+
+.home-wheel__stage.is-turning .home-wheel__card {
+  transition: none;
 }
 
 .home-wheel__card a {

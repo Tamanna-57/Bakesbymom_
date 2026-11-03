@@ -151,8 +151,8 @@ body {
 .site-icon-link {
   display: inline-grid;
   place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.25rem;
+  height: 2.25rem;
   border: 1px solid rgb(148 25 57 / 0.35);
   border-radius: 50%;
   color: var(--bbm-color-cherry-700);
@@ -163,8 +163,8 @@ body {
 }
 
 .site-icon-link svg {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 1rem;
+  height: 1rem;
 }
 
 .site-icon-link:hover {
@@ -175,7 +175,7 @@ body {
 
 /* A size between the system's sm and md: present in the middle of the bar, smaller on phones */
 .site-header-logo {
-  --_logo-size: clamp(1.6rem, 1.2rem + 0.8vw, 1.95rem);
+  --_logo-size: clamp(1.45rem, 1.15rem + 0.6vw, 1.75rem);
 }
 
 /* The order button sits with the icons on wide screens; on phones it's in the menu */
@@ -186,6 +186,13 @@ body {
 @media (max-width: 899.98px) {
   .site-header-order,
   .site-icon-link[href*='instagram'] {
+    display: none;
+  }
+}
+
+/* On wide screens the Order button already opens WhatsApp, so its icon would say the same thing twice */
+@media (min-width: 900px) {
+  .site-icon-link[href*='wa.me'] {
     display: none;
   }
 }

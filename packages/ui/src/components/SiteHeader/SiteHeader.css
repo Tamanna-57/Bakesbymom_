@@ -225,7 +225,7 @@
 
 /* Small, widely spaced capitals; a fine cherry rule draws in from the centre on hover and stays under the
    current page */
-.bbm-header__nav a {
+.bbm-header__links a {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -240,7 +240,7 @@
   transition: color var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard);
 }
 
-.bbm-header__nav a::after {
+.bbm-header__links a::after {
   content: '';
   position: absolute;
   left: var(--bbm-space-3);
@@ -252,13 +252,13 @@
   transition: scale var(--bbm-motion-duration-base) var(--bbm-motion-easing-out);
 }
 
-.bbm-header__nav a:hover,
-.bbm-header__nav a[aria-current='page'] {
+.bbm-header__links a:hover,
+.bbm-header__links a[aria-current='page'] {
   color: var(--bbm-color-text-brand);
 }
 
-.bbm-header__nav a:hover::after,
-.bbm-header__nav a[aria-current='page']::after {
+.bbm-header__links a:hover::after,
+.bbm-header__links a[aria-current='page']::after {
   scale: 1 1;
 }
 
@@ -295,7 +295,7 @@
     flex-direction: column;
   }
 
-  .bbm-header__nav a {
+  .bbm-header__links a {
     width: 100%;
     box-sizing: border-box;
     font-size: var(--bbm-text-body-lg-size);
@@ -371,6 +371,134 @@
   .bbm-header--start .bbm-header__links--first {
     grid-area: first;
     justify-self: end;
+  }
+}
+
+/* Masthead: the tagline, the logo and the actions on top; the links centred underneath -------------- */
+
+.bbm-header__tagline {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .bbm-header--masthead .bbm-header__bar {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    grid-template-areas:
+      'tagline logo actions'
+      'first first first';
+    row-gap: 0;
+    min-height: 0;
+    padding-top: var(--bbm-space-3);
+    padding-bottom: 0;
+  }
+
+  .bbm-header__tagline {
+    grid-area: tagline;
+    display: flex;
+    align-items: center;
+    gap: var(--bbm-space-2);
+    margin: 0;
+    font-family: var(--bbm-font-family-hand);
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--bbm-color-brown-700);
+  }
+
+  /* A small gold diamond before the tagline */
+  .bbm-header__tagline::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--bbm-color-gold-400);
+    rotate: 45deg;
+  }
+
+  .bbm-header--masthead .bbm-header__logo {
+    padding-block: var(--bbm-space-1) var(--bbm-space-2);
+  }
+
+  /* The links: centred under a hairline that fades out at both ends, gold diamonds between them */
+  .bbm-header--masthead .bbm-header__links--first {
+    grid-area: first;
+    justify-self: stretch;
+    justify-content: center;
+    gap: var(--bbm-space-4);
+    padding-top: 1px;
+    background: linear-gradient(90deg, transparent, rgb(148 25 57 / 0.28) 20%, rgb(148 25 57 / 0.28) 80%, transparent)
+      top / 100% 1px no-repeat;
+  }
+
+  .bbm-header--masthead .bbm-header__links--first > li {
+    display: flex;
+    align-items: center;
+    gap: var(--bbm-space-4);
+  }
+
+  .bbm-header--masthead .bbm-header__links--first > li + li::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    background: var(--bbm-color-gold-400);
+    rotate: 45deg;
+  }
+
+  .bbm-header--masthead .bbm-header__links a {
+    min-height: 2.75rem;
+    padding-inline: var(--bbm-space-2);
+  }
+
+  .bbm-header--masthead .bbm-header__links a::after {
+    left: var(--bbm-space-2);
+    right: calc(var(--bbm-space-2) + 0.18em);
+    bottom: 0.55rem;
+  }
+}
+
+/* The phone menu: the links large in the display serif, centred, with hairlines between them */
+@media (max-width: 899.98px) {
+  .bbm-header--masthead .bbm-header__nav--open {
+    justify-items: center;
+    padding-top: var(--bbm-space-4);
+    border-top: 1px solid rgb(148 25 57 / 0.2);
+    animation: bbm-header-menu-in 320ms var(--bbm-motion-easing-out);
+  }
+
+  .bbm-header--masthead .bbm-header__links {
+    align-items: center;
+    width: 100%;
+  }
+
+  .bbm-header--masthead .bbm-header__links > li {
+    width: 100%;
+    text-align: center;
+  }
+
+  .bbm-header--masthead .bbm-header__links > li + li {
+    border-top: 1px solid rgb(148 25 57 / 0.12);
+  }
+
+  .bbm-header--masthead .bbm-header__links a {
+    justify-content: center;
+    min-height: 3.25rem;
+    font-family: var(--bbm-font-family-display);
+    font-size: 1.35rem;
+    font-weight: var(--bbm-font-weight-medium);
+    letter-spacing: 0.01em;
+  }
+
+  .bbm-header--masthead .bbm-header__links a::after {
+    display: none;
+  }
+
+  .bbm-header--masthead .bbm-header__mobile-cta {
+    width: 100%;
+  }
+}
+
+@keyframes bbm-header-menu-in {
+  from {
+    opacity: 0;
+    translate: 0 -8px;
   }
 }
 

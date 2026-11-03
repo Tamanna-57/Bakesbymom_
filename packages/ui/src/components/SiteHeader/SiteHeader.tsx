@@ -29,8 +29,12 @@ export interface SiteHeaderProps extends HTMLAttributes<HTMLElement> {
    * - `split`: links split evenly around a centered logo, actions far right (pin 15). The lead.
    * - `center`: links left, logo centered, actions right (pin 13).
    * - `start`: logo left, links and actions right.
+   * - `masthead`: two rows, like a patisserie's shopfront: the tagline, the logo centred and the actions on
+   *   top; under a hairline, the links centred with small diamonds between them.
    */
-  layout?: 'split' | 'center' | 'start';
+  layout?: 'split' | 'center' | 'start' | 'masthead';
+  /** A short line at the top left of the `masthead` layout, e.g. "Eggless home bakery · Panipat". */
+  tagline?: ReactNode;
   /** `bar` = full-width band; `capsule` = the whole nav inside one outlined pill (pin 03). */
   variant?: 'bar' | 'capsule';
   /** Bar color. */
@@ -85,6 +89,7 @@ export function SiteHeader({
   sticky = false,
   capsuleOnScroll = false,
   navLabel = 'Main',
+  tagline,
   className,
   ...rest
 }: SiteHeaderProps) {
@@ -154,6 +159,7 @@ export function SiteHeader({
                 <MenuIcon open={open} />
               </button>
             )}
+            {tagline && layout === 'masthead' && <p className="bbm-header__tagline">{tagline}</p>}
             <a className="bbm-header__logo" href={logoHref}>
               {logo}
             </a>

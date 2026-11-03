@@ -260,9 +260,14 @@
 .story-letter__text p {
   margin: 0 0 var(--bbm-space-3);
   font-family: var(--bbm-font-family-hand);
-  font-size: clamp(1.2rem, 1.05rem + 0.5vw, 1.45rem);
+  font-size: clamp(1.05rem, 0.98rem + 0.35vw, 1.25rem);
   font-style: italic;
-  line-height: 1.45;
+  font-weight: 400;
+  /* Fraunces italic, calm: soft corners, none of its wonky swash letters */
+  font-variation-settings:
+    'SOFT' 50,
+    'WONK' 0;
+  line-height: 1.55;
   color: var(--bbm-color-brown-800);
 }
 

@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { BakeWithMomSection } from '../../apps/web/src/sections/bake';
 import { MeetMomSection, OrbitSection, ValuesRow, AboutCardSection } from '../../apps/web/src/sections/blocks';
-import { StoryHero, StoryMeetMom, StoryPromises } from '../../apps/web/src/sections/story';
+import { StoryLetter, StoryMenu, StoryTray } from '../../apps/web/src/sections/story';
 import { fromBoard } from './ref';
 
 const meta = {
@@ -11,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component: fromBoard(
-          "**Lead: pin 05 (Pretty OK Studios), \"Meet Elia\".** Mom's photo in a scalloped frame on a polka-dot square, beside a tilted note with a candy-stripe border, signed in script (the signature idea is pin 03's). On the About page the story is **Bake it with Mom** (`sections/bake.tsx`); the **orbit** from pin 01 is kept here as an alternate; the **values** are pin 05's two cards; the **about card** with halftone cherries is pin 16's.",
+          "**Lead: pin 05 (Pretty OK Studios), \"Meet Elia\".** Mom's photo in a scalloped frame on a polka-dot square, beside a tilted note with a candy-stripe border, signed in script (the signature idea is pin 03's). The About page itself is `sections/story.tsx` (a letter, a tray of Mom's cakes and a menu card, after three posters); the **orbit** from pin 01 is kept here as an alternate; the **values** are pin 05's two cards; the **about card** with halftone cherries is pin 16's.",
           ['05', '01', '16', '03'],
           'about.md',
         ),
@@ -23,23 +22,17 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Our story's hero: the home hero mirrored, on pink stripes, with Mom's HBD Mom cake in the arch. */
-export const Hero: Story = { render: () => <StoryHero /> };
+/** Our story, 1: a letter from Mom on linen, with flourishes, stamps and a wax seal (the "Dawning Drift" flyer). */
+export const Letter: Story = { render: () => <StoryLetter /> };
 
-/** Our story's Meet Mom: her letter in the home page's outlined card, beside three of her cakes. */
-export const MeetMomWithCakes: Story = { render: () => <StoryMeetMom /> };
+/** Our story, 2: Mom's cakes as stickers on a silver tray, with the key in an oval (the "Sweet Rise" poster). */
+export const Tray: Story = { render: () => <StoryTray /> };
 
-/** Her three promises on scalloped badges, on the home page's checker band. */
-export const Promises: Story = { render: () => <StoryPromises /> };
+/** Our story, 3: her promises as a menu card on red gingham (the "desserts & Pastries" menu). */
+export const Menu: Story = { render: () => <StoryMenu /> };
 
 /** The earlier Meet Mom, with the drawn portrait (no longer on the About page). */
 export const MeetMom: Story = { render: () => <MeetMomSection /> };
-
-/**
- * The About page's story: bake a cake with Mom. Scrolling walks through six steps, sunrise to night, each a photo in
- * the cherry arch with its own collage pieces; tap the egg, type a name for the cake, and the last step opens WhatsApp with it.
- */
-export const BakeWithMom: Story = { render: () => <BakeWithMomSection /> };
 
 /** Pin 01's orbit, an alternate story block (no longer on the About page). */
 export const OurStory: Story = { render: () => <OrbitSection /> };

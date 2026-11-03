@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { BakeWithMomSection } from '../../apps/web/src/sections/bake';
 import { MeetMomSection, OrbitSection, ValuesRow, AboutCardSection } from '../../apps/web/src/sections/blocks';
+import { StoryHero, StoryMeetMom, StoryPromises } from '../../apps/web/src/sections/story';
 import { fromBoard } from './ref';
 
 const meta = {
@@ -22,12 +23,21 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** The lead: Meet Mom. */
+/** Our story's hero: the home hero mirrored, on pink stripes, with Mom's HBD Mom cake in the arch. */
+export const Hero: Story = { render: () => <StoryHero /> };
+
+/** Our story's Meet Mom: her letter in the home page's outlined card, beside three of her cakes. */
+export const MeetMomWithCakes: Story = { render: () => <StoryMeetMom /> };
+
+/** Her three promises on scalloped badges, on the home page's checker band. */
+export const Promises: Story = { render: () => <StoryPromises /> };
+
+/** The earlier Meet Mom, with the drawn portrait (no longer on the About page). */
 export const MeetMom: Story = { render: () => <MeetMomSection /> };
 
 /**
- * The About page's story: bake a cake with Mom. Scrolling walks through six steps while the light moves from
- * sunrise to night; tap the egg, type a name for the cake, and the last step opens WhatsApp with it.
+ * The About page's story: bake a cake with Mom. Scrolling walks through six steps, sunrise to night, each a photo in
+ * the cherry arch with its own collage pieces; tap the egg, type a name for the cake, and the last step opens WhatsApp with it.
  */
 export const BakeWithMom: Story = { render: () => <BakeWithMomSection /> };
 

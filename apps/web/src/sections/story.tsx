@@ -6,7 +6,8 @@
  *   on blue pinstripes (the "Sweet Rise Surprises" poster);
  * - her promises as a menu card on a red gingham border, with hairline rules and stickers for pictures
  *   (the "desserts & Pastries" menu).
- * The stickers of Mom's cakes come from her own cut-out photos (python scripts/collage.py moms).
+ * The watercolour stickers are Mom's own cakes (and two stock bakes), painted from their cut-out photos by
+ * python scripts/collage.py watercolour.
  */
 import { Button, Doodle } from '@bakesbymom/ui';
 import { bakery } from '../content/bakery';
@@ -74,6 +75,7 @@ export function StoryLetter() {
       </div>
 
       <div className="story-letter__envelope">
+        <img className="story-letter__sticker" src="/collage/wc-heart.webp" alt="" />
         <article className="story-letter__card">
           <span className="story-stamp story-stamp--a">
             <img src="/photos/restaged/mom-photo-clothesline.jpg" alt="" />
@@ -116,12 +118,12 @@ export function StoryLetter() {
 /* 2. The tray ------------------------------------------------------------- */
 
 const tray = [
-  { key: 'A', sticker: 'mom-papa', name: 'Super Dad', who: 'for Papa' },
-  { key: 'B', sticker: 'mom-yatharth', name: 'Spider-Man', who: 'for Yatharth' },
-  { key: 'C', sticker: 'mom-maa', name: 'Angel wings', who: 'for Maa' },
-  { key: 'D', sticker: 'mom-janmashtami', name: 'Little Krishna', who: 'for Janmashtami' },
-  { key: 'E', sticker: 'mom-teacher', name: 'Yellow roses', who: "for Teacher's Day" },
-  { key: 'F', sticker: 'mom-wifey', name: 'A portrait', who: 'for a wife' },
+  { key: 'A', sticker: 'wc-papa', name: 'Super Dad', who: 'for Papa' },
+  { key: 'B', sticker: 'wc-yatharth', name: 'Spider-Man', who: 'for Yatharth' },
+  { key: 'C', sticker: 'wc-maa', name: 'Angel wings', who: 'for Maa' },
+  { key: 'D', sticker: 'wc-janmashtami', name: 'Little Krishna', who: 'for Janmashtami' },
+  { key: 'E', sticker: 'wc-teacher', name: 'Yellow roses', who: "for Teacher's Day" },
+  { key: 'F', sticker: 'wc-wifey', name: 'A portrait', who: 'for a wife' },
 ];
 const TILT = [-4, 3, -2, 4, -3, 2];
 
@@ -227,8 +229,8 @@ export function StoryMenu() {
   return (
     <section className="story-menu" aria-labelledby="menu-title">
       <div className="story-menu__card">
-        <img className="story-menu__art story-menu__art--a" src="/collage/sticker-cherry-cake.webp" alt="" />
-        <img className="story-menu__art story-menu__art--b" src="/collage/sticker-jar-cakes.webp" alt="" />
+        <img className="story-menu__art story-menu__art--a" src="/collage/wc-cherry-cake.webp" alt="" />
+        <img className="story-menu__art story-menu__art--b" src="/collage/wc-jar-cakes.webp" alt="" />
         <span className="story-menu__doodle story-menu__doodle--a" aria-hidden="true">
           <Doodle name="star" size={30} color="var(--bbm-color-cherry-600)" />
         </span>

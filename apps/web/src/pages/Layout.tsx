@@ -50,7 +50,8 @@ export function Layout({
         links={navLinksFor(path)}
         actions={headerActions}
         mobileCta={mobileCta}
-        layout="center"
+        layout="masthead"
+        tagline="Eggless home bakery · Panipat"
         logo={<Logo size="md" className="site-header-logo" />}
         announcement={withAnnouncement ? announcement : undefined}
         scallop
@@ -58,7 +59,6 @@ export function Layout({
         edgeSize={photoHero ? 'md' : 'sm'}
         edgeOverlay={photoHero || edgeOverHero}
         sticky
-        capsuleOnScroll={withAnnouncement}
       />
       <main id="main" tabIndex={-1}>
         {children}

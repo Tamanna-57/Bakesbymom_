@@ -1,19 +1,22 @@
 /**
- * "Bake it with Mom": the About page's story as a cake you bake alongside her. The section pins one kitchen to
- * the screen and scrolling walks through six steps (measure, eggs, mix, bake, decorate, box) while the light in
- * the window moves from sunrise to night. Mom tells the story in the card beside it, one line per step.
+ * "Bake it with Mom": the About page's story as a cake you bake alongside her. The section pins Mom's kitchen to
+ * the screen and scrolling walks through six steps (measure, eggs, mix, bake, decorate, box) from sunrise to
+ * night. Mom tells the story in the card beside it, one line per step.
  *
- * Scroll position is written to CSS variables (--day, --p0 … --p5) every frame, so the drawing moves without
- * re-rendering React; React only re-renders when the step changes. Visitors who ask for reduced motion get the
- * same six steps as a still, illustrated recipe card instead.
+ * It's dressed like the home hero: blue candy stripes, a photo in the cherry arch and a cream card. The kitchen
+ * is a collage after the board pins: each hour has its own photo in the arch (the evening one is Mom's own
+ * cake), the time on a scalloped badge, and that step's stamps, stickers, halftones and notes sticking down
+ * round it. The light in the arch warms and dims through the day.
+ *
+ * Scroll position is written to CSS variables (--day, --p0 … --p5) every frame; React only re-renders when the
+ * step changes. Visitors who ask for reduced motion get the same six steps as a still recipe card instead.
  */
 import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from 'react';
-import { Button } from '@bakesbymom/ui';
-import { art } from '../content';
+import { Button, PatternSurface } from '@bakesbymom/ui';
+import { Badge, Bubble, GiftTag, Halftone, Note, Stamp, Sticker, Tape } from '../collage/Collage';
+import { momsCakes, stock } from '../content';
 import { whatsappLink } from '../content/bakery';
-import { BAKE_SECONDS, bakeSteps, type BakeStep } from '../content/story';
-import { Engraving, Ink, Lines, Shade, contourHatch, cylinderSide, ellipse } from '../engrave/kit';
-import { Cake, CakeBox, CakeStand, Cherry, Star, Stove } from '../engrave/objects';
+import { BAKE_SECONDS, bakeSteps } from '../content/story';
 import { glideTo } from '../motion';
 import './bake.css';
 
@@ -159,7 +162,14 @@ function BakeScroll({ name, setName, piped }: NameProps) {
       aria-labelledby="bake-title"
       style={{ '--steps': STEPS } as CSSProperties}
     >
-      <div className="bake__stage">
+      <PatternSurface
+        pattern="stripes"
+        tone="blue"
+        scale="xl"
+        ground="var(--bbm-color-bg-canvas)"
+        className="bake__stage"
+      >
+        <span className="bake__dusk" aria-hidden="true" />
         <div className="bake__inner">
           <h2 id="bake-title" className="bake__sr">
             Bake a cake with Mom
@@ -188,7 +198,7 @@ function BakeScroll({ name, setName, piped }: NameProps) {
             </button>
           </nav>
           <div className="bake__scene">
-            <BakeScene step={step} name={piped} eggTaken={eggTaken} timer={timer} onEgg={() => setEggTaken(true)} />
+            <BakeWindow step={step} name={piped} eggTaken={eggTaken} timer={timer} onEgg={() => setEggTaken(true)} />
           </div>
           <div className="bake__card-slot" aria-live="polite">
             <StepCard
@@ -203,7 +213,7 @@ function BakeScroll({ name, setName, piped }: NameProps) {
             />
           </div>
         </div>
-      </div>
+      </PatternSurface>
     </section>
   );
 }
@@ -220,7 +230,7 @@ function BakeStill({ name, setName, piped }: NameProps) {
         {bakeSteps.map((s, i) => (
           <li key={s.id} className="bake__still-step">
             <div className="bake__scene bake__scene--still" style={stillVars(i)}>
-              <BakeScene step={i} name={piped} eggTaken timer={0} still />
+              <BakeWindow step={i} name={piped} eggTaken timer={0} still />
             </div>
             <StepCard index={i} eggTaken timer={0} name={name} setName={setName} piped={piped} still />
           </li>
@@ -308,11 +318,10 @@ function StepCard({ index, eggTaken, onEgg, timer, name, setName, piped, still =
       {showHint && <p className="bake__hint">{s.hint}</p>}
       {!waiting && (
         <figure className="bake__says">
-          <img src={art.mom} alt="" width={56} height={56} />
           <blockquote>
             <p>{s.says}</p>
           </blockquote>
-          <figcaption>Mom</figcaption>
+          <figcaption>with love, Mom</figcaption>
         </figure>
       )}
       {extra}
@@ -320,9 +329,9 @@ function StepCard({ index, eggTaken, onEgg, timer, name, setName, piped, still =
   );
 }
 
-/* The kitchen: an engraving ----------------------------------------------------- */
+/* The window: Mom's kitchen as a photo collage ------------------------------------------ */
 
-interface BakeSceneProps {
+interface BakeWindowProps {
   step: number;
   name: string;
   eggTaken: boolean;
@@ -331,241 +340,140 @@ interface BakeSceneProps {
   still?: boolean;
 }
 
-/** The counter top, where everything sits. */
-const COUNTER = 300;
-const MID = 240;
+/** What shows in the arch at each step: one photo per hour of the day. */
+const ARCH = [stock.kitchen, stock.batter, stock.mixing, stock.tin, momsCakes.hbdMomButterfly, stock.bento];
 
-/** A row of jars on the shelf: [x, width, height, lid wash, label?]. */
-const JARS: [number, number, number, 'cherry' | 'gold' | 'cocoa' | 'sky', boolean][] = [
-  [318, 26, 34, 'cocoa', true],
-  [352, 30, 44, 'cherry', true],
-  [390, 22, 28, 'gold', false],
-  [420, 24, 36, 'sky', true],
+/** The orders that come in while Mom mixes: one became two, two became a weekend booked out. */
+const ORDERS: { from: 'you' | 'mom'; text: string }[] = [
+  { from: 'you', text: 'Could you bake one for Riya’s birthday? 🎂' },
+  { from: 'mom', text: 'Of course! Eggless, as always ♥' },
+  { from: 'you', text: 'And two dozen cupcakes for Saturday?' },
+  { from: 'you', text: 'Is next weekend free too?' },
 ];
 
-function BakeScene({ step, name, eggTaken, timer, onEgg, still = false }: BakeSceneProps) {
-  const id = useId().replace(/[^a-zA-Z0-9_-]/g, '');
-  const s: BakeStep = bakeSteps[step]!;
-  const label = name || 'for you';
+/**
+ * The kitchen through the day, after the board pins and the home hero: a photo in the cherry arch, the hour on
+ * a scalloped badge, and each step's pieces (stamps, stickers, halftones, notes, tags) sticking down round it.
+ */
+function BakeWindow({ step, name, eggTaken, timer, onEgg, still = false }: BakeWindowProps) {
+  const s = bakeSteps[step]!;
+  const [clock, meridiem] = s.time.split(' ');
   const tag = name ? `for ${name}` : 'for you';
-  const baking = timer !== null && timer > 0;
-  const classes = [
-    'bake-scene',
-    still && 'is-still',
-    eggTaken && (still ? 'is-egg-held' : 'is-egg-taken'),
-    baking && 'is-baking',
-    (timer === 0 || still) && 'is-baked',
-  ]
-    .filter(Boolean)
-    .join(' ');
-  const standY = 258;
+  const baked = still || timer === 0;
+  const set = (i: number) => ({
+    className: 'bake-window__set',
+    'data-on': i === step || undefined,
+    'aria-hidden': i === step ? undefined : true,
+  });
 
   return (
-    <div className={classes} data-step={step}>
-      <Engraving width={480} height={400} label={s.scene} draw={false} screen="halftone" className="bake-scene__svg">
-        <defs>
-          <clipPath id={`${id}-sky`}>
-            <path d="M52 206V112a74 74 0 0 1 148 0v94z" />
-          </clipPath>
-        </defs>
+    <div
+      className={['collage bake-window', still && 'is-still', eggTaken && 'is-egg-taken'].filter(Boolean).join(' ')}
+      data-step={step}
+      role="img"
+      aria-label={s.scene}
+    >
+      {/* The arch: the photo of the hour, and the light of the hour over it */}
+      <div className="bake-window__arch">
+        {ARCH.map((photo, i) => (
+          <img
+            key={photo.src}
+            src={photo.src}
+            alt=""
+            data-on={i === step || undefined}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            decoding="async"
+          />
+        ))}
+        <span className="bake-window__light" />
+      </div>
 
-        {/* The wall, the tiles below it and the light of the hour */}
-        <rect width="480" height="400" className="bk-wall" />
-        <Shade d="M0 214h480v86H0z" kind="dots" opacity={0.35} />
-        <Lines d={Array.from({ length: 4 }, (_, i) => `M0 ${222 + i * 20}H480`).join('')} weight="hair" />
-
-        {/* The arched window: the sky, the sun or the moon, the rooftops across the lane */}
-        <g clipPath={`url(#${id}-sky)`}>
-          <rect x="52" y="30" width="148" height="180" className="bk-sky" />
-          <g className="bk-stars">
-            <circle cx="80" cy="76" r="1.4" />
-            <circle cx="112" cy="104" r="1" />
-            <circle cx="160" cy="70" r="1.4" />
-            <circle cx="182" cy="118" r="1" />
-            <circle cx="96" cy="132" r="1" />
-          </g>
-          <circle className="bk-sun" cx="74" cy="194" r="13" />
-          <g className="bk-moon">
-            <circle cx="160" cy="96" r="12" />
-            <circle cx="166" cy="91" r="10.5" className="bk-sky-cut" />
-          </g>
-          <path className="bk-roofs" d="M52 206v-22h22v-10h18v10h14v-18h26v18h12v-12h20v12h36v22z" />
-          <Lines d="M52 184h22M92 174h-18M106 166h26M144 172h20" weight="hair" />
-        </g>
-        <Ink d="M52 206V112a74 74 0 0 1 148 0v94" weight="bold" />
-        <Lines d="M126 38v168M52 140h148M60 112a66 66 0 0 1 132 0" weight="fine" />
-        {/* Shutters, open */}
-        <Ink d="M24 206V118q0-48 26-66v154z" wash="rose" />
-        <Shade d="M24 206V118q0-48 26-66v154z" density={2} opacity={0.5} />
-        <Lines d="M30 130h16M30 150h16M30 170h16M30 190h16" weight="hair" />
-        <Ink d="M228 206V118q0-48-26-66v154z" wash="rose" />
-        <Lines d="M206 130h16M206 150h16M206 170h16M206 190h16" weight="hair" />
-        {/* The sill and Mom's tulsi */}
-        <Ink d="M40 206h172v8H40z" wash="paper" />
-        <Ink d="M156 206l3-16h20l3 16z" wash="cherry" />
-        <Ink
-          d="M168 190c-8-10-6-22 2-26 2 8 2 18-2 26zm2 0c4-12 12-16 18-12-4 8-10 11-18 12zm-2 0c-6-6-14-6-16 0 6 3 10 2 16 0z"
-          wash="leaf"
-          weight="hair"
+      {/* The hour, on a scalloped badge like the home page's eggless one */}
+      <div className="bake-window__clock" key={s.id}>
+        <Badge
+          value={clock!}
+          label={`${meridiem} · ${s.light}`}
+          tone={step === 5 ? 'butter' : 'cherry'}
+          place={{ x: 0, y: 0, w: 100, r: -10 }}
         />
+      </div>
 
-        {/* The shelf and the jars */}
-        <Ink d="M296 128h160v7H296z" wash="paper" />
-        <Lines d="M310 135l8 14M442 135l-8 14" weight="fine" />
-        {JARS.map(([x, w, h, lid, labelled]) => (
-          <g key={x}>
-            <Ink d={`M${x} 128v${-h + 6}q0 -6 6 -6h${w - 12}q6 0 6 6v${h - 6}z`} wash="glass" />
-            <Shade d={`M${x + w * 0.6} 128v${-h + 6}q0 -6 ${w * 0.4 - 6} -6h0v${h}z`} density={1} opacity={0.5} />
-            <Ink d={`M${x - 2} ${128 - h}h${w + 4}v-7h${-w - 4}z`} wash={lid === 'gold' ? 'gold' : lid} weight="fine" />
-            {labelled && <Ink d={`M${x + 4} ${128 - h * 0.6}h${w - 8}v10h${-w + 8}z`} wash="paper" weight="hair" />}
-          </g>
+      {/* 6:00 am: flour, sugar and a little hope */}
+      <div {...set(0)}>
+        <Halftone src="halftone-cherries-pink" place={{ x: 72, y: 4, w: 25, r: 12, z: 0, i: 0 }} />
+        <Tape tone="butter" place={{ x: 41, y: 3, w: 15, r: -6, z: 6, i: 1 }} />
+        <Note arrow="left" place={{ x: 77, y: 54, w: 22, r: -4, z: 6, i: 2 }}>
+          flour, sugar &amp; a little hope
+        </Note>
+      </div>
+
+      {/* 9:30 am: the egg, and Mom's answer to it */}
+      <div {...set(1)}>
+        <Halftone src="halftone-cherries" place={{ x: 1, y: 60, w: 20, r: -12, z: 0, i: 0 }} />
+        <button
+          type="button"
+          className="collage__piece bake-window__egg"
+          style={{ left: '72%', top: '30%', width: '18%', '--r': '14deg', '--i': 1 } as CSSProperties}
+          onClick={onEgg}
+          disabled={eggTaken || !onEgg}
+          tabIndex={-1}
+          aria-hidden="true"
+        >
+          <img src="/collage/halftone-egg.webp" alt="" />
+        </button>
+        <div className="bake-window__no-eggs">
+          <Badge value="100%" label="eggless" tone="cherry" place={{ x: 71, y: 24, w: 21, r: 8, z: 7, i: 0 }} />
+          <Note arrow="left" place={{ x: 77, y: 62, w: 22, r: -5, z: 7, i: 1 }}>
+            not in my kitchen, beta
+          </Note>
+        </div>
+      </div>
+
+      {/* 12:00 pm: the orders come in while the batter's mixed */}
+      <div {...set(2)}>
+        <Halftone src="halftone-cherries-pink" place={{ x: 1, y: 62, w: 19, r: -10, z: 0, i: 0 }} />
+        {ORDERS.map((order, i) => (
+          <Bubble
+            key={order.text}
+            from={order.from}
+            place={{ x: order.from === 'you' ? 60 : 66, y: 8 + i * 20, w: 36, r: i % 2 ? 2 : -2, z: 6, i: 1 + i * 3 }}
+          >
+            {order.text}
+          </Bubble>
         ))}
-        <Ink d="M404 40h40v48h-40z" wash="sand" />
-        <Ink d="M409 45h30v38h-30z" wash="paper" weight="hair" />
-        <Ink d="M424 60c-4-6-12-2-8 5l8 8 8-8c4-7-4-11-8-5z" wash="cherry" weight="hair" />
+      </div>
 
-        {/* Night falls over the room; the lamp's light falls on the counter */}
-        <rect className="bk-dim" width="480" height="400" />
-        <path className="bk-glow" d={`M${MID - 18} 92L${MID - 150} ${COUNTER}H${MID + 150}L${MID + 18} 92z`} />
+      {/* 3:00 pm: into the oven, and the timer */}
+      <div {...set(3)}>
+        <Halftone src="halftone-cake" place={{ x: 0, y: 36, w: 20, r: -6, z: 0, i: 0 }} opacity={0.75} />
+        <Badge
+          value={baked ? 'Ding!' : `0:0${timer ?? BAKE_SECONDS}`}
+          label={baked ? 'golden & risen' : 'in the oven'}
+          tone="butter"
+          place={{ x: 71, y: 26, w: 21, r: 8, z: 7, i: 1 }}
+        />
+        <Note arrow="left" place={{ x: 77, y: 64, w: 21, r: -4, z: 6, i: 2 }}>
+          no peeking!
+        </Note>
+      </div>
 
-        {/* The counter: a marble top over panelled doors with gold knobs */}
-        <Ink d={`M6 ${COUNTER}h468v12H6z`} wash="cream" />
-        <Lines d={`M40 ${COUNTER + 4}q40 -3 80 1t70 -2M260 ${COUNTER + 6}q50 -4 90 0t60 -2`} weight="hair" />
-        <Ink d={`M14 ${COUNTER + 12}h452v100H14z`} wash="rose" />
-        {[22, 136, 250, 364].map((x) => (
-          <g key={x}>
-            <Ink d={`M${x} ${COUNTER + 22}h100v80h-100z`} wash="pink" weight="fine" />
-            <Lines d={`M${x + 8} ${COUNTER + 30}h84v64h-84z`} weight="hair" />
-            <Ink d={ellipse(x + 50, COUNTER + 40, 3, 3)} wash="gold" weight="hair" />
-          </g>
-        ))}
-        <Shade d={`M14 ${COUNTER + 12}h452v14H14z`} density={2} opacity={0.6} />
+      {/* 6:30 pm: every cake has someone's name on it (these are Mom's) */}
+      <div {...set(4)}>
+        <Stamp src={momsCakes.papa.src} caption="for Papa" place={{ x: 1, y: 20, w: 21, r: -8, z: 3, i: 0 }} />
+        <Stamp src={momsCakes.yatharth.src} caption="for Yatharth" place={{ x: 76, y: 4, w: 21, r: 7, z: 3, i: 1 }} />
+        <Stamp src={momsCakes.wifey.src} caption="for a wife" place={{ x: 77, y: 48, w: 20, r: -5, z: 3, i: 2 }} />
+        <div className="bake-window__piped" key={name || 'blank'}>
+          <GiftTag place={{ x: 24, y: 82, w: 48, r: -3, z: 8, i: 3 }}>{tag}</GiftTag>
+        </div>
+      </div>
 
-        {/* Steps 1–3: the bowl, the flour, the egg and the whisk */}
-        <g className="bk-piece bk-piece--bowl">
-          <Shade d={ellipse(MID + 4, COUNTER - 1, 62, 7)} density={2} opacity={0.4} />
-          <g className="bk-cup">
-            <Ink d="M318 150l30-8 8 34-26 7z" wash="paper" />
-            <Ink d="M348 154q14-2 14 10t-10 10" wash="none" weight="fine" />
-            <Shade d="M340 147l8-2 8 31-6 2z" density={2} />
-          </g>
-          <path className="bk-stream" d="M322 158Q300 176 262 238" />
-          <Ink d={cylinderSide(MID, 244, COUNTER - 2, 70, 15, 40)} wash="paper" />
-          <Lines d={contourHatch(MID, 244, COUNTER - 2, 70, 15, 0.35, 12, 40)} className="eg-contour" />
-          <Ink d={`M${MID - 66} 262q66 16 132 0`} wash="none" weight="hair" />
-          <path d={`M${MID - 64} 258q64 16 128 0`} className="bk-bowl-band" />
-          <Ink d={ellipse(MID, 244, 70, 15)} wash="sky" />
-          <ellipse cx={MID} cy={244} rx={60} ry={11} className="bk-flour" />
-          <ellipse cx={MID} cy={244} rx={64} ry={12.5} className="bk-batter" />
-          <path className="bk-swirl" d={`M${MID} 244m-40 0a40 8 0 1 0 80 0a28 5.5 0 1 0-56 0a14 3 0 1 0 28 0`} />
-          <g className="bk-whisk" style={{ transformOrigin: `${MID + 40}px 150px` }}>
-            <Lines d={`M${MID + 6} 238L${MID + 54} 150`} weight="bold" />
-            <Ink d={`M${MID + 54} 150l14-26`} wash="none" weight="bold" />
-            <Lines d={`M${MID + 6} 238c-26-2-34 18-16 22s26-10 16-22zm0 0c-8 8-10 24 2 22s10-16-2-22z`} weight="fine" />
-          </g>
-          <g className="bk-egg" onClick={onEgg}>
-            <Shade d={ellipse(346, COUNTER - 1, 12, 3)} density={2} />
-            <Ink
-              d={`M346 ${COUNTER - 2}c-10 0-14-8-14-16 0-10 6-20 14-20s14 10 14 20c0 8-4 16-14 16z`}
-              wash="biscuit"
-            />
-            <Lines d={`M352 ${COUNTER - 30}q6 6 5 14`} weight="hair" />
-          </g>
-          <g transform="translate(-48 0)">
-            <g className="bk-hand">
-              <Ink d="M438 252h60v44h-60z" wash="sky" />
-              <Ink d="M432 254h5v40h-5zM425 255h5v38h-5z" wash="gold" weight="hair" />
-              <Ink d={ellipse(410, 274, 20, 17)} wash="biscuit" />
-              <Ink d={ellipse(396, 263, 10, 6)} wash="biscuit" weight="hair" />
-              <Ink d={ellipse(393, 273, 10, 6)} wash="biscuit" weight="hair" />
-              <Ink d={ellipse(394, 291, 10, 5.5)} wash="biscuit" weight="hair" />
-            </g>
-          </g>
-        </g>
-
-        {/* Step 4: the stove */}
-        <g className="bk-piece bk-piece--oven">
-          <Stove
-            x={MID - 52}
-            y={COUNTER - 104}
-            timer={timer === 0 || still ? 'DING!' : `0:0${timer ?? BAKE_SECONDS}`}
-            hooks={{ glow: 'bk-oven-glow', rise: 'bk-rise', heat: 'bk-heat', timer: 'bk-timer-text' }}
-          />
-          <g className="bk-ding">
-            <Star x={MID + 96} y={COUNTER - 120} s={11} />
-            <Star x={MID + 112} y={COUNTER - 92} s={6} />
-          </g>
-        </g>
-
-        {/* Step 5: the cake on its stand, and a name piped across the top */}
-        <g className="bk-piece bk-piece--cake">
-          <CakeStand cx={MID} y={standY} w={156} foot={0.36} />
-          <Cake
-            cx={MID}
-            base={standY}
-            rx={60}
-            h={56}
-            wash="pink"
-            drip={false}
-            band
-            cherries={0}
-            top={
-              <text
-                key={`${label}-${step === 4 || still}`}
-                x="0"
-                y="14"
-                textAnchor="middle"
-                className="bk-name-text"
-                textLength={label.length > 9 ? 96 : undefined}
-                lengthAdjust="spacingAndGlyphs"
-              >
-                {label}
-              </text>
-            }
-          />
-          <Cherry x={MID - 26} y={standY - 60} r={5} />
-          <Cherry x={MID} y={standY - 66} r={5} stem={-1} />
-          <Cherry x={MID + 26} y={standY - 60} r={5} />
-        </g>
-
-        {/* Step 6: the box, the lid, the ribbon and the tag */}
-        <g className="bk-piece bk-piece--box">
-          <CakeBox
-            x={MID - 58}
-            y={COUNTER - 76}
-            w={100}
-            h={76}
-            d={64}
-            lidClassName="bk-lid"
-            ribbonClassName="bk-ribbon"
-          />
-          <g transform={`translate(${MID + 62} ${COUNTER - 58}) rotate(8)`}>
-            <g className="bk-tag">
-              <Lines d="M-14 -10q14 -4 22 6" weight="fine" />
-              <Ink d="M10 -8h70a4 4 0 0 1 4 4v24a4 4 0 0 1-4 4h-70l-10-16z" wash="paper" />
-              <path d="M14 -4h62v20h-62z" className="eg-gold-ink" />
-              <Ink d={ellipse(10, 8, 2, 2)} wash="none" weight="hair" />
-              <text
-                x="46"
-                y="14"
-                className="bk-tag-text"
-                textAnchor="middle"
-                textLength={tag.length > 9 ? 58 : undefined}
-                lengthAdjust="spacingAndGlyphs"
-              >
-                {tag}
-              </text>
-            </g>
-          </g>
-        </g>
-
-        {/* The pendant lamp over the counter */}
-        <Lines d={`M${MID} 0V62`} weight="fine" />
-        <Ink d={`M${MID - 24} 92l10-28h28l10 28z`} wash="cherry" />
-        <Shade d={`M${MID + 4} 64h10l10 28h-14z`} density={2} />
-        <Ink d={ellipse(MID, 92, 24, 4)} wash="wine" weight="hair" />
-        <circle className="bk-bulb" cx={MID} cy={95} r="5" />
-      </Engraving>
+      {/* 9:00 pm: boxed, tied, ready to go */}
+      <div {...set(5)}>
+        <Halftone src="halftone-cherries" place={{ x: 75, y: 2, w: 21, r: 10, z: 0, i: 0 }} />
+        <Sticker src="sticker-gift-box" place={{ x: 64, y: 44, w: 34, r: 6, z: 5, i: 1 }} />
+        <GiftTag place={{ x: 0, y: 74, w: 36, r: -6, z: 8, i: 2 }}>{tag}</GiftTag>
+        <Badge value="♥" label="baked with love" tone="pink" place={{ x: 4, y: 34, w: 16, r: -6, z: 6, i: 3 }} />
+      </div>
     </div>
   );
 }

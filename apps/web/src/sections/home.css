@@ -1108,9 +1108,21 @@
 
 /* Cakes & Treats wheel (CakesTreatsWheel) ----------------------------------------------------------------- */
 
-/* One solid color at a time (home.tsx sets data-tone as the page scrolls): the Flavours blue while the wheel comes
-   into view, cherry once it is in place, the cream of the band below on the way out. No line at either edge. The
-   type changes with it, to stay readable. */
+/* The color behind the Flavours band and the wheel, shared so there is never a line between them on screen: baby
+   blue turning cherry as the wheel scrolls up into place (--wheel-in, set on the page by home.tsx), as in the
+   reference. The wheel stays cherry from there on. */
+:root {
+  --home-blend: color-mix(
+    in srgb,
+    var(--bbm-color-cherry-800) calc(var(--wheel-in, 0) * 100%),
+    var(--bbm-color-bg-blue)
+  );
+}
+
+.site-section.home-flavours {
+  background-color: var(--home-blend);
+}
+
 .home-wheel {
   --card-w: clamp(9rem, min(20vw, 32svh), 19rem);
   /* Far enough below for gaps between the cards at their feet as well as their tops */
@@ -1120,23 +1132,8 @@
   position: relative;
   /* The tilted cards at the sides stay inside the band */
   overflow: clip;
-  background-color: var(--bbm-color-cherry-800);
+  background-color: var(--home-blend);
   color: var(--wheel-ink);
-  transition:
-    background-color 0.7s var(--bbm-motion-easing-standard),
-    color 0.7s var(--bbm-motion-easing-standard);
-}
-
-.home-wheel[data-tone='enter'] {
-  --wheel-ink: var(--bbm-color-cherry-800);
-  --wheel-script: var(--bbm-color-cherry-600);
-  background-color: var(--bbm-color-bg-blue);
-}
-
-.home-wheel[data-tone='leave'] {
-  --wheel-ink: var(--bbm-color-cherry-800);
-  --wheel-script: var(--bbm-color-cherry-600);
-  background-color: var(--bbm-color-bg-canvas);
 }
 
 /* Phones: bigger cards, and the whole wheel centered on the screen with the button right under it */
@@ -1215,7 +1212,6 @@
   font-weight: var(--bbm-font-weight-regular);
   letter-spacing: 0;
   color: var(--wheel-script);
-  transition: color 0.7s var(--bbm-motion-easing-standard);
 }
 
 /* The cards hang from the top of the stage and turn around a point far below it, so they sit on a rainbow arc;
@@ -1325,7 +1321,6 @@
   font-weight: var(--bbm-font-weight-bold);
   text-align: center;
   color: var(--wheel-ink);
-  transition: color 0.7s var(--bbm-motion-easing-standard);
 }
 
 /* Right under the front card's name, as in the reference; the tilted cards either side hang lower */
@@ -1371,9 +1366,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .home-wheel,
-  .home-wheel__amp,
-  .home-wheel__name,
   .home-wheel__card,
   .home-wheel__card a {
     transition: none !important;

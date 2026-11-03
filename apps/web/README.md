@@ -10,7 +10,7 @@ The Bakes by Mom website: a home bakery in Panipat, Haryana, where everything is
 | `/shop`               | **Cakes & Treats**, the one place to order from: every category (cakes first), each opening its own page, and a custom order on WhatsApp. The nav's single link for cakes and treats                                              |
 | `/shop/<type>`        | Brownies, cookies, jar cakes, dry cakes, cupcakes, bento cakes or combos, with what to know. A type with a `showcase` in `treats.ts` (the cookies) gets the showcase layout (`TreatShowcase.tsx`)                                 |
 | `/shop/<type>/<item>` | One treat and its order builder (quantity, flour for cookies, extras, date, time)                                                                                                                                                 |
-| `/about`              | Our story: the arch hero, then **Bake it with Mom** (bake a cake with her, sunrise to night, while she tells the story; ends in a WhatsApp order), then Meet Mom with her cakes and her three promises                            |
+| `/about`              | Our story, short: a letter from Mom, her cakes on a silver tray with who each was for, and her promises as a menu card                                                                                                            |
 | `/links`              | The Instagram link-in-bio page (pin 08)                                                                                                                                                                                           |
 
 ```bash
@@ -29,11 +29,9 @@ npm test -w @bakesbymom/web
 | `src/content/order.ts`     | The WhatsApp order messages and the price for other sizes (per-pound rate)                              |
 | `src/content/assistant.ts` | The "Ask Mom" cake assistant, rebuilt from the old site's rules over the same catalog                   |
 | `src/content/site.tsx`     | Nav, footer, FAQ, reviews and the how-to-order steps                                                    |
-| `src/content/story.ts`     | The About page's story: Mom's line for each baking step. Put her real details here                      |
 | `src/content/samples.tsx`  | Sample content for Storybook-only demos; nothing in it is on the website                                |
 | `src/sections/blocks.tsx`  | Every page section. Storybook's _Sections_ and _Pages_ stories import these same files                  |
-| `src/sections/bake.tsx`    | Bake it with Mom, the scroll-driven About story (styles in `bake.css`)                                  |
-| `src/sections/story.tsx`   | The rest of Our story: the hero, the ribbon, Meet Mom and the promises (styles in `story.css`)          |
+| `src/sections/story.tsx`   | Our story: a letter from Mom, her cakes on a tray, her promises as a menu card (styles in `story.css`)  |
 | `src/sections/home.tsx`    | The home page sections (spec: [`landing-page.md`](../../design/board/sections/landing-page.md))         |
 | `src/pages/`               | The pages and the shared order form fields                                                              |
 
@@ -41,7 +39,7 @@ npm test -w @bakesbymom/web
 
 - **Cakes.** The cakes come only from the Cloudflare D1 database the old site uses, so add or change them in the old site's admin page and the change shows up here on the next page load; nothing about them is kept in this repo. The site reads the database through the old site's Worker (`bakesbymom.snehagupta.workers.dev`): `vercel.json` rewrites `/api` to it, and `npm run web` and Storybook proxy it. Photos are shown the way the old site shows them: the cut-outs in the R2 bucket, except the cakes re-shot against a styled background (`public/photos/restaged`), with small covers for the shelves in `public/photos/thumbs`. Both folders and their lists in `catalog.ts` come from the old site's repo; copy new ones over when it adds more.
 - **Stock photos.** The treat types, the flavours and the home page use stock photos from Unsplash (`public/stock`, credits in `public/stock/CREDITS.md`), and the treat pages say "Photo for reference". Swap in photos of your own boxes when you have them: same file names, or change `stock`, `treatArt` and `flavours` in `src/content/index.ts`.
-- **Collage art.** The Cakes & Treats and cakes pages, the order steps and the combo are collages in the style of the board pins (`src/collage`): bakes cut out as die-cut stickers, halftone prints in cherry ink, stamp-framed photos, scalloped badges, tape and gift tags. The stickers and halftones in `public/collage` are made from the stock photos by `python scripts/collage.py` (Pillow and NumPy); run it again when a source photo changes. Our Story is dressed like the home page and built from the same kit: the arch hero on pink stripes, then Mom's kitchen as a photo collage (a photo in the cherry arch for each hour, a clock badge, and each step's stamps, halftones, notes and tags), with Mom's own cakes in the decorate step and in Meet Mom.
+- **Collage art.** The Cakes & Treats and cakes pages, the order steps and the combo are collages in the style of the board pins (`src/collage`): bakes cut out as die-cut stickers, halftone prints in cherry ink, stamp-framed photos, scalloped badges, tape and gift tags. The stickers and halftones in `public/collage` are made from the stock photos by `python scripts/collage.py` (Pillow and NumPy); run it again when a source photo changes. Our story's tray uses stickers of Mom's own cut-out cakes, made by `python scripts/collage.py moms`.
 - **Not wired up.** Ordering is WhatsApp-only, by design: nothing is sent from the site. The Ask Mom assistant answers from the catalog and hands off to WhatsApp.
 
 Deployed on Vercel with this folder as the project's root directory.

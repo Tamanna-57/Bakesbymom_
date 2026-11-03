@@ -194,6 +194,24 @@ def save(img: Image.Image, name: str, max_side=900):
     print(f"{name}.webp", img.size)
 
 
+# Mom's own cakes, already cut out in photos/thumbs, as stickers for Our story's tray (story.tsx)
+MOMS_CAKES = {
+    "papa": "IMG-20260808-WA0045",
+    "yatharth": "IMG-20260913-WA0002",
+    "maa": "IMG-20260913-WA0007",
+    "janmashtami": "IMG-20260913-WA0013",
+    "teacher": "IMG-20260913-WA0014",
+    "wifey": "IMG-20260913-WA0009",
+}
+
+
+def moms_stickers():
+    for name, photo in MOMS_CAKES.items():
+        cut = Image.open(ROOT / "photos" / "thumbs" / f"{photo}.webp").convert("RGBA")
+        cut = cut.crop(cut.getchannel("A").point(lambda v: 255 if v > 40 else 0).getbbox())
+        save(sticker(cut, border=12), f"mom-{name}", 520)
+
+
 def main():
     OUT.mkdir(exist_ok=True)
     cuts = {
@@ -208,7 +226,11 @@ def main():
     save(halftone(drawn_cherries(), cell=12), "halftone-cherries", 700)
     save(halftone(drawn_cherries(), cell=12, ink=(243, 197, 200)), "halftone-cherries-pink", 700)
     save(halftone(drawn_egg(), cell=10, ink=COCOA_INK), "halftone-egg", 500)
+    moms_stickers()
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+
+    # `python scripts/collage.py moms` makes only the stickers of Mom's cakes
+    moms_stickers() if sys.argv[1:] == ["moms"] else main()

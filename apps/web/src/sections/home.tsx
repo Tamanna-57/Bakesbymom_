@@ -237,7 +237,7 @@ export function FlavoursSection() {
   );
 }
 
-/* Cakes & Treats wheel: cards on a rainbow arc that turns as the page scrolls ------------------------------
+/* Cakes & Treats wheel: cards on a rainbow arc that the visitor turns -----------------------------------------
    After a tea shop's "Our products" (the reference video): a huge headline behind, ticket cards on an arc, the
    background blending in from the band above. In the site's palette and type. */
 
@@ -263,21 +263,21 @@ const WHEEL_STEP = 17;
 const reducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
 
 /**
- * Pins the wheel's panel under the header while the page scrolls one full turn of the wheel (one step per card),
- * and blends the band's color in from the band above and out to the band below. Without motion (reduced motion,
- * or a screen too short to pin) the wheel turns with its arrows instead.
+ * The wheel turns only when the visitor turns it: the arrows, a drag or swipe across the cards, or a sideways
+ * scroll (a trackpad, or shift and the mouse wheel). The page itself scrolls past as usual, and the band's color
+ * blends in from the band above and out to the band below as it does.
  */
 function useWheel(count: number) {
   const outer = useRef<HTMLElement>(null);
-  const panel = useRef<HTMLDivElement>(null);
+  const stage = useRef<HTMLUListElement>(null);
   const cards = useRef<Array<HTMLLIElement | null>>([]);
-  const [pinned, setPinned] = useState(false);
   const [turn, setTurn] = useState(0);
-  const runway = useRef(0);
+  const turnRef = useRef(0);
+  turnRef.current = turn;
+  // A drag ends with a click on whichever card is under the pointer; that click is skipped.
+  const dragged = useRef(false);
 
-  const stickTop = () => (panel.current ? parseFloat(getComputedStyle(panel.current).top) || 0 : 0);
-
-  /** Places every card on the arc for a turn of `p` cards (fractional while scrolling). */
+  /** Places every card on the arc for a turn of `p` cards (fractional while dragging). */
   const place = (p: number) => {
     cards.current.forEach((card, i) => {
       if (!card) return;
@@ -292,21 +292,13 @@ function useWheel(count: number) {
     });
   };
 
-  useEffect(() => {
-    const tall = window.matchMedia?.('(min-height: 500px)');
-    const update = () => setPinned(!reducedMotion() && (tall?.matches ?? true));
-    update();
-    tall?.addEventListener('change', update);
-    return () => tall?.removeEventListener('change', update);
-  }, []);
+  useEffect(() => place(turn), [turn]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Pinned: the page's scroll turns the wheel. Either way, the band's color follows the scroll in and out.
+  // The band's color follows the page's scroll in and out
   useEffect(() => {
     const o = outer.current;
-    const p = panel.current;
-    if (!o || !p) return;
+    if (!o) return;
     let frame = 0;
-    const step = () => Math.max(140, Math.round(window.innerHeight * 0.32));
     const tick = () => {
       frame = 0;
       const rect = o.getBoundingClientRect();
@@ -315,76 +307,122 @@ function useWheel(count: number) {
       const fadeOut = reducedMotion() ? 0 : Math.min(1, Math.max(0, (vh * 0.85 - rect.bottom) / (vh * 0.45)));
       o.style.setProperty('--wheel-in', fadeIn.toFixed(3));
       o.style.setProperty('--wheel-out', fadeOut.toFixed(3));
-      if (pinned && runway.current > 0) {
-        const progress = Math.min(1, Math.max(0, (stickTop() - rect.top) / runway.current));
-        place(progress * count);
-      }
-    };
-    const measure = () => {
-      runway.current = pinned ? step() * count : 0;
-      o.style.height = pinned ? `${p.offsetHeight + runway.current}px` : '';
-      tick();
     };
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(tick);
     };
-    const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(measure) : null;
-    observer?.observe(p);
-    measure();
+    tick();
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', measure);
+    window.addEventListener('resize', onScroll);
     return () => {
       cancelAnimationFrame(frame);
-      observer?.disconnect();
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', measure);
-      o.style.height = '';
+      window.removeEventListener('resize', onScroll);
+    };
+  }, []);
+
+  // Drag or swipe across the cards, and sideways scrolls, turn the wheel; it settles on the nearest card.
+  useEffect(() => {
+    const el = stage.current;
+    if (!el) return;
+    /** Pixels of drag or sideways scroll for one card. */
+    const spacing = () => (cards.current[0]?.offsetWidth ?? 220) * 1.2;
+    let start: { x: number; y: number; turn: number; id: number } | null = null;
+    let live = turnRef.current;
+    let settle = 0;
+    const follow = (p: number) => {
+      live = p;
+      el.classList.add('is-turning');
+      place(p);
+    };
+    const land = () => {
+      el.classList.remove('is-turning');
+      const next = Math.round(live);
+      if (next === turnRef.current) place(next);
+      else setTurn(next);
+    };
+
+    const down = (e: PointerEvent) => {
+      if (e.button !== 0) return;
+      start = { x: e.clientX, y: e.clientY, turn: turnRef.current, id: e.pointerId };
+      dragged.current = false;
+    };
+    const move = (e: PointerEvent) => {
+      if (!start || e.pointerId !== start.id) return;
+      const dx = e.clientX - start.x;
+      if (!dragged.current) {
+        // Sideways means turning; up and down is left to the page
+        if (Math.abs(dx) < 8 || Math.abs(dx) < Math.abs(e.clientY - start.y)) return;
+        dragged.current = true;
+        el.setPointerCapture?.(e.pointerId);
+      }
+      follow(start.turn - dx / spacing());
+    };
+    const up = () => {
+      if (start && dragged.current) land();
+      start = null;
+    };
+    const wheel = (e: WheelEvent) => {
+      const dx = e.shiftKey && !e.deltaX ? e.deltaY : e.deltaX;
+      if (Math.abs(dx) <= Math.abs(e.shiftKey ? 0 : e.deltaY)) return;
+      e.preventDefault();
+      if (!el.classList.contains('is-turning')) live = turnRef.current;
+      follow(live + dx / spacing());
+      window.clearTimeout(settle);
+      settle = window.setTimeout(land, 160);
+    };
+    const click = (e: MouseEvent) => {
+      if (!dragged.current) return;
+      e.preventDefault();
+      e.stopPropagation();
+      dragged.current = false;
+    };
+
+    el.addEventListener('pointerdown', down);
+    el.addEventListener('pointermove', move);
+    el.addEventListener('pointerup', up);
+    el.addEventListener('pointercancel', up);
+    el.addEventListener('wheel', wheel, { passive: false });
+    el.addEventListener('click', click, true);
+    return () => {
+      window.clearTimeout(settle);
+      el.removeEventListener('pointerdown', down);
+      el.removeEventListener('pointermove', move);
+      el.removeEventListener('pointerup', up);
+      el.removeEventListener('pointercancel', up);
+      el.removeEventListener('wheel', wheel);
+      el.removeEventListener('click', click, true);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pinned, count]);
+  }, [count]);
 
-  // Not pinned: the arrows turn it, a card at a time
-  useEffect(() => {
-    if (!pinned) place(turn);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pinned, turn]);
-
-  /** Brings card `i` to the front: scrolls the page there when pinned, else turns the wheel. */
+  /** Turns the wheel the short way round to bring card `i` to the front. */
   const bringToFront = (i: number) => {
-    const o = outer.current;
-    if (!pinned || !o) {
-      setTurn(i);
-      return;
-    }
-    const progress = (((i % count) + count) % count) / count;
-    const top = window.scrollY + o.getBoundingClientRect().top - stickTop() + progress * runway.current;
-    window.scrollTo({ top: Math.round(top) });
+    let d = (((i - turnRef.current) % count) + count) % count;
+    if (d > count / 2) d -= count;
+    setTurn(turnRef.current + d);
   };
 
+  // Tabbing to a card brings it to the front
   const onFocus = (event: FocusEvent<HTMLUListElement>) => {
     const card = (event.target as HTMLElement).closest('li');
     const i = cards.current.findIndex((c) => c === card);
     if (i >= 0 && card?.dataset.front !== 'true') bringToFront(i);
   };
 
-  return { outer, panel, cards, pinned, turn, setTurn, onFocus };
+  return { outer, stage, cards, setTurn, onFocus };
 }
 
 export function CakesTreatsWheel() {
-  const { outer, panel, cards, pinned, setTurn, onFocus } = useWheel(wheelItems.length);
+  const { outer, stage, cards, setTurn, onFocus } = useWheel(wheelItems.length);
   return (
-    <section
-      ref={outer}
-      id="treats"
-      className={pinned ? 'home-wheel home-wheel--pinned' : 'home-wheel'}
-      aria-labelledby="home-wheel-title"
-    >
-      <div ref={panel} className="home-wheel__panel">
+    <section ref={outer} id="treats" className="home-wheel" aria-labelledby="home-wheel-title">
+      <div className="home-wheel__panel">
         <p className="home-wheel__pill">the menu</p>
         <h2 id="home-wheel-title" className="home-wheel__title">
           Cakes <span className="home-wheel__amp">and</span> Treats
         </h2>
-        <ul className="home-wheel__stage" onFocus={onFocus}>
+        <ul ref={stage} className="home-wheel__stage" onFocus={onFocus}>
           {wheelItems.map((item, i) => (
             <li
               key={item.href}
@@ -394,7 +432,7 @@ export function CakesTreatsWheel() {
               className="home-wheel__card"
               style={{ '--angle': `${i * WHEEL_STEP}deg`, '--fade': i < 3 ? 1 : 0 } as CSSProperties}
             >
-              <a href={item.href}>
+              <a href={item.href} draggable={false}>
                 <span className="home-wheel__ticket">
                   <img src={item.image.src} alt="" loading="lazy" draggable={false} />
                   <span className="home-wheel__mark home-wheel__mark--b" aria-hidden="true">
@@ -410,29 +448,25 @@ export function CakesTreatsWheel() {
           ))}
         </ul>
         <div className="home-wheel__foot">
-          {!pinned && (
-            <button
-              type="button"
-              className="home-wheel__arrow"
-              aria-label="Previous kind of bake"
-              onClick={() => setTurn((t) => t - 1)}
-            >
-              ←
-            </button>
-          )}
+          <button
+            type="button"
+            className="home-wheel__arrow"
+            aria-label="Previous kind of bake"
+            onClick={() => setTurn((t) => t - 1)}
+          >
+            ←
+          </button>
           <Button href="/shop" variant="soft" className="home-wheel__cta">
             Explore cakes &amp; treats
           </Button>
-          {!pinned && (
-            <button
-              type="button"
-              className="home-wheel__arrow"
-              aria-label="Next kind of bake"
-              onClick={() => setTurn((t) => t + 1)}
-            >
-              →
-            </button>
-          )}
+          <button
+            type="button"
+            className="home-wheel__arrow"
+            aria-label="Next kind of bake"
+            onClick={() => setTurn((t) => t + 1)}
+          >
+            →
+          </button>
         </div>
       </div>
     </section>

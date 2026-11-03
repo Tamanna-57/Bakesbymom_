@@ -1125,6 +1125,29 @@
 }
 
 /* Phones: bigger cards, and the whole wheel centered on the screen with the button right under it */
+/* No hard line at either edge: the top fades in from the Flavours band's blue, the foot out to the cream of the band
+   below, while the band keeps its own color in between */
+.home-wheel::before,
+.home-wheel::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  height: clamp(6rem, 22svh, 14rem);
+  pointer-events: none;
+}
+
+.home-wheel::before {
+  top: 0;
+  background: linear-gradient(to bottom, var(--bbm-color-bg-blue), transparent);
+}
+
+.home-wheel::after {
+  bottom: 0;
+  background: linear-gradient(to top, var(--bbm-color-bg-canvas), transparent);
+}
+
 @media (max-width: 639.98px) {
   .home-wheel {
     --card-w: min(56vw, 34svh);
@@ -1141,6 +1164,7 @@
 
 .home-wheel__panel {
   position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;

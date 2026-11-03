@@ -1,228 +1,267 @@
 /**
- * Our story, dressed like the home page so the two read as one shop: the home hero's arch and cream card on
- * pink candy stripes, its cherry ribbon, the bake on blue stripes (bake.tsx), Mom's letter in the outlined card
- * on pink polka dots with her own cakes stuck round it, and her three promises on scalloped badges over the
- * checker band the home page's quote sits on.
+ * Our story, short, after three references:
+ * - a letter from Mom on linen paper with red-and-olive flourishes, a script title, little photo squares,
+ *   postage stamps and a wax seal (the "Dawning Drift" tri-fold flyer);
+ * - her cakes as die-cut stickers on a silver tray over pink polka dots, with a lettered key in an oval
+ *   on blue pinstripes (the "Sweet Rise Surprises" poster);
+ * - her promises as a menu card on a red gingham border, with hairline rules and stickers for pictures
+ *   (the "desserts & Pastries" menu).
+ * The stickers of Mom's cakes come from her own cut-out photos (python scripts/collage.py moms).
  */
-import type { CSSProperties } from 'react';
-import { Button, Card, Marquee, PatternSurface } from '@bakesbymom/ui';
-import { Badge, Collage, GiftTag, Halftone, Note, Stamp, Tape } from '../collage/Collage';
-import { momsCakes, stock } from '../content';
+import { Button, Doodle } from '@bakesbymom/ui';
 import { bakery } from '../content/bakery';
 import { orderLink } from '../content/site';
-import { bakeSteps } from '../content/story';
-import './home.css';
 import './story.css';
 
 const external = { target: '_blank', rel: 'noreferrer' } as const;
+const town = bakery.place.split(',')[0];
 
-/* Hero: the home hero, mirrored, on pink stripes ----------------------- */
+/* Ornaments --------------------------------------------------------------- */
 
-export function StoryHero() {
+/** An art-nouveau corner, stitched in cherry with an olive echo (the flyer's frame). */
+function Flourish({ className }: { className: string }) {
   return (
-    <PatternSurface
-      as="section"
-      pattern="stripes"
-      tone="pink"
-      scale="xl"
-      ground="var(--bbm-color-bg-canvas)"
-      className="home-hero story-hero"
-      aria-labelledby="story-title"
-    >
-      <div className="home-hero__inner story-hero__inner">
-        <div className="home-hero__card story-hero__card">
-          <p className="home-hero__eyebrow">Our story · {bakery.place}</p>
-          <h1 id="story-title" className="home-hero__title">
-            <span className="home-hero__heavy">Pull up a stool and</span>{' '}
-            <span className="home-hero__script">bake one with Mom</span>
-          </h1>
-          <p className="home-hero__lead">
-            The best way to hear how Bakes by Mom began is in her kitchen, with your sleeves rolled up. One cake, from
-            sunrise to night, and she'll tell you the story while you bake.
-          </p>
-          <div className="home-hero__actions">
-            <Button size="lg" href="#bake">
-              Start baking
-            </Button>
-            <Button size="lg" variant="secondary" href="#mom">
-              Meet Mom
-            </Button>
-          </div>
-        </div>
-        <div className="story-hero__art">
-          <Collage
-            ratio={0.86}
-            label="A cake Mom baked that says HBD Mom, in an arched frame, with a photo of flour being sifted in a stamp frame, a 100% eggless badge and a gift tag from Panipat."
-          >
-            <Halftone src="halftone-cherries-pink" place={{ x: 76, y: 22, w: 24, r: 12, z: 0, i: 0 }} />
-            <div
-              className="collage__piece story-hero__arch"
-              style={{ left: '14%', top: '5%', width: '70%', zIndex: 2, '--i': 1 } as CSSProperties}
-            >
-              <img src={momsCakes.hbdMom.src} alt="" width={800} height={1000} data-parallax="-0.04" />
-            </div>
-            <Tape tone="blue" place={{ x: 40, y: 2, w: 16, r: -8, z: 4, i: 2 }} />
-            <Stamp src={stock.kitchen.src} caption="Mom's kitchen" place={{ x: 0, y: 55, w: 30, r: -7, z: 4, i: 3 }} />
-            <Badge value="100%" label="eggless" tone="cherry" place={{ x: 4, y: 6, w: 21, r: -10, z: 5, i: 4 }} />
-            <Note arrow="left" place={{ x: 78, y: 0, w: 22, r: 6, z: 5, i: 5 }}>
-              a cake for Mom, by Mom
-            </Note>
-            <GiftTag place={{ x: 48, y: 85, w: 48, r: -4, z: 6, i: 6 }}>
-              from {bakery.place.split(',')[0]}, with love
-            </GiftTag>
-          </Collage>
-        </div>
+    <svg className={`story-flourish ${className}`} viewBox="0 0 200 200" aria-hidden="true">
+      <g className="story-flourish__red">
+        <path d="M10 64C10 28 26 10 62 10c34 0 58 12 88 8 20-3 34-9 46-14" />
+        <path d="M62 10C40 22 38 46 56 51c14 3 20-12 10-18-8-4-14 4-8 8" />
+        <path d="M10 64c4 40-4 80-6 132" />
+        <path d="M10 64c12-18 34-20 38-4 3 12-10 16-14 8" />
+        <path d="M112 15c8 14 26 16 30 6 3-8-6-12-10-6" />
+        <path d="M8 122c14 4 20 20 12 28-6 6-14-2-8-8" />
+      </g>
+      <g className="story-flourish__olive">
+        <path d="M22 76c2-32 18-48 50-50 30-2 54 8 92 4" />
+        <path d="M22 76c4 38-2 74-4 112" />
+        <path d="M150 30c12-14 30-12 40-4-14 10-28 10-40 4z" />
+        <path d="M24 150c-14 10-14 28-6 38 8-12 10-26 6-38z" />
+      </g>
+    </svg>
+  );
+}
+
+/** The flyer's four-point sparkle. */
+function Sparkle({ className }: { className: string }) {
+  return (
+    <svg className={`story-sparkle ${className}`} viewBox="0 0 40 40" aria-hidden="true">
+      <path d="M20 0c1.4 11 5 16.6 20 20-15 3.4-18.6 9-20 20-1.4-11-5-16.6-20-20C15 16.6 18.6 11 20 0z" />
+    </svg>
+  );
+}
+
+/* 1. The letter ---------------------------------------------------------- */
+
+export function StoryLetter() {
+  return (
+    <section className="story-letter" aria-labelledby="story-title">
+      <Flourish className="story-flourish--tl" />
+      <Flourish className="story-flourish--tr" />
+      <Flourish className="story-flourish--bl" />
+      <Flourish className="story-flourish--br" />
+      <Sparkle className="story-sparkle--a" />
+      <Sparkle className="story-sparkle--b" />
+      <Sparkle className="story-sparkle--c" />
+
+      <div className="story-letter__head">
+        <img className="story-photo story-photo--a" src="/photos/restaged/mom-flowerpot.jpg" alt="" />
+        <img className="story-photo story-photo--b" src="/photos/restaged/bride-to-be.jpg" alt="" />
+        <img className="story-photo story-photo--c" src="/photos/restaged/anniversary-maroon.jpg" alt="" />
+        <h1 id="story-title" className="story-letter__title">
+          <span className="story-letter__script">Our Story</span>
+          <span className="story-letter__outline">from Mom&rsquo;s kitchen</span>
+        </h1>
+        <p className="story-letter__place">{bakery.place}</p>
       </div>
-    </PatternSurface>
-  );
-}
 
-/* The ribbon: the bake, step by step, under the home page's cherries --- */
-
-export function StoryRibbon() {
-  return (
-    <div className="home-ribbon">
-      <Marquee
-        tone="cherry"
-        size="sm"
-        label="The bake, step by step"
-        items={bakeSteps.map((step) => `${step.time} · ${step.label.replace('?', '')}`)}
-        separator={<span className="home-ribbon__diamond" aria-hidden="true" />}
-      />
-      <div className="home-ribbon__shapes" aria-hidden="true" />
-    </div>
-  );
-}
-
-/* Meet Mom: the home page's outlined about card, with her own cakes ----- */
-
-export function StoryMeetMom() {
-  return (
-    <PatternSurface
-      as="section"
-      id="mom"
-      pattern="dots"
-      tone="pink"
-      ground="var(--bbm-color-bg-pink)"
-      className="story-mom"
-    >
-      <div className="site-container">
-        <Card outline="brand" padding="lg" className="story-mom__card">
-          <div className="story-mom__copy">
-            <p className="home-hero__eyebrow">The baker behind it all</p>
-            <h2 className="home-hero__title story-mom__title">
-              <span className="home-hero__heavy">Hi, I'm</span> <span className="home-hero__script">Mom.</span>
-            </h2>
-            <p className="story-mom__lead">
-              I never set out to run a bakery. I baked for the people I love, a birthday cake here, a tray of brownies
+      <div className="story-letter__envelope">
+        <article className="story-letter__card">
+          <span className="story-stamp story-stamp--a">
+            <img src="/photos/restaged/mom-photo-clothesline.jpg" alt="" />
+          </span>
+          <span className="story-stamp story-stamp--b">
+            <img src="/photos/restaged/engaged-hands.jpg" alt="" />
+          </span>
+          <div className="story-letter__text">
+            <p className="story-letter__dear">Dear you,</p>
+            <p>
+              I never set out to run a bakery. I baked for the people I love: a birthday cake here, a tray of brownies
               there, and the kitchen quietly learned my hands.
             </p>
             <p>
-              One order became two, two became a weekend booked out. Everything is still mixed, baked to order and
-              finished by hand in {bakery.place}, in batches small enough to taste the care.
+              One order became two, two became a weekend booked out. Every cake is still eggless, baked to order and
+              finished by hand, right here in {town}.
             </p>
-            <p className="story-mom__sign">with love, Mom</p>
+            <p className="story-letter__sign">with love, Mom</p>
           </div>
-          <div className="story-mom__art">
-            <Collage
-              ratio={0.9}
-              label="Three cakes Mom has baked, in stamp frames: a bride-to-be cake, an anniversary cake and an engagement cake."
-            >
-              <Halftone src="halftone-cherries" place={{ x: 76, y: 64, w: 24, r: -8, z: 0, i: 0 }} />
-              <Stamp
-                src={momsCakes.brideToBe.src}
-                caption="for a bride"
-                place={{ x: 0, y: 2, w: 40, r: -6, z: 2, i: 1 }}
+          <div className="story-letter__art">
+            <div className="story-heart">
+              <img
+                src="/photos/restaged/mom-butterfly.jpg"
+                alt="A white HBD Mom cake with pink roses and butterflies"
               />
-              <Stamp
-                src={momsCakes.anniversary.src}
-                caption="for an anniversary"
-                place={{ x: 57, y: 0, w: 40, r: 5, z: 1, i: 2 }}
-              />
-              <Stamp
-                src={momsCakes.engaged.src}
-                caption="for a yes"
-                place={{ x: 29, y: 44, w: 44, r: -2, z: 3, i: 3 }}
-              />
-              <Note arrow="right" place={{ x: 0, y: 70, w: 27, r: -6, z: 4, i: 4 }}>
-                a few of mine ♥
-              </Note>
-            </Collage>
+              <svg viewBox="0 0 100 90" aria-hidden="true">
+                <path d="M50 87C20 66 3 48 3 28 3 13 14 3 28 3c10 0 18 6 22 14 4-8 12-14 22-14 14 0 25 10 25 25 0 20-17 38-47 59z" />
+              </svg>
+            </div>
+            <span className="story-seal" aria-hidden="true">
+              M
+            </span>
           </div>
-        </Card>
+        </article>
       </div>
-    </PatternSurface>
+    </section>
   );
 }
 
-/* Her promises: scalloped badges on the home page's checker band ------- */
+/* 2. The tray ------------------------------------------------------------- */
+
+const tray = [
+  { key: 'A', sticker: 'mom-papa', name: 'Super Dad', who: 'for Papa' },
+  { key: 'B', sticker: 'mom-yatharth', name: 'Spider-Man', who: 'for Yatharth' },
+  { key: 'C', sticker: 'mom-maa', name: 'Angel wings', who: 'for Maa' },
+  { key: 'D', sticker: 'mom-janmashtami', name: 'Little Krishna', who: 'for Janmashtami' },
+  { key: 'E', sticker: 'mom-teacher', name: 'Yellow roses', who: "for Teacher's Day" },
+  { key: 'F', sticker: 'mom-wifey', name: 'A portrait', who: 'for a wife' },
+];
+const TILT = [-4, 3, -2, 4, -3, 2];
+
+/** Sprinkles on the paper: [left %, top %, turn, colour]. */
+const SPRINKLES: [number, number, number, string][] = [
+  [8, 6, 30, 'pink'],
+  [30, 3, -20, 'blue'],
+  [55, 8, 60, 'butter'],
+  [76, 4, 10, 'pink'],
+  [94, 18, -40, 'blue'],
+  [20, 47, 80, 'butter'],
+  [48, 50, -30, 'pink'],
+  [72, 46, 20, 'blue'],
+  [96, 62, 70, 'butter'],
+  [4, 86, -10, 'blue'],
+  [34, 94, 40, 'pink'],
+  [62, 92, -60, 'butter'],
+  [86, 95, 15, 'pink'],
+];
+
+export function StoryTray() {
+  return (
+    <section className="story-tray" aria-labelledby="tray-title">
+      <div className="story-tray__top">
+        <h2 id="tray-title" className="story-tray__title">
+          <svg viewBox="0 0 1000 230" role="img" aria-label="Every cake has a name">
+            <path id="story-tray-arc" d="M40 215Q500 15 960 215" fill="none" />
+            <text>
+              <textPath href="#story-tray-arc" startOffset="50%" textAnchor="middle">
+                Every cake has a name
+              </textPath>
+            </text>
+          </svg>
+        </h2>
+        <div className="story-tray__tray">
+          <div className="story-tray__paper">
+            {SPRINKLES.map(([x, y, r, tone]) => (
+              <span
+                key={`${x}-${y}`}
+                className={`story-tray__sprinkle story-tray__sprinkle--${tone}`}
+                style={{ left: `${x}%`, top: `${y}%`, rotate: `${r}deg` }}
+                aria-hidden="true"
+              />
+            ))}
+            <ul className="story-tray__cakes">
+              {tray.map((cake, i) => (
+                <li key={cake.key} style={{ rotate: `${TILT[i]}deg` }}>
+                  <img src={`/collage/${cake.sticker}.webp`} alt={`${cake.name} cake, ${cake.who}`} loading="lazy" />
+                  <span className="story-tray__key" aria-hidden="true">
+                    {cake.key}.
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div className="story-tray__bottom">
+        <div className="story-tray__oval">
+          <svg className="story-tray__ask" viewBox="0 0 800 110" aria-hidden="true">
+            <path id="story-oval-arc" d="M60 100Q400 0 740 100" fill="none" />
+            <text>
+              <textPath href="#story-oval-arc" startOffset="50%" textAnchor="middle">
+                Who Mom baked them for
+              </textPath>
+            </text>
+          </svg>
+          <ol className="story-tray__list" aria-label="Who Mom baked them for">
+            {tray.map((cake) => (
+              <li key={cake.key}>
+                <span aria-hidden="true">{cake.key}.</span> {cake.name}, {cake.who}
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* 3. The menu card ---------------------------------------------------------- */
 
 const promises = [
   {
-    value: '100%',
-    label: 'eggless',
-    tone: 'cherry' as const,
-    title: 'No eggs, ever',
-    text: 'Pure vegetarian, with the FSSAI green dot, so everyone at the table can have a slice.',
+    heading: 'In every cake',
+    rows: [
+      ['Eggs', 'never, ever'],
+      ['Baked', 'to order'],
+      ['Iced', 'by hand'],
+    ],
   },
   {
-    value: 'fresh',
-    label: 'to order',
-    tone: 'butter' as const,
-    title: 'Baked for your day',
-    text: 'Never off a shelf. Small batches, mixed and baked for the date you ask for.',
-  },
-  {
-    value: '♥',
-    label: 'by hand',
-    tone: 'pink' as const,
-    title: 'Iced by hand',
-    text: 'Finished the morning it goes out, down to the name piped on top.',
+    heading: 'To order',
+    rows: [
+      ['WhatsApp', bakery.whatsappDisplay],
+      ['Notice', 'a day ahead'],
+      ['Pickup', town],
+    ],
   },
 ];
 
-export function StoryPromises() {
+export function StoryMenu() {
   return (
-    <PatternSurface
-      as="section"
-      pattern="checker"
-      tone="pink"
-      scale="lg"
-      ground="var(--bbm-color-bg-canvas)"
-      className="story-promises"
-      aria-labelledby="promises-title"
-    >
-      <div className="story-promises__card">
-        <h2 id="promises-title" className="story-promises__title">
-          <span className="home-script">Three things</span> in every box
+    <section className="story-menu" aria-labelledby="menu-title">
+      <div className="story-menu__card">
+        <img className="story-menu__art story-menu__art--a" src="/collage/sticker-cherry-cake.webp" alt="" />
+        <img className="story-menu__art story-menu__art--b" src="/collage/sticker-jar-cakes.webp" alt="" />
+        <span className="story-menu__doodle story-menu__doodle--a" aria-hidden="true">
+          <Doodle name="star" size={30} color="var(--bbm-color-cherry-600)" />
+        </span>
+        <span className="story-menu__doodle story-menu__doodle--b" aria-hidden="true">
+          <Doodle name="heart" size={26} color="var(--bbm-color-cherry-400)" />
+        </span>
+        <span className="story-menu__doodle story-menu__doodle--c" aria-hidden="true">
+          <Doodle name="sparkle" size={28} color="var(--bbm-color-cherry-600)" />
+        </span>
+
+        <h2 id="menu-title" className="story-menu__title">
+          <span className="story-menu__script">Mom&rsquo;s</span>
+          <span className="story-menu__caps">Promises</span>
         </h2>
-        <ul className="story-promises__list">
-          {promises.map((promise) => (
-            <li key={promise.title}>
-              <div className="story-promises__badge">
-                <Collage ratio={1} label={`${promise.value} ${promise.label}`}>
-                  <Badge
-                    value={promise.value}
-                    label={promise.label}
-                    tone={promise.tone}
-                    place={{ x: 0, y: 0, w: 100, r: -8 }}
-                  />
-                </Collage>
-              </div>
-              <h3>{promise.title}</h3>
-              <p>{promise.text}</p>
-            </li>
-          ))}
-        </ul>
-        <div className="story-promises__actions">
+        {promises.map((group) => (
+          <div key={group.heading} className="story-menu__group">
+            <h3>{group.heading}</h3>
+            <dl>
+              {group.rows.map(([label, value]) => (
+                <div key={label}>
+                  <dt>{label}</dt>
+                  <dd>{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        ))}
+        <div className="story-menu__action">
           <Button href={orderLink} {...external}>
             Order on WhatsApp
           </Button>
-          <Button variant="secondary" href="/shop">
-            Cakes & treats
-          </Button>
         </div>
       </div>
-    </PatternSurface>
+    </section>
   );
 }

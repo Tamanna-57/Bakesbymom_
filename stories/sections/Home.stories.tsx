@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import {
   AboutUsCard,
+  CakesTreatsWheel,
   CraftedSection,
   FeatureStrip,
   FlavoursSection,
@@ -47,7 +48,15 @@ export const AboutUs: Story = { render: () => <AboutUsCard /> };
 /** Pin 16's "Fillings": a cross-section for each flavour. */
 export const Flavours: Story = { render: () => <FlavoursSection /> };
 
-/** Pin 13's bestsellers row: a lead tile, then the treats, with filter pills. */
+/**
+ * The home page's Cakes & Treats: every kind of bake as a ticket card on a rainbow arc over the words, turning right
+ * to left as the page scrolls (pinned under the header), the band blending in from blue and out to pink. After a
+ * tea shop's "Our products" section; with reduced motion the arrows turn it instead.
+ */
+export const CakesAndTreats: Story = { render: () => <CakesTreatsWheel /> };
+
+/** Pin 13's bestsellers row: a lead tile, then the treats, with filter pills. Not on the home page now (the wheel
+ * replaced it); kept for reuse. */
 export const ShopByTheBox: Story = { render: () => <ShopByBoxSection /> };
 
 /** Sunday Bakehouse's quote on a checker band. */

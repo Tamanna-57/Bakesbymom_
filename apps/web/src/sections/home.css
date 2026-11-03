@@ -1171,9 +1171,8 @@
   --notch: 0.4rem;
 }
 
-/* Four notched corners, for the pill and the cards (each sets its own --notch) */
-.home-wheel__pill,
-.home-wheel__ticket {
+/* Four notched corners, for the pill */
+.home-wheel__pill {
   -webkit-mask:
     radial-gradient(var(--notch) at 0 0, #0000 98%, #000) top left / 51% 51% no-repeat,
     radial-gradient(var(--notch) at 100% 0, #0000 98%, #000) top right / 51% 51% no-repeat,
@@ -1259,11 +1258,12 @@
   border-radius: var(--bbm-radius-md);
 }
 
+/* The photo shows whole, on softly rounded corners */
 .home-wheel__ticket {
-  --notch: 0.9rem;
   position: relative;
   display: block;
   overflow: hidden;
+  border-radius: var(--bbm-radius-lg);
   aspect-ratio: 10 / 13;
   background-color: var(--bbm-color-pink-300);
 }

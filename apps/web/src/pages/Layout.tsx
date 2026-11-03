@@ -10,6 +10,8 @@ interface LayoutProps {
   withAnnouncement?: boolean;
   /** The page opens on a full-bleed photo: the header's edge becomes a wave that hangs over its top. */
   photoHero?: boolean;
+  /** Hang the header's scallops over the page's first band, so no strip of page background shows between them. */
+  edgeOverHero?: boolean;
   children: ReactNode;
 }
 
@@ -31,7 +33,13 @@ function useHeaderHeight() {
 }
 
 /** Header, main, footer and the Ask Mom chat: the frame every site page shares. */
-export function Layout({ path, withAnnouncement = false, photoHero = false, children }: LayoutProps) {
+export function Layout({
+  path,
+  withAnnouncement = false,
+  photoHero = false,
+  edgeOverHero = false,
+  children,
+}: LayoutProps) {
   useHeaderHeight();
   return (
     <>
@@ -46,7 +54,7 @@ export function Layout({ path, withAnnouncement = false, photoHero = false, chil
         scallop
         edge={photoHero ? 'wave' : 'scallop'}
         edgeSize={photoHero ? 'md' : 'sm'}
-        edgeOverlay={photoHero}
+        edgeOverlay={photoHero || edgeOverHero}
         sticky
         capsuleOnScroll={withAnnouncement}
       />

@@ -19,7 +19,7 @@ import { Layout } from './Layout';
  */
 export function LandingPage() {
   return (
-    <Layout path="/" withAnnouncement>
+    <Layout path="/" withAnnouncement edgeOverHero>
       <HomeHero />
       <ShapeRibbon />
       <MenuSection limit={10} />

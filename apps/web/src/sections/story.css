@@ -1,0 +1,242 @@
+/* Our story (story.tsx). Most of the look comes straight from the home page's classes (home.css); these are
+   the few places the story page differs. */
+
+/* Hero: the home hero, mirrored (card first, then the arch), on pink stripes ----- */
+
+@media (min-width: 900px) {
+  .story-hero__inner {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  }
+}
+
+.story-hero__card {
+  order: 1;
+}
+
+.story-hero__art {
+  order: 0;
+  justify-self: center;
+  width: min(100%, 32rem, max(17rem, (100svh - 12rem) * 0.86));
+  animation: home-pop 1.1s var(--bbm-motion-easing-out) both;
+}
+
+@media (min-width: 900px) {
+  .story-hero__card {
+    order: 0;
+  }
+
+  .story-hero__art {
+    order: 1;
+  }
+}
+
+.story-hero .home-hero__heavy {
+  font-size: clamp(2rem, 1.3rem + 2.4vw, 3.4rem);
+}
+
+.story-hero .home-hero__script {
+  font-size: clamp(2.5rem, 1.4rem + 3.4vw, 4.4rem);
+}
+
+/* The arch photo: the home hero's cherry frame */
+.story-hero__arch img {
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border: 5px solid var(--bbm-color-cherry-700);
+  border-radius: 999px 999px var(--bbm-radius-2xl) var(--bbm-radius-2xl);
+  background-color: var(--bbm-color-paper);
+  box-shadow: var(--bbm-shadow-sticker-lg);
+}
+
+.story-hero .collage__badge-text strong {
+  font-size: clamp(1.1rem, 4.6cqi, 1.75rem);
+}
+
+.story-hero .collage__badge-text small {
+  font-size: clamp(0.5rem, 1.6cqi, 0.66rem);
+}
+
+.story-hero .collage__badge {
+  animation: home-wobble 6s ease-in-out infinite;
+}
+
+/* Meet Mom: the home page's outlined card, letter on one side and her cakes on the other ------------ */
+
+.story-mom {
+  padding: var(--bbm-layout-section-y) 0;
+  border-top: var(--bbm-border-width-thin) solid var(--bbm-color-pink-400);
+}
+
+.story-mom__card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--bbm-space-8);
+  align-items: center;
+  border-width: 5px;
+  border-radius: var(--bbm-radius-2xl);
+  background-color: var(--bbm-color-bg-canvas);
+  box-shadow: var(--bbm-shadow-sticker-lg);
+}
+
+@media (min-width: 900px) {
+  .story-mom__card {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--bbm-space-12);
+    padding: var(--bbm-space-12);
+  }
+}
+
+.story-mom__copy {
+  display: grid;
+  gap: var(--bbm-space-4);
+  justify-items: start;
+}
+
+.story-mom__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.3em;
+  margin-bottom: var(--bbm-space-2);
+}
+
+.story-mom__title .home-hero__heavy {
+  font-size: clamp(2rem, 1.4rem + 2vw, 3.2rem);
+}
+
+.story-mom__title .home-hero__script {
+  font-size: clamp(2.75rem, 1.8rem + 3vw, 4.5rem);
+}
+
+.story-mom__copy p {
+  margin: 0;
+  max-width: 34rem;
+  font-size: var(--bbm-text-body-md-size);
+  line-height: var(--bbm-text-body-md-line-height);
+  color: var(--bbm-color-text-secondary);
+}
+
+.story-mom__copy .story-mom__lead {
+  font-family: var(--bbm-font-family-hand);
+  font-size: clamp(1.35rem, 1.15rem + 0.7vw, 1.75rem);
+  font-style: italic;
+  line-height: 1.3;
+  color: var(--bbm-color-text-primary);
+}
+
+.story-mom__copy .story-mom__sign {
+  font-family: var(--bbm-font-family-script);
+  font-size: clamp(2rem, 1.5rem + 1.5vw, 2.75rem);
+  line-height: 1;
+  color: var(--bbm-color-cherry-700);
+}
+
+.story-mom__art {
+  width: min(100%, 30rem);
+  justify-self: center;
+}
+
+.story-mom .collage__stamp-caption {
+  font-size: clamp(0.75rem, 2.6cqi, 1rem);
+}
+
+/* Promises: scalloped badges in a cream card on the checker band ------------------------------- */
+
+.story-promises {
+  padding: var(--bbm-layout-section-y) var(--bbm-layout-gutter);
+  border-block: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+}
+
+.story-promises__card {
+  display: grid;
+  gap: var(--bbm-space-8);
+  justify-items: center;
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: clamp(1.75rem, 1rem + 3vw, 3.5rem);
+  border: 5px solid var(--bbm-color-cherry-700);
+  border-radius: var(--bbm-radius-2xl);
+  background-color: var(--bbm-color-bg-canvas);
+  box-shadow: var(--bbm-shadow-sticker-lg);
+  text-align: center;
+}
+
+.story-promises__title {
+  display: grid;
+  margin: 0;
+  font-family: var(--bbm-text-heavy-family);
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+  font-weight: var(--bbm-text-heavy-weight);
+  line-height: 1.05;
+  letter-spacing: var(--bbm-text-heavy-tracking);
+  color: var(--bbm-color-brown-900);
+}
+
+.story-promises__title .home-script {
+  font-size: 1.3em;
+  color: var(--bbm-color-cherry-700);
+}
+
+.story-promises__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+  gap: var(--bbm-space-8);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.story-promises__list li {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: var(--bbm-space-2);
+}
+
+.story-promises__badge {
+  width: 7.5rem;
+  margin-bottom: var(--bbm-space-2);
+}
+
+.story-promises__badge .collage__badge-text strong {
+  font-size: 1.6rem;
+}
+
+.story-promises__badge .collage__badge-text small {
+  font-size: 0.62rem;
+}
+
+.story-promises__list li:hover .collage__badge {
+  animation: home-wobble 1.2s ease-in-out;
+}
+
+.story-promises__list h3 {
+  margin: 0;
+  font-family: var(--bbm-font-family-display);
+  font-size: var(--bbm-text-heading-md-size);
+  font-weight: var(--bbm-font-weight-semibold);
+}
+
+.story-promises__list p {
+  max-width: 18rem;
+  margin: 0;
+  font-size: var(--bbm-text-body-sm-size);
+  line-height: var(--bbm-text-body-sm-line-height);
+  color: var(--bbm-color-text-secondary);
+}
+
+.story-promises__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--bbm-space-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-hero__art,
+  .story-hero .collage__badge,
+  .story-promises__list li:hover .collage__badge {
+    animation: none;
+  }
+}

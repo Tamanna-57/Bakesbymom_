@@ -87,9 +87,13 @@ export function Sticker({ src, place, float = false }: { src: string; place: Pla
 }
 
 /** A halftone print, straight onto the page with no border. */
-export function Halftone({ src, place, opacity = 1 }: { src: string; place: Place; opacity?: number }) {
+export function Halftone({ src, place, opacity }: { src: string; place: Place; opacity?: number }) {
+  // Opacity goes on the print, so the piece itself stays free to fade in and out
   return (
-    <div className="collage__piece collage__halftone" style={placeStyle(place, { opacity })}>
+    <div
+      className="collage__piece collage__halftone"
+      style={placeStyle(place, opacity === undefined ? {} : ({ '--o': opacity } as CSSProperties))}
+    >
       <img src={`/collage/${src}.webp`} alt="" loading="lazy" decoding="async" />
     </div>
   );

@@ -6,7 +6,7 @@
  * Photos here are stock (content/index.ts `stock`, `treatArt`, `flavours`); the photos of the cakes we sell are
  * kept for the catalog and the gallery.
  */
-import { useEffect, useRef, useState, type CSSProperties, type FocusEvent } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type FocusEvent, type RefObject } from 'react';
 import {
   Button,
   Card,
@@ -23,7 +23,10 @@ import { Badge, Collage } from '../collage/Collage';
 import { flavours, stock, treatArt } from '../content';
 import { bakery, cakeFlavours, cakeSizes, flavourSlug, whatsappLink } from '../content/bakery';
 import { howToOrder, orderLink } from '../content/site';
+import { gsap, scatter, SplitText, useFx } from '../fx/gsap';
+import { splitTitle, writeIn } from '../fx/site-fx';
 import { SectionEdge } from './blocks';
+import { FlavourWall } from './fx';
 import { treatCategories } from '../content/treats';
 import './home.css';
 
@@ -32,7 +35,114 @@ const TILE_TONES = ['pink', 'blue', 'butter', 'beige'] as const;
 
 /* Hero (pin 16's stripes, with a cream label card) -------------------- */
 
+/** Painted stickers round the arch, each with how far it follows the mouse. */
+const heroStickers = [
+  { src: '/collage/halftone-cherries.webp', place: 'd', depth: 10 },
+  { src: '/collage/paint-cupcake.webp', place: 'a', depth: 30 },
+  { src: '/collage/paint-cherry-slice.webp', place: 'b', depth: 42 },
+  { src: '/collage/paint-shortcake.webp', place: 'c', depth: 24 },
+];
+
+/** Calls `start` once the home page's intro has uncovered the hero (at once when there is no intro). */
+function afterIntro(start: () => void) {
+  const root = document.documentElement;
+  let held = false;
+  let frame = 0;
+  const check = () => {
+    const holding = root.classList.contains('bbm-intro-on');
+    held ||= holding;
+    if (!document.querySelector('.bbm-intro') || (held && !holding)) start();
+    else frame = requestAnimationFrame(check);
+  };
+  check();
+  return () => cancelAnimationFrame(frame);
+}
+
+/**
+ * The hero's motion: the title bursts in letter by letter and the stickers pop on round the arch once the intro
+ * clears; then the stickers bob, follow the mouse at their own depths, and scatter as the hero scrolls away.
+ */
+function useHeroFx(root: RefObject<HTMLDivElement | null>) {
+  useFx(root, (inner) => {
+    const hero = inner.closest<HTMLElement>('.home-hero') ?? inner;
+    const stickers = gsap.utils.toArray<HTMLElement>('.home-hero__sticker', hero);
+    const pictures = stickers.map((sticker) => sticker.firstElementChild as HTMLElement);
+    const title = hero.querySelector<HTMLElement>('.home-hero__title');
+    const entrance = gsap.timeline({ paused: true, delay: 0.1 });
+    if (title) {
+      const { chars, scripts } = splitTitle(title);
+      entrance.from(chars, {
+        yPercent: 130,
+        rotate: (i) => scatter(i, -45, 45, 2),
+        opacity: 0,
+        duration: 0.9,
+        ease: 'back.out(2.2)',
+        stagger: 0.03,
+      });
+      if (scripts.length) entrance.add(writeIn(scripts, { duration: 1.3 }), '-=0.5');
+    }
+    entrance.from(
+      pictures,
+      { scale: 0, rotation: (i) => scatter(i, -120, 120, 6), duration: 1, ease: 'back.out(2.4)', stagger: 0.12 },
+      0.15,
+    );
+    entrance.add(() => {
+      pictures.forEach((el, i) => {
+        gsap.to(el, {
+          y: scatter(i, -18, -8, 3),
+          rotation: scatter(i, -9, 9, 8),
+          duration: scatter(i, 2.4, 3.6, 4),
+          ease: 'sine.inOut',
+          repeat: -1,
+          yoyo: true,
+        });
+      });
+    });
+    const stopWaiting = afterIntro(() => entrance.play());
+
+    // Scroll away: the stickers fly off in all directions, the arch leans and the card lifts
+    const away = { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.5 };
+    gsap.to(stickers, {
+      xPercent: (i) => (i % 2 ? 1 : -1) * scatter(i, 60, 140, 9),
+      yPercent: (i) => scatter(i, -180, -60, 10),
+      rotation: (i) => scatter(i, -150, 150, 11),
+      ease: 'none',
+      scrollTrigger: away,
+    });
+    gsap.to('.home-hero__photo', { scale: 1.07, rotation: -3, ease: 'none', scrollTrigger: away });
+    gsap.to('.home-hero__card', { y: -80, rotation: 1.5, ease: 'none', scrollTrigger: away });
+
+    // The mouse: each sticker follows at its own depth, the arch leans the other way
+    const followers = stickers.map((sticker, i) => ({
+      depth: heroStickers[i]?.depth ?? 20,
+      x: gsap.quickTo(sticker, 'x', { duration: 0.9, ease: 'power3.out' }),
+      y: gsap.quickTo(sticker, 'y', { duration: 0.9, ease: 'power3.out' }),
+    }));
+    const photoX = gsap.quickTo('.home-hero__photo', 'x', { duration: 1.2, ease: 'power3.out' });
+    const photoY = gsap.quickTo('.home-hero__photo', 'y', { duration: 1.2, ease: 'power3.out' });
+    const move = (e: PointerEvent) => {
+      if (e.pointerType !== 'mouse') return;
+      const r = hero.getBoundingClientRect();
+      const mx = (e.clientX - r.left) / r.width - 0.5;
+      const my = (e.clientY - r.top) / r.height - 0.5;
+      for (const f of followers) {
+        f.x(mx * f.depth * 2);
+        f.y(my * f.depth * 2);
+      }
+      photoX(mx * -14);
+      photoY(my * -10);
+    };
+    hero.addEventListener('pointermove', move);
+    return () => {
+      stopWaiting();
+      hero.removeEventListener('pointermove', move);
+    };
+  });
+}
+
 export function HomeHero() {
+  const root = useRef<HTMLDivElement>(null);
+  useHeroFx(root);
   return (
     <PatternSurface
       as="section"
@@ -42,8 +152,9 @@ export function HomeHero() {
       ground="var(--bbm-color-bg-canvas)"
       className="home-hero"
       aria-labelledby="home-title"
+      data-fx-own
     >
-      <div className="home-hero__inner">
+      <div ref={root} className="home-hero__inner">
         <div className="home-hero__art">
           <img
             className="home-hero__photo"
@@ -53,6 +164,13 @@ export function HomeHero() {
             height={1100}
             data-parallax="-0.06"
           />
+          <div className="home-hero__stickers" aria-hidden="true">
+            {heroStickers.map((sticker) => (
+              <span key={sticker.place} className={`home-hero__sticker home-hero__sticker--${sticker.place}`}>
+                <img src={sticker.src} alt="" />
+              </span>
+            ))}
+          </div>
           <div className="home-hero__burst">
             <Collage ratio={1} label="100% eggless">
               <Badge value="100%" label="eggless" tone="cherry" place={{ x: 0, y: 0, w: 100, r: -10 }} />
@@ -121,11 +239,13 @@ const features = [
   },
 ];
 
-/** The pink polka-dot band under the ribbon: the feature strip, then the about us card. */
+/**
+ * The pink polka-dot band: the about us card. The feature strip's promises are dealt as cards in the deck above it
+ * now (sections/fx.tsx); the strip is kept for Storybook and other pages.
+ */
 export function HomeIntro() {
   return (
     <PatternSurface pattern="dots" tone="pink" ground="var(--bbm-color-bg-pink)" className="home-intro">
-      <FeatureStrip />
       <AboutUsCard />
     </PatternSurface>
   );
@@ -203,6 +323,7 @@ export function FlavoursSection() {
     <section id="flavours" className="site-section site-section--blue site-section--edged home-flavours">
       {/* Blue, turning cherry together with the Cakes & Treats wheel below as it scrolls in (--home-blend) */}
       <SectionEdge color="var(--home-blend, var(--bbm-color-bg-blue))" />
+      <FlavourWall words={cakeFlavours} />
       <div className="site-container">
         <SectionHeading variant="ribbon" title="Flavours" ribbonText="baked to order" />
         <ul className="home-flavours__grid">
@@ -417,10 +538,40 @@ function useWheel(count: number) {
   return { outer, stage, cards, setTurn, onFocus };
 }
 
+/** The wheel's words start scattered and spinning across the band and fly together as it scrolls in (after Beca
+ * Tea's hero); the cards rise into their arc behind them. */
+function useWheelFx(outer: RefObject<HTMLElement | null>) {
+  useFx(outer, (section) => {
+    const title = section.querySelector<HTMLElement>('.home-wheel__title');
+    const scrub = { trigger: section, start: 'top bottom', end: 'top 12%', scrub: 0.7, invalidateOnRefresh: true };
+    if (title) {
+      const { chars, scripts } = splitTitle(title);
+      gsap.from(chars, {
+        x: (i) => scatter(i, -0.42, 0.42, 11) * window.innerWidth,
+        y: (i) => scatter(i, -0.55, 0.3, 13) * window.innerHeight,
+        rotation: (i) => scatter(i, -220, 220, 17),
+        scale: (i) => scatter(i, 0.4, 1.7, 19),
+        ease: 'power2.out',
+        scrollTrigger: scrub,
+      });
+      gsap.from(scripts, { scale: 0, rotation: -140, ease: 'back.out(1.4)', scrollTrigger: scrub });
+    }
+    gsap.from('.home-wheel__pill', { scale: 0, rotation: 30, ease: 'back.out(2)', scrollTrigger: scrub });
+    gsap.from('.home-wheel__ticket', {
+      yPercent: 70,
+      opacity: 0,
+      stagger: 0.04,
+      ease: 'power2.out',
+      scrollTrigger: { trigger: section, start: 'top 75%', end: 'top 15%', scrub: 0.7 },
+    });
+  });
+}
+
 export function CakesTreatsWheel() {
   const { outer, stage, cards, setTurn, onFocus } = useWheel(wheelItems.length);
+  useWheelFx(outer);
   return (
-    <section ref={outer} id="treats" className="home-wheel" aria-labelledby="home-wheel-title">
+    <section ref={outer} id="treats" className="home-wheel" aria-labelledby="home-wheel-title" data-fx-own>
       <div className="home-wheel__panel">
         <p className="home-wheel__pill">the menu</p>
         <h2 id="home-wheel-title" className="home-wheel__title">
@@ -541,7 +692,63 @@ export function ShopByBoxSection() {
 
 /* Quote on a checker band (Sunday Bakehouse) --------------------------- */
 
+/**
+ * The note types itself out when it scrolls in, a caret running ahead of it (Teh Tarik Nation's typewriter tags);
+ * the script words and Mom's sign-off are written in, and the checkers slide under the card as the page scrolls.
+ */
+function useQuoteFx(root: RefObject<HTMLElement | null>) {
+  useFx(root, (figure) => {
+    const band = figure.closest<HTMLElement>('.home-quote') ?? figure;
+    const line = figure.querySelector<HTMLElement>('.home-quote__line');
+    const caret = figure.querySelector<HTMLElement>('.home-quote__caret');
+    const script = line?.querySelector('em');
+    if (!line || !caret) return;
+    const split = SplitText.create(line, { type: 'words,chars', ignore: 'em', aria: 'none' });
+    const chars = split.chars as HTMLElement[];
+    const after = script
+      ? chars.findIndex((c) => script.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING)
+      : chars.length;
+    const cut = after < 0 ? chars.length : after;
+    const box = caret.parentElement!;
+    const placeCaret = (el: Element) => {
+      const r = el.getBoundingClientRect();
+      const b = box.getBoundingClientRect();
+      gsap.set(caret, { x: r.right - b.left + 2, y: r.top - b.top, height: r.height });
+    };
+    const type = () => ({
+      opacity: 1,
+      duration: 0.01,
+      stagger: {
+        each: 0.045,
+        onComplete(this: gsap.core.Tween) {
+          placeCaret(this.targets()[0] as Element);
+        },
+      },
+    });
+    gsap.set(chars, { opacity: 0 });
+    const tl = gsap.timeline({ scrollTrigger: { trigger: figure, start: 'top 72%', once: true } });
+    tl.from(figure, { rotation: -7, scale: 0.8, y: 70, opacity: 0, duration: 0.8, ease: 'back.out(1.8)' })
+      .set(caret, { opacity: 1 })
+      .to(chars.slice(0, cut), type());
+    if (script) tl.add(writeIn(script, { duration: 0.9, onComplete: () => placeCaret(script) }));
+    tl.to(chars.slice(cut), type())
+      .add(writeIn(figure.querySelector('figcaption')!, { duration: 1.2 }), '+=0.1')
+      .to(caret, { opacity: 0, duration: 0.3 }, '+=0.8');
+    gsap.fromTo(
+      band,
+      { backgroundPosition: '0px 0px' },
+      {
+        backgroundPosition: '160px 320px',
+        ease: 'none',
+        scrollTrigger: { trigger: band, start: 'top bottom', end: 'bottom top', scrub: true },
+      },
+    );
+  });
+}
+
 export function QuoteBand() {
+  const root = useRef<HTMLElement>(null);
+  useQuoteFx(root);
   return (
     <PatternSurface
       as="section"
@@ -551,12 +758,16 @@ export function QuoteBand() {
       ground="var(--bbm-color-bg-canvas)"
       className="home-quote"
       aria-label="A note from Mom"
+      data-fx-own
     >
-      <figure className="home-quote__card">
+      <figure ref={root} className="home-quote__card">
         <blockquote>
-          <p>
+          {/* Read once, whole; the visible line is split into letters to type it out */}
+          <p className="bbm-visually-hidden">Our secret ingredient? A day's notice, and a whole lot of love.</p>
+          <p className="home-quote__line" aria-hidden="true">
             Our secret ingredient? A day's notice, and a <em>whole lot</em> of love.
           </p>
+          <span className="home-quote__caret" aria-hidden="true" />
         </blockquote>
         <figcaption>with love, Mom</figcaption>
       </figure>

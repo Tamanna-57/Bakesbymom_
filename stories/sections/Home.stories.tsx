@@ -12,6 +12,8 @@ import {
   ShopByBoxSection,
   SignOffRibbon,
 } from '../../apps/web/src/sections/home';
+import { CurvedSignOff, FlavourWall, FooterWord, PromiseDeck } from '../../apps/web/src/sections/fx';
+import { cakeFlavours } from '../../apps/web/src/content/bakery';
 import { fromBoard } from './ref';
 
 const meta = {
@@ -71,3 +73,25 @@ export const MomsKitchen: Story = { render: () => <KitchenSplit /> };
 
 /** Pin 13's sign-off ribbon. */
 export const SignOff: Story = { render: () => <SignOffRibbon /> };
+
+/**
+ * Teh Tarik Nation's "we're also…" deck: the section pins, and the promises fly up one card at a time and land in a
+ * fan, with tilted tape labels round the edges. With reduced motion the cards lie open side by side.
+ */
+export const PromiseDeckStory: Story = { name: 'Promise deck', render: () => <PromiseDeck /> };
+
+/** Beca Tea's sliding rows: the flavour names, filled and outlined, sliding in turn round a slice of cake. */
+export const FlavourWallStory: Story = {
+  name: 'Flavour wall',
+  render: () => (
+    <div className="site-section site-section--blue">
+      <FlavourWall words={cakeFlavours} />
+    </div>
+  ),
+};
+
+/** The sign-off on a curve (Teh Tarik Nation): the note before you go runs along an arc over a cake. */
+export const CurvedSignOffStory: Story = { name: 'Curved sign-off', render: () => <CurvedSignOff /> };
+
+/** Beca Tea's foot: the name, huge, rising letter by letter under the footer on every page. */
+export const FooterWordStory: Story = { name: 'Footer word', render: () => <FooterWord /> };

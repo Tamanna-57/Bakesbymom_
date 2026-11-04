@@ -21,19 +21,21 @@ npm test -w @bakesbymom/web
 
 ## Where things live
 
-| File                       | What                                                                                                    |
-| -------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `src/content/bakery.ts`    | The bakery's details: WhatsApp number, Instagram, place, time slots, cake sizes, flavours, add-ons      |
-| `src/content/catalog.ts`   | Cakes by occasion, read live from the D1 database, with prices (₹ a pound, listed weight, listed price) |
-| `src/content/treats.ts`    | The seven treat types and their items, smallest orders and "make it yours" options                      |
-| `src/content/order.ts`     | The WhatsApp order messages and the price for other sizes (per-pound rate)                              |
-| `src/content/assistant.ts` | The "Ask Mom" cake assistant, rebuilt from the old site's rules over the same catalog                   |
-| `src/content/site.tsx`     | Nav, footer, FAQ, reviews and the how-to-order steps                                                    |
-| `src/content/samples.tsx`  | Sample content for Storybook-only demos; nothing in it is on the website                                |
-| `src/sections/blocks.tsx`  | Every page section. Storybook's _Sections_ and _Pages_ stories import these same files                  |
-| `src/sections/story.tsx`   | Our story: a letter from Mom, her cakes on a tray, her promises as a menu card (styles in `story.css`)  |
-| `src/sections/home.tsx`    | The home page sections (spec: [`landing-page.md`](../../design/board/sections/landing-page.md))         |
-| `src/pages/`               | The pages and the shared order form fields                                                              |
+| File                       | What                                                                                                                                        |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/content/bakery.ts`    | The bakery's details: WhatsApp number, Instagram, place, time slots, cake sizes, flavours, add-ons                                          |
+| `src/content/catalog.ts`   | Cakes by occasion, read live from the D1 database, with prices (₹ a pound, listed weight, listed price)                                     |
+| `src/content/treats.ts`    | The seven treat types and their items, smallest orders and "make it yours" options                                                          |
+| `src/content/order.ts`     | The WhatsApp order messages and the price for other sizes (per-pound rate)                                                                  |
+| `src/content/assistant.ts` | The "Ask Mom" cake assistant, rebuilt from the old site's rules over the same catalog                                                       |
+| `src/content/site.tsx`     | Nav, footer, FAQ, reviews and the how-to-order steps                                                                                        |
+| `src/content/samples.tsx`  | Sample content for Storybook-only demos; nothing in it is on the website                                                                    |
+| `src/sections/blocks.tsx`  | Every page section. Storybook's _Sections_ and _Pages_ stories import these same files                                                      |
+| `src/sections/story.tsx`   | Our story: a letter from Mom, her cakes on a tray, her promises as a menu card (styles in `story.css`)                                      |
+| `src/sections/home.tsx`    | The home page sections (spec: [`landing-page.md`](../../design/board/sections/landing-page.md))                                             |
+| `src/sections/fx.tsx`      | The big scroll scenes: the promise deck, the flavour wall, the curved sign-off and the footer word                                          |
+| `src/fx/`                  | The motion layer: GSAP and ScrollTrigger with Lenis, shared effects, sprinkles (spec: [`motion.md`](../../design/board/sections/motion.md)) |
+| `src/pages/`               | The pages and the shared order form fields                                                                                                  |
 
 ## Keeping it up to date
 

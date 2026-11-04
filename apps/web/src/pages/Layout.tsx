@@ -1,7 +1,8 @@
 import { useEffect, type ReactNode } from 'react';
-import { SiteHeader } from '@bakesbymom/ui';
+import { Logo, SiteHeader } from '@bakesbymom/ui';
 import { announcement, headerActions, mobileCta, navLinksFor } from '../content/site';
 import { ChatDemo, Footer } from '../sections/blocks';
+import { FooterWord } from '../sections/fx';
 
 interface LayoutProps {
   /** The current path, to mark the nav link for this page. */
@@ -50,18 +51,21 @@ export function Layout({
         links={navLinksFor(path)}
         actions={headerActions}
         mobileCta={mobileCta}
+        layout="inline"
+        logo={<Logo size="md" className="site-header-logo" />}
         announcement={withAnnouncement ? announcement : undefined}
         scallop
         edge={photoHero ? 'wave' : 'scallop'}
         edgeSize={photoHero ? 'md' : 'sm'}
         edgeOverlay={photoHero || edgeOverHero}
         sticky
-        capsuleOnScroll={withAnnouncement}
+        condenseOnScroll
       />
       <main id="main" tabIndex={-1}>
         {children}
       </main>
       <Footer />
+      <FooterWord />
       <ChatDemo inline={false} defaultOpen={false} />
     </>
   );

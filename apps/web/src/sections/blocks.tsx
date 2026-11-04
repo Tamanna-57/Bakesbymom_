@@ -2,7 +2,7 @@
  * Page sections, built only from library components and filled with the bakery's real content
  * (src/content). The website assembles them into pages; Storybook's Sections stories show the same files.
  */
-import { useState, type ReactNode } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import {
   Accordion,
   Badge,
@@ -29,12 +29,12 @@ import {
   Ticket,
   WeekSchedule,
   type ChatMessage,
-  type DoodleName,
   type EdgeShape,
   type GalleryItem,
   type HeadingLevel,
 } from '@bakesbymom/ui';
 import { art, stock, treatArt } from '../content';
+import { gsap, narrowScreen, scatter, useFx } from '../fx/gsap';
 import { answer, starterChips, type Answer } from '../content/assistant';
 import { bakery, chefsPicks, giftAddons, inr, kgLabel, mostOrdered, timeSlots, whatsappLink } from '../content/bakery';
 import { cakes, catalogStatus, findCake, occasions, type Cake } from '../content/catalog';
@@ -78,7 +78,6 @@ const Band = ({
   </section>
 );
 
-const TONES = ['pink', 'blue', 'beige', 'butter'] as const;
 const external = { target: '_blank', rel: 'noreferrer' } as const;
 
 /** Most-ordered first, then the chef's picks, then the rest of the catalog. */
@@ -105,8 +104,16 @@ export function DoubleRibbon() {
   );
 }
 
-/* Cakes by occasion (pin 16 menu cards, filters from pin 13) ---------- */
+/* Cakes by occasion: ticket cards, as on the Cakes & Treats wheel (filters from pin 13) ---------- */
 
+/** The ticket's ground behind a cut-out cake, by its place on the shelf. */
+const TICKET_TONES = ['pink', 'butter', 'beige', 'cherry'] as const;
+
+/**
+ * One cake as a ticket, like the cards on the home page's Cakes & Treats wheel: the photo on rounded corners with "B"
+ * and "M" in its top corners, the weight and price under it. Pointing at it lifts the ticket and slides up what's in
+ * the cake. The whole card is the link (the name's link stretches over it).
+ */
 export function CakeCard({
   cake,
   index = 0,
@@ -119,31 +126,110 @@ export function CakeCard({
   /** A flavour slug: the cake's page opens with that flavour picked. */
   flavour?: string;
 }) {
+  const Heading = `h${headingLevel}` as const;
+  const photo = cake.photos[0];
+  const popular = mostOrdered.includes(cake.slug);
   return (
-    <ProductCard
-      as="div"
-      variant="menu"
-      className={cake.photos[0]?.backdrop ? 'site-cake-card site-cake-card--backdrop' : 'site-cake-card'}
-      name={cake.name}
-      image={{ src: cake.photos[0]?.thumb ?? art.strawberryCake, alt: '' }}
-      description={cake.description}
-      price={inr(cake.price)}
-      href={flavour ? `/catalog/${cake.slug}?flavour=${flavour}` : `/catalog/${cake.slug}`}
-      tone={TONES[index % TONES.length]}
-      headingLevel={headingLevel}
-      badge={
-        <span className="site-cake-card__badges">
-          <Badge tone="beige" variant="solid" size="sm">
-            {kgLabel(cake.weightKg)}
-          </Badge>
-          {mostOrdered.includes(cake.slug) && (
-            <Badge tone="cherry" variant="solid" size="sm">
-              Most ordered
-            </Badge>
-          )}
+    <article
+      className={photo?.backdrop ? 'site-cake site-cake--backdrop' : 'site-cake'}
+      data-tone={TICKET_TONES[index % TICKET_TONES.length]}
+    >
+      <span className="site-cake__ticket">
+        <img src={photo?.thumb ?? art.strawberryCake} alt="" loading="lazy" draggable={false} />
+        <span className="site-cake__mark site-cake__mark--b" aria-hidden="true">
+          B
         </span>
-      }
-    />
+        <span className="site-cake__mark site-cake__mark--m" aria-hidden="true">
+          M
+        </span>
+        <span className="site-cake__inside">{cake.description}</span>
+        <span className="site-cake__peek" aria-hidden="true">
+          ↗
+        </span>
+      </span>
+      {popular && <span className="site-cake__popular">Most ordered</span>}
+      <Heading className="site-cake__name">
+        <a href={flavour ? `/catalog/${cake.slug}?flavour=${flavour}` : `/catalog/${cake.slug}`}>{cake.name}</a>
+      </Heading>
+      <span className="site-cake__foot">
+        <span className="site-cake__weight">{kgLabel(cake.weightKg)}</span>
+        <span className="site-cake__price">{inr(cake.price)}</span>
+      </span>
+    </article>
+  );
+}
+
+/**
+ * A shelf of cake tickets. Each row is dealt in across the table as it scrolls into view, from the left and the
+ * right in turn, the cards arcing up and spinning into their places; then the columns drift against each other as
+ * the page scrolls on (after Teh Tarik Nation's sideways-and-up moves). A new filter deals the shelf again.
+ */
+export function CakeGrid({
+  cakes: list,
+  headingLevel = 3,
+  flavour,
+  offset = 0,
+}: {
+  cakes: Cake[];
+  headingLevel?: HeadingLevel;
+  flavour?: string;
+  /** Where this shelf starts in the page's run of ticket colors. */
+  offset?: number;
+}) {
+  const grid = useRef<HTMLUListElement>(null);
+  const key = list.map((cake) => cake.slug).join();
+  useFx(
+    grid,
+    (ul) => {
+      const slots = [...ul.children] as HTMLElement[];
+      if (!slots.length) return;
+      const cols = Math.max(1, getComputedStyle(ul).gridTemplateColumns.split(' ').length);
+      const narrow = narrowScreen();
+      // The deal moves the card and the drift moves its slot (the list item), so the two never share a transform:
+      // when a new filter or a page change sets them up again, each starts from a clean element.
+      slots.forEach((slot, i) => {
+        const card = slot.firstElementChild as HTMLElement | null;
+        if (!card) return;
+        const col = i % cols;
+        const fromLeft = Math.floor(i / cols) % 2 === 0;
+        const span = slot.offsetWidth * (narrow ? 0.7 : 0.9);
+        // Every card in a row starts in one pile off to the side, so the row fans out across the table
+        gsap.from(card, {
+          x: fromLeft ? -(col + 1) * span : (cols - col) * span,
+          y: narrow ? 70 : 120,
+          rotation: scatter(i, 18, 38, 3) * (fromLeft ? -1 : 1),
+          scale: 0.72,
+          opacity: 0,
+          duration: 1.15,
+          ease: 'expo.out',
+          delay: (fromLeft ? col : cols - 1 - col) * 0.08,
+          // Handed back to its own styles once it lands, so the cursor's tilt (site-fx) can take over
+          clearProps: 'transform,opacity',
+          scrollTrigger: { trigger: slot, start: 'top 94%', once: true },
+        });
+        // Then the columns drift against each other as the page scrolls
+        const lift = (narrow ? 4 : 7) * (col % 2 ? -1 : 1);
+        gsap.fromTo(
+          slot,
+          { yPercent: -lift },
+          {
+            yPercent: lift,
+            ease: 'none',
+            scrollTrigger: { trigger: ul, start: 'top bottom', end: 'bottom top', scrub: 0.6 },
+          },
+        );
+      });
+    },
+    [key],
+  );
+  return (
+    <ul ref={grid} className="site-menu__grid site-cakes" data-fx-own>
+      {list.map((cake, i) => (
+        <li key={cake.slug}>
+          <CakeCard cake={cake} index={i + offset} headingLevel={headingLevel} flavour={flavour} />
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -172,7 +258,7 @@ export function MenuSection({ level = 2, limit }: { level?: 1 | 2; limit?: numbe
   const list = slug === 'all' ? featured() : cakes.filter((cake) => cake.occasion === slug);
   const shown = limit ? list.slice(0, limit) : list;
   return (
-    <Band id="cakes" className="site-section--blue">
+    <Band id="cakes" className="site-section--blue site-menu">
       <SectionHeading variant="ribbon" level={level} title="Cakes" ribbonText="baked to order" />
       <div className="site-menu__filters">
         <FilterChips label="Filter cakes by occasion" options={occasionOptions()} value={filter} onChange={setFilter} />
@@ -181,13 +267,7 @@ export function MenuSection({ level = 2, limit }: { level?: 1 | 2; limit?: numbe
         </p>
       </div>
       <CatalogNote />
-      <ul className="site-menu__grid">
-        {shown.map((cake, i) => (
-          <li key={cake.slug}>
-            <CakeCard cake={cake} index={i} headingLevel={level === 1 ? 2 : 3} />
-          </li>
-        ))}
-      </ul>
+      <CakeGrid cakes={shown} headingLevel={level === 1 ? 2 : 3} />
       {limit && list.length > shown.length && (
         <div className="site-center">
           <Button size="lg" variant="secondary" href={slug === 'all' ? '/catalog' : `/catalog?occasion=${slug}`}>
@@ -577,7 +657,7 @@ export function AboutCardSection() {
   );
 }
 
-/* Gallery (pin 01) ---------------------------------------------------- */
+/* Photos of our cakes, for the Instagram grid --------------------------- */
 
 const photoItems = (list: Cake[], firstOnly = false): GalleryItem[] =>
   list.flatMap((cake) =>
@@ -591,73 +671,6 @@ const photoItems = (list: Cake[], firstOnly = false): GalleryItem[] =>
       ),
     })),
   );
-
-/** Each occasion's doodle, on its filter chip in the gallery. */
-export const occasionIcons: Record<string, { name: DoodleName; color: string }> = {
-  'birthday-kids': { name: 'star', color: 'var(--bbm-color-butter-400)' },
-  'birthday-parents': { name: 'daisy', color: 'var(--bbm-color-pink-500)' },
-  'birthday-partner': { name: 'heart', color: 'var(--bbm-color-cherry-500)' },
-  'birthday-classic': { name: 'cupcake', color: 'var(--bbm-color-pink-500)' },
-  engagement: { name: 'sparkle', color: 'var(--bbm-color-butter-400)' },
-  anniversary: { name: 'bow', color: 'var(--bbm-color-cherry-500)' },
-  'parents-day': { name: 'heart', color: 'var(--bbm-color-pink-500)' },
-  romantic: { name: 'cherry', color: 'var(--bbm-color-cherry-500)' },
-  farewell: { name: 'daisy', color: 'var(--bbm-color-blue-600)' },
-  festival: { name: 'sparkle', color: 'var(--bbm-color-cherry-500)' },
-  teachers: { name: 'star', color: 'var(--bbm-color-blue-600)' },
-};
-
-/**
- * The gallery, and the home page's one place for occasions: pick an occasion, then open the strips with a click, a
- * drag, the arrows or a sideways scroll. The page itself scrolls straight past.
- */
-export function GallerySection() {
-  const withPhotos = occasionOptions()
-    .filter(
-      (option) => option.value === 'all' || cakes.some((cake) => cake.occasion === option.value && cake.photos.length),
-    )
-    .map((option) => {
-      const icon = occasionIcons[option.value];
-      return icon
-        ? {
-            ...option,
-            label: (
-              <>
-                <Doodle name={icon.name} size="1.15em" color={icon.color} className="site-gallery__chip-icon" />
-                {option.label}
-              </>
-            ),
-          }
-        : option;
-    });
-  const [filter, setFilter] = useState<string[]>(['all']);
-  const slug = filter[0] ?? 'all';
-  const items =
-    slug === 'all' ? photoItems(featured().slice(0, 9), true) : photoItems(cakes.filter((c) => c.occasion === slug));
-  return (
-    <Band id="gallery" className="site-gallery site-section--cocoa" edge={{ color: 'var(--bbm-color-bg-inverse)' }}>
-      <CatalogNote />
-      {items.length > 0 && (
-        <Gallery
-          items={items}
-          label="Photos of cakes from Mom's kitchen"
-          head={
-            <>
-              <SectionHeading variant="bubble" title="Gallery" />
-              <FilterChips
-                label="Show cakes for"
-                options={withPhotos}
-                value={filter}
-                onChange={setFilter}
-                className="site-gallery__filters"
-              />
-            </>
-          }
-        />
-      )}
-    </Band>
-  );
-}
 
 /* Reviews (pin 01) ---------------------------------------------------- */
 

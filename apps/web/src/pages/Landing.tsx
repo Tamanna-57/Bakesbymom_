@@ -1,21 +1,14 @@
-import { FaqSection, GallerySection, MenuSection, ReviewsSection } from '../sections/blocks';
-import {
-  CraftedSection,
-  FlavoursSection,
-  HomeHero,
-  HomeIntro,
-  QuoteBand,
-  ShapeRibbon,
-  CakesTreatsWheel,
-  SignOffRibbon,
-} from '../sections/home';
+import { FaqSection, MenuSection, ReviewsSection } from '../sections/blocks';
+import { CakesTreatsWheel, HomeHero, HomeIntro, ShapeRibbon } from '../sections/home';
+import { CurvedSignOff, FlavourDeck } from '../sections/fx';
+import { OrderRail } from '../sections/order-rail';
 import { Layout } from './Layout';
 
 /**
- * The home page, after pin 16 (SugarLace) and pin 13 (Puzzle Pantry): striped hero, the shape ribbon,
- * the cake shelf (the first few cakes from the catalog), the feature strip, about us, flavours, the Cakes & Treats wheel (every category on an arc that turns as you scroll),
- * a quote, how to order with the cherry tiles, then the gallery (every occasion; scrolling opens the strips),
- * reviews and FAQ.
+ * The home page, after pin 16 (SugarLace) and pin 13 (Puzzle Pantry), with the big moves of Teh Tarik Nation:
+ * striped hero, the shape ribbon, the cake shelf (ticket cards dealt in from the sides), the flavours as a pinned
+ * deck of cards, about us, the Cakes & Treats wheel (every category on an arc), how to order as a ride sideways
+ * through a pinned strip of panels, reviews, FAQ and the sign-off running along a curve.
  */
 export function LandingPage() {
   return (
@@ -23,15 +16,13 @@ export function LandingPage() {
       <HomeHero />
       <ShapeRibbon />
       <MenuSection limit={10} />
+      <FlavourDeck />
       <HomeIntro />
-      <FlavoursSection />
       <CakesTreatsWheel />
-      <QuoteBand />
-      <CraftedSection />
-      <GallerySection />
+      <OrderRail />
       <ReviewsSection />
       <FaqSection />
-      <SignOffRibbon />
+      <CurvedSignOff />
     </Layout>
   );
 }

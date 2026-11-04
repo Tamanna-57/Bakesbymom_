@@ -124,6 +124,7 @@
 
 /* Every card sits in the same cell, then fans out by its place in the deck (--o, from -4 to 4) */
 .fx-deck__card {
+  position: relative;
   grid-area: 1 / 1;
   display: flex;
   flex-direction: column;
@@ -165,14 +166,6 @@
   box-sizing: border-box;
 }
 
-.fx-deck__art {
-  display: block;
-  max-width: 82%;
-  max-height: 100%;
-  object-fit: contain;
-  filter: drop-shadow(0 6px 10px color-mix(in srgb, var(--bbm-color-brown-900) 22%, transparent));
-}
-
 .fx-deck__card p {
   margin: 0 8% 6%;
   font-family: var(--bbm-font-family-hand);
@@ -188,51 +181,55 @@
   border-top: 1.5px solid var(--bbm-color-brown-900);
 }
 
-/* Eggless: the halftone egg, struck through in cherry */
-.fx-deck__no-egg {
-  position: relative;
-  display: grid;
-  place-items: center;
-  height: 100%;
-}
-
-.fx-deck__no-egg .fx-deck__art {
-  max-height: 88%;
-}
-
-.fx-deck__slash {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 115%;
-  height: 9%;
-  border: 2px solid var(--bbm-color-paper);
-  border-radius: var(--bbm-radius-pill);
-  background-color: var(--bbm-color-cherry-500);
-  translate: -50% -50%;
-  rotate: -38deg;
-}
-
-/* Pure veg: the FSSAI mark, big (the same green as the site's veg dot) */
-.fx-deck__veg {
-  --veg: #1f7a3a;
-  display: grid;
-  place-items: center;
-  width: 48%;
-  aspect-ratio: 1;
+/* The flavour's slice on a round plate, stuck on like a sticker */
+.fx-deck__photo {
+  display: block;
   box-sizing: border-box;
-  border: calc(var(--deck-card) * 0.028) solid var(--veg);
-  border-radius: 10%;
-  background-color: var(--bbm-color-paper);
-  box-shadow: var(--bbm-shadow-sticker-md);
+  height: 100%;
+  max-width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border: calc(var(--deck-card) * 0.022) solid var(--bbm-color-paper);
+  border-radius: 50%;
+  outline: 1.5px solid var(--bbm-color-brown-900);
+  box-shadow: 4px 5px 0 color-mix(in srgb, var(--bbm-color-brown-900) 30%, transparent);
+  rotate: -4deg;
+  user-select: none;
 }
 
-.fx-deck__veg::after {
+.fx-deck__card:nth-child(even) .fx-deck__photo {
+  rotate: 5deg;
+}
+
+/* The flavour's name is the card's link, stretched over the whole card */
+.fx-deck__card h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.fx-deck__card h3 a::after {
   content: '';
-  width: 52%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background-color: var(--veg);
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: var(--bbm-radius-lg);
+}
+
+.fx-deck__card h3 a:focus-visible {
+  outline: none;
+}
+
+.fx-deck__card h3 a:focus-visible::after {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: 4px;
+}
+
+.fx-deck__card .fx-deck__photo {
+  transition: scale var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
+}
+
+.fx-deck__card:hover .fx-deck__photo {
+  scale: 1.06;
 }
 
 /* Tape labels round the edges: a word on paper over a strip of pattern */
@@ -319,62 +316,6 @@
   .fx-tape--f {
     display: none;
   }
-}
-
-/* The flavour wall (Beca Tea's "No Nasties") ---------------------------------------------------------------- */
-
-.fx-wall {
-  position: relative;
-  display: grid;
-  gap: 0.06em;
-  margin: calc(var(--bbm-space-6) * -1) calc(var(--bbm-layout-gutter) * -1) var(--bbm-space-8);
-  padding-block: var(--bbm-space-4);
-  overflow: hidden;
-  font-size: clamp(2.6rem, 1.4rem + 6vw, 7.5rem);
-}
-
-.fx-wall__row {
-  display: flex;
-  width: max-content;
-  margin: 0;
-  font-family: var(--bbm-font-family-display);
-  font-weight: var(--bbm-font-weight-semibold);
-  font-variation-settings: var(--bbm-font-variation-display);
-  line-height: 1;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: var(--bbm-color-cherry-700);
-  will-change: transform;
-}
-
-.fx-wall__word {
-  display: inline-flex;
-  align-items: center;
-}
-
-.fx-wall__word--outline {
-  color: transparent;
-  -webkit-text-stroke: max(1.5px, 0.022em) var(--bbm-color-cherry-700);
-}
-
-.fx-wall__star {
-  margin-inline: 0.28em;
-  font-size: 0.45em;
-  color: var(--bbm-color-pink-500);
-  -webkit-text-stroke: 0;
-}
-
-.fx-wall__slice {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 1;
-  width: clamp(8rem, 20vw, 17rem);
-  height: auto;
-  translate: -50% -50%;
-  filter: drop-shadow(0 18px 24px color-mix(in srgb, var(--bbm-color-brown-900) 30%, transparent));
-  will-change: transform;
 }
 
 /* The sign-off on a curve (Teh Tarik Nation's "Malaysia in a cup") ---------------------------------------- */
@@ -490,14 +431,5 @@
   .fx-deck__card {
     translate: none;
     rotate: calc(var(--o) * 0.75deg);
-  }
-
-  /* The wall's rows staggered, as if caught mid-slide */
-  .fx-wall__row:nth-child(2) {
-    translate: -18% 0;
-  }
-
-  .fx-wall__row:nth-child(3) {
-    translate: -6% 0;
   }
 }

@@ -1,0 +1,435 @@
+/* The big motion layer (fx/ and sections/fx.tsx). Built only from tokens. Every scene's still state here is its
+   finished layout, which is what visitors who ask for reduced motion see. */
+
+/* Sprinkles thrown by a click ------------------------------------------------------------------------------- */
+
+.fx-sprinkles {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--bbm-z-toast) - 1);
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Scroll progress: a candy-striped ribbon along the top of the screen ------------------------------------- */
+
+.fx-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: calc(var(--bbm-z-sticky) + 2);
+  height: 4px;
+  background: repeating-linear-gradient(-45deg, var(--bbm-color-cherry-500) 0 6px, var(--bbm-color-pink-300) 6px 12px);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+/* Cursor label: a cherry sticker that says what a card does ------------------------------------------------ */
+
+.fx-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: calc(var(--bbm-z-toast) - 2);
+  display: grid;
+  place-items: center;
+  width: 4.75rem;
+  height: 4.75rem;
+  border-radius: 50%;
+  background-color: var(--bbm-color-cherry-700);
+  box-shadow: var(--bbm-shadow-sticker-md);
+  outline: 1.5px dashed var(--bbm-color-pink-200);
+  outline-offset: -6px;
+  color: var(--bbm-color-paper);
+  font-family: var(--bbm-font-family-display);
+  font-size: 1.05rem;
+  font-style: italic;
+  font-weight: var(--bbm-font-weight-semibold);
+  pointer-events: none;
+  /* Shown by Extras.tsx on a mouse or trackpad only */
+  opacity: 0;
+  will-change: transform;
+}
+
+/* The deck (Teh Tarik Nation's "we're also…") --------------------------------------------------------------- */
+
+.fx-deck {
+  --deck-card: clamp(12rem, min(22vw, 44svh), 21rem);
+  --spread: clamp(0.8rem, 3.6vw, 3.4rem);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(var(--bbm-space-6), 5svh, var(--bbm-space-12));
+  box-sizing: border-box;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: calc(var(--site-header-h, 5rem) + var(--bbm-space-6)) var(--bbm-layout-gutter) var(--bbm-space-10);
+  overflow: hidden;
+  border-block: var(--bbm-border-width-thin) solid var(--bbm-color-blue-400);
+  /* Pale blue with fine ruled lines, like the reference's ground */
+  background-color: var(--bbm-color-blue-100);
+  background-image: repeating-linear-gradient(
+    0deg,
+    color-mix(in srgb, var(--bbm-color-blue-700) 9%, transparent) 0 1px,
+    transparent 1px 7px
+  );
+  color: var(--bbm-color-brown-900);
+}
+
+.fx-deck__title {
+  position: relative;
+  z-index: 2;
+  max-width: 36rem;
+  margin: 0;
+  font-family: var(--bbm-font-family-display);
+  font-size: clamp(1.25rem, 1rem + 1.1vw, 2rem);
+  font-weight: var(--bbm-font-weight-medium);
+  font-variation-settings: var(--bbm-font-variation-display);
+  line-height: 1.2;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.fx-script {
+  display: inline-block;
+  font-family: var(--bbm-font-family-script);
+  font-style: normal;
+  font-weight: var(--bbm-font-weight-regular);
+  font-variation-settings: normal;
+  letter-spacing: 0;
+}
+
+.fx-deck__title .fx-script {
+  padding-inline: 0.1em 0.2em;
+  font-size: 1.6em;
+  line-height: 0.8;
+  color: var(--bbm-color-cherry-700);
+}
+
+.fx-deck__stage {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Every card sits in the same cell, then fans out by its place in the deck (--o, from -4 to 4) */
+.fx-deck__card {
+  position: relative;
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  width: var(--deck-card);
+  aspect-ratio: 0.776;
+  overflow: hidden;
+  border: 1.5px solid var(--bbm-color-brown-900);
+  border-radius: var(--bbm-radius-lg);
+  background-color: var(--card);
+  box-shadow: var(--bbm-shadow-sticker-lg);
+  color: var(--card-ink);
+  text-align: center;
+  translate: calc(var(--o) * var(--spread)) var(--lift);
+  rotate: calc(var(--o) * 1deg);
+  will-change: transform;
+}
+
+.fx-deck__card h3 {
+  margin: 0;
+  padding: 9% 8% 0;
+  font-family: var(--bbm-font-family-display);
+  font-size: calc(var(--deck-card) * 0.105);
+  font-weight: var(--bbm-font-weight-bold);
+  font-variation-settings: var(--bbm-font-variation-display);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.fx-deck__picture {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  width: 100%;
+  min-height: 0;
+  padding: 5% 14% 2%;
+  box-sizing: border-box;
+}
+
+.fx-deck__card p {
+  margin: 0 8% 6%;
+  font-family: var(--bbm-font-family-hand);
+  font-size: calc(var(--deck-card) * 0.056);
+  font-style: italic;
+  line-height: 1.2;
+}
+
+.fx-deck__foot {
+  flex: none;
+  width: 100%;
+  height: 12%;
+  border-top: 1.5px solid var(--bbm-color-brown-900);
+}
+
+/* The flavour's slice on a round plate, stuck on like a sticker */
+.fx-deck__photo {
+  display: block;
+  box-sizing: border-box;
+  height: 100%;
+  max-width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border: calc(var(--deck-card) * 0.022) solid var(--bbm-color-paper);
+  border-radius: 50%;
+  outline: 1.5px solid var(--bbm-color-brown-900);
+  box-shadow: 4px 5px 0 color-mix(in srgb, var(--bbm-color-brown-900) 30%, transparent);
+  rotate: -4deg;
+  user-select: none;
+}
+
+.fx-deck__card:nth-child(even) .fx-deck__photo {
+  rotate: 5deg;
+}
+
+/* The flavour's name is the card's link, stretched over the whole card */
+.fx-deck__card h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.fx-deck__card h3 a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: var(--bbm-radius-lg);
+}
+
+.fx-deck__card h3 a:focus-visible {
+  outline: none;
+}
+
+.fx-deck__card h3 a:focus-visible::after {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: 4px;
+}
+
+.fx-deck__card .fx-deck__photo {
+  transition: scale var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
+}
+
+.fx-deck__card:hover .fx-deck__photo {
+  scale: 1.06;
+}
+
+/* Tape labels round the edges: a word on paper over a strip of pattern */
+.fx-deck__tapes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.fx-tape {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: clamp(11rem, 27vw, 24rem);
+  height: clamp(4.5rem, 9vw, 8rem);
+  overflow: hidden;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-brown-900);
+  background-color: var(--bbm-color-beige-50);
+  box-shadow: var(--bbm-shadow-sticker-sm);
+}
+
+.fx-tape__word {
+  display: flex;
+  align-items: center;
+  height: 46%;
+  padding-inline: 0.6em;
+  font-family: var(--bbm-font-family-display);
+  font-size: clamp(1.15rem, 0.7rem + 1.7vw, 2.4rem);
+  font-weight: var(--bbm-font-weight-bold);
+  font-variation-settings: var(--bbm-font-variation-display);
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--bbm-color-brown-900);
+}
+
+.fx-tape__pattern {
+  flex: 1;
+  border-top: var(--bbm-border-width-thin) solid var(--bbm-color-brown-900);
+}
+
+.fx-tape--a {
+  top: 3%;
+  left: -5%;
+  rotate: 12deg;
+}
+
+.fx-tape--b {
+  top: 4%;
+  right: -9%;
+  rotate: 34deg;
+}
+
+.fx-tape--c {
+  bottom: 4%;
+  left: -6%;
+  rotate: -10deg;
+}
+
+.fx-tape--d {
+  top: 46%;
+  right: -12%;
+  rotate: -16deg;
+}
+
+.fx-tape--e {
+  bottom: 2%;
+  right: -4%;
+  rotate: 28deg;
+}
+
+.fx-tape--f {
+  top: 40%;
+  left: -14%;
+  rotate: -36deg;
+}
+
+@media (max-width: 639.98px) {
+  .fx-deck {
+    --deck-card: min(58vw, 36svh);
+    --spread: 3.2vw;
+  }
+
+  .fx-tape--d,
+  .fx-tape--f {
+    display: none;
+  }
+}
+
+/* The sign-off on a curve (Teh Tarik Nation's "Malaysia in a cup") ---------------------------------------- */
+
+.fx-signoff {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: end;
+  min-height: clamp(28rem, 78svh, 44rem);
+  padding: var(--bbm-space-10) var(--bbm-layout-gutter) var(--bbm-space-12);
+  overflow: hidden;
+  border-top: var(--bbm-border-width-thin) solid var(--bbm-color-pink-400);
+  background-color: var(--bbm-color-bg-pink);
+}
+
+.fx-signoff__arc {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.fx-signoff__text {
+  font-family: var(--bbm-font-family-display);
+  font-size: 76px;
+  font-weight: var(--bbm-font-weight-semibold);
+  font-variation-settings: var(--bbm-font-variation-display);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  fill: var(--bbm-color-cherry-700);
+}
+
+.fx-signoff__text--back {
+  font-size: 52px;
+  fill: none;
+  stroke: var(--bbm-color-cherry-500);
+  stroke-width: 1.25px;
+}
+
+.fx-signoff__cake {
+  position: relative;
+  z-index: 1;
+  width: clamp(10rem, 20vw, 16rem);
+  height: auto;
+  filter: drop-shadow(0 22px 26px color-mix(in srgb, var(--bbm-color-brown-900) 28%, transparent));
+  will-change: transform;
+}
+
+.fx-signoff__cta {
+  position: relative;
+  z-index: 2;
+  margin-top: calc(var(--bbm-space-6) * -1);
+}
+
+/* On a phone the arc is cropped to its middle and drawn larger, so its letters are set smaller */
+@media (max-width: 639.98px) {
+  .fx-signoff__text {
+    font-size: 46px;
+  }
+
+  .fx-signoff__text--back {
+    font-size: 34px;
+  }
+}
+
+/* The name at the foot of every page (Beca Tea) ----------------------------------------------------------- */
+
+.fx-bigword {
+  overflow: hidden;
+  padding: 0 var(--bbm-layout-gutter) calc(var(--bbm-space-6) + 4.25rem);
+  background-color: var(--bbm-color-bg-inverse);
+}
+
+.fx-bigword__text {
+  margin: 0;
+  font-family: var(--bbm-font-family-display);
+  font-size: min(16vw, 15rem);
+  font-weight: var(--bbm-font-weight-semibold);
+  font-variation-settings: var(--bbm-font-variation-display);
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+  text-align: center;
+  white-space: nowrap;
+  color: var(--bbm-color-pink-300);
+}
+
+.fx-bigword .fx-script {
+  margin-inline: 0.04em;
+  font-size: 0.58em;
+  line-height: 0.5;
+  color: var(--bbm-color-butter-300);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-cursor,
+  .fx-sprinkles {
+    display: none;
+  }
+
+  /* The deck lies open as a spread of cards instead of a stack */
+  .fx-deck {
+    --deck-card: clamp(11rem, 26vw, 14rem);
+  }
+
+  .fx-deck__stage {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--bbm-space-5);
+  }
+
+  .fx-deck__card {
+    translate: none;
+    rotate: calc(var(--o) * 0.75deg);
+  }
+}

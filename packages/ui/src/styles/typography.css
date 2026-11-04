@@ -1,7 +1,7 @@
 /*
  * Text styles from the brand-kit type scale (tokens: --bbm-text-<style>-*).
  * Serif styles use Fraunces at full softness; label and eyebrow are uppercase;
- * bubble, once outlined, is now a large Bodoni italic (Pasticceria).
+ * bubble, once outlined, is now a large Fraunces italic (Pasticceria).
  */
 
 .bbm-text-display-xl {

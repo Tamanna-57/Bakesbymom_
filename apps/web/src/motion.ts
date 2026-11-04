@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import Lenis from 'lenis';
+import { gsap, ScrollTrigger } from './fx/gsap';
 
 // The site's motion layer: smooth scrolling, sections that rise in as they scroll into view, and a light
 // parallax on the decorations. Everything here is skipped for visitors who ask for reduced motion.
@@ -7,6 +8,17 @@ import Lenis from 'lenis';
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 let lenis: Lenis | null = null;
+
+type VelocityListener = (velocity: number) => void;
+const velocityListeners = new Set<VelocityListener>();
+
+/** Calls `listener` with the scroll's speed and direction (pixels a frame, negative going up) as the page scrolls. */
+export function onScrollVelocity(listener: VelocityListener) {
+  velocityListeners.add(listener);
+  return () => {
+    velocityListeners.delete(listener);
+  };
+}
 
 /** Jumps to a scroll position without the smooth glide (for page changes). */
 export function jumpTo(top: number) {
@@ -26,13 +38,49 @@ export function useSmoothScroll() {
     if (reducedMotion()) return;
     lenis = new Lenis({
       lerp: 0.1,
-      autoRaf: true,
+      autoRaf: false,
       allowNestedScroll: true,
       anchors: { offset: -96 },
     });
+    // GSAP's clock drives Lenis, and every Lenis scroll updates the pinned and scrubbed scenes (fx/), in step.
+    const raf = (time: number) => lenis?.raf(time * 1000);
+    gsap.ticker.add(raf);
+    gsap.ticker.lagSmoothing(0);
+    const off = lenis.on('scroll', (instance: Lenis) => {
+      ScrollTrigger.update();
+      for (const listener of velocityListeners) listener(instance.velocity);
+    });
     return () => {
+      off();
+      gsap.ticker.remove(raf);
       lenis?.destroy();
       lenis = null;
+    };
+  }, []);
+}
+
+/**
+ * The cakes arrive from the catalog after the page draws, and photos load late, so the page grows under the
+ * scroll scenes. Measure them again whenever the page's height changes.
+ */
+export function useScrollRefresh() {
+  useEffect(() => {
+    const root = document.getElementById('root');
+    if (!root || typeof ResizeObserver !== 'function') return;
+    let height = root.offsetHeight;
+    let timer = 0;
+    const observer = new ResizeObserver(() => {
+      if (Math.abs(root.offsetHeight - height) < 2) return;
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        ScrollTrigger.refresh();
+        height = root.offsetHeight;
+      }, 180);
+    });
+    observer.observe(root);
+    return () => {
+      window.clearTimeout(timer);
+      observer.disconnect();
     };
   }, []);
 }
@@ -40,9 +88,7 @@ export function useSmoothScroll() {
 // Each item in these lists rises in on its own, a beat after the one before it.
 const ITEM_SELECTORS = [
   '.home-features__list > li',
-  '.home-flavours__grid > li',
   '.home-shop__row > li',
-  '.home-crafted__tiles > li',
   '.treat-sig__grid > li',
   '.treat-simple__list > li',
   '.site-menu__grid > li',
@@ -50,6 +96,7 @@ const ITEM_SELECTORS = [
   '.site-values > *',
   '.bbm-accordion__item',
   '.bbm-steps > li',
+  '.site-reviews__track > li',
 ];
 
 // Whole blocks that rise in as one: section headings, cards and the like.
@@ -57,9 +104,6 @@ const BLOCK_SELECTORS = [
   '.site-section > .site-container > *',
   '.home-about__card',
   '.home-shop__head',
-  '.home-quote__card',
-  '.home-crafted__lockup',
-  '.home-order-card',
   '.home-kitchen__copy > *',
 ];
 
@@ -77,7 +121,10 @@ export function useReveal(path: string) {
     );
     // Anything already on screen when the page opens stays put: the hero has its own entrance.
     const fold = window.innerHeight * 0.92;
-    const targets = [...new Set([...items, ...blocks])].filter((el) => el.getBoundingClientRect().top > fold);
+    // Scenes with their own motion (fx/) are left to it.
+    const targets = [...new Set([...items, ...blocks])].filter(
+      (el) => el.getBoundingClientRect().top > fold && !el.closest('[data-fx-own]'),
+    );
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -98,8 +145,12 @@ export function useReveal(path: string) {
     );
     for (const el of targets) {
       const siblings = el.parentElement ? [...el.parentElement.children] : [el];
-      el.style.setProperty('--reveal-i', String(items.includes(el) ? siblings.indexOf(el) % 6 : 0));
-      el.dataset.reveal = '';
+      const isItem = items.includes(el);
+      const i = siblings.indexOf(el);
+      el.style.setProperty('--reveal-i', String(isItem ? i % 6 : 0));
+      // Items in a row are dealt in like cards, each tipped a little its own way
+      el.style.setProperty('--reveal-r', `${i % 2 ? 4 : -4}deg`);
+      el.dataset.reveal = isItem ? 'item' : '';
       observer.observe(el);
     }
     return () => observer.disconnect();

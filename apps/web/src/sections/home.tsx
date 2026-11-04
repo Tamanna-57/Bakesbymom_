@@ -1,12 +1,12 @@
 /**
- * The home page sections, after pin 16 (SugarLace: stripes, the outlined about card, the flavour grid,
- * the order card and cherry tiles) and pin 13 (Puzzle Pantry: the shape ribbon, shop by the box with
- * filter pills, the split about). The feature strip, the starburst and the checker
- * quote come from other bakery sites on Pinterest (Sweet Crumbs, joe & dough, Sunday Bakehouse).
- * Photos here are stock (content/index.ts `stock`, `treatArt`, `flavours`); the photos of the cakes we sell are
- * kept for the catalog and the gallery.
+ * The home page sections, after pin 16 (SugarLace: stripes, the outlined about card) and pin 13 (Puzzle Pantry: the
+ * shape ribbon, shop by the box with filter pills, the split about). The feature strip and the starburst come from
+ * other bakery sites on Pinterest (Sweet Crumbs, joe & dough). The flavours are a deck now (sections/fx.tsx) and
+ * how to order rides sideways (sections/order-rail.tsx).
+ * Photos here are stock (content/index.ts `stock`, `treatArt`); the photos of the cakes we sell are kept for the
+ * catalog.
  */
-import { useEffect, useRef, useState, type CSSProperties, type FocusEvent } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type FocusEvent, type RefObject } from 'react';
 import {
   Button,
   Card,
@@ -17,12 +17,13 @@ import {
   Polaroid,
   PriceTag,
   SectionHeading,
-  Ticket,
 } from '@bakesbymom/ui';
 import { Badge, Collage } from '../collage/Collage';
-import { flavours, stock, treatArt } from '../content';
-import { bakery, cakeFlavours, cakeSizes, flavourSlug, whatsappLink } from '../content/bakery';
-import { howToOrder, orderLink } from '../content/site';
+import { stock, treatArt } from '../content';
+import { bakery } from '../content/bakery';
+import { orderLink } from '../content/site';
+import { gsap, scatter, useFx } from '../fx/gsap';
+import { splitTitle, writeIn } from '../fx/site-fx';
 import { SectionEdge } from './blocks';
 import { treatCategories } from '../content/treats';
 import './home.css';
@@ -32,7 +33,114 @@ const TILE_TONES = ['pink', 'blue', 'butter', 'beige'] as const;
 
 /* Hero (pin 16's stripes, with a cream label card) -------------------- */
 
+/** Painted stickers round the arch, each with how far it follows the mouse. */
+const heroStickers = [
+  { src: '/collage/halftone-cherries.webp', place: 'd', depth: 10 },
+  { src: '/collage/paint-cupcake.webp', place: 'a', depth: 30 },
+  { src: '/collage/paint-cherry-slice.webp', place: 'b', depth: 42 },
+  { src: '/collage/paint-shortcake.webp', place: 'c', depth: 24 },
+];
+
+/** Calls `start` once the home page's intro has uncovered the hero (at once when there is no intro). */
+function afterIntro(start: () => void) {
+  const root = document.documentElement;
+  let held = false;
+  let frame = 0;
+  const check = () => {
+    const holding = root.classList.contains('bbm-intro-on');
+    held ||= holding;
+    if (!document.querySelector('.bbm-intro') || (held && !holding)) start();
+    else frame = requestAnimationFrame(check);
+  };
+  check();
+  return () => cancelAnimationFrame(frame);
+}
+
+/**
+ * The hero's motion: the title bursts in letter by letter and the stickers pop on round the arch once the intro
+ * clears; then the stickers bob, follow the mouse at their own depths, and scatter as the hero scrolls away.
+ */
+function useHeroFx(root: RefObject<HTMLDivElement | null>) {
+  useFx(root, (inner) => {
+    const hero = inner.closest<HTMLElement>('.home-hero') ?? inner;
+    const stickers = gsap.utils.toArray<HTMLElement>('.home-hero__sticker', hero);
+    const pictures = stickers.map((sticker) => sticker.firstElementChild as HTMLElement);
+    const title = hero.querySelector<HTMLElement>('.home-hero__title');
+    const entrance = gsap.timeline({ paused: true, delay: 0.1 });
+    if (title) {
+      const { chars, scripts } = splitTitle(title);
+      entrance.from(chars, {
+        yPercent: 130,
+        rotate: (i) => scatter(i, -45, 45, 2),
+        opacity: 0,
+        duration: 0.9,
+        ease: 'back.out(2.2)',
+        stagger: 0.03,
+      });
+      if (scripts.length) entrance.add(writeIn(scripts, { duration: 1.3 }), '-=0.5');
+    }
+    entrance.from(
+      pictures,
+      { scale: 0, rotation: (i) => scatter(i, -120, 120, 6), duration: 1, ease: 'back.out(2.4)', stagger: 0.12 },
+      0.15,
+    );
+    entrance.add(() => {
+      pictures.forEach((el, i) => {
+        gsap.to(el, {
+          y: scatter(i, -18, -8, 3),
+          rotation: scatter(i, -9, 9, 8),
+          duration: scatter(i, 2.4, 3.6, 4),
+          ease: 'sine.inOut',
+          repeat: -1,
+          yoyo: true,
+        });
+      });
+    });
+    const stopWaiting = afterIntro(() => entrance.play());
+
+    // Scroll away: the stickers fly off in all directions, the arch leans and the card lifts
+    const away = { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.5 };
+    gsap.to(stickers, {
+      xPercent: (i) => (i % 2 ? 1 : -1) * scatter(i, 60, 140, 9),
+      yPercent: (i) => scatter(i, -180, -60, 10),
+      rotation: (i) => scatter(i, -150, 150, 11),
+      ease: 'none',
+      scrollTrigger: away,
+    });
+    gsap.to('.home-hero__photo', { scale: 1.07, rotation: -3, ease: 'none', scrollTrigger: away });
+    gsap.to('.home-hero__card', { y: -80, rotation: 1.5, ease: 'none', scrollTrigger: away });
+
+    // The mouse: each sticker follows at its own depth, the arch leans the other way
+    const followers = stickers.map((sticker, i) => ({
+      depth: heroStickers[i]?.depth ?? 20,
+      x: gsap.quickTo(sticker, 'x', { duration: 0.9, ease: 'power3.out' }),
+      y: gsap.quickTo(sticker, 'y', { duration: 0.9, ease: 'power3.out' }),
+    }));
+    const photoX = gsap.quickTo('.home-hero__photo', 'x', { duration: 1.2, ease: 'power3.out' });
+    const photoY = gsap.quickTo('.home-hero__photo', 'y', { duration: 1.2, ease: 'power3.out' });
+    const move = (e: PointerEvent) => {
+      if (e.pointerType !== 'mouse') return;
+      const r = hero.getBoundingClientRect();
+      const mx = (e.clientX - r.left) / r.width - 0.5;
+      const my = (e.clientY - r.top) / r.height - 0.5;
+      for (const f of followers) {
+        f.x(mx * f.depth * 2);
+        f.y(my * f.depth * 2);
+      }
+      photoX(mx * -14);
+      photoY(my * -10);
+    };
+    hero.addEventListener('pointermove', move);
+    return () => {
+      stopWaiting();
+      hero.removeEventListener('pointermove', move);
+    };
+  });
+}
+
 export function HomeHero() {
+  const root = useRef<HTMLDivElement>(null);
+  useHeroFx(root);
   return (
     <PatternSurface
       as="section"
@@ -42,8 +150,9 @@ export function HomeHero() {
       ground="var(--bbm-color-bg-canvas)"
       className="home-hero"
       aria-labelledby="home-title"
+      data-fx-own
     >
-      <div className="home-hero__inner">
+      <div ref={root} className="home-hero__inner">
         <div className="home-hero__art">
           <img
             className="home-hero__photo"
@@ -53,6 +162,13 @@ export function HomeHero() {
             height={1100}
             data-parallax="-0.06"
           />
+          <div className="home-hero__stickers" aria-hidden="true">
+            {heroStickers.map((sticker) => (
+              <span key={sticker.place} className={`home-hero__sticker home-hero__sticker--${sticker.place}`}>
+                <img src={sticker.src} alt="" />
+              </span>
+            ))}
+          </div>
           <div className="home-hero__burst">
             <Collage ratio={1} label="100% eggless">
               <Badge value="100%" label="eggless" tone="cherry" place={{ x: 0, y: 0, w: 100, r: -10 }} />
@@ -121,11 +237,18 @@ const features = [
   },
 ];
 
-/** The pink polka-dot band under the ribbon: the feature strip, then the about us card. */
+/**
+ * The pink polka-dot band: the about us card. The feature strip's promises are dealt as cards in the deck above it
+ * now (sections/fx.tsx); the strip is kept for Storybook and other pages.
+ */
 export function HomeIntro() {
   return (
-    <PatternSurface pattern="dots" tone="pink" ground="var(--bbm-color-bg-pink)" className="home-intro">
-      <FeatureStrip />
+    <PatternSurface
+      pattern="dots"
+      tone="pink"
+      ground="var(--home-blend, var(--bbm-color-bg-pink))"
+      className="home-intro"
+    >
       <AboutUsCard />
     </PatternSurface>
   );
@@ -196,48 +319,6 @@ export function AboutUsCard() {
   );
 }
 
-/* Flavours (pin 16's "Fillings" grid) --------------------------------- */
-
-export function FlavoursSection() {
-  return (
-    <section id="flavours" className="site-section site-section--blue site-section--edged home-flavours">
-      {/* Blue, turning cherry together with the Cakes & Treats wheel below as it scrolls in (--home-blend) */}
-      <SectionEdge color="var(--home-blend, var(--bbm-color-bg-blue))" />
-      <div className="site-container">
-        <SectionHeading variant="ribbon" title="Flavours" ribbonText="baked to order" />
-        <ul className="home-flavours__grid">
-          {cakeFlavours.map((flavour) => {
-            const photo = flavours[flavour];
-            return (
-              <li key={flavour}>
-                <article className="home-flavour">
-                  {photo && <img className="home-flavour__photo" src={photo.src} alt={photo.alt} loading="lazy" />}
-                  <h3>{flavour}</h3>
-                  <p>{photo?.inside}</p>
-                  <div className="home-flavour__foot">
-                    <span className="home-flavour__pill">any cake</span>
-                    <a
-                      className="home-flavour__ask"
-                      href={`/catalog?flavour=${flavourSlug(flavour)}`}
-                      aria-label={`See every cake in ${flavour.toLowerCase()}`}
-                    >
-                      <span aria-hidden="true">↗</span>
-                    </a>
-                  </div>
-                </article>
-              </li>
-            );
-          })}
-        </ul>
-        <p className="site-menu__note home-flavours__note">
-          <span aria-hidden="true">✱</span>
-          Every flavour is eggless and goes in any cake on the menu. Tell Mom about any allergies when you order.
-        </p>
-      </div>
-    </section>
-  );
-}
-
 /* Cakes & Treats wheel: cards on a rainbow arc that the visitor turns -----------------------------------------
    After a tea shop's "Our products" (the reference video): a huge headline behind, ticket cards on an arc, the
    background blending in from the band above. In the site's palette and type. */
@@ -293,7 +374,7 @@ function useWheel(count: number) {
 
   useEffect(() => place(turn), [turn]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // As in the reference, the color behind the Flavours band and the wheel changes together with the scroll: blue
+  // As in the reference, the color behind the about us band and the wheel changes together with the scroll: pink
   // while the wheel is below the screen, a little redder with every step it rises, and solid cherry once its top
   // reaches the header. The two bands always share the color, so there is never a line between them on screen.
   // --wheel-in goes on the page (home.css turns it into --home-blend for both bands).
@@ -419,10 +500,40 @@ function useWheel(count: number) {
   return { outer, stage, cards, setTurn, onFocus };
 }
 
+/** The wheel's words start scattered and spinning across the band and fly together as it scrolls in (after Beca
+ * Tea's hero); the cards rise into their arc behind them. */
+function useWheelFx(outer: RefObject<HTMLElement | null>) {
+  useFx(outer, (section) => {
+    const title = section.querySelector<HTMLElement>('.home-wheel__title');
+    const scrub = { trigger: section, start: 'top bottom', end: 'top 12%', scrub: 0.7, invalidateOnRefresh: true };
+    if (title) {
+      const { chars, scripts } = splitTitle(title);
+      gsap.from(chars, {
+        x: (i) => scatter(i, -0.42, 0.42, 11) * window.innerWidth,
+        y: (i) => scatter(i, -0.55, 0.3, 13) * window.innerHeight,
+        rotation: (i) => scatter(i, -220, 220, 17),
+        scale: (i) => scatter(i, 0.4, 1.7, 19),
+        ease: 'power2.out',
+        scrollTrigger: scrub,
+      });
+      gsap.from(scripts, { scale: 0, rotation: -140, ease: 'back.out(1.4)', scrollTrigger: scrub });
+    }
+    gsap.from('.home-wheel__pill', { scale: 0, rotation: 30, ease: 'back.out(2)', scrollTrigger: scrub });
+    gsap.from('.home-wheel__ticket', {
+      yPercent: 70,
+      opacity: 0,
+      stagger: 0.04,
+      ease: 'power2.out',
+      scrollTrigger: { trigger: section, start: 'top 75%', end: 'top 15%', scrub: 0.7 },
+    });
+  });
+}
+
 export function CakesTreatsWheel() {
   const { outer, stage, cards, setTurn, onFocus } = useWheel(wheelItems.length);
+  useWheelFx(outer);
   return (
-    <section ref={outer} id="treats" className="home-wheel" aria-labelledby="home-wheel-title">
+    <section ref={outer} id="treats" className="home-wheel" aria-labelledby="home-wheel-title" data-fx-own>
       <div className="home-wheel__panel">
         <p className="home-wheel__pill">the menu</p>
         <h2 id="home-wheel-title" className="home-wheel__title">
@@ -538,131 +649,6 @@ export function ShopByBoxSection() {
         </ul>
       </div>
     </section>
-  );
-}
-
-/* Quote on a checker band (Sunday Bakehouse) --------------------------- */
-
-export function QuoteBand() {
-  return (
-    <PatternSurface
-      as="section"
-      pattern="checker"
-      tone="pink"
-      scale="lg"
-      ground="var(--bbm-color-bg-canvas)"
-      className="home-quote"
-      aria-label="A note from Mom"
-    >
-      <figure className="home-quote__card">
-        <blockquote>
-          <p>
-            Our secret ingredient? A day's notice, and a <em>whole lot</em> of love.
-          </p>
-        </blockquote>
-        <figcaption>with love, Mom</figcaption>
-      </figure>
-    </PatternSurface>
-  );
-}
-
-/* Crafted happiness: the lockup, the order card and cherry tiles (pin 16) */
-
-const craftTiles = [
-  {
-    label: 'Custom cake',
-    href: whatsappLink("Hello Bakes by Mom! I'd like to plan a custom cake 🎂"),
-    // One of Mom's own: a cut-out photo, shown whole on a pink card
-    image: '/photos/thumbs/IMG-20260206-WA0062.webp',
-    cutout: true,
-    externalLink: true,
-  },
-  { label: 'Bento cake', href: '/shop/bento-cakes', image: stock.bento.src, externalLink: false },
-  {
-    label: 'Send a gift',
-    href: whatsappLink("Hello Bakes by Mom! I'd like to send a cake as a gift 🎁"),
-    image: stock.gift.src,
-    externalLink: true,
-  },
-  { label: 'Questions?', href: '#faq', image: stock.cupcakes.src, externalLink: false },
-];
-
-export function CraftedSection() {
-  const sizes = `${cakeSizes[0]?.label.split(' · ')[0]} to ${cakeSizes[cakeSizes.length - 1]?.label.split(' · ')[0]}`;
-  return (
-    <PatternSurface
-      as="section"
-      id="order"
-      pattern="stripes"
-      tone="blue"
-      scale="xl"
-      ground="var(--bbm-color-bg-canvas)"
-      className="site-section home-crafted"
-    >
-      <div className="site-container">
-        <div className="home-crafted__lockup">
-          <span data-parallax="0.1">
-            <Doodle name="cherries-halftone" size={120} color="var(--bbm-color-cherry-700)" />
-          </span>
-          <h2>
-            <span className="home-crafted__heavy">Crafted happiness, baked with love.</span>
-            <span className="home-script home-crafted__script">Bakes by Mom</span>
-          </h2>
-          <span data-parallax="-0.1">
-            <Doodle
-              name="cherries-halftone"
-              size={120}
-              color="var(--bbm-color-cherry-700)"
-              className="home-crafted__mirror"
-            />
-          </span>
-        </div>
-        <div className="home-crafted__grid">
-          <div className="home-order-card">
-            <span className="home-order-card__tape" aria-hidden="true" />
-            <Ticket variant="stamp" tone="pink">
-              <h3 className="home-script home-order-card__title">How do I place an order?</h3>
-              <ol className="home-order-card__steps">
-                {howToOrder.map((step, i) => (
-                  <li key={step.title}>
-                    <strong>
-                      Step {i + 1}: {step.title}.
-                    </strong>{' '}
-                    {step.description}
-                  </li>
-                ))}
-              </ol>
-              <p className="home-order-card__note">
-                <strong>Pickup and delivery:</strong> pick up from the kitchen in {bakery.place}, or ask for delivery
-                when you order. Any cake from {sizes}. {bakery.notice}
-              </p>
-              <Button href={orderLink} {...external}>
-                Start an order
-              </Button>
-            </Ticket>
-          </div>
-          <ul className="home-crafted__tiles">
-            {craftTiles.map((tile) => (
-              <li key={tile.label}>
-                <a className="home-craft-tile" href={tile.href} {...(tile.externalLink ? external : {})}>
-                  <span className="home-craft-tile__blob" aria-hidden="true" />
-                  <img
-                    src={tile.image}
-                    alt=""
-                    loading="lazy"
-                    className={'cutout' in tile ? 'home-craft-tile__cutout' : undefined}
-                  />
-                  <span className="home-craft-tile__arrow" aria-hidden="true">
-                    ↗
-                  </span>
-                  <span className="home-craft-tile__label">{tile.label}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </PatternSurface>
   );
 }
 

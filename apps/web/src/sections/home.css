@@ -1371,3 +1371,127 @@
     transition: none !important;
   }
 }
+
+/* The big motion layer (fx/): hero stickers, the quote's caret, swinging cherries ------------------------ */
+
+/* Painted stickers round the arch. They bob, follow the mouse and scatter on scroll (useHeroFx). */
+.home-hero__stickers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.home-hero__sticker {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 30%;
+  will-change: transform;
+}
+
+.home-hero__sticker img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 10px 14px color-mix(in srgb, var(--bbm-color-brown-900) 26%, transparent));
+}
+
+.home-hero__sticker--a {
+  top: 14%;
+  right: -16%;
+  width: 26%;
+  rotate: 10deg;
+}
+
+.home-hero__sticker--b {
+  bottom: 3%;
+  left: -17%;
+  width: 34%;
+  rotate: -8deg;
+}
+
+.home-hero__sticker--c {
+  right: -13%;
+  bottom: 20%;
+  width: 28%;
+  rotate: 6deg;
+}
+
+/* Halftone cherries printed behind the arch */
+.home-hero__sticker--d {
+  z-index: -1;
+  top: -7%;
+  right: -10%;
+  width: 46%;
+  rotate: 14deg;
+}
+
+.home-hero__sticker--d img {
+  filter: none;
+  opacity: 0.85;
+}
+
+@media (max-width: 639.98px) {
+  .home-hero__sticker--a {
+    right: -10%;
+  }
+
+  .home-hero__sticker--b {
+    left: -10%;
+  }
+
+  .home-hero__sticker--c {
+    right: -8%;
+  }
+}
+
+/* The typewriter's caret, placed after each letter as it is typed (useQuoteFx) */
+.home-quote__card blockquote {
+  position: relative;
+}
+
+.home-quote__caret {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 1.2em;
+  border-radius: 2px;
+  background-color: var(--bbm-color-cherry-500);
+  opacity: 0;
+  pointer-events: none;
+  animation: home-blink 0.8s steps(1) infinite;
+}
+
+@keyframes home-blink {
+  50% {
+    background-color: transparent;
+  }
+}
+
+/* The halftone cherries either side of "Crafted happiness" swing on their stems */
+.home-crafted__lockup > span > svg {
+  transform-origin: 50% 8%;
+  animation: home-swing 3.2s ease-in-out infinite;
+}
+
+.home-crafted__lockup > span:last-child > svg {
+  animation-delay: -1.6s;
+}
+
+@keyframes home-swing {
+  0%,
+  100% {
+    rotate: -9deg;
+  }
+  50% {
+    rotate: 9deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-quote__caret,
+  .home-crafted__lockup > span > svg {
+    animation: none;
+  }
+}

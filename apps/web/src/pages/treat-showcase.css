@@ -55,7 +55,7 @@
   color: var(--bbm-color-paper);
 }
 
-/* The site's display style: Bodoni at its medium weight, with the script word in Pinyon */
+/* The site's display style: Fraunces at its medium weight, with the script word in Pinyon */
 .treat-hero__title {
   max-width: 13ch;
   margin: 0;
@@ -78,7 +78,7 @@
   color: var(--bbm-color-pink-300);
 }
 
-/* Mom's note: the hand style (Cormorant italic), like the kickers on the other pages */
+/* Mom's note: the hand style (Fraunces italic), like the kickers on the other pages */
 .treat-hero__tagline {
   max-width: 30rem;
   margin: 0;

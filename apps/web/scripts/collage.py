@@ -5,6 +5,9 @@
   the cut-outs and from two shapes drawn here (a pair of cherries and an egg).
 
 Needs Pillow and NumPy. The outputs are committed; run this again only when a source photo changes.
+
+The painted stickers on Our story (paint-*.webp) are not made here: they were generated in Canva Dream Lab
+and cut off their backgrounds once.
 """
 
 from collections import deque

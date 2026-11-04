@@ -14,7 +14,9 @@ import { TreatCategoryPage } from './pages/TreatCategory';
 import { TreatPage } from './pages/TreatPage';
 import { BackButton, hasBackButton } from './back-button';
 import { Intro, shouldPlayIntro } from './intro';
-import { jumpTo, useParallax, useReveal, useSmoothScroll } from './motion';
+import { CursorLabel, ScrollProgress, Sprinkles } from './fx/Extras';
+import { useSiteFx } from './fx/site-fx';
+import { jumpTo, useParallax, useReveal, useScrollRefresh, useSmoothScroll } from './motion';
 import { matchPath, savedScroll, usePath, useLinkInterception } from './router';
 
 type Route = { title: string; page: ReactElement };
@@ -73,6 +75,7 @@ export function App() {
   const endIntro = useCallback(() => setIntro(false), []);
   useLinkInterception();
   useSmoothScroll();
+  useScrollRefresh();
 
   useEffect(() => {
     document.title = route.title;
@@ -90,12 +93,16 @@ export function App() {
   // After the scroll reset above, so they measure the new page from the top.
   useReveal(path);
   useParallax(path);
+  useSiteFx(path);
 
   // A new key per path resets each page's state (filters, order forms) when you move between items.
   return (
     <>
       <div key={path}>{route.page}</div>
       {hasBackButton(path) && <BackButton path={path} />}
+      <ScrollProgress />
+      <CursorLabel />
+      <Sprinkles />
       {intro && <Intro onDone={endIntro} />}
     </>
   );

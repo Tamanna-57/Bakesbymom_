@@ -1,0 +1,872 @@
+/* Our story (story.tsx): a letter on linen, Mom's cakes on a tray, her promises as a menu card. */
+
+.story-letter,
+.story-letter__card,
+.story-menu__card {
+  /* Linen: fine horizontal ribs over a softer weave, like the flyer's paper */
+  background-image:
+    repeating-linear-gradient(0deg, rgb(140 110 80 / 0.07) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgb(140 110 80 / 0.035) 0 1px, transparent 1px 5px);
+}
+
+/* 1. The letter (the "Dawning Drift" flyer) ----------------------------------------------- */
+
+.story-letter {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(3.5rem, 7vw, 6rem) var(--bbm-layout-gutter) clamp(4rem, 8vw, 7rem);
+  background-color: #f5eee2;
+}
+
+.story-flourish {
+  position: absolute;
+  width: clamp(6.5rem, 15vw, 12.5rem);
+  height: auto;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.story-flourish--tl {
+  top: 0.75rem;
+  left: 0.75rem;
+}
+
+.story-flourish--tr {
+  top: 0.75rem;
+  right: 0.75rem;
+  scale: -1 1;
+}
+
+.story-flourish--bl {
+  bottom: 0.75rem;
+  left: 0.75rem;
+  scale: 1 -1;
+}
+
+.story-flourish--br {
+  right: 0.75rem;
+  bottom: 0.75rem;
+  scale: -1 -1;
+}
+
+/* Stitched lines: cherry, with an olive echo just inside */
+.story-flourish path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.story-flourish__red path {
+  stroke: var(--bbm-color-cherry-500);
+  stroke-width: 2.4;
+  stroke-dasharray: 3.5 2.2;
+  opacity: 0.85;
+}
+
+.story-flourish__olive path {
+  stroke: var(--bbm-color-pistachio-500);
+  stroke-width: 2;
+  stroke-dasharray: 5 2.5;
+}
+
+.story-flourish__olive path:nth-child(n + 3) {
+  fill: rgb(135 154 85 / 0.25);
+  stroke-dasharray: none;
+}
+
+.story-sparkle {
+  position: absolute;
+  width: clamp(1.4rem, 2.6vw, 2.2rem);
+  fill: var(--bbm-color-pistachio-500);
+  animation: story-twinkle 3.2s ease-in-out infinite;
+}
+
+.story-sparkle--a {
+  top: 14%;
+  left: 24%;
+}
+
+.story-sparkle--b {
+  top: 9%;
+  right: 22%;
+  width: clamp(1rem, 1.8vw, 1.5rem);
+  animation-delay: -1.2s;
+}
+
+.story-sparkle--c {
+  top: 40%;
+  right: 12%;
+  animation-delay: -2s;
+}
+
+@keyframes story-twinkle {
+  50% {
+    scale: 0.7;
+    rotate: 20deg;
+    opacity: 0.6;
+  }
+}
+
+/* The title, with three little photos round it */
+.story-letter__head {
+  position: relative;
+  max-width: 58rem;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3rem) 0 0;
+  text-align: center;
+}
+
+.story-photo {
+  position: absolute;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border: 4px solid #fbf7ef;
+  outline: 2px dashed var(--bbm-color-cherry-400);
+  outline-offset: -1px;
+  box-shadow: 0 10px 18px -10px rgb(50 24 11 / 0.45);
+}
+
+.story-photo--a {
+  top: 18%;
+  left: 0;
+  width: clamp(4.5rem, 12vw, 9.5rem);
+  aspect-ratio: 5 / 4;
+  rotate: -4deg;
+}
+
+.story-photo--b {
+  top: -1.5rem;
+  left: 50%;
+  width: clamp(3.5rem, 7vw, 5.5rem);
+  translate: -50% 0;
+  rotate: 3deg;
+}
+
+.story-photo--c {
+  top: 46%;
+  right: 0;
+  width: clamp(4.5rem, 11vw, 8.5rem);
+  aspect-ratio: 4 / 5;
+  rotate: 5deg;
+}
+
+.story-letter__title {
+  display: grid;
+  justify-items: center;
+  margin: 0;
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.story-letter__script {
+  font-family: var(--bbm-font-family-script);
+  font-size: clamp(4rem, 2.4rem + 7.5vw, 8.75rem);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--bbm-color-cherry-600);
+  text-shadow:
+    -1px -1px 0 #fffdf6,
+    3px 3px 0 var(--bbm-color-pink-300);
+}
+
+.story-letter__outline {
+  margin-top: -0.3em;
+  translate: 14% 0;
+  font-family: var(--bbm-font-family-script);
+  font-size: clamp(2.1rem, 1.3rem + 3.4vw, 4.1rem);
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--bbm-color-pistachio-600);
+}
+
+.story-letter__place {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bbm-space-3);
+  margin: var(--bbm-space-3) 0 0;
+  font-family: var(--bbm-font-family-hand);
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--bbm-color-cherry-600);
+}
+
+.story-letter__place::before,
+.story-letter__place::after {
+  content: '';
+  width: 2.5rem;
+  height: 1px;
+  background: var(--bbm-color-cherry-300);
+}
+
+/* The letter in its red envelope */
+.story-letter__envelope {
+  position: relative;
+  max-width: 60rem;
+  margin: clamp(2.5rem, 5vw, 4rem) auto 0;
+}
+
+.story-letter__envelope::before {
+  content: '';
+  position: absolute;
+  inset: 5% -1.5% -5% 1.5%;
+  border-radius: 6px;
+  background:
+    linear-gradient(160deg, transparent 49.6%, rgb(0 0 0 / 0.12) 50%, transparent 50.6%), var(--bbm-color-cherry-700);
+  rotate: -2.5deg;
+  box-shadow: 0 24px 40px -24px rgb(50 24 11 / 0.6);
+}
+
+/* A watercolour sticker of Mom's heart cake, stuck over the envelope's bottom corner */
+.story-letter__sticker {
+  position: absolute;
+  z-index: 2;
+  right: clamp(-3rem, -4vw, -1rem);
+  bottom: clamp(-4rem, -5vw, -2rem);
+  width: clamp(6.5rem, 14vw, 10.5rem);
+  rotate: 10deg;
+  filter: drop-shadow(0 10px 12px rgb(50 24 11 / 0.25));
+  pointer-events: none;
+}
+
+.story-letter__card {
+  position: relative;
+  display: grid;
+  gap: var(--bbm-space-8);
+  align-items: center;
+  padding: clamp(2rem, 4.5vw, 3.75rem);
+  border-radius: 4px;
+  background-color: #fbf7ef;
+  box-shadow: 0 20px 44px -24px rgb(50 24 11 / 0.45);
+  rotate: 0.6deg;
+}
+
+/* A stitched frame just inside the edge */
+.story-letter__card::after {
+  content: '';
+  position: absolute;
+  inset: 0.75rem;
+  border: 1.5px dashed var(--bbm-color-cherry-300);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+@media (min-width: 820px) {
+  .story-letter__card {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: var(--bbm-space-10);
+  }
+}
+
+.story-letter__text p {
+  margin: 0 0 var(--bbm-space-3);
+  font-family: var(--bbm-font-family-hand);
+  font-size: clamp(1.05rem, 0.98rem + 0.35vw, 1.25rem);
+  font-style: italic;
+  font-weight: 400;
+  /* Fraunces italic, calm: soft corners, none of its wonky swash letters */
+  font-variation-settings:
+    'SOFT' 50,
+    'WONK' 0;
+  line-height: 1.55;
+  color: var(--bbm-color-brown-800);
+}
+
+.story-letter__text .story-letter__dear,
+.story-letter__text .story-letter__sign {
+  font-family: var(--bbm-font-family-script);
+  font-size: clamp(2rem, 1.6rem + 1.2vw, 2.6rem);
+  font-style: normal;
+  line-height: 1.1;
+  color: var(--bbm-color-cherry-600);
+}
+
+.story-letter__text .story-letter__sign {
+  margin: var(--bbm-space-4) 0 0;
+}
+
+.story-letter__art {
+  position: relative;
+  padding: var(--bbm-space-6) var(--bbm-space-4) var(--bbm-space-4);
+}
+
+/* Mom's cake in a heart window, with an olive stitched edge */
+.story-heart {
+  position: relative;
+  width: min(100%, 19rem);
+  aspect-ratio: 10 / 9;
+  margin: 0 auto;
+}
+
+.story-heart img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 60%;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 90' preserveAspectRatio='none'%3E%3Cpath d='M50 87C20 66 3 48 3 28 3 13 14 3 28 3c10 0 18 6 22 14 4-8 12-14 22-14 14 0 25 10 25 25 0 20-17 38-47 59z'/%3E%3C/svg%3E")
+    center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 90' preserveAspectRatio='none'%3E%3Cpath d='M50 87C20 66 3 48 3 28 3 13 14 3 28 3c10 0 18 6 22 14 4-8 12-14 22-14 14 0 25 10 25 25 0 20-17 38-47 59z'/%3E%3C/svg%3E")
+    center / 100% 100% no-repeat;
+}
+
+.story-heart svg {
+  position: absolute;
+  top: -5%;
+  left: -5%;
+  width: 110%;
+  height: 110%;
+  overflow: visible;
+}
+
+.story-heart path {
+  fill: none;
+  stroke: var(--bbm-color-pistachio-500);
+  stroke-width: 1.4;
+  stroke-dasharray: 2.5 1.8;
+  stroke-linecap: round;
+}
+
+/* Two postage stamps and a wax seal */
+.story-stamp {
+  position: absolute;
+  width: clamp(3.5rem, 7vw, 5rem);
+  aspect-ratio: 4 / 5;
+  padding: 0.35rem;
+  background: #fffdf6;
+  --_perf:
+    linear-gradient(#000 0 0) content-box no-repeat,
+    radial-gradient(circle at center, transparent 0.17rem, #000 0.19rem) -0.3rem -0.3rem / 0.6rem 0.6rem round;
+  -webkit-mask: var(--_perf);
+  mask: var(--_perf);
+  filter: drop-shadow(0 4px 6px rgb(50 24 11 / 0.3));
+}
+
+.story-stamp img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Stuck on the letter's top corner, like postage */
+.story-stamp {
+  z-index: 1;
+}
+
+.story-stamp--a {
+  top: -1.5rem;
+  right: 1.25rem;
+  rotate: 9deg;
+}
+
+.story-stamp--b {
+  top: -0.75rem;
+  right: clamp(4.5rem, 8vw, 6rem);
+  rotate: -7deg;
+}
+
+.story-seal {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: clamp(3.5rem, 7vw, 4.5rem);
+  aspect-ratio: 1;
+  border-radius: 48% 52% 50% 50% / 52% 46% 54% 48%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    var(--bbm-color-cherry-500),
+    var(--bbm-color-cherry-700) 60%,
+    var(--bbm-color-cherry-800)
+  );
+  box-shadow:
+    inset 0 0 0 5px rgb(0 0 0 / 0.12),
+    inset 0 0 0 7px rgb(255 255 255 / 0.08),
+    0 6px 10px rgb(50 24 11 / 0.35);
+  color: var(--bbm-color-pink-200);
+  font-family: var(--bbm-font-family-script);
+  font-size: 2rem;
+  rotate: -12deg;
+}
+
+@media (max-width: 640px) {
+  .story-photo--b {
+    display: none;
+  }
+
+  .story-photo--a {
+    top: -0.5rem;
+    left: -0.25rem;
+  }
+
+  .story-photo--c,
+  .story-menu__doodle--b {
+    display: none;
+  }
+
+  .story-letter__outline {
+    translate: 6% 0;
+  }
+}
+
+/* 2. The tray (the "Sweet Rise Surprises" poster) ------------------------------------------ */
+
+.story-tray__top {
+  padding: clamp(2.5rem, 5vw, 4rem) var(--bbm-layout-gutter) clamp(3rem, 6vw, 5rem);
+  background-color: #f6dcdc;
+  background-image:
+    radial-gradient(circle, rgb(143 91 56 / 0.55) 0 3.5px, transparent 4px),
+    radial-gradient(circle, rgb(143 91 56 / 0.55) 0 3.5px, transparent 4px);
+  background-size: 46px 46px;
+  background-position:
+    0 0,
+    23px 23px;
+}
+
+.story-tray__title {
+  margin: 0;
+}
+
+.story-tray__title svg {
+  display: block;
+  width: min(100%, 56rem);
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.story-tray__title text {
+  font-family: var(--bbm-font-family-script);
+  font-size: 108px;
+  fill: var(--bbm-color-brown-600);
+  stroke: #fffdf6;
+  stroke-width: 12px;
+  stroke-linejoin: round;
+  paint-order: stroke;
+  filter: drop-shadow(0 3px 2px rgb(50 24 11 / 0.2));
+}
+
+/* A silver tray with two handles */
+.story-tray__tray {
+  position: relative;
+  max-width: 60rem;
+  margin: clamp(-0.5rem, -1vw, 0rem) auto 0;
+  padding: clamp(0.8rem, 2.2vw, 1.6rem);
+  border-radius: clamp(1.25rem, 3vw, 2rem);
+  background: linear-gradient(135deg, #f4f4f2, #b9bbbd 28%, #eeeeec 50%, #a9abad 74%, #e6e6e4);
+  box-shadow:
+    inset 0 0 0 2px rgb(255 255 255 / 0.7),
+    inset 0 2px 10px rgb(0 0 0 / 0.12),
+    0 26px 44px -20px rgb(50 24 11 / 0.5);
+}
+
+.story-tray__tray::before,
+.story-tray__tray::after {
+  content: '';
+  position: absolute;
+  top: 32%;
+  width: clamp(1.75rem, 5vw, 3.75rem);
+  height: 36%;
+  border: clamp(5px, 1vw, 10px) solid #c2c4c6;
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.6),
+    0 6px 10px -4px rgb(50 24 11 / 0.35);
+}
+
+.story-tray__tray::before {
+  right: 100%;
+  border-right: 0;
+  border-radius: 1.5rem 0 0 1.5rem;
+}
+
+.story-tray__tray::after {
+  left: 100%;
+  border-left: 0;
+  border-radius: 0 1.5rem 1.5rem 0;
+}
+
+/* Brown kraft paper on the tray, with sprinkles */
+.story-tray__paper {
+  position: relative;
+  padding: clamp(1rem, 3vw, 2.5rem) clamp(0.75rem, 3vw, 2.5rem);
+  border-radius: 4px;
+  background-color: #c9a37b;
+  background-image:
+    radial-gradient(rgb(255 255 255 / 0.1) 1px, transparent 1.6px),
+    radial-gradient(rgb(80 50 20 / 0.1) 1px, transparent 1.6px),
+    linear-gradient(115deg, transparent 40%, rgb(255 255 255 / 0.08) 50%, transparent 60%);
+  background-size:
+    7px 7px,
+    11px 11px,
+    100% 100%;
+  background-position:
+    0 0,
+    3px 5px,
+    0 0;
+  box-shadow: 0 2px 6px rgb(50 24 11 / 0.3);
+  rotate: -0.8deg;
+}
+
+.story-tray__sprinkle {
+  position: absolute;
+  width: 1.1rem;
+  height: 0.28rem;
+  border-radius: 1rem;
+  opacity: 0.9;
+}
+
+.story-tray__sprinkle--pink {
+  background: #f3a9b6;
+}
+
+.story-tray__sprinkle--blue {
+  background: #9fc3e2;
+}
+
+.story-tray__sprinkle--butter {
+  background: #f2d27a;
+}
+
+.story-tray__cakes {
+  position: relative;
+  display: grid;
+  /* Five stickers: three on top, two below sitting in the gaps, like a tray laid by hand */
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(0.75rem, 3vw, 2.5rem) clamp(0.5rem, 2.5vw, 2.5rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.story-tray__cakes li {
+  position: relative;
+  grid-column: span 2;
+  display: grid;
+  place-items: center;
+  transition:
+    scale 300ms var(--bbm-motion-easing-out),
+    rotate 300ms var(--bbm-motion-easing-out);
+}
+
+.story-tray__cakes li:nth-child(4) {
+  grid-column: 2 / span 2;
+}
+
+.story-tray__cakes img {
+  width: 100%;
+  max-height: 15rem;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 8px rgb(50 24 11 / 0.3));
+}
+
+@media (hover: hover) {
+  .story-tray__cakes li:hover {
+    scale: 1.05;
+    rotate: 0deg !important;
+  }
+}
+
+.story-tray__key {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: clamp(1.4rem, 3vw, 1.9rem);
+  aspect-ratio: 1;
+  border: 1px solid var(--bbm-color-brown-700);
+  border-radius: 50%;
+  background: #fffdf6;
+  font-size: clamp(0.6rem, 1.4vw, 0.75rem);
+  font-weight: var(--bbm-font-weight-bold);
+  color: var(--bbm-color-brown-800);
+}
+
+/* The key, in a cream oval on blue pinstripes */
+.story-tray__bottom {
+  padding: clamp(2.5rem, 5vw, 4rem) var(--bbm-layout-gutter);
+  background-color: #fbf8f2;
+  background-image: repeating-linear-gradient(
+    90deg,
+    #bccfe4 0 9px,
+    transparent 9px 15px,
+    #bccfe4 15px 17px,
+    transparent 17px 36px
+  );
+  border-top: 1px solid var(--bbm-color-pink-400);
+}
+
+.story-tray__oval {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 3.5rem) clamp(1.5rem, 8vw, 6.5rem) clamp(2.25rem, 5vw, 3.75rem);
+  border: 3px solid var(--bbm-color-brown-600);
+  border-radius: 50%;
+  background: #fffdf6;
+  text-align: center;
+}
+
+.story-tray__ask {
+  display: block;
+  width: min(100%, 30rem);
+  margin: 0 auto var(--bbm-space-3);
+  overflow: visible;
+}
+
+.story-tray__ask text {
+  font-family: var(--bbm-font-family-display);
+  font-size: 46px;
+  font-style: italic;
+  fill: var(--bbm-color-brown-600);
+}
+
+.story-tray__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--bbm-space-3) var(--bbm-space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.story-tray__list li {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bbm-color-brown-700);
+}
+
+.story-tray__list span {
+  display: inline-block;
+  width: 1.75em;
+  font-weight: var(--bbm-font-weight-bold);
+}
+
+@media (max-width: 640px) {
+  /* Two by two, the fifth centred underneath */
+  .story-tray__cakes {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .story-tray__cakes li:nth-child(4) {
+    grid-column: span 2;
+  }
+
+  .story-tray__cakes li:nth-child(5) {
+    grid-column: 2 / span 2;
+  }
+
+  .story-tray__oval {
+    border-radius: 2.5rem;
+  }
+
+  .story-tray__list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 3. The menu card (the "desserts & Pastries" menu) ---------------------------------------- */
+
+.story-menu {
+  padding: clamp(2rem, 5vw, 4rem) var(--bbm-layout-gutter);
+  background-color: #f6efe2;
+  background-image:
+    linear-gradient(90deg, rgb(178 33 55 / 0.55) 50%, transparent 0),
+    linear-gradient(rgb(178 33 55 / 0.55) 50%, transparent 0);
+  background-size: 34px 34px;
+}
+
+.story-menu__card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--bbm-space-6);
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 3.75rem);
+  background-color: #ede4d5;
+  box-shadow: 0 18px 40px -20px rgb(50 24 11 / 0.55);
+}
+
+.story-menu__art {
+  display: block;
+  width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 10px rgb(50 24 11 / 0.25));
+}
+
+.story-menu__art--a {
+  justify-self: center;
+  width: min(10rem, 50%);
+}
+
+.story-menu__art--b {
+  display: none;
+}
+
+@media (min-width: 720px) {
+  .story-menu__card {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    grid-template-areas:
+      'art-a title'
+      'art-a first'
+      'second art-b'
+      'action art-b';
+    gap: var(--bbm-space-6) var(--bbm-space-10);
+    align-items: center;
+  }
+
+  .story-menu__art--a {
+    grid-area: art-a;
+    width: 68%;
+    rotate: -6deg;
+  }
+
+  .story-menu__art--b {
+    display: block;
+    grid-area: art-b;
+    justify-self: center;
+    width: 42%;
+    rotate: 5deg;
+  }
+
+  .story-menu__title {
+    grid-area: title;
+  }
+
+  .story-menu__group:nth-of-type(1) {
+    grid-area: first;
+  }
+
+  .story-menu__group:nth-of-type(2) {
+    grid-area: second;
+  }
+
+  .story-menu__action {
+    grid-area: action;
+  }
+}
+
+.story-menu__doodle {
+  position: absolute;
+  pointer-events: none;
+}
+
+.story-menu__doodle--a {
+  top: 1.25rem;
+  left: 1.25rem;
+}
+
+.story-menu__doodle--b {
+  top: 48%;
+  right: 1.25rem;
+}
+
+.story-menu__doodle--c {
+  bottom: 1.25rem;
+  left: 46%;
+}
+
+.story-menu__title {
+  display: grid;
+  justify-items: end;
+  margin: 0;
+  text-align: right;
+}
+
+.story-menu__script {
+  margin-right: 3.5em;
+  margin-bottom: -0.35em;
+  font-family: var(--bbm-font-family-script);
+  font-size: clamp(2rem, 1.6rem + 1.4vw, 2.75rem);
+  font-weight: 400;
+  color: var(--bbm-color-brown-600);
+}
+
+.story-menu__caps {
+  font-family: var(--bbm-font-family-display);
+  font-size: clamp(2.6rem, 1.6rem + 3.6vw, 4.25rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--bbm-color-brown-800);
+}
+
+/* A hairline rule with a diamond at each end, then the heading and the rows */
+.story-menu__group {
+  position: relative;
+  padding-top: var(--bbm-space-4);
+  border-top: 1px solid var(--bbm-color-brown-700);
+}
+
+.story-menu__group::before,
+.story-menu__group::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  width: 7px;
+  height: 7px;
+  background: var(--bbm-color-brown-700);
+  rotate: 45deg;
+}
+
+.story-menu__group::before {
+  left: -3px;
+}
+
+.story-menu__group::after {
+  right: -3px;
+}
+
+.story-menu__group h3 {
+  margin: 0 0 var(--bbm-space-2);
+  font-size: 1.3rem;
+  font-weight: var(--bbm-font-weight-bold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #c0652f;
+}
+
+.story-menu__group dl {
+  display: grid;
+  gap: var(--bbm-space-1);
+  margin: 0;
+}
+
+.story-menu__group dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--bbm-space-4);
+}
+
+.story-menu__group dt,
+.story-menu__group dd {
+  margin: 0;
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  color: var(--bbm-color-brown-900);
+}
+
+.story-menu__action {
+  justify-self: center;
+}
+
+@media (min-width: 720px) {
+  .story-menu__action {
+    align-self: start;
+    justify-self: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-sparkle {
+    animation: none;
+  }
+
+  .story-tray__cakes li {
+    transition: none;
+  }
+}

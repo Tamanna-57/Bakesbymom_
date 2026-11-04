@@ -2,6 +2,7 @@ import { useEffect, type ReactNode } from 'react';
 import { Logo, SiteHeader } from '@bakesbymom/ui';
 import { announcement, headerActions, mobileCta, navLinksFor } from '../content/site';
 import { ChatDemo, Footer } from '../sections/blocks';
+import { FooterWord } from '../sections/fx';
 
 interface LayoutProps {
   /** The current path, to mark the nav link for this page. */
@@ -64,6 +65,7 @@ export function Layout({
         {children}
       </main>
       <Footer />
+      <FooterWord />
       <ChatDemo inline={false} defaultOpen={false} />
     </>
   );

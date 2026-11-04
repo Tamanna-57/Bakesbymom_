@@ -129,8 +129,8 @@ export function ScrollProgress() {
 const CURSOR_WORDS: Array<[string, string]> = [
   ['[data-cursor]', ''],
   ['.home-wheel__stage', 'Drag'],
-  ['.bbm-gallery, .site-gallery [class*="strip"]', 'Drag'],
-  ['.site-menu__grid a, .home-craft-tile, .site-tiles a, .home-flavour, .treat-sig__grid a', 'Peek'],
+  ['.bbm-gallery', 'Drag'],
+  ['.site-menu__grid a, .order-rail__tile, .fx-deck__card a, .site-tiles a, .treat-sig__grid a', 'Peek'],
 ];
 
 export function CursorLabel() {

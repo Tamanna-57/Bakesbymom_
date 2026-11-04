@@ -55,19 +55,19 @@ The packages are npm workspaces in this repo. To use them from another repositor
 
 ## Which pin does what
 
-| Section                                                                                                                                  | From                                                    |
-| ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
-| Home page: hero stripes, about us card, flavours, order card and cherry tiles                                                            | 16 SugarLace bakery                                     |
-| Home page: ribbon, Mom's kitchen (the Cakes & Treats wheel comes from a tea shop's products carousel)                                    | 13 Puzzle Pantry                                        |
-| Find us, custom cakes, the scalloped nav                                                                                                 | 15 Nectar candy cart                                    |
-| Menu cards and category tiles                                                                                                            | 16 SugarLace bakery (filters from 13)                   |
-| Process, marquee ribbons, FAQ                                                                                                            | 02 Pretty OK mail club                                  |
-| About / Meet Mom                                                                                                                         | 05 Pretty OK studios (story orbit from 01)              |
-| Gallery (strips you open with a click, drag, arrows or a sideways scroll, with occasion chips from 13), reviews, Bake Club band, journal | 01 Berloga coffeeshop                                   |
-| Bake Club ticket                                                                                                                         | 10 Book Nook Society                                    |
-| Newsletter and footer                                                                                                                    | 03 Emily Jane                                           |
-| Link in bio, pricing packages                                                                                                            | 08 Digital Wave taplink                                 |
-| Chatbot                                                                                                                                  | composed from 08, 10, 01 and 15 (the board has no chat) |
+| Section                                                                                                | From                                                    |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------- |
+| Home page: hero stripes, about us card, the order lockup and shortcut tiles                            | 16 SugarLace bakery                                     |
+| Home page: ribbon, Mom's kitchen (the Cakes & Treats wheel comes from a tea shop's products carousel)  | 13 Puzzle Pantry                                        |
+| Find us, custom cakes, the scalloped nav                                                               | 15 Nectar candy cart                                    |
+| Menu cards and category tiles                                                                          | 16 SugarLace bakery (filters from 13)                   |
+| Process, marquee ribbons, FAQ                                                                          | 02 Pretty OK mail club                                  |
+| About / Meet Mom                                                                                       | 05 Pretty OK studios (story orbit from 01)              |
+| Gallery component (in the library and Storybook; not on the website), reviews, Bake Club band, journal | 01 Berloga coffeeshop                                   |
+| Bake Club ticket                                                                                       | 10 Book Nook Society                                    |
+| Newsletter and footer                                                                                  | 03 Emily Jane                                           |
+| Link in bio, pricing packages                                                                          | 08 Digital Wave taplink                                 |
+| Chatbot                                                                                                | composed from 08, 10, 01 and 15 (the board has no chat) |
 
 The reasoning, with alternates for every section, is in [`design/board/README.md`](./design/board/README.md).
 

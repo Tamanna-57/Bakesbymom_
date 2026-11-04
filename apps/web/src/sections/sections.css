@@ -706,34 +706,270 @@
   pointer-events: none;
 }
 
-/* Cake cards: the photos are cut-outs, so show the whole cake on the card's tone. A square frame (not a tall 4:5
-   one) keeps a whole row of cards, photo to price, on a laptop screen. */
-.site-cake-card .bbm-product__media {
-  aspect-ratio: 1;
-}
+/* Cake tickets (CakeCard), cut like the cards on the Cakes & Treats wheel ---------------------------------- */
 
-.site-cake-card .bbm-product__image {
-  box-sizing: border-box;
-  padding: var(--bbm-space-3);
-  object-fit: contain;
-}
-
-.site-cake-card__badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--bbm-space-1);
+/* The cards are dealt in from off to the side (CakeGrid), so the band keeps them from widening the page */
+.site-menu {
+  overflow-x: clip;
 }
 
 @media (max-width: 599.98px) {
-  .site-cake-card .bbm-product__media {
-    aspect-ratio: auto;
+  .site-cakes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--bbm-space-6) var(--bbm-space-3);
   }
 }
 
-/* A restaged photo brings its own background, so it fills the frame */
-.site-cake-card--backdrop .bbm-product__image {
+.site-cake {
+  --ticket: var(--bbm-color-pink-300);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--bbm-space-2);
+  color: var(--bbm-color-text-primary);
+}
+
+.site-cake[data-tone='butter'] {
+  --ticket: var(--bbm-color-butter-200);
+}
+
+.site-cake[data-tone='beige'] {
+  --ticket: var(--bbm-color-beige-100);
+}
+
+.site-cake[data-tone='cherry'] {
+  --ticket: var(--bbm-color-cherry-200);
+}
+
+/* The photo on softly rounded corners, a hard sticker shadow under it */
+.site-cake__ticket {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 10 / 12;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-lg);
+  /* A pool of light under the cut-out, so the cake stands on something */
+  background:
+    radial-gradient(
+      60% 14% at 50% 88%,
+      color-mix(in srgb, var(--bbm-color-brown-900) 16%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(90% 70% at 50% 30%, color-mix(in srgb, var(--bbm-color-paper) 55%, transparent), transparent 70%),
+    var(--ticket);
+  box-shadow: var(--bbm-shadow-sticker-md);
+  transition:
+    translate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce),
+    rotate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce),
+    box-shadow var(--bbm-motion-duration-slow) var(--bbm-motion-easing-out);
+}
+
+.site-cake__ticket img {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 11% 5% 4%;
+  object-fit: contain;
+  user-select: none;
+  transition: scale 0.7s var(--bbm-motion-easing-out);
+}
+
+/* A restaged photo brings its own background, so it fills the ticket */
+.site-cake--backdrop .site-cake__ticket img {
   padding: 0;
   object-fit: cover;
+}
+
+/* "B" and "M", for Bakes by Mom, in the top corners like the wheel's tickets */
+.site-cake__mark {
+  position: absolute;
+  top: 0.55rem;
+  font-family: var(--bbm-font-family-display);
+  font-size: clamp(1.1rem, 0.8rem + 0.9vw, 1.6rem);
+  font-weight: var(--bbm-font-weight-bold);
+  line-height: 1;
+  color: var(--bbm-color-cherry-700);
+}
+
+.site-cake__mark--b {
+  left: 0.8rem;
+}
+
+.site-cake__mark--m {
+  right: 0.8rem;
+}
+
+.site-cake--backdrop .site-cake__mark {
+  color: var(--bbm-color-paper);
+  text-shadow: 0 1px 6px rgb(30 4 10 / 0.55);
+}
+
+/* What's in the cake, slid up over the photo when the card is pointed at */
+.site-cake__inside {
+  position: absolute;
+  inset: auto 0 0;
+  padding: var(--bbm-space-3) var(--bbm-space-4) var(--bbm-space-4);
+  border-top: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  background-color: var(--bbm-color-paper);
+  font-size: var(--bbm-text-body-sm-size);
+  line-height: 1.4;
+  translate: 0 101%;
+  transition: translate 0.45s var(--bbm-motion-easing-out);
+}
+
+.site-cake__peek {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: 50%;
+  background-color: var(--bbm-color-cherry-700);
+  color: var(--bbm-color-paper);
+  font-weight: var(--bbm-font-weight-bold);
+  translate: -50% -80%;
+  scale: 0;
+  rotate: -90deg;
+  transition:
+    scale 0.5s var(--bbm-motion-easing-bounce),
+    rotate 0.5s var(--bbm-motion-easing-bounce);
+}
+
+/* The weight and the price on the ticket's stub */
+.site-cake__name {
+  margin: var(--bbm-space-2) 0 0;
+  font-family: var(--bbm-font-family-display);
+  font-size: clamp(1rem, 0.9rem + 0.35vw, 1.2rem);
+  font-weight: var(--bbm-font-weight-bold);
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.site-cake__name a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* The name's link covers the whole card */
+.site-cake__name a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: var(--bbm-radius-lg);
+}
+
+.site-cake__name a:focus-visible {
+  outline: none;
+}
+
+.site-cake__name a:focus-visible::after {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: 4px;
+}
+
+.site-cake__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bbm-space-2);
+  margin-top: auto;
+}
+
+.site-cake__weight {
+  padding: 0.15rem 0.6rem;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-pill);
+  background-color: var(--bbm-color-paper);
+  font-size: var(--bbm-text-body-sm-size);
+  font-weight: var(--bbm-font-weight-bold);
+}
+
+.site-cake__price {
+  padding: 0.2rem 0.75rem;
+  border-radius: var(--bbm-radius-pill);
+  background-color: var(--bbm-color-cherry-700);
+  color: var(--bbm-color-paper);
+  font-family: var(--bbm-font-family-display);
+  font-size: clamp(1rem, 0.9rem + 0.3vw, 1.15rem);
+  font-weight: var(--bbm-font-weight-bold);
+}
+
+/* "Most ordered": a tilted sticker stuck over the ticket's top edge */
+.site-cake__popular {
+  position: absolute;
+  top: -0.7rem;
+  left: 50%;
+  z-index: 2;
+  padding: 0.2rem 0.7rem;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-pill);
+  background-color: var(--bbm-color-butter-300);
+  box-shadow: var(--bbm-shadow-sticker-sm);
+  font-size: 0.75rem;
+  font-weight: var(--bbm-font-weight-black);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  translate: -50% 0;
+  rotate: -4deg;
+  transition: rotate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
+}
+
+/* Pointed at: the ticket lifts and tips, the cake leans in, the arrow pops and what's inside slides up */
+@media (hover: hover) {
+  .site-cake:hover .site-cake__ticket {
+    translate: 0 -0.5rem;
+    rotate: -1.5deg;
+    box-shadow: var(--bbm-shadow-sticker-lg);
+  }
+
+  .site-cake:hover .site-cake__ticket img {
+    scale: 1.07;
+  }
+
+  .site-cake:hover .site-cake__inside {
+    translate: 0 0;
+  }
+
+  .site-cake:hover .site-cake__peek {
+    scale: 1;
+    rotate: 0deg;
+  }
+
+  .site-cake:hover .site-cake__popular {
+    rotate: 5deg;
+  }
+}
+
+@media (max-width: 599.98px) {
+  .site-cake__inside,
+  .site-cake__peek {
+    display: none;
+  }
+
+  .site-cake__foot {
+    flex-wrap: wrap;
+  }
+
+  .site-cake__popular {
+    font-size: 0.65rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-cake__ticket,
+  .site-cake__ticket img,
+  .site-cake__inside,
+  .site-cake__peek,
+  .site-cake__popular {
+    transition: none;
+  }
 }
 
 /* Cut-out photos in frames sit on the frame's paper, not on a crop */
@@ -891,76 +1127,6 @@
   padding: var(--bbm-space-2);
   border-radius: var(--bbm-radius-md);
   object-fit: contain;
-}
-
-/* Gallery strips: a soft ground behind the cut-out photos */
-/* The gallery on the cocoa band. It pins under the sticky header (Layout measures it) while the page scrolls
-   through the strips. */
-.site-gallery {
-  --bbm-gallery-pin-top: var(--site-header-h, 5.25rem);
-}
-
-/* Gallery strips: a soft ground behind the cut-out photos */
-.site-gallery .bbm-gallery__strip {
-  background: var(--bbm-color-bg-pink);
-  border-color: var(--bbm-color-paper);
-}
-
-/* The open photo shows the whole cake, not a crop through the middle of it */
-.site-gallery .bbm-gallery__strip--open img {
-  object-fit: contain;
-  padding: var(--bbm-space-4);
-  box-sizing: border-box;
-}
-
-.site-gallery .bbm-gallery__strip--open {
-  box-shadow: var(--bbm-shadow-sticker-lg);
-}
-
-/* The gallery sits on the cocoa band: candy-pink bubble letters, light caption */
-.site-gallery .bbm-heading--bubble .bbm-heading__title {
-  --bbm-heading-bubble-fill: var(--bbm-color-pink-300);
-  -webkit-text-stroke-color: var(--bbm-color-paper);
-  text-shadow: 0.05em 0.06em 0 var(--bbm-color-cherry-600);
-}
-
-/* Pinned, the heading is sized from the screen's height, so the strips keep most of it */
-.site-gallery .bbm-gallery--pinned .bbm-heading--bubble .bbm-heading__title {
-  font-size: clamp(2.75rem, 10svh, 7rem);
-}
-
-.site-gallery .bbm-gallery__caption,
-.site-gallery .bbm-gallery__caption a {
-  color: var(--bbm-color-pink-300);
-}
-
-/* One row of occasion chips that scrolls sideways, so the strips keep the height */
-.site-gallery .site-gallery__filters {
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  justify-content: safe center;
-  overflow-x: auto;
-  margin-inline: calc(-1 * var(--bbm-layout-gutter));
-  padding: var(--bbm-space-1) var(--bbm-layout-gutter) var(--bbm-space-2);
-  scroll-padding-inline: var(--bbm-layout-gutter);
-  scrollbar-width: thin;
-  scrollbar-color: var(--bbm-color-pink-300) transparent;
-}
-
-.site-gallery .site-gallery__filters .bbm-chips__chip {
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  gap: var(--bbm-space-1);
-}
-
-.site-gallery__chip-icon {
-  flex: none;
-}
-
-/* Pinned, the arrows sit clear of the Ask Mom launcher in the bottom-right corner */
-.site-gallery .bbm-gallery--pinned .bbm-gallery__footer {
-  padding-right: clamp(4.5rem, 10vw, 6.5rem);
 }
 
 /* Phones: swipe the chips, no scrollbar */

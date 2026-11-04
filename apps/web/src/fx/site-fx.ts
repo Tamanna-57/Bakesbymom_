@@ -11,7 +11,6 @@ import { finePointer, gsap, motionAllowed, scatter, SplitText } from './gsap';
 /** Titles whose letters fly in. Sections marked `data-fx-own` animate their own titles. */
 const TITLES = [
   '.bbm-heading__title',
-  '.home-crafted__lockup h2',
   '.home-shop__title',
   '.home-kitchen__title',
   '.site-hero__title',
@@ -116,11 +115,10 @@ function scrollDrivenRibbons() {
   };
 }
 
-const MAGNETS = '.bbm-button, .site-icon-link, .home-wheel__arrow';
+const MAGNETS = '.bbm-button, .site-icon-link, .home-wheel__arrow, .order-rail__tile-arrow';
 const TILTS = [
   '.site-menu__grid > li > *',
-  '.home-flavour',
-  '.home-craft-tile',
+  '.order-rail__tile',
   '.site-tiles > li > *',
   '.treat-sig__grid > li > *',
 ].join(',');

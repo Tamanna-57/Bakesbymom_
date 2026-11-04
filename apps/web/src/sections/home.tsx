@@ -1,10 +1,10 @@
 /**
- * The home page sections, after pin 16 (SugarLace: stripes, the outlined about card, the flavour grid,
- * the order card and cherry tiles) and pin 13 (Puzzle Pantry: the shape ribbon, shop by the box with
- * filter pills, the split about). The feature strip, the starburst and the checker
- * quote come from other bakery sites on Pinterest (Sweet Crumbs, joe & dough, Sunday Bakehouse).
- * Photos here are stock (content/index.ts `stock`, `treatArt`, `flavours`); the photos of the cakes we sell are
- * kept for the catalog and the gallery.
+ * The home page sections, after pin 16 (SugarLace: stripes, the outlined about card) and pin 13 (Puzzle Pantry: the
+ * shape ribbon, shop by the box with filter pills, the split about). The feature strip and the starburst come from
+ * other bakery sites on Pinterest (Sweet Crumbs, joe & dough). The flavours are a deck now (sections/fx.tsx) and
+ * how to order rides sideways (sections/order-rail.tsx).
+ * Photos here are stock (content/index.ts `stock`, `treatArt`); the photos of the cakes we sell are kept for the
+ * catalog.
  */
 import { useEffect, useRef, useState, type CSSProperties, type FocusEvent, type RefObject } from 'react';
 import {
@@ -17,16 +17,14 @@ import {
   Polaroid,
   PriceTag,
   SectionHeading,
-  Ticket,
 } from '@bakesbymom/ui';
 import { Badge, Collage } from '../collage/Collage';
-import { flavours, stock, treatArt } from '../content';
-import { bakery, cakeFlavours, cakeSizes, flavourSlug, whatsappLink } from '../content/bakery';
-import { howToOrder, orderLink } from '../content/site';
-import { gsap, scatter, SplitText, useFx } from '../fx/gsap';
+import { stock, treatArt } from '../content';
+import { bakery } from '../content/bakery';
+import { orderLink } from '../content/site';
+import { gsap, scatter, useFx } from '../fx/gsap';
 import { splitTitle, writeIn } from '../fx/site-fx';
 import { SectionEdge } from './blocks';
-import { FlavourWall } from './fx';
 import { treatCategories } from '../content/treats';
 import './home.css';
 
@@ -245,7 +243,12 @@ const features = [
  */
 export function HomeIntro() {
   return (
-    <PatternSurface pattern="dots" tone="pink" ground="var(--bbm-color-bg-pink)" className="home-intro">
+    <PatternSurface
+      pattern="dots"
+      tone="pink"
+      ground="var(--home-blend, var(--bbm-color-bg-pink))"
+      className="home-intro"
+    >
       <AboutUsCard />
     </PatternSurface>
   );
@@ -316,49 +319,6 @@ export function AboutUsCard() {
   );
 }
 
-/* Flavours (pin 16's "Fillings" grid) --------------------------------- */
-
-export function FlavoursSection() {
-  return (
-    <section id="flavours" className="site-section site-section--blue site-section--edged home-flavours">
-      {/* Blue, turning cherry together with the Cakes & Treats wheel below as it scrolls in (--home-blend) */}
-      <SectionEdge color="var(--home-blend, var(--bbm-color-bg-blue))" />
-      <FlavourWall words={cakeFlavours} />
-      <div className="site-container">
-        <SectionHeading variant="ribbon" title="Flavours" ribbonText="baked to order" />
-        <ul className="home-flavours__grid">
-          {cakeFlavours.map((flavour) => {
-            const photo = flavours[flavour];
-            return (
-              <li key={flavour}>
-                <article className="home-flavour">
-                  {photo && <img className="home-flavour__photo" src={photo.src} alt={photo.alt} loading="lazy" />}
-                  <h3>{flavour}</h3>
-                  <p>{photo?.inside}</p>
-                  <div className="home-flavour__foot">
-                    <span className="home-flavour__pill">any cake</span>
-                    <a
-                      className="home-flavour__ask"
-                      href={`/catalog?flavour=${flavourSlug(flavour)}`}
-                      aria-label={`See every cake in ${flavour.toLowerCase()}`}
-                    >
-                      <span aria-hidden="true">↗</span>
-                    </a>
-                  </div>
-                </article>
-              </li>
-            );
-          })}
-        </ul>
-        <p className="site-menu__note home-flavours__note">
-          <span aria-hidden="true">✱</span>
-          Every flavour is eggless and goes in any cake on the menu. Tell Mom about any allergies when you order.
-        </p>
-      </div>
-    </section>
-  );
-}
-
 /* Cakes & Treats wheel: cards on a rainbow arc that the visitor turns -----------------------------------------
    After a tea shop's "Our products" (the reference video): a huge headline behind, ticket cards on an arc, the
    background blending in from the band above. In the site's palette and type. */
@@ -414,7 +374,7 @@ function useWheel(count: number) {
 
   useEffect(() => place(turn), [turn]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // As in the reference, the color behind the Flavours band and the wheel changes together with the scroll: blue
+  // As in the reference, the color behind the about us band and the wheel changes together with the scroll: pink
   // while the wheel is below the screen, a little redder with every step it rises, and solid cherry once its top
   // reaches the header. The two bands always share the color, so there is never a line between them on screen.
   // --wheel-in goes on the page (home.css turns it into --home-blend for both bands).
@@ -687,191 +647,6 @@ export function ShopByBoxSection() {
         </ul>
       </div>
     </section>
-  );
-}
-
-/* Quote on a checker band (Sunday Bakehouse) --------------------------- */
-
-/**
- * The note types itself out when it scrolls in, a caret running ahead of it (Teh Tarik Nation's typewriter tags);
- * the script words and Mom's sign-off are written in, and the checkers slide under the card as the page scrolls.
- */
-function useQuoteFx(root: RefObject<HTMLElement | null>) {
-  useFx(root, (figure) => {
-    const band = figure.closest<HTMLElement>('.home-quote') ?? figure;
-    const line = figure.querySelector<HTMLElement>('.home-quote__line');
-    const caret = figure.querySelector<HTMLElement>('.home-quote__caret');
-    const script = line?.querySelector('em');
-    if (!line || !caret) return;
-    const split = SplitText.create(line, { type: 'words,chars', ignore: 'em', aria: 'none' });
-    const chars = split.chars as HTMLElement[];
-    const after = script
-      ? chars.findIndex((c) => script.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING)
-      : chars.length;
-    const cut = after < 0 ? chars.length : after;
-    const box = caret.parentElement!;
-    const placeCaret = (el: Element) => {
-      const r = el.getBoundingClientRect();
-      const b = box.getBoundingClientRect();
-      gsap.set(caret, { x: r.right - b.left + 2, y: r.top - b.top, height: r.height });
-    };
-    const type = () => ({
-      opacity: 1,
-      duration: 0.01,
-      stagger: {
-        each: 0.045,
-        onComplete(this: gsap.core.Tween) {
-          placeCaret(this.targets()[0] as Element);
-        },
-      },
-    });
-    gsap.set(chars, { opacity: 0 });
-    const tl = gsap.timeline({ scrollTrigger: { trigger: figure, start: 'top 72%', once: true } });
-    tl.from(figure, { rotation: -7, scale: 0.8, y: 70, opacity: 0, duration: 0.8, ease: 'back.out(1.8)' })
-      .set(caret, { opacity: 1 })
-      .to(chars.slice(0, cut), type());
-    if (script) tl.add(writeIn(script, { duration: 0.9, onComplete: () => placeCaret(script) }));
-    tl.to(chars.slice(cut), type())
-      .add(writeIn(figure.querySelector('figcaption')!, { duration: 1.2 }), '+=0.1')
-      .to(caret, { opacity: 0, duration: 0.3 }, '+=0.8');
-    gsap.fromTo(
-      band,
-      { backgroundPosition: '0px 0px' },
-      {
-        backgroundPosition: '160px 320px',
-        ease: 'none',
-        scrollTrigger: { trigger: band, start: 'top bottom', end: 'bottom top', scrub: true },
-      },
-    );
-  });
-}
-
-export function QuoteBand() {
-  const root = useRef<HTMLElement>(null);
-  useQuoteFx(root);
-  return (
-    <PatternSurface
-      as="section"
-      pattern="checker"
-      tone="pink"
-      scale="lg"
-      ground="var(--bbm-color-bg-canvas)"
-      className="home-quote"
-      aria-label="A note from Mom"
-      data-fx-own
-    >
-      <figure ref={root} className="home-quote__card">
-        <blockquote>
-          {/* Read once, whole; the visible line is split into letters to type it out */}
-          <p className="bbm-visually-hidden">Our secret ingredient? A day's notice, and a whole lot of love.</p>
-          <p className="home-quote__line" aria-hidden="true">
-            Our secret ingredient? A day's notice, and a <em>whole lot</em> of love.
-          </p>
-          <span className="home-quote__caret" aria-hidden="true" />
-        </blockquote>
-        <figcaption>with love, Mom</figcaption>
-      </figure>
-    </PatternSurface>
-  );
-}
-
-/* Crafted happiness: the lockup, the order card and cherry tiles (pin 16) */
-
-const craftTiles = [
-  {
-    label: 'Custom cake',
-    href: whatsappLink("Hello Bakes by Mom! I'd like to plan a custom cake 🎂"),
-    // One of Mom's own: a cut-out photo, shown whole on a pink card
-    image: '/photos/thumbs/IMG-20260206-WA0062.webp',
-    cutout: true,
-    externalLink: true,
-  },
-  { label: 'Bento cake', href: '/shop/bento-cakes', image: stock.bento.src, externalLink: false },
-  {
-    label: 'Send a gift',
-    href: whatsappLink("Hello Bakes by Mom! I'd like to send a cake as a gift 🎁"),
-    image: stock.gift.src,
-    externalLink: true,
-  },
-  { label: 'Questions?', href: '#faq', image: stock.cupcakes.src, externalLink: false },
-];
-
-export function CraftedSection() {
-  const sizes = `${cakeSizes[0]?.label.split(' · ')[0]} to ${cakeSizes[cakeSizes.length - 1]?.label.split(' · ')[0]}`;
-  return (
-    <PatternSurface
-      as="section"
-      id="order"
-      pattern="stripes"
-      tone="blue"
-      scale="xl"
-      ground="var(--bbm-color-bg-canvas)"
-      className="site-section home-crafted"
-    >
-      <div className="site-container">
-        <div className="home-crafted__lockup">
-          <span data-parallax="0.1">
-            <Doodle name="cherries-halftone" size={120} color="var(--bbm-color-cherry-700)" />
-          </span>
-          <h2>
-            <span className="home-crafted__heavy">Crafted happiness, baked with love.</span>
-            <span className="home-script home-crafted__script">Bakes by Mom</span>
-          </h2>
-          <span data-parallax="-0.1">
-            <Doodle
-              name="cherries-halftone"
-              size={120}
-              color="var(--bbm-color-cherry-700)"
-              className="home-crafted__mirror"
-            />
-          </span>
-        </div>
-        <div className="home-crafted__grid">
-          <div className="home-order-card">
-            <span className="home-order-card__tape" aria-hidden="true" />
-            <Ticket variant="stamp" tone="pink">
-              <h3 className="home-script home-order-card__title">How do I place an order?</h3>
-              <ol className="home-order-card__steps">
-                {howToOrder.map((step, i) => (
-                  <li key={step.title}>
-                    <strong>
-                      Step {i + 1}: {step.title}.
-                    </strong>{' '}
-                    {step.description}
-                  </li>
-                ))}
-              </ol>
-              <p className="home-order-card__note">
-                <strong>Pickup and delivery:</strong> pick up from the kitchen in {bakery.place}, or ask for delivery
-                when you order. Any cake from {sizes}. {bakery.notice}
-              </p>
-              <Button href={orderLink} {...external}>
-                Start an order
-              </Button>
-            </Ticket>
-          </div>
-          <ul className="home-crafted__tiles">
-            {craftTiles.map((tile) => (
-              <li key={tile.label}>
-                <a className="home-craft-tile" href={tile.href} {...(tile.externalLink ? external : {})}>
-                  <span className="home-craft-tile__blob" aria-hidden="true" />
-                  <img
-                    src={tile.image}
-                    alt=""
-                    loading="lazy"
-                    className={'cutout' in tile ? 'home-craft-tile__cutout' : undefined}
-                  />
-                  <span className="home-craft-tile__arrow" aria-hidden="true">
-                    ↗
-                  </span>
-                  <span className="home-craft-tile__label">{tile.label}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </PatternSurface>
   );
 }
 

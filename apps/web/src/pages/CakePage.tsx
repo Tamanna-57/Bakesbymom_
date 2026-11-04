@@ -13,7 +13,7 @@ import {
 } from '../content/bakery';
 import { findOccasion, refreshCake, type Cake } from '../content/catalog';
 import { cakeOrderMessage, cakePrice } from '../content/order';
-import { CakeCard } from '../sections/blocks';
+import { CakeGrid } from '../sections/blocks';
 import { Layout } from './Layout';
 import { Breadcrumbs, Chips, EgglessNote, OrderGroup, WhatsAppOrder, WhenWhereFields, type WhenWhere } from './order';
 import { SectionEdge } from '../sections/blocks';
@@ -219,17 +219,11 @@ export function CakePage({ cake }: { cake: Cake }) {
       </section>
 
       {more.length > 0 && (
-        <section className="site-section site-section--beige site-section--edged">
+        <section className="site-section site-section--beige site-section--edged site-menu">
           <SectionEdge color="var(--bbm-color-bg-beige)" shape="wave" />
           <div className="site-container">
             <SectionHeading title={`More for ${occasion?.name ?? 'this occasion'}`} size="md" />
-            <ul className="site-menu__grid">
-              {more.map((other, i) => (
-                <li key={other.slug}>
-                  <CakeCard cake={other} index={i} />
-                </li>
-              ))}
-            </ul>
+            <CakeGrid cakes={more} />
           </div>
         </section>
       )}

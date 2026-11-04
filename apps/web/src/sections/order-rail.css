@@ -1,0 +1,798 @@
+/* How to order, as a ride sideways (order-rail.tsx). Built only from tokens.
+
+   The still layout comes first: the panels stacked down the page, finished, for reduced motion and short screens.
+   Where the panels ride (motion allowed, a screen at least 520px tall, the same query as RAIL_QUERY), they sit in
+   one long strip the height of the screen and the section pins while it slides past. */
+
+.order-rail {
+  --rail-ink: var(--bbm-color-brown-900);
+  position: relative;
+  overflow: hidden;
+  border-block: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  background-color: var(--bbm-color-bg-canvas);
+  color: var(--rail-ink);
+}
+
+.order-rail__track {
+  display: grid;
+}
+
+.order-rail__panel {
+  position: relative;
+  box-sizing: border-box;
+  padding: var(--bbm-layout-section-y) var(--bbm-layout-gutter);
+}
+
+/* The lockup: the same words as before, on cream with wide blue stripes ---------------------------------------- */
+
+.order-rail__intro {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--bbm-space-4);
+}
+
+.order-rail__lockup {
+  display: grid;
+  justify-items: center;
+  gap: var(--bbm-space-4);
+  max-width: 56rem;
+  margin-inline: auto;
+  padding: clamp(var(--bbm-space-6), 4vw, var(--bbm-space-10));
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-xl);
+  background-color: var(--bbm-color-bg-canvas);
+  box-shadow: var(--bbm-shadow-sticker-lg);
+  text-align: center;
+}
+
+.order-rail__pill {
+  margin: 0;
+  padding: var(--bbm-space-1) var(--bbm-space-4);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-pill);
+  background-color: var(--bbm-color-butter-300);
+  font-family: var(--bbm-text-eyebrow-family);
+  font-size: var(--bbm-text-eyebrow-size);
+  font-weight: var(--bbm-text-eyebrow-weight);
+  letter-spacing: var(--bbm-text-eyebrow-tracking);
+  text-transform: uppercase;
+  rotate: -3deg;
+}
+
+.order-rail__title {
+  display: grid;
+  margin: 0;
+}
+
+.order-rail__heavy {
+  font-family: var(--bbm-text-heavy-family);
+  font-size: clamp(1.75rem, 1rem + 2.6vw, 3.4rem);
+  font-weight: var(--bbm-text-heavy-weight);
+  line-height: 1.02;
+  letter-spacing: var(--bbm-text-heavy-tracking);
+  text-wrap: balance;
+}
+
+.order-rail__script {
+  display: inline-block;
+  font-family: var(--bbm-font-family-script);
+  font-weight: var(--bbm-font-weight-regular);
+  letter-spacing: 0;
+  color: var(--bbm-color-cherry-700);
+}
+
+.order-rail__title .order-rail__script {
+  justify-self: center;
+  padding-inline: 0.15em;
+  font-size: clamp(3rem, min(2rem + 5vw, 1rem + 10svh), 6.5rem);
+  line-height: 1.1;
+}
+
+.order-rail__lead {
+  max-width: 34rem;
+  margin: 0;
+  font-size: var(--bbm-text-body-lg-size, 1.125rem);
+  line-height: 1.55;
+  color: var(--bbm-color-text-secondary);
+}
+
+.order-rail__hint {
+  display: none;
+  margin: 0;
+  font-family: var(--bbm-font-family-display);
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: var(--bbm-font-weight-semibold);
+  color: var(--bbm-color-cherry-700);
+}
+
+.order-rail__hint span {
+  display: inline-block;
+  animation: order-rail-nudge 1.2s var(--bbm-motion-easing-out) infinite;
+}
+
+@keyframes order-rail-nudge {
+  50% {
+    translate: 0.4em 0;
+  }
+}
+
+/* Halftone cherries either side, swinging on their stems */
+.order-rail__cherries {
+  display: block;
+}
+
+.order-rail__cherries svg {
+  display: block;
+  transform-origin: 50% 8%;
+  animation: order-rail-swing 3.2s ease-in-out infinite;
+}
+
+.order-rail__cherries--right svg {
+  scale: -1 1;
+  animation-delay: -1.6s;
+}
+
+@keyframes order-rail-swing {
+  0%,
+  100% {
+    rotate: -9deg;
+  }
+  50% {
+    rotate: 9deg;
+  }
+}
+
+@media (max-width: 639.98px) {
+  .order-rail__intro {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .order-rail__cherries {
+    position: absolute;
+    top: calc(var(--site-header-h, 4.5rem) + var(--bbm-space-2));
+    left: var(--bbm-space-2);
+    z-index: 1;
+    width: 5rem;
+  }
+
+  .order-rail__cherries svg {
+    width: 100%;
+    height: auto;
+  }
+
+  .order-rail__cherries--right {
+    right: var(--bbm-space-2);
+    left: auto;
+    top: auto;
+    bottom: var(--bbm-space-10);
+  }
+}
+
+/* The steps: a colored panel each, a huge number behind, a typed tag for the title, stickers on the right ------- */
+
+.order-rail__step {
+  --panel: var(--bbm-color-bg-pink);
+  --tag: var(--bbm-color-butter-300);
+  --num: color-mix(in srgb, var(--bbm-color-cherry-700) 16%, transparent);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  gap: var(--bbm-space-6);
+  overflow: hidden;
+  padding-bottom: calc(var(--bbm-layout-section-y) + 2.75rem);
+  border-top: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  background-color: var(--panel);
+  color: var(--rail-ink);
+}
+
+.order-rail__step[data-tone='butter'] {
+  --panel: var(--bbm-color-butter-200);
+  --tag: var(--bbm-color-paper);
+  --num: color-mix(in srgb, var(--bbm-color-brown-900) 12%, transparent);
+}
+
+.order-rail__step[data-tone='blue'] {
+  --panel: var(--bbm-color-blue-200);
+  --tag: var(--bbm-color-pink-300);
+  --num: color-mix(in srgb, var(--bbm-color-blue-800) 16%, transparent);
+}
+
+.order-rail__step[data-tone='cherry'] {
+  --panel: var(--bbm-color-cherry-700);
+  --tag: var(--bbm-color-butter-300);
+  --num: color-mix(in srgb, var(--bbm-color-pink-300) 22%, transparent);
+  --rail-ink: var(--bbm-color-paper);
+}
+
+@media (min-width: 900px) {
+  .order-rail__step {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    align-items: center;
+  }
+}
+
+.order-rail__num {
+  position: absolute;
+  top: 50%;
+  right: -0.06em;
+  z-index: 0;
+  font-family: var(--bbm-font-family-display);
+  font-size: clamp(10rem, min(36vw, 52svh), 30rem);
+  font-weight: var(--bbm-font-weight-black);
+  font-variation-settings: var(--bbm-font-variation-display);
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  color: var(--num);
+  translate: 0 -50%;
+  pointer-events: none;
+  user-select: none;
+}
+
+.order-rail__copy {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  justify-items: start;
+  gap: var(--bbm-space-4);
+  max-width: 34rem;
+}
+
+.order-rail__kicker {
+  margin: 0;
+  font-family: var(--bbm-text-eyebrow-family);
+  font-size: var(--bbm-text-eyebrow-size);
+  font-weight: var(--bbm-text-eyebrow-weight);
+  letter-spacing: var(--bbm-text-eyebrow-tracking);
+  text-transform: uppercase;
+}
+
+/* The title on a paper tag, typed out with a caret (order-rail.tsx) */
+.order-rail__tag {
+  position: relative;
+  margin: 0;
+  padding: 0.3em 0.55em 0.35em;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-brown-900);
+  background-color: var(--tag);
+  box-shadow: var(--bbm-shadow-sticker-md);
+  color: var(--bbm-color-brown-900);
+  font-family: var(--bbm-font-family-display);
+  font-size: clamp(1.75rem, 1.1rem + 2.4vw, 3.4rem);
+  font-weight: var(--bbm-font-weight-bold);
+  font-variation-settings: var(--bbm-font-variation-display);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  rotate: -2deg;
+  text-wrap: balance;
+}
+
+.order-rail__step:nth-of-type(odd) .order-rail__tag {
+  rotate: 1.5deg;
+}
+
+.order-rail__caret {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 1.1em;
+  border-radius: 2px;
+  background-color: var(--bbm-color-cherry-500);
+  opacity: 0;
+  pointer-events: none;
+  animation: order-rail-blink 0.8s steps(1) infinite;
+}
+
+@keyframes order-rail-blink {
+  50% {
+    background-color: transparent;
+  }
+}
+
+.order-rail__text {
+  margin: 0;
+  font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.3rem);
+  line-height: 1.55;
+}
+
+.order-rail__small {
+  margin: 0;
+  max-width: 28rem;
+  font-family: var(--bbm-font-family-display);
+  font-style: italic;
+  line-height: 1.45;
+  opacity: 0.85;
+}
+
+.order-rail__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bbm-space-2);
+  margin: 0;
+}
+
+.order-rail__links a,
+.order-rail__chips li {
+  padding: var(--bbm-space-1) var(--bbm-space-4);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-brown-900);
+  border-radius: var(--bbm-radius-pill);
+  background-color: var(--bbm-color-paper);
+  color: var(--bbm-color-brown-900);
+  font-size: var(--bbm-text-body-sm-size);
+  font-weight: var(--bbm-font-weight-bold);
+  text-decoration: none;
+}
+
+.order-rail__links a {
+  transition:
+    background-color var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard),
+    color var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard);
+}
+
+.order-rail__links a:hover {
+  background-color: var(--bbm-color-cherry-700);
+  color: var(--bbm-color-paper);
+}
+
+.order-rail__links a:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: 2px;
+}
+
+.order-rail__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bbm-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.order-rail__chips li:nth-child(odd) {
+  rotate: -2deg;
+}
+
+.order-rail__chips li:nth-child(even) {
+  rotate: 2deg;
+}
+
+/* The stickers, each on its own spot; they fly across and up as the panel passes */
+.order-rail__art {
+  position: relative;
+  z-index: 1;
+  min-height: clamp(14rem, 34svh, 26rem);
+}
+
+.order-rail__sticker {
+  position: absolute;
+  display: block;
+  height: auto;
+  filter: drop-shadow(0 12px 16px color-mix(in srgb, var(--bbm-color-brown-900) 28%, transparent));
+  will-change: transform;
+  user-select: none;
+}
+
+.order-rail__sticker--a {
+  top: 6%;
+  left: 18%;
+  z-index: 2;
+  width: min(52%, 22rem);
+}
+
+.order-rail__sticker--b {
+  right: 2%;
+  bottom: 0;
+  z-index: 3;
+  width: min(34%, 13rem);
+}
+
+.order-rail__sticker--c {
+  top: -4%;
+  right: 6%;
+  z-index: 1;
+  width: min(38%, 15rem);
+  filter: none;
+  opacity: 0.9;
+}
+
+/* The chat on the third step */
+.order-rail__chat {
+  position: absolute;
+  top: 8%;
+  left: 4%;
+  z-index: 2;
+  display: grid;
+  gap: var(--bbm-space-2);
+  width: min(88%, 24rem);
+  padding: var(--bbm-space-3);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-brown-900);
+  border-radius: var(--bbm-radius-xl);
+  background-color: var(--bbm-color-beige-50);
+  box-shadow: var(--bbm-shadow-sticker-lg);
+  rotate: -3deg;
+}
+
+.order-rail__chat-head {
+  display: flex;
+  align-items: center;
+  gap: var(--bbm-space-2);
+  margin: 0;
+  padding-bottom: var(--bbm-space-2);
+  border-bottom: var(--bbm-border-width-thin) dashed var(--bbm-color-beige-400);
+  font-family: var(--bbm-font-family-display);
+  font-weight: var(--bbm-font-weight-bold);
+}
+
+.order-rail__chat-dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background-color: #1f7a3a;
+}
+
+.order-rail__bubble {
+  margin: 0;
+  padding: var(--bbm-space-2) var(--bbm-space-3);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-brown-900);
+  border-radius: var(--bbm-radius-lg);
+  font-size: var(--bbm-text-body-sm-size);
+  line-height: 1.45;
+}
+
+.order-rail__bubble--you {
+  justify-self: end;
+  max-width: 88%;
+  border-bottom-right-radius: 0.2rem;
+  background-color: #d9f2cf;
+}
+
+.order-rail__bubble--mom {
+  justify-self: start;
+  max-width: 80%;
+  border-bottom-left-radius: 0.2rem;
+  background-color: var(--bbm-color-paper);
+  font-family: var(--bbm-font-family-display);
+  font-style: italic;
+}
+
+.order-rail__typed {
+  position: relative;
+  display: block;
+}
+
+.order-rail__foot {
+  position: absolute;
+  inset: auto 0 0;
+  height: 2.75rem;
+  border-top: var(--bbm-border-width-thin) solid var(--bbm-color-brown-900);
+}
+
+/* The end: the shortcuts, and the button ----------------------------------------------------------------------- */
+
+.order-rail__end {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  gap: var(--bbm-space-8);
+  border-top: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  background-color: var(--bbm-color-bg-beige);
+}
+
+@media (min-width: 900px) {
+  .order-rail__end {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: center;
+    padding-inline: max(var(--bbm-layout-gutter), calc((100vw - var(--bbm-layout-container)) / 2));
+  }
+}
+
+.order-rail__end-copy {
+  display: grid;
+  justify-items: start;
+  gap: var(--bbm-space-4);
+  min-width: 0;
+}
+
+.order-rail__end-copy .bbm-button {
+  max-width: 100%;
+}
+
+.order-rail__end-title {
+  margin: 0;
+  font-family: var(--bbm-text-heavy-family);
+  font-size: clamp(2.25rem, 1.4rem + 3vw, 4rem);
+  font-weight: var(--bbm-text-heavy-weight);
+  line-height: 1;
+  letter-spacing: var(--bbm-text-heavy-tracking);
+}
+
+.order-rail__end-title .order-rail__script {
+  font-size: 1.35em;
+  line-height: 0.9;
+}
+
+.order-rail__note {
+  max-width: 30rem;
+  margin: 0;
+  padding: var(--bbm-space-3) var(--bbm-space-4);
+  border: var(--bbm-border-width-thin) dashed var(--bbm-color-brown-900);
+  border-radius: var(--bbm-radius-md);
+  background-color: var(--bbm-color-bg-blue);
+  font-size: var(--bbm-text-body-sm-size);
+  line-height: var(--bbm-text-body-sm-line-height);
+}
+
+.order-rail__tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--bbm-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Each shortcut a ticket: the photo stuck on, the label under it, an arrow that spins in */
+.order-rail__tile {
+  --tile: var(--bbm-color-cherry-700);
+  --tile-ink: var(--bbm-color-paper);
+  position: relative;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: var(--bbm-space-3);
+  height: 100%;
+  box-sizing: border-box;
+  padding: var(--bbm-space-3);
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-brown-900);
+  border-radius: var(--bbm-radius-xl);
+  background-color: var(--tile);
+  box-shadow: var(--bbm-shadow-sticker-md);
+  color: var(--tile-ink);
+  text-decoration: none;
+  transition:
+    translate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce),
+    rotate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce),
+    box-shadow var(--bbm-motion-duration-slow) var(--bbm-motion-easing-out);
+}
+
+.order-rail__tile[data-tone='pink'] {
+  --tile: var(--bbm-color-pink-300);
+  --tile-ink: var(--bbm-color-brown-900);
+}
+
+.order-rail__tile[data-tone='butter'] {
+  --tile: var(--bbm-color-butter-300);
+  --tile-ink: var(--bbm-color-brown-900);
+}
+
+.order-rail__tile[data-tone='blue'] {
+  --tile: var(--bbm-color-blue-300);
+  --tile-ink: var(--bbm-color-brown-900);
+}
+
+.order-rail__tile-photo {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-brown-900);
+  border-radius: var(--bbm-radius-lg);
+  background-color: var(--bbm-color-pink-200);
+}
+
+.order-rail__tile-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: scale 0.7s var(--bbm-motion-easing-out);
+}
+
+/* One of Mom's own cakes, cut out: shown whole on pink */
+.order-rail__tile-photo img.order-rail__tile-cutout {
+  box-sizing: border-box;
+  padding: var(--bbm-space-2);
+  object-fit: contain;
+}
+
+.order-rail__tile-label {
+  font-family: var(--bbm-text-heavy-family);
+  font-size: clamp(1.1rem, 0.8rem + 1vw, 1.75rem);
+  font-weight: var(--bbm-font-weight-black);
+  line-height: 1;
+}
+
+.order-rail__tile-arrow {
+  position: absolute;
+  top: var(--bbm-space-5);
+  right: var(--bbm-space-5);
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-brown-900);
+  border-radius: 50%;
+  background-color: var(--bbm-color-paper);
+  color: var(--bbm-color-cherry-700);
+  font-weight: var(--bbm-font-weight-bold);
+  transition: rotate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
+}
+
+.order-rail__tile:hover {
+  translate: 0 -6px;
+  rotate: -1.5deg;
+  box-shadow: var(--bbm-shadow-sticker-lg);
+}
+
+.order-rail__tiles > li:nth-child(even) .order-rail__tile:hover {
+  rotate: 1.5deg;
+}
+
+.order-rail__tile:hover img {
+  scale: 1.08;
+}
+
+.order-rail__tile:hover .order-rail__tile-arrow {
+  rotate: 45deg;
+}
+
+.order-rail__tile:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
+  outline-offset: 3px;
+}
+
+/* The gift box that hops along the bottom, and the striped bar: only on the ride */
+.order-rail__traveller,
+.order-rail__progress {
+  display: none;
+}
+
+/* The ride ------------------------------------------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: no-preference) and (min-height: 520px) {
+  .order-rail {
+    height: 100vh;
+    height: 100svh;
+  }
+
+  .order-rail__track {
+    display: flex;
+    width: max-content;
+    height: 100%;
+    will-change: transform;
+  }
+
+  .order-rail__panel {
+    flex: none;
+    height: 100%;
+    padding-top: calc(var(--site-header-h, 5rem) + var(--bbm-space-6));
+    padding-bottom: calc(var(--bbm-space-16) + 2.75rem);
+  }
+
+  .order-rail__intro {
+    width: 100vw;
+  }
+
+  .order-rail__hint {
+    display: block;
+  }
+
+  .order-rail__step {
+    width: 92vw;
+    border-top: 0;
+    border-left: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  }
+
+  .order-rail__end {
+    width: 100vw;
+    border-top: 0;
+    border-left: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  }
+
+  .order-rail__traveller {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 3vw;
+    z-index: 5;
+    display: block;
+    width: clamp(4.5rem, 8vw, 7.5rem);
+    height: auto;
+    filter: drop-shadow(0 10px 12px color-mix(in srgb, var(--bbm-color-brown-900) 30%, transparent));
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  .order-rail__progress {
+    position: absolute;
+    right: var(--bbm-layout-gutter);
+    bottom: 0.6rem;
+    left: var(--bbm-layout-gutter);
+    z-index: 4;
+    display: block;
+    height: 6px;
+    overflow: hidden;
+    border: 1px solid var(--bbm-color-brown-900);
+    border-radius: var(--bbm-radius-pill);
+    background-color: var(--bbm-color-paper);
+  }
+
+  .order-rail__progress span {
+    display: block;
+    height: 100%;
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--bbm-color-cherry-500) 0 6px,
+      var(--bbm-color-pink-300) 6px 12px
+    );
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (min-height: 520px) and (min-width: 900px) {
+  .order-rail__step {
+    width: min(76vw, 70rem);
+    padding-inline: clamp(var(--bbm-space-8), 5vw, var(--bbm-space-16));
+  }
+}
+
+/* Phones on the ride: the words on top and the stickers under them, smaller, so a panel fits the screen */
+@media (prefers-reduced-motion: no-preference) and (min-height: 520px) and (max-width: 899.98px) {
+  .order-rail__step {
+    align-content: start;
+    gap: var(--bbm-space-3);
+  }
+
+  .order-rail__copy {
+    gap: var(--bbm-space-3);
+  }
+
+  .order-rail__text {
+    font-size: 1rem;
+  }
+
+  .order-rail__art {
+    min-height: 0;
+    height: 100%;
+  }
+
+  .order-rail__chat {
+    top: 0;
+    font-size: 0.85em;
+  }
+
+  .order-rail__end {
+    align-content: start;
+    gap: var(--bbm-space-5);
+  }
+
+  .order-rail__end-copy {
+    gap: var(--bbm-space-3);
+  }
+
+  .order-rail__tile {
+    padding: var(--bbm-space-2);
+    gap: var(--bbm-space-2);
+  }
+
+  .order-rail__tile-arrow {
+    top: var(--bbm-space-3);
+    right: var(--bbm-space-3);
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .order-rail__cherries svg,
+  .order-rail__hint span,
+  .order-rail__caret {
+    animation: none;
+  }
+
+  .order-rail__tile,
+  .order-rail__tile img,
+  .order-rail__tile-arrow,
+  .order-rail__links a {
+    transition: none;
+  }
+}

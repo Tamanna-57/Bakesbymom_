@@ -2,16 +2,16 @@
 
 The Bakes by Mom website: a home bakery in Panipat, Haryana, where everything is 100% eggless and orders go through WhatsApp. It's built only from [`@bakesbymom/ui`](../../packages/ui) and the board specs in [`design/board/sections/`](../../design/board/sections). The content, categories, photos and ordering flow come from the old site (bakesbymom.vercel.app), and the paths match it, so old links keep working.
 
-| Path                  | Page                                                                                                                                                                                                                              |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/`                   | Home, after pins 16 and 13: striped hero, the cakes, about us, flavours, shop cakes & treats, how to order, the gallery (with the occasions), reviews, FAQ. Stock photos for flavours and treats; the gallery shows our own cakes |
-| `/catalog`            | The Cakes category: every cake, by occasion (11 occasions, 21 cakes). `?occasion=anniversary` opens one shelf                                                                                                                     |
-| `/catalog/<cake>`     | One cake: photos, price, and an order builder (size, flavour, add-ons, message, date, time, pickup or delivery) that opens WhatsApp                                                                                               |
-| `/shop`               | **Cakes & Treats**, the one place to order from: every category (cakes first), each opening its own page, and a custom order on WhatsApp. The nav's single link for cakes and treats                                              |
-| `/shop/<type>`        | Brownies, cookies, jar cakes, dry cakes, cupcakes, bento cakes or combos, with what to know. A type with a `showcase` in `treats.ts` (the cookies) gets the showcase layout (`TreatShowcase.tsx`)                                 |
-| `/shop/<type>/<item>` | One treat and its order builder (quantity, flour for cookies, extras, date, time)                                                                                                                                                 |
-| `/about`              | Our story, short: a letter from Mom, her cakes on a silver tray with who each was for, and her promises as a menu card                                                                                                            |
-| `/links`              | The Instagram link-in-bio page (pin 08)                                                                                                                                                                                           |
+| Path                  | Page                                                                                                                                                                                                                                                                                              |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/`                   | Home, after pins 16 and 13 with Teh Tarik Nation's motion: striped hero, the cakes (ticket cards dealt in from the sides), the flavours as a pinned deck of cards, about us, the Cakes & Treats wheel, how to order as a pinned ride sideways, reviews, FAQ. Stock photos for flavours and treats |
+| `/catalog`            | The Cakes category: every cake, by occasion (11 occasions, 21 cakes). `?occasion=anniversary` opens one shelf                                                                                                                                                                                     |
+| `/catalog/<cake>`     | One cake: photos, price, and an order builder (size, flavour, add-ons, message, date, time, pickup or delivery) that opens WhatsApp                                                                                                                                                               |
+| `/shop`               | **Cakes & Treats**, the one place to order from: every category (cakes first), each opening its own page, and a custom order on WhatsApp. The nav's single link for cakes and treats                                                                                                              |
+| `/shop/<type>`        | Brownies, cookies, jar cakes, dry cakes, cupcakes, bento cakes or combos, with what to know. A type with a `showcase` in `treats.ts` (the cookies) gets the showcase layout (`TreatShowcase.tsx`)                                                                                                 |
+| `/shop/<type>/<item>` | One treat and its order builder (quantity, flour for cookies, extras, date, time)                                                                                                                                                                                                                 |
+| `/about`              | Our story, short: a letter from Mom, her cakes on a silver tray with who each was for, and her promises as a menu card                                                                                                                                                                            |
+| `/links`              | The Instagram link-in-bio page (pin 08)                                                                                                                                                                                                                                                           |
 
 ```bash
 npm run web        # at the repo root: builds the packages, then starts the site at http://localhost:5173
@@ -21,21 +21,22 @@ npm test -w @bakesbymom/web
 
 ## Where things live
 
-| File                       | What                                                                                                                                        |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/content/bakery.ts`    | The bakery's details: WhatsApp number, Instagram, place, time slots, cake sizes, flavours, add-ons                                          |
-| `src/content/catalog.ts`   | Cakes by occasion, read live from the D1 database, with prices (₹ a pound, listed weight, listed price)                                     |
-| `src/content/treats.ts`    | The seven treat types and their items, smallest orders and "make it yours" options                                                          |
-| `src/content/order.ts`     | The WhatsApp order messages and the price for other sizes (per-pound rate)                                                                  |
-| `src/content/assistant.ts` | The "Ask Mom" cake assistant, rebuilt from the old site's rules over the same catalog                                                       |
-| `src/content/site.tsx`     | Nav, footer, FAQ, reviews and the how-to-order steps                                                                                        |
-| `src/content/samples.tsx`  | Sample content for Storybook-only demos; nothing in it is on the website                                                                    |
-| `src/sections/blocks.tsx`  | Every page section. Storybook's _Sections_ and _Pages_ stories import these same files                                                      |
-| `src/sections/story.tsx`   | Our story: a letter from Mom, her cakes on a tray, her promises as a menu card (styles in `story.css`)                                      |
-| `src/sections/home.tsx`    | The home page sections (spec: [`landing-page.md`](../../design/board/sections/landing-page.md))                                             |
-| `src/sections/fx.tsx`      | The big scroll scenes: the promise deck, the flavour wall, the curved sign-off and the footer word                                          |
-| `src/fx/`                  | The motion layer: GSAP and ScrollTrigger with Lenis, shared effects, sprinkles (spec: [`motion.md`](../../design/board/sections/motion.md)) |
-| `src/pages/`               | The pages and the shared order form fields                                                                                                  |
+| File                          | What                                                                                                                                        |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/content/bakery.ts`       | The bakery's details: WhatsApp number, Instagram, place, time slots, cake sizes, flavours, add-ons                                          |
+| `src/content/catalog.ts`      | Cakes by occasion, read live from the D1 database, with prices (₹ a pound, listed weight, listed price)                                     |
+| `src/content/treats.ts`       | The seven treat types and their items, smallest orders and "make it yours" options                                                          |
+| `src/content/order.ts`        | The WhatsApp order messages and the price for other sizes (per-pound rate)                                                                  |
+| `src/content/assistant.ts`    | The "Ask Mom" cake assistant, rebuilt from the old site's rules over the same catalog                                                       |
+| `src/content/site.tsx`        | Nav, footer, FAQ, reviews and the how-to-order steps                                                                                        |
+| `src/content/samples.tsx`     | Sample content for Storybook-only demos; nothing in it is on the website                                                                    |
+| `src/sections/blocks.tsx`     | Every page section. Storybook's _Sections_ and _Pages_ stories import these same files                                                      |
+| `src/sections/story.tsx`      | Our story: a letter from Mom, her cakes on a tray, her promises as a menu card (styles in `story.css`)                                      |
+| `src/sections/home.tsx`       | The home page sections (spec: [`landing-page.md`](../../design/board/sections/landing-page.md))                                             |
+| `src/sections/fx.tsx`         | The big scroll scenes: the flavour deck, the curved sign-off and the footer word                                                            |
+| `src/sections/order-rail.tsx` | How to order as a ride sideways: the section pins and its panels slide past (styles in `order-rail.css`)                                    |
+| `src/fx/`                     | The motion layer: GSAP and ScrollTrigger with Lenis, shared effects, sprinkles (spec: [`motion.md`](../../design/board/sections/motion.md)) |
+| `src/pages/`                  | The pages and the shared order form fields                                                                                                  |
 
 ## Keeping it up to date
 

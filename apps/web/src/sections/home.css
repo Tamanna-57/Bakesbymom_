@@ -445,130 +445,6 @@
   animation: home-wobble 7s ease-in-out infinite;
 }
 
-/* Flavours (pin 16's "Fillings") ------------------------------------------ */
-
-.home-flavours__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
-  gap: var(--bbm-space-5);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.home-flavours__grid > li {
-  display: flex;
-}
-
-@media (max-width: 599px) {
-  .home-flavours__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--bbm-space-3);
-  }
-
-  .home-flavour {
-    padding: var(--bbm-space-2);
-  }
-
-  .home-flavour h3 {
-    font-size: var(--bbm-text-body-sm-size);
-  }
-}
-
-.home-flavour {
-  display: grid;
-  flex: 1;
-  grid-template-rows: auto auto 1fr auto;
-  gap: var(--bbm-space-2);
-  padding: var(--bbm-space-3);
-  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
-  border-radius: var(--bbm-radius-xl);
-  background-color: var(--bbm-color-paper);
-  box-shadow: var(--bbm-shadow-sticker-sm);
-  transition:
-    translate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce),
-    box-shadow var(--bbm-motion-duration-slow) var(--bbm-motion-easing-out);
-}
-
-.home-flavour:hover {
-  translate: 0 -6px;
-  box-shadow: var(--bbm-shadow-sticker-lg);
-}
-
-.home-flavour__photo {
-  transition: scale 0.6s var(--bbm-motion-easing-out);
-}
-
-.home-flavour:hover .home-flavour__photo {
-  scale: 1.03;
-}
-
-.home-flavour__photo {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  border-radius: var(--bbm-radius-lg);
-  margin-bottom: var(--bbm-space-1);
-}
-
-.home-flavour h3 {
-  margin: 0;
-  font-family: var(--bbm-text-heavy-family);
-  font-size: 1.05rem;
-  font-weight: var(--bbm-font-weight-black);
-}
-
-.home-flavour p {
-  margin: 0;
-  font-size: var(--bbm-text-body-sm-size);
-  line-height: var(--bbm-text-body-sm-line-height);
-  color: var(--bbm-color-text-secondary);
-}
-
-.home-flavour__foot {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: var(--bbm-space-2);
-}
-
-.home-flavour__pill {
-  padding: 2px var(--bbm-space-3);
-  border-radius: var(--bbm-radius-pill);
-  background-color: var(--bbm-color-cherry-700);
-  font-size: var(--bbm-text-caption-size);
-  font-weight: var(--bbm-font-weight-bold);
-  color: var(--bbm-color-text-inverse);
-}
-
-.home-flavour__ask {
-  display: grid;
-  place-items: center;
-  width: var(--bbm-layout-touch-target);
-  height: var(--bbm-layout-touch-target);
-  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-brand);
-  border-radius: 50%;
-  color: var(--bbm-color-text-brand);
-  font-weight: var(--bbm-font-weight-bold);
-  text-decoration: none;
-}
-
-.home-flavour__ask:hover {
-  background-color: var(--bbm-color-bg-brand);
-  color: var(--bbm-color-text-inverse);
-}
-
-.home-flavour__ask:focus-visible {
-  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
-  outline-offset: 2px;
-}
-
-.home-flavours__note {
-  text-align: start;
-}
-
 /* Shop by the box (pin 13's bestsellers) ---------------------------------- */
 
 .home-shop {
@@ -717,288 +593,10 @@
 }
 
 .home-shop__lead:focus-visible,
-.home-shop__item:focus-visible,
-.home-craft-tile:focus-visible {
+.home-shop__item:focus-visible {
   outline: var(--bbm-focus-ring-width) solid var(--bbm-color-border-focus);
   outline-offset: 3px;
   border-radius: var(--bbm-radius-lg);
-}
-
-/* Quote on a checker band (Sunday Bakehouse) ------------------------------ */
-
-.home-quote {
-  padding: var(--bbm-space-16) var(--bbm-layout-gutter);
-  border-block: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
-}
-
-.home-quote__card {
-  max-width: 40rem;
-  margin: 0 auto;
-  padding: var(--bbm-space-8) var(--bbm-space-6);
-  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
-  border-radius: var(--bbm-radius-xl);
-  background-color: var(--bbm-color-bg-canvas);
-  box-shadow: var(--bbm-shadow-sticker-md);
-  text-align: center;
-}
-
-.home-quote__card blockquote {
-  margin: 0;
-}
-
-.home-quote__card p {
-  margin: 0;
-  font-family: var(--bbm-font-family-display);
-  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
-  line-height: 1.25;
-}
-
-.home-quote__card em {
-  font-family: var(--bbm-font-family-script);
-  font-style: normal;
-  font-size: 1.25em;
-  color: var(--bbm-color-text-brand);
-}
-
-.home-quote__card figcaption {
-  margin-top: var(--bbm-space-3);
-  font-family: var(--bbm-font-family-hand);
-  font-size: 1.6rem;
-  color: var(--bbm-color-text-secondary);
-}
-
-/* Crafted happiness (pin 16) ---------------------------------------------- */
-
-.home-crafted {
-  border-block: var(--bbm-border-width-thin) solid var(--bbm-color-pink-400);
-}
-
-.home-crafted__lockup {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: var(--bbm-space-4);
-  justify-self: center;
-  max-width: 64rem;
-  padding: var(--bbm-space-4) var(--bbm-space-6);
-  border-radius: var(--bbm-radius-xl);
-  background-color: var(--bbm-color-bg-canvas);
-}
-
-.home-crafted__lockup h2 {
-  display: grid;
-  margin: 0;
-  text-align: center;
-}
-
-.home-crafted__heavy {
-  font-family: var(--bbm-text-heavy-family);
-  font-size: clamp(1.5rem, 1rem + 1.8vw, 2.4rem);
-  font-weight: var(--bbm-text-heavy-weight);
-  line-height: 1.05;
-  letter-spacing: var(--bbm-text-heavy-tracking);
-  color: var(--bbm-color-brown-900);
-}
-
-.home-crafted__script {
-  font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 1rem + 7svh), 4.5rem);
-  line-height: 1.1;
-  color: var(--bbm-color-brown-900);
-}
-
-.home-crafted__mirror {
-  scale: -1 1;
-}
-
-@media (max-width: 599px) {
-  .home-crafted__lockup {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .home-crafted__lockup > svg {
-    display: none;
-  }
-}
-
-.home-crafted__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--bbm-space-6);
-  align-items: start;
-}
-
-@media (min-width: 900px) {
-  .home-crafted__grid {
-    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
-  }
-}
-
-.home-order-card {
-  position: relative;
-}
-
-.home-order-card .bbm-ticket__main {
-  display: grid;
-  gap: var(--bbm-space-4);
-  justify-items: start;
-}
-
-.home-order-card__tape {
-  position: absolute;
-  top: -14px;
-  left: 50%;
-  width: 7rem;
-  height: 1.75rem;
-  z-index: 1;
-  translate: -50% 0;
-  rotate: -3deg;
-  background-color: var(--bbm-color-cherry-700);
-  opacity: 0.9;
-}
-
-.home-order-card__title {
-  margin: 0;
-  font-size: clamp(2rem, 1.6rem + 1.4vw, 2.6rem);
-  line-height: 1.1;
-  color: var(--bbm-color-brown-900);
-}
-
-.home-order-card__steps {
-  display: grid;
-  gap: var(--bbm-space-3);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-size: var(--bbm-text-body-sm-size);
-  line-height: var(--bbm-text-body-sm-line-height);
-}
-
-.home-order-card__note {
-  margin: 0;
-  padding: var(--bbm-space-3) var(--bbm-space-4);
-  border-radius: var(--bbm-radius-md);
-  background-color: var(--bbm-color-bg-blue);
-  font-size: var(--bbm-text-body-sm-size);
-  line-height: var(--bbm-text-body-sm-line-height);
-}
-
-.home-crafted__tiles {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--bbm-space-4);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.home-craft-tile {
-  position: relative;
-  display: block;
-  overflow: hidden;
-  aspect-ratio: 5 / 4;
-  border-radius: var(--bbm-radius-xl);
-  background-color: var(--bbm-color-cherry-700);
-  color: var(--bbm-color-text-inverse);
-  text-decoration: none;
-}
-
-.home-craft-tile__blob {
-  position: absolute;
-  inset: 18% -10% -20% 30%;
-  border-radius: 58% 42% 0 60% / 64% 48% 0 52%;
-  background-color: var(--bbm-color-cherry-900);
-  opacity: 0.55;
-}
-
-.home-craft-tile img {
-  position: absolute;
-  top: 20%;
-  right: 7%;
-  width: 42%;
-  aspect-ratio: 1;
-  object-fit: cover;
-  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
-  border-radius: var(--bbm-radius-lg);
-  box-shadow: var(--bbm-shadow-sticker-md);
-  rotate: 6deg;
-  transition: rotate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
-}
-
-.home-craft-tile:hover img {
-  rotate: -2deg;
-}
-
-/* A cut-out photo of one of Mom's own cakes: cropped in to the cake, on pink where the cut-out is clear */
-.home-craft-tile img.home-craft-tile__cutout {
-  object-position: 50% 55%;
-  background-color: var(--bbm-color-pink-200);
-}
-
-.home-craft-tile {
-  transition: translate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
-}
-
-.home-craft-tile:hover {
-  translate: 0 -6px;
-}
-
-.home-craft-tile__blob {
-  transition: scale 0.8s var(--bbm-motion-easing-out);
-}
-
-.home-craft-tile:hover .home-craft-tile__blob {
-  scale: 1.15;
-}
-
-.home-craft-tile__arrow {
-  position: absolute;
-  top: var(--bbm-space-4);
-  right: var(--bbm-space-4);
-  display: grid;
-  place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  background-color: var(--bbm-color-paper);
-  font-weight: var(--bbm-font-weight-bold);
-  color: var(--bbm-color-text-brand);
-}
-
-.home-craft-tile__label {
-  position: absolute;
-  left: var(--bbm-space-5);
-  bottom: var(--bbm-space-4);
-  max-width: 90%;
-  font-family: var(--bbm-text-heavy-family);
-  font-size: clamp(1.15rem, 0.8rem + 1.4vw, 2rem);
-  font-weight: var(--bbm-font-weight-black);
-  line-height: 1;
-}
-
-@media (max-width: 479px) {
-  .home-crafted__tiles {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: var(--bbm-space-3);
-  }
-
-  .home-craft-tile {
-    aspect-ratio: 4 / 5;
-  }
-
-  .home-craft-tile img {
-    top: 24%;
-    width: 60%;
-  }
-
-  .home-craft-tile__label {
-    left: var(--bbm-space-3);
-    bottom: var(--bbm-space-3);
-  }
-
-  .home-craft-tile__arrow {
-    top: var(--bbm-space-2);
-    right: var(--bbm-space-2);
-  }
 }
 
 /* Mom's kitchen (pin 13's split about) ------------------------------------ */
@@ -1077,11 +675,6 @@
   .home-shop__art img,
   .home-shop__art,
   .home-shop__lead,
-  .home-craft-tile,
-  .home-craft-tile img,
-  .home-craft-tile__blob,
-  .home-flavour,
-  .home-flavour__photo,
   .home-about__cake {
     transition: none;
   }
@@ -1108,19 +701,15 @@
 
 /* Cakes & Treats wheel (CakesTreatsWheel) ----------------------------------------------------------------- */
 
-/* The color behind the Flavours band and the wheel, shared so there is never a line between them on screen: baby
-   blue turning cherry as the wheel scrolls up into place (--wheel-in, set on the page by home.tsx), as in the
-   reference. The wheel stays cherry from there on. */
+/* The color behind the about us band and the wheel, shared so there is never a line between them on screen: baby
+   pink turning cherry as the wheel scrolls up into place (--wheel-in, set on the page by home.tsx), as in the
+   reference. The about band's ground (HomeIntro) and the wheel both use it; the wheel stays cherry from there on. */
 :root {
   --home-blend: color-mix(
     in srgb,
     var(--bbm-color-cherry-800) calc(var(--wheel-in, 0) * 100%),
-    var(--bbm-color-bg-blue)
+    var(--bbm-color-bg-pink)
   );
-}
-
-.site-section.home-flavours {
-  background-color: var(--home-blend);
 }
 
 .home-wheel {
@@ -1372,7 +961,7 @@
   }
 }
 
-/* The big motion layer (fx/): hero stickers, the quote's caret, swinging cherries ------------------------ */
+/* The big motion layer (fx/): hero stickers ---------------------------------------------------------------- */
 
 /* Painted stickers round the arch. They bob, follow the mouse and scatter on scroll (useHeroFx). */
 .home-hero__stickers {
@@ -1442,56 +1031,5 @@
 
   .home-hero__sticker--c {
     right: -8%;
-  }
-}
-
-/* The typewriter's caret, placed after each letter as it is typed (useQuoteFx) */
-.home-quote__card blockquote {
-  position: relative;
-}
-
-.home-quote__caret {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 3px;
-  height: 1.2em;
-  border-radius: 2px;
-  background-color: var(--bbm-color-cherry-500);
-  opacity: 0;
-  pointer-events: none;
-  animation: home-blink 0.8s steps(1) infinite;
-}
-
-@keyframes home-blink {
-  50% {
-    background-color: transparent;
-  }
-}
-
-/* The halftone cherries either side of "Crafted happiness" swing on their stems */
-.home-crafted__lockup > span > svg {
-  transform-origin: 50% 8%;
-  animation: home-swing 3.2s ease-in-out infinite;
-}
-
-.home-crafted__lockup > span:last-child > svg {
-  animation-delay: -1.6s;
-}
-
-@keyframes home-swing {
-  0%,
-  100% {
-    rotate: -9deg;
-  }
-  50% {
-    rotate: 9deg;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .home-quote__caret,
-  .home-crafted__lockup > span > svg {
-    animation: none;
   }
 }

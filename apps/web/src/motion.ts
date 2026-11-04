@@ -88,9 +88,7 @@ export function useScrollRefresh() {
 // Each item in these lists rises in on its own, a beat after the one before it.
 const ITEM_SELECTORS = [
   '.home-features__list > li',
-  '.home-flavours__grid > li',
   '.home-shop__row > li',
-  '.home-crafted__tiles > li',
   '.treat-sig__grid > li',
   '.treat-simple__list > li',
   '.site-menu__grid > li',
@@ -106,8 +104,6 @@ const BLOCK_SELECTORS = [
   '.site-section > .site-container > *',
   '.home-about__card',
   '.home-shop__head',
-  '.home-crafted__lockup',
-  '.home-order-card',
   '.home-kitchen__copy > *',
 ];
 

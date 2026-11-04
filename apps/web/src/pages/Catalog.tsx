@@ -3,7 +3,7 @@ import { Button, FilterChips, SectionHeading } from '@bakesbymom/ui';
 import { flavours } from '../content';
 import { findFlavour, flavourSlug } from '../content/bakery';
 import { cakes, occasions } from '../content/catalog';
-import { CakeCard, CatalogNote, occasionOptions } from '../sections/blocks';
+import { CakeGrid, CatalogNote, occasionOptions } from '../sections/blocks';
 import { Layout } from './Layout';
 import { Breadcrumbs } from './order';
 import { replaceUrl } from '../router';
@@ -126,6 +126,7 @@ export function CatalogPage() {
             'site-section',
             'site-section--edged',
             'catalog-shelf',
+            'site-menu',
             i % 2 ? 'site-section--beige' : 'site-section--pink',
           ].join(' ')}
         >
@@ -135,13 +136,7 @@ export function CatalogPage() {
           />
           <div className="site-container">
             <SectionHeading title={occasion.name} description={occasion.description} size="md" />
-            <ul className="site-menu__grid">
-              {occasion.cakes.map((cake, j) => (
-                <li key={cake.slug}>
-                  <CakeCard cake={cake} index={j + i} flavour={flavour && flavourSlug(flavour)} />
-                </li>
-              ))}
-            </ul>
+            <CakeGrid cakes={occasion.cakes} offset={i} flavour={flavour && flavourSlug(flavour)} />
           </div>
         </section>
       ))}

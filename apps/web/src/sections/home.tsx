@@ -2,7 +2,7 @@
  * The home page sections, after pin 16 (SugarLace: stripes, the outlined about card) and pin 13 (Puzzle Pantry: the
  * shape ribbon, shop by the box with filter pills, the split about). The feature strip and the starburst come from
  * other bakery sites on Pinterest (Sweet Crumbs, joe & dough). The flavours are a deck now (sections/fx.tsx) and
- * how to order rides sideways (sections/order-rail.tsx).
+ * how to order, stacked down the page (sections/order-rail.tsx).
  * Photos here are stock (content/index.ts `stock`, `treatArt`); the photos of the cakes we sell are kept for the
  * catalog.
  */

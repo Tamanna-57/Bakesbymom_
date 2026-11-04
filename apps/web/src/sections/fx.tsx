@@ -1,15 +1,15 @@
 /**
  * The big scroll scenes, after two tea sites the client loves:
  * - Teh Tarik Nation (tehtariknation.com): the "we're also…" deck, where cards fly up one by one and land in a fan
- *   while the section is pinned, with tilted tape labels round the edges; and the line of words that runs along a
- *   curve as you scroll.
- * - Beca Tea (becatea.com): rows of giant words sliding in turn, filled and outlined, round a product in the
- *   middle; and the brand's name huge at the very bottom of every page.
+ *   while the section is pinned, with tilted tape labels round the edges (here, one card for each flavour); and the
+ *   line of words that runs along a curve as you scroll.
+ * - Beca Tea (becatea.com): the brand's name huge at the very bottom of every page.
  * All in Bakes by Mom's palette, type and stickers. For reduced motion each scene is its finished, still layout.
  */
-import { useRef, type CSSProperties, type ReactNode } from 'react';
+import { useRef, type CSSProperties } from 'react';
 import { Button, PatternSurface, type Pattern } from '@bakesbymom/ui';
-import { bakery } from '../content/bakery';
+import { flavours } from '../content';
+import { bakery, cakeFlavours, flavourSlug } from '../content/bakery';
 import { orderLink } from '../content/site';
 import { gsap, narrowScreen, scatter, useFx } from '../fx/gsap';
 import { splitTitle, writeIn } from '../fx/site-fx';
@@ -17,110 +17,65 @@ import '../fx/fx.css';
 
 const external = { target: '_blank', rel: 'noreferrer' } as const;
 
-/* The deck: "every box from Mom's kitchen is also…" ----------------------------------------------------------- */
+/* The deck: every flavour on the menu, one card each ---------------------------------------------------------- */
 
 interface DeckCard {
-  title: string;
-  note: string;
+  /** One of bakery.cakeFlavours; its photo and what's inside come from content `flavours`. */
+  flavour: string;
   /** Card colour and ink, from the palette. */
   color: string;
   ink?: string;
-  art: ReactNode;
   /** The patterned strip along the card's foot. */
   foot: { pattern: Pattern; tone: 'pink' | 'blue' | 'cherry' | 'butter' | 'matcha' | 'brown' | 'beige' };
 }
 
-const art = (src: string, className?: string) => (
-  <img className={className ? `fx-deck__art ${className}` : 'fx-deck__art'} src={src} alt="" loading="lazy" />
-);
-
-/** The promises already made across the site, one to a card. */
-const promises: DeckCard[] = [
-  {
-    title: 'Eggless',
-    note: 'Every cake, every cookie, every crumb',
-    color: 'var(--bbm-color-pink-300)',
-    art: (
-      <span className="fx-deck__no-egg">
-        {art('/collage/halftone-egg.webp')}
-        <span className="fx-deck__slash" />
-      </span>
-    ),
-    foot: { pattern: 'checker', tone: 'cherry' },
-  },
-  {
-    title: 'Baked to order',
-    note: 'Mixed and baked for your date',
-    color: 'var(--bbm-color-blue-200)',
-    art: art('/collage/paint-teacake.webp'),
-    foot: { pattern: 'gingham', tone: 'blue' },
-  },
-  {
-    title: 'Iced by hand',
-    note: 'Finished the morning it goes out',
-    color: 'var(--bbm-color-butter-300)',
-    art: art('/collage/paint-cupcake.webp'),
-    foot: { pattern: 'stripes', tone: 'cherry' },
-  },
-  {
-    title: 'Pure veg',
-    note: 'With the FSSAI green dot',
-    color: 'var(--bbm-color-matcha-200)',
-    art: <span className="fx-deck__veg" />,
-    foot: { pattern: 'dots', tone: 'matcha' },
-  },
-  {
-    title: 'Small-batch',
-    note: 'Small enough to taste the care',
-    color: 'var(--bbm-color-cherry-500)',
-    ink: 'var(--bbm-color-paper)',
-    art: art('/collage/sticker-jar-cakes.webp'),
+/** Each flavour's card, in its own colour. */
+const looks: Record<string, Omit<DeckCard, 'flavour'>> = {
+  'Chocolate truffle': {
+    color: 'var(--bbm-color-brown-700)',
+    ink: 'var(--bbm-color-pink-200)',
     foot: { pattern: 'checker', tone: 'pink' },
   },
-  {
-    title: 'Homemade',
-    note: `In Mom's kitchen in ${bakery.place}`,
-    color: 'var(--bbm-color-beige-200)',
-    art: art('/collage/sticker-drip-cake.webp'),
-    foot: { pattern: 'gingham', tone: 'pink' },
-  },
-  {
-    title: 'Gift-ready',
-    note: 'Sent to someone you love',
-    color: 'var(--bbm-color-blue-300)',
-    art: art('/collage/sticker-gift-box.webp'),
-    foot: { pattern: 'stripes', tone: 'butter' },
-  },
-  {
-    title: 'Easy to order',
-    note: 'Typed out on WhatsApp, ready to send',
-    color: 'var(--bbm-color-pink-200)',
-    art: art('/collage/paint-shortcake.webp'),
-    foot: { pattern: 'dots', tone: 'cherry' },
-  },
-  {
-    title: 'Made with love',
-    note: 'From the sponge to the last piped rose',
+  Vanilla: { color: 'var(--bbm-color-butter-200)', foot: { pattern: 'gingham', tone: 'butter' } },
+  'Black forest': {
     color: 'var(--bbm-color-cherry-700)',
     ink: 'var(--bbm-color-pink-200)',
-    art: art('/collage/halftone-cherries-pink.webp'),
-    foot: { pattern: 'checker', tone: 'butter' },
+    foot: { pattern: 'checker', tone: 'brown' },
   },
-];
+  'Red velvet': {
+    color: 'var(--bbm-color-cherry-500)',
+    ink: 'var(--bbm-color-paper)',
+    foot: { pattern: 'dots', tone: 'pink' },
+  },
+  Butterscotch: { color: 'var(--bbm-color-butter-300)', foot: { pattern: 'stripes', tone: 'cherry' } },
+  Pineapple: { color: 'var(--bbm-color-blue-200)', foot: { pattern: 'gingham', tone: 'blue' } },
+  'Fresh fruit': { color: 'var(--bbm-color-pink-300)', foot: { pattern: 'checker', tone: 'cherry' } },
+  Rasmalai: { color: 'var(--bbm-color-matcha-200)', foot: { pattern: 'dots', tone: 'matcha' } },
+};
+
+const deck: DeckCard[] = cakeFlavours.map((flavour) => ({
+  flavour,
+  ...(looks[flavour] ?? { color: 'var(--bbm-color-beige-200)', foot: { pattern: 'stripes', tone: 'pink' } }),
+}));
 
 /** The tape labels round the edges: a word on paper, then a strip of pattern (decoration only). */
 const tapes = [
-  { word: 'Mom-made', pattern: 'checker', tone: 'cherry', place: 'a' },
-  { word: 'Sprinkle-obsessed', pattern: 'gingham', tone: 'blue', place: 'b' },
+  { word: '100% eggless', pattern: 'checker', tone: 'cherry', place: 'a' },
+  { word: 'Goes in any cake', pattern: 'gingham', tone: 'blue', place: 'b' },
   { word: 'Slice lovers', pattern: 'checker', tone: 'brown', place: 'c' },
-  { word: 'Sweet tooth', pattern: 'stripes', tone: 'pink', place: 'd' },
+  { word: 'Baked to order', pattern: 'stripes', tone: 'pink', place: 'd' },
   { word: bakery.place, pattern: 'gingham', tone: 'cherry', place: 'e' },
   { word: 'Cherry on top', pattern: 'dots', tone: 'cherry', place: 'f' },
 ] as const;
 
-export function PromiseDeck() {
+/**
+ * The flavours, dealt as a deck (Teh Tarik Nation's "we're also…"): the section pins, and the flavours fly up one card
+ * at a time and land in a fan, with tilted tape labels round the edges. Each card opens every cake in that flavour.
+ */
+export function FlavourDeck() {
   const root = useRef<HTMLElement>(null);
-  const middle = Math.floor(promises.length / 2);
+  // The fan's middle, so an even deck spreads evenly either side
+  const middle = (deck.length - 1) / 2;
 
   useFx(root, (section) => {
     const cards = gsap.utils.toArray<HTMLElement>('.fx-deck__card', section);
@@ -175,7 +130,7 @@ export function PromiseDeck() {
   });
 
   return (
-    <section ref={root} className="fx-deck" aria-labelledby="fx-deck-title" data-fx-own>
+    <section ref={root} id="flavours" className="fx-deck" aria-labelledby="fx-deck-title" data-fx-own>
       <div className="fx-deck__tapes" aria-hidden="true">
         {tapes.map((tape) => (
           <span key={tape.word} className={`fx-tape fx-tape--${tape.place}`}>
@@ -185,74 +140,48 @@ export function PromiseDeck() {
         ))}
       </div>
       <h2 id="fx-deck-title" className="fx-deck__title">
-        Baked in Mom's kitchen, every box is <span className="fx-script">also…</span>
+        Every cake on the menu, baked in <span className="fx-script">your flavour…</span>
       </h2>
       <ul className="fx-deck__stage">
-        {promises.map((promise, i) => (
-          <li
-            key={promise.title}
-            className="fx-deck__card"
-            style={
-              {
-                '--o': i - middle,
-                '--lift': `${scatter(i, -1.5, 1.5, 9).toFixed(2)}vh`,
-                '--card': promise.color,
-                '--card-ink': promise.ink ?? 'var(--bbm-color-brown-900)',
-              } as CSSProperties
-            }
-          >
-            <h3>{promise.title}</h3>
-            <span className="fx-deck__picture">{promise.art}</span>
-            <p>{promise.note}</p>
-            <PatternSurface
-              pattern={promise.foot.pattern}
-              tone={promise.foot.tone}
-              scale="sm"
-              className="fx-deck__foot"
-              aria-hidden="true"
-            />
-          </li>
-        ))}
+        {deck.map((card, i) => {
+          const photo = flavours[card.flavour];
+          return (
+            <li
+              key={card.flavour}
+              className="fx-deck__card"
+              style={
+                {
+                  '--o': i - middle,
+                  '--lift': `${scatter(i, -1.5, 1.5, 9).toFixed(2)}vh`,
+                  '--card': card.color,
+                  '--card-ink': card.ink ?? 'var(--bbm-color-brown-900)',
+                } as CSSProperties
+              }
+            >
+              <h3>
+                <a
+                  href={`/catalog?flavour=${flavourSlug(card.flavour)}`}
+                  aria-label={`${card.flavour}: see every cake in ${card.flavour.toLowerCase()}`}
+                >
+                  {card.flavour}
+                </a>
+              </h3>
+              <span className="fx-deck__picture">
+                {photo && <img className="fx-deck__photo" src={photo.src} alt="" loading="lazy" draggable={false} />}
+              </span>
+              <p>{photo?.inside}</p>
+              <PatternSurface
+                pattern={card.foot.pattern}
+                tone={card.foot.tone}
+                scale="sm"
+                className="fx-deck__foot"
+                aria-hidden="true"
+              />
+            </li>
+          );
+        })}
       </ul>
     </section>
-  );
-}
-
-/* The flavour wall: giant rows of flavour names sliding in turn, round a slice in the middle ------------------- */
-
-export function FlavourWall({ words }: { words: string[] }) {
-  const root = useRef<HTMLDivElement>(null);
-  const rows = [0, 1, 2];
-
-  useFx(root, (wall) => {
-    const rowEls = gsap.utils.toArray<HTMLElement>('.fx-wall__row', wall);
-    const scrub = { trigger: wall, start: 'top bottom', end: 'bottom top', scrub: 0.4 };
-    rowEls.forEach((row, i) => {
-      const span = () => Math.max(0, row.scrollWidth - wall.clientWidth);
-      const [from, to] = i % 2 ? [() => -span(), () => -span() * 0.15] : [() => -span() * 0.15, () => -span()];
-      gsap.fromTo(row, { x: from }, { x: to, ease: 'none', scrollTrigger: { ...scrub, invalidateOnRefresh: true } });
-    });
-    gsap.fromTo(
-      '.fx-wall__slice',
-      { rotation: -28, scale: 0.55, yPercent: 30 },
-      { rotation: 16, scale: 1.08, yPercent: -20, ease: 'none', scrollTrigger: scrub },
-    );
-  });
-
-  return (
-    <div ref={root} className="fx-wall" aria-hidden="true">
-      {rows.map((r) => (
-        <p key={r} className="fx-wall__row">
-          {[...words.slice(r * 3), ...words.slice(0, r * 3), ...words].map((word, i) => (
-            <span key={i} className={(i + r) % 2 ? 'fx-wall__word fx-wall__word--outline' : 'fx-wall__word'}>
-              {word}
-              <span className="fx-wall__star">✱</span>
-            </span>
-          ))}
-        </p>
-      ))}
-      <img className="fx-wall__slice" src="/collage/paint-cherry-slice.webp" alt="" loading="lazy" />
-    </div>
   );
 }
 

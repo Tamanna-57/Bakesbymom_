@@ -33,7 +33,7 @@ npm test -w @bakesbymom/web
 | `src/sections/blocks.tsx`     | Every page section. Storybook's _Sections_ and _Pages_ stories import these same files                                                      |
 | `src/sections/story.tsx`      | Our story: a letter from Mom, her cakes on a tray, her promises as a menu card (styles in `story.css`)                                      |
 | `src/sections/home.tsx`       | The home page sections (spec: [`landing-page.md`](../../design/board/sections/landing-page.md))                                             |
-| `src/sections/fx.tsx`         | The big scroll scenes: the flavour deck, the curved sign-off and the footer word                                                            |
+| `src/sections/fx.tsx`         | The big scroll scenes: the flavour deck, the curved sign-off (off the home page, kept) and the footer word                                                          |
 | `src/sections/order-rail.tsx` | How to order as a ride sideways: the section pins and its panels slide past (styles in `order-rail.css`)                                    |
 | `src/fx/`                     | The motion layer: GSAP and ScrollTrigger with Lenis, shared effects, sprinkles (spec: [`motion.md`](../../design/board/sections/motion.md)) |
 | `src/pages/`                  | The pages and the shared order form fields                                                                                                  |

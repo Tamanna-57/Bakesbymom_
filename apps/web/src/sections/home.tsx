@@ -450,7 +450,9 @@ function useWheel(count: number) {
     const wheel = (e: WheelEvent) => {
       const dx = e.shiftKey && !e.deltaX ? e.deltaY : e.deltaX;
       if (Math.abs(dx) <= Math.abs(e.shiftKey ? 0 : e.deltaY)) return;
+      // Ours alone: the page's smooth scrolling must not pick up the swipe's up-and-down jitter
       e.preventDefault();
+      e.stopPropagation();
       if (!el.classList.contains('is-turning')) live = turnRef.current;
       follow(live + dx / spacing());
       window.clearTimeout(settle);

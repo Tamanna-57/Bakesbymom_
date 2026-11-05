@@ -1,22 +1,29 @@
 /**
- * How to order: the lockup ("Crafted happiness, baked with love."), one panel for each step and the shortcuts at the
- * end, stacked down the page and scrolled through like the rest of the site. The panels and their motion come from
- * Teh Tarik Nation; it used to ride sideways in a pinned strip, and now plays as each panel scrolls into view: the
- * lockup's letters rise in, each step's words come up while its number and stickers drift at their own depths and
- * its title types itself out on a tag, the order types itself into the chat, and the shortcuts drop in with a bounce.
+ * How to order, as a ride sideways: after Teh Tarik Nation's pinned horizontal section, where the page stops and its
+ * panels slide past while everything on them moves up, down and across at its own speed.
  *
- * Visitors who ask for reduced motion get every panel finished and still.
+ * The section pins under the header and scrolling down carries the visitor along a strip of panels: the lockup
+ * ("Crafted happiness, baked with love."), which breaks apart letter by letter as it slides away; one panel for each
+ * step, its big number rising, its stickers flying past at their own depths and its title typed out on a tag; then
+ * the end, where the shortcuts drop in with a bounce. A gift box hops along the bottom the whole way, and a striped
+ * bar fills as the steps go by.
+ *
+ * Visitors who ask for reduced motion, and short screens (a phone on its side), get the panels stacked down the
+ * page instead, every one of them finished and still.
  */
 import { useRef, type ReactNode, type RefObject } from 'react';
 import { Button, Doodle, PatternSurface, type Pattern } from '@bakesbymom/ui';
 import { stock } from '../content';
 import { bakery, cakeFlavours, cakeSizes, whatsappLink } from '../content/bakery';
 import { howToOrder, orderLink } from '../content/site';
-import { gsap, narrowScreen, scatter, SplitText, useFx } from '../fx/gsap';
+import { gsap, narrowScreen, scatter, ScrollTrigger, SplitText, useFx } from '../fx/gsap';
 import { splitTitle, writeIn } from '../fx/site-fx';
 import './order-rail.css';
 
 const external = { target: '_blank', rel: 'noreferrer' } as const;
+
+/** Where the panels ride sideways; matches order-rail.css. Shorter screens get the stacked panels. */
+const RAIL_QUERY = '(min-height: 520px)';
 
 const sizes = `${cakeSizes[0]?.label.split(' · ')[0]} to ${cakeSizes[cakeSizes.length - 1]?.label.split(' · ')[0]}`;
 
@@ -148,92 +155,203 @@ function typeOut(line: HTMLElement, caret: HTMLElement, vars: gsap.TimelineVars,
 
 function useRailFx(root: RefObject<HTMLElement | null>) {
   useFx(root, (section) => {
-    const narrow = narrowScreen();
+    const mm = gsap.matchMedia();
+    mm.add(RAIL_QUERY, () => {
+      const track = section.querySelector<HTMLElement>('.order-rail__track');
+      if (!track) return;
+      const narrow = narrowScreen();
+      // Measured from the last panel's place on the strip (layout, not scrollWidth: words and stickers flying in from
+      // past the edge would stretch that), so the ride stops with the end exactly filling the screen
+      const last = track.lastElementChild as HTMLElement | null;
+      const distance = () =>
+        Math.max(0, (last ? last.offsetLeft + last.offsetWidth : track.scrollWidth) - section.clientWidth);
+      // The sideways ride is a little longer than the strip, so each step gets a moment
+      const length = () => `+=${distance() * 1.15}`;
 
-    // The lockup: its letters rise in as the section arrives, and the script writes itself in
-    const title = section.querySelector<HTMLElement>('.order-rail__title');
-    if (title) {
-      const { chars, scripts } = splitTitle(title);
-      const arrive = gsap.timeline({ scrollTrigger: { trigger: section, start: 'top 70%', once: true } });
-      arrive.from(chars, {
-        yPercent: 120,
-        scale: 0.4,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'back.out(2.2)',
-        stagger: 0.02,
+      // The section stays pinned a little past the end of the ride, so the shortcuts land before the page moves on
+      ScrollTrigger.create({
+        trigger: section,
+        start: 'top top',
+        end: () => `+=${distance() * 1.15 + window.innerHeight * 0.45}`,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
       });
-      if (scripts.length) arrive.add(writeIn(scripts, { duration: 1.2 }), '-=0.5');
-    }
+      // The strip slides left as the page scrolls down
+      const ride = gsap.to(track, {
+        x: () => -distance(),
+        ease: 'none',
+        scrollTrigger: { trigger: section, start: 'top top', end: length, scrub: 0.8, invalidateOnRefresh: true },
+      });
+      /** A scroll trigger on something on the strip, measured as the strip slides past rather than up the page. */
+      const along = (trigger: Element, start: string, end: string, scrub: boolean | number = 0.5) => ({
+        trigger,
+        containerAnimation: ride,
+        start,
+        end,
+        scrub,
+      });
 
-    // Each step as it scrolls up: the words come up, the number and the stickers drift at their own depths, and the
-    // title types itself out on its tag
-    section.querySelectorAll<HTMLElement>('.order-rail__step').forEach((panel, i) => {
-      const pass = { trigger: panel, start: 'top bottom', end: 'bottom top', scrub: 0.5 };
-      gsap.fromTo(
-        panel.querySelector('.order-rail__num'),
-        { yPercent: 40, rotation: -8 },
-        { yPercent: -40, rotation: 6, ease: 'none', scrollTrigger: pass },
-      );
-      panel.querySelectorAll<HTMLElement>('.order-rail__sticker').forEach((sticker, k) => {
-        const depth = (Number(sticker.dataset.depth) || 1) * (narrow ? 0.5 : 1);
-        gsap.fromTo(
-          sticker,
-          { y: 90 * depth, rotation: scatter(i * 3 + k, -14, 14, 3) },
-          { y: -90 * depth, rotation: scatter(i * 3 + k, -10, 10, 8), ease: 'none', scrollTrigger: pass },
-        );
-      });
-      gsap.from(panel.querySelectorAll('.order-rail__copy > *'), {
-        y: narrow ? 40 : 70,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: panel, start: 'top 80%', once: true },
-      });
-      const line = panel.querySelector<HTMLElement>('.order-rail__tag');
-      const caret = line?.querySelector<HTMLElement>('.order-rail__caret');
-      if (line && caret) {
-        typeOut(line, caret, { scrollTrigger: { trigger: panel, start: 'top 65%', once: true } });
+      // The lockup: letters rise in as the section arrives, then break apart in every direction as it slides away
+      const intro = section.querySelector<HTMLElement>('.order-rail__intro');
+      const title = section.querySelector<HTMLElement>('.order-rail__title');
+      if (intro && title) {
+        const { chars, scripts } = splitTitle(title);
+        const arrive = gsap.timeline({ scrollTrigger: { trigger: section, start: 'top 70%', once: true } });
+        arrive.from(chars, {
+          yPercent: 120,
+          scale: 0.4,
+          opacity: 0,
+          duration: 0.8,
+          ease: 'back.out(2.2)',
+          stagger: 0.02,
+        });
+        if (scripts.length) arrive.add(writeIn(scripts, { duration: 1.2 }), '-=0.5');
+        gsap.to(chars, {
+          x: (i) => scatter(i, -0.3, 0.3, 5) * window.innerWidth,
+          y: (i) => scatter(i, -0.7, 0.7, 7) * window.innerHeight,
+          rotation: (i) => scatter(i, -200, 200, 9),
+          ease: 'power2.in',
+          scrollTrigger: along(intro, 'left left', 'center left'),
+        });
+        gsap.to(scripts, {
+          y: () => -window.innerHeight * 0.6,
+          scale: 1.6,
+          ease: 'power2.in',
+          scrollTrigger: along(intro, 'left left', 'center left'),
+        });
+        gsap.to(intro.querySelectorAll('.order-rail__lead, .order-rail__pill, .order-rail__hint'), {
+          y: (i) => (i % 2 ? -1 : 1) * window.innerHeight * 0.5,
+          rotation: (i) => (i % 2 ? -18 : 14),
+          ease: 'power2.in',
+          scrollTrigger: along(intro, 'left left', 'center left'),
+        });
+        gsap.to(intro.querySelectorAll('.order-rail__cherries'), {
+          y: (i) => (i ? -1 : 1) * window.innerHeight * 0.45,
+          x: (i) => (i ? 1 : -1) * window.innerWidth * 0.1,
+          rotation: (i) => (i ? 90 : -120),
+          ease: 'none',
+          scrollTrigger: along(intro, 'left left', 'right left'),
+        });
       }
-    });
 
-    // The chat on the third step: the order types itself into the message box, then Mom's answer pops up
-    const chat = section.querySelector<HTMLElement>('.order-rail__chat');
-    const typed = chat?.querySelector<HTMLElement>('.order-rail__typed');
-    const chatCaret = chat?.querySelector<HTMLElement>('.order-rail__caret');
-    if (chat && typed && chatCaret) {
-      const reply = chat.querySelector('.order-rail__bubble--mom');
-      const tl = typeOut(typed, chatCaret, { scrollTrigger: { trigger: chat, start: 'top 75%', once: true } }, 'none');
-      if (reply)
-        tl.from(
-          reply,
-          { scale: 0, rotation: -12, transformOrigin: '0% 100%', duration: 0.6, ease: 'back.out(2.4)' },
-          '-=1',
+      // Each step: the number rises through the panel, the stickers fly across and up at their own depths, the
+      // words come up as it slides in and the title types itself out on its tag
+      section.querySelectorAll<HTMLElement>('.order-rail__step').forEach((panel, i) => {
+        const pass = along(panel, 'left right', 'right left', 0.3);
+        gsap.fromTo(
+          panel.querySelector('.order-rail__num'),
+          { yPercent: 60, rotation: -10 },
+          { yPercent: -60, rotation: 8, ease: 'none', scrollTrigger: pass },
         );
-    }
+        panel.querySelectorAll<HTMLElement>('.order-rail__sticker').forEach((sticker, k) => {
+          const depth = Number(sticker.dataset.depth) || 1;
+          const reach = (narrow ? 0.55 : 1) * depth;
+          const up = k % 2 ? 1 : -1;
+          gsap.fromTo(
+            sticker,
+            { x: 260 * reach, y: 220 * reach * up, rotation: scatter(i * 3 + k, -60, 60, 3) },
+            {
+              x: -200 * reach,
+              y: -180 * reach * up,
+              rotation: scatter(i * 3 + k, -40, 40, 8),
+              ease: 'none',
+              scrollTrigger: pass,
+            },
+          );
+        });
+        gsap.from(panel.querySelectorAll('.order-rail__copy > *'), {
+          y: narrow ? 70 : 130,
+          opacity: 0,
+          rotation: (k) => (k % 2 ? -5 : 5),
+          stagger: 0.12,
+          ease: 'power3.out',
+          scrollTrigger: along(panel, 'left 95%', 'left 30%'),
+        });
+        const line = panel.querySelector<HTMLElement>('.order-rail__tag');
+        const caret = line?.querySelector<HTMLElement>('.order-rail__caret');
+        if (line && caret) {
+          typeOut(line, caret, {
+            scrollTrigger: { trigger: panel, containerAnimation: ride, start: 'left 55%', once: true },
+          });
+        }
+      });
 
-    // The end: the words come up, and the shortcuts drop in from above and bounce, last one first
-    const end = section.querySelector<HTMLElement>('.order-rail__end');
-    if (end) {
-      gsap.from(end.querySelectorAll('.order-rail__end-copy > *'), {
-        y: narrow ? 40 : 70,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: end, start: 'top 80%', once: true },
-      });
-      gsap.from(end.querySelectorAll('.order-rail__tiles > li'), {
-        y: -160,
-        opacity: 0,
-        rotation: (k) => scatter(k, -20, 20, 4),
-        duration: 1.2,
-        ease: 'bounce.out',
-        stagger: -0.12,
-        scrollTrigger: { trigger: end, start: 'top 70%', once: true },
-      });
-    }
+      // The chat on the third step: the order types itself into the message box, then Mom's answer pops up
+      const chat = section.querySelector<HTMLElement>('.order-rail__chat');
+      const typed = chat?.querySelector<HTMLElement>('.order-rail__typed');
+      const chatCaret = chat?.querySelector<HTMLElement>('.order-rail__caret');
+      if (chat && typed && chatCaret) {
+        const reply = chat.querySelector('.order-rail__bubble--mom');
+        const panel = chat.closest('.order-rail__step') ?? chat;
+        const tl = typeOut(
+          typed,
+          chatCaret,
+          { scrollTrigger: { trigger: panel, containerAnimation: ride, start: 'left 60%', once: true } },
+          'none',
+        );
+        if (reply)
+          tl.from(
+            reply,
+            { scale: 0, rotation: -12, transformOrigin: '0% 100%', duration: 0.6, ease: 'back.out(2.4)' },
+            '-=1',
+          );
+      }
+
+      // The end: the shortcuts drop in from above and bounce, last one first
+      const end = section.querySelector<HTMLElement>('.order-rail__end');
+      if (end) {
+        gsap.from(end.querySelectorAll('.order-rail__tiles > li'), {
+          y: () => -window.innerHeight,
+          rotation: (k) => scatter(k, -30, 30, 4),
+          duration: 1.4,
+          ease: 'bounce.out',
+          stagger: -0.15,
+          scrollTrigger: {
+            trigger: end,
+            containerAnimation: ride,
+            start: 'left 70%',
+            toggleActions: 'play none none reverse',
+          },
+        });
+        gsap.from(end.querySelectorAll('.order-rail__end-copy > *'), {
+          x: narrow ? 120 : 260,
+          opacity: 0,
+          stagger: 0.1,
+          ease: 'power3.out',
+          scrollTrigger: along(end, 'left 100%', 'left 25%'),
+        });
+      }
+
+      // A gift box hops along the bottom the whole way, and the bar fills
+      const whole = { trigger: section, start: 'top top', end: length, scrub: 0.8, invalidateOnRefresh: true };
+      const box = section.querySelector('.order-rail__traveller');
+      if (box) {
+        const hops = gsap.timeline({ scrollTrigger: whole });
+        hops.fromTo(
+          box,
+          { x: 0 },
+          { x: () => window.innerWidth * (narrow ? 0.62 : 0.8), ease: 'none', duration: 1 },
+          0,
+        );
+        hops.to(
+          box,
+          {
+            keyframes: {
+              y: [0, -110, 0, -70, 0, -130, 0, -80, 0, -100, 0],
+              rotation: [0, -16, 4, 14, -6, -20, 6, 12, -4, -10, 0],
+              easeEach: 'sine.inOut',
+            },
+            ease: 'none',
+            duration: 1,
+          },
+          0,
+        );
+      }
+      const bar = section.querySelector('.order-rail__progress span');
+      if (bar) gsap.fromTo(bar, { scaleX: 0 }, { scaleX: 1, ease: 'none', scrollTrigger: whole });
+    });
+    return () => mm.revert();
   });
 }
 
@@ -260,7 +378,11 @@ export function OrderRail() {
               <span className="order-rail__script">Bakes by Mom</span>
             </h2>
             <p className="order-rail__lead">
-              From “I want cake” to a box on your table, in four little steps. Mom walks you through them below.
+              From “I want cake” to a box on your table, in four little steps. Keep scrolling, and Mom will walk you
+              through them.
+            </p>
+            <p className="order-rail__hint" aria-hidden="true">
+              scroll <span>→</span>
             </p>
           </div>
           <span className="order-rail__cherries order-rail__cherries--right" aria-hidden="true">
@@ -370,6 +492,10 @@ export function OrderRail() {
             ))}
           </ul>
         </div>
+      </div>
+      <img className="order-rail__traveller" src="/collage/sticker-gift-box.webp" alt="" aria-hidden="true" />
+      <div className="order-rail__progress" aria-hidden="true">
+        <span />
       </div>
     </section>
   );

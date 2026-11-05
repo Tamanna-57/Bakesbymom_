@@ -189,6 +189,7 @@ export function FlavourDeck() {
 
 const SIGN_OFF = ['Slow down', 'Cut the cake', 'This is your sign to order the cake'];
 
+// Not on the home page now; kept, with its Storybook story, for another page or design.
 export function CurvedSignOff() {
   const root = useRef<HTMLElement>(null);
 

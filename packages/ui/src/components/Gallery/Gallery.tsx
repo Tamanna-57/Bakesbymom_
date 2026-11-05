@@ -256,20 +256,29 @@ function GalleryStrips({
   useEffect(() => {
     const el = row.current;
     if (!el || pinned) return;
+    // One swipe opens one strip: the first push past a small threshold opens the next (or previous) one, and the
+    // rest of that swipe, its momentum included, is spent until the trackpad goes quiet.
     let sum = 0;
     let last = 0;
+    let spent = false;
     const onWheel = (event: WheelEvent) => {
       const dx = event.shiftKey && !event.deltaX ? event.deltaY : event.deltaX;
       if (Math.abs(dx) <= Math.abs(event.shiftKey ? 0 : event.deltaY)) return;
       if (el.scrollWidth > el.clientWidth + 1) return;
+      // Ours alone: neither the page nor a smooth-scroll library should move with it
       event.preventDefault();
+      event.stopPropagation();
       const now = Date.now();
-      if (now - last > 250) sum = 0;
-      last = now;
-      sum += dx;
-      if (Math.abs(sum) >= 90) {
-        selectRef.current(openRef.current + Math.sign(sum));
+      if (now - last > 220) {
         sum = 0;
+        spent = false;
+      }
+      last = now;
+      if (spent) return;
+      sum += dx;
+      if (Math.abs(sum) >= 40) {
+        selectRef.current(openRef.current + Math.sign(sum));
+        spent = true;
       }
     };
     el.addEventListener('wheel', onWheel, { passive: false });

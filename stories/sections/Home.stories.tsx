@@ -20,7 +20,7 @@ const meta = {
     docs: {
       description: {
         component: fromBoard(
-          '**The home page sections, after pin 16 (SugarLace) and pin 13 (Puzzle Pantry).** Stripes, the outlined about card and the order lockup come from SugarLace; the shape ribbon, shop by the box with filter pills and the split about with the cartouche frame come from Puzzle Pantry. The feature strip and the starburst sticker come from other bakery sites on Pinterest (Sweet Crumbs, joe & dough). The flavour deck, the order panels and the curved sign-off take their motion from Teh Tarik Nation. Flavours, treats and the hero use stock photos; photos of the cakes we sell stay in the catalog.',
+          '**The home page sections, after pin 16 (SugarLace) and pin 13 (Puzzle Pantry).** Stripes, the outlined about card and the order lockup come from SugarLace; the shape ribbon, shop by the box with filter pills and the split about with the cartouche frame come from Puzzle Pantry. The feature strip and the starburst sticker come from other bakery sites on Pinterest (Sweet Crumbs, joe & dough). The flavour deck, the sideways order ride and the curved sign-off take their motion from Teh Tarik Nation. Flavours, treats and the hero use stock photos; photos of the cakes we sell stay in the catalog.',
           ['16', '13'],
           'landing-page.md',
         ),
@@ -57,9 +57,10 @@ export const CakesAndTreats: Story = { render: () => <CakesTreatsWheel /> };
 export const ShopByTheBox: Story = { render: () => <ShopByBoxSection /> };
 
 /**
- * How to order: pin 16's lockup, a panel for each step and the shortcuts, stacked down the page. As each panel
- * scrolls into view its words come up, its number and stickers drift at their own depths and its title types itself
- * out on a tag; the shortcuts drop in with a bounce. Still and finished with reduced motion.
+ * How to order as a ride sideways (Teh Tarik Nation's pinned horizontal section): the section pins and the page's
+ * scroll slides a strip of panels past, pin 16's lockup breaking apart, each step's number rising, stickers flying
+ * across at their own depths and titles typed out on tags, then the shortcuts dropping in with a bounce. With reduced
+ * motion, or on a short screen, the panels stack down the page.
  */
 export const HowToOrder: Story = { render: () => <OrderRail /> };
 

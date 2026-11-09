@@ -1,5 +1,8 @@
-/* How to order (order-rail.tsx): the panels stacked down the page and scrolled through like the rest of the site.
-   Built only from tokens. */
+/* How to order, as a ride sideways (order-rail.tsx). Built only from tokens.
+
+   The still layout comes first: the panels stacked down the page, finished, for reduced motion and short screens.
+   Where the panels ride (motion allowed, a screen at least 520px tall, the same query as RAIL_QUERY), they sit in
+   one long strip the height of the screen and the section pins while it slides past. */
 
 .order-rail {
   --rail-ink: var(--bbm-color-brown-900);
@@ -92,6 +95,27 @@
   font-size: var(--bbm-text-body-lg-size, 1.125rem);
   line-height: 1.55;
   color: var(--bbm-color-text-secondary);
+}
+
+.order-rail__hint {
+  display: none;
+  margin: 0;
+  font-family: var(--bbm-font-family-display);
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: var(--bbm-font-weight-semibold);
+  color: var(--bbm-color-cherry-700);
+}
+
+.order-rail__hint span {
+  display: inline-block;
+  animation: order-rail-nudge 1.2s var(--bbm-motion-easing-out) infinite;
+}
+
+@keyframes order-rail-nudge {
+  50% {
+    translate: 0.4em 0;
+  }
 }
 
 /* Halftone cherries either side, swinging on their stems */
@@ -616,8 +640,151 @@
   outline-offset: 3px;
 }
 
+/* The gift box that hops along the bottom, and the striped bar: only on the ride */
+.order-rail__traveller,
+.order-rail__progress {
+  display: none;
+}
+
+/* The ride ------------------------------------------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: no-preference) and (min-height: 520px) {
+  .order-rail {
+    height: 100vh;
+    height: 100svh;
+  }
+
+  .order-rail__track {
+    display: flex;
+    width: max-content;
+    height: 100%;
+    will-change: transform;
+  }
+
+  .order-rail__panel {
+    flex: none;
+    height: 100%;
+    padding-top: calc(var(--site-header-h, 5rem) + var(--bbm-space-6));
+    padding-bottom: calc(var(--bbm-space-16) + 2.75rem);
+  }
+
+  .order-rail__intro {
+    width: 100vw;
+  }
+
+  .order-rail__hint {
+    display: block;
+  }
+
+  .order-rail__step {
+    width: 92vw;
+    border-top: 0;
+    border-left: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  }
+
+  .order-rail__end {
+    width: 100vw;
+    border-top: 0;
+    border-left: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  }
+
+  .order-rail__traveller {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 3vw;
+    z-index: 5;
+    display: block;
+    width: clamp(4.5rem, 8vw, 7.5rem);
+    height: auto;
+    filter: drop-shadow(0 10px 12px color-mix(in srgb, var(--bbm-color-brown-900) 30%, transparent));
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  .order-rail__progress {
+    position: absolute;
+    right: var(--bbm-layout-gutter);
+    bottom: 0.6rem;
+    left: var(--bbm-layout-gutter);
+    z-index: 4;
+    display: block;
+    height: 6px;
+    overflow: hidden;
+    border: 1px solid var(--bbm-color-brown-900);
+    border-radius: var(--bbm-radius-pill);
+    background-color: var(--bbm-color-paper);
+  }
+
+  .order-rail__progress span {
+    display: block;
+    height: 100%;
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--bbm-color-cherry-500) 0 6px,
+      var(--bbm-color-pink-300) 6px 12px
+    );
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (min-height: 520px) and (min-width: 900px) {
+  .order-rail__step {
+    width: min(76vw, 70rem);
+    padding-inline: clamp(var(--bbm-space-8), 5vw, var(--bbm-space-16));
+  }
+}
+
+/* Phones on the ride: the words on top and the stickers under them, smaller, so a panel fits the screen */
+@media (prefers-reduced-motion: no-preference) and (min-height: 520px) and (max-width: 899.98px) {
+  .order-rail__step {
+    align-content: start;
+    gap: var(--bbm-space-3);
+  }
+
+  .order-rail__copy {
+    gap: var(--bbm-space-3);
+  }
+
+  .order-rail__text {
+    font-size: 1rem;
+  }
+
+  .order-rail__art {
+    min-height: 0;
+    height: 100%;
+  }
+
+  .order-rail__chat {
+    top: 0;
+    font-size: 0.85em;
+  }
+
+  .order-rail__end {
+    align-content: start;
+    gap: var(--bbm-space-5);
+  }
+
+  .order-rail__end-copy {
+    gap: var(--bbm-space-3);
+  }
+
+  .order-rail__tile {
+    padding: var(--bbm-space-2);
+    gap: var(--bbm-space-2);
+  }
+
+  .order-rail__tile-arrow {
+    top: var(--bbm-space-3);
+    right: var(--bbm-space-3);
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .order-rail__cherries svg,
+  .order-rail__hint span,
   .order-rail__caret {
     animation: none;
   }

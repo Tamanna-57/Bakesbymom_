@@ -22,12 +22,17 @@ CHERRY_INK = (148, 25, 57)  # --bbm-color-cherry-700
 COCOA_INK = (50, 24, 11)  # --bbm-color-brown-900
 
 
-def flood_background(a: np.ndarray, tol: int) -> np.ndarray:
-    """True where a pixel is part of the plain background touching the edges."""
+def flood_background(a: np.ndarray, tol: int, neutral: int | None = None) -> np.ndarray:
+    """True where a pixel is part of the plain background touching the edges.
+
+    With `neutral`, only greys count as background (channels within `neutral` of each other), so warm or tinted
+    whites, like icing in front of a grey wall, stay in the cut-out."""
     h, w, _ = a.shape
     border = np.concatenate([a[0], a[-1], a[:, 0], a[:, -1]])
     bg = np.median(border, axis=0)
     cand = np.abs(a - bg).max(axis=2) < tol
+    if neutral is not None:
+        cand &= (a.max(axis=2) - a.min(axis=2)) < neutral
     mask = np.zeros((h, w), bool)
     q = deque()
     for x in range(w):
@@ -79,15 +84,24 @@ def keep_large(fg: np.ndarray, min_share: float) -> np.ndarray:
     return np.isin(labels, list(keep))
 
 
-def cutout(src: str, crop=(0, 0, 1, 1), tol=24, min_share=0.08, size=900) -> Image.Image:
+def fill_holes(fg: np.ndarray) -> np.ndarray:
+    """Fills gaps inside the cut-out: anything not reachable from the edges through background is kept."""
+    return ~flood_background(np.where(fg[..., None], 255, 0).astype(np.int16).repeat(3, axis=2), 1)
+
+
+def cutout(
+    src: str, crop=(0, 0, 1, 1), tol=24, min_share=0.08, size=900, neutral: int | None = None, fill=False
+) -> Image.Image:
     im = Image.open(ROOT / src).convert("RGB")
     w, h = im.size
     im = im.crop((int(crop[0] * w), int(crop[1] * h), int(crop[2] * w), int(crop[3] * h)))
     im.thumbnail((size, size))
     a = np.asarray(im).astype(np.int16)
-    fg = ~flood_background(a, tol)
+    fg = ~flood_background(a, tol, neutral)
     fg_img = Image.fromarray((fg * 255).astype(np.uint8)).filter(ImageFilter.MedianFilter(7))
     fg = keep_large(np.asarray(fg_img) > 128, min_share)
+    if fill:
+        fg = fill_holes(fg)
     alpha = Image.fromarray((fg * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(1.1))
     alpha = alpha.point(lambda v: 255 if v > 120 else 0).filter(ImageFilter.GaussianBlur(0.7))
     rgba = im.convert("RGBA")
@@ -202,7 +216,8 @@ def main():
     cuts = {
         "cherry-cake": cutout("stock/home-hero.webp", crop=(0.12, 0, 1, 0.93), tol=24, min_share=0.05),
         "gift-box": cutout("stock/home-gift.webp", tol=24, min_share=0.05),
-        "drip-cake": cutout("stock/home-about.webp", crop=(0, 0, 1, 0.76), tol=22, min_share=0.2),
+        # White icing on a grey wall: only neutral greys are background, and gaps inside the cake are filled
+        "drip-cake": cutout("stock/home-about.webp", crop=(0, 0, 1, 0.76), tol=22, min_share=0.2, neutral=8, fill=True),
         "jar-cakes": cutout("stock/treat-jar-cakes.webp", tol=26, min_share=0.2),
     }
     for name, cut in cuts.items():

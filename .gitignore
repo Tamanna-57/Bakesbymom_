@@ -7,3 +7,4 @@ coverage/
 .vite/
 *.tsbuildinfo
 .vercel
+__pycache__/

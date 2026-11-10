@@ -33,8 +33,8 @@ function MoreFromTheKitchen({ category }: { category: TreatCategory }) {
 }
 
 /**
- * One kind of treat (the old site's /shop/<type>): what to know, then every item. A type with a `showcase` (the
- * cookies) gets the showcase layout instead (TreatShowcase.tsx).
+ * One kind of treat (the old site's /shop/<type>). Every category has a `showcase` and gets that page
+ * (TreatShowcase.tsx); the plain page below (what to know, then every item) is for a category added without one.
  */
 export function TreatCategoryPage({ category }: { category: TreatCategory }) {
   const image = treatArt[category.slug] ?? stock.cupcakes;

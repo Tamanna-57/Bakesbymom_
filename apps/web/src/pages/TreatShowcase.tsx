@@ -1,21 +1,12 @@
 /**
- * The showcase layout for a treat type's page (the cookies first), after a cookie shop on Pinterest (The Crumb
- * Culture), redrawn in the board's palette and type, on the site's own colored bands: a cherry hero with a fan of photos,
- * "only the good stuff" on pink polka dots with a photo, a double ribbon, the treats as framed cards on the baby
- * blue band (each with its photo). The words come from content/treats.ts.
+ * Every treat category's page, after a cookie shop on Pinterest (The Crumb Culture), in the board's palette and type:
+ * a hero in the category's own color with a fan of photos, then the treats as framed cards on the baby blue band.
+ * Straight from the hero to ordering: each card opens its treat to customise and send on WhatsApp. The template is
+ * the same for every category; the color, the words and the photos come from content/treats.ts.
  */
-import type { ReactNode } from 'react';
-import {
-  Button,
-  Doodle,
-  Marquee,
-  PatternSurface,
-  Polaroid,
-  PriceTag,
-  SectionHeading,
-  type DoodleName,
-} from '@bakesbymom/ui';
-import { showcaseArt, stock, treatArt } from '../content';
+import type { CSSProperties, ReactNode } from 'react';
+import { Button, Doodle, PriceTag, SectionHeading, type DoodleName } from '@bakesbymom/ui';
+import { stock, treatArt } from '../content';
 import { qtyLabel, type TreatCategory, type TreatShowcase as Showcase } from '../content/treats';
 import { SectionEdge } from '../sections/blocks';
 import { Breadcrumbs } from './order';
@@ -32,7 +23,9 @@ export function TreatShowcase({
   more: ReactNode;
 }) {
   const photo = treatArt[category.slug] ?? stock.cupcakes;
-  const goodPhoto = showcaseArt[category.slug];
+  const shots = showcase.heroPhotos.slice(0, 3);
+  // The fan's places: the middle card is always there and largest; one photo is just that card
+  const places = shots.length === 1 ? [2] : shots.length === 2 ? [1, 2] : [1, 2, 3];
   const smallest = qtyLabel(category.minQty, category.unit);
   const decorations: Array<{ name: DoodleName; className: string; color: string; size: number }> = [
     { name: 'heart', className: 'treat-sig__deco--a', color: 'var(--bbm-color-cherry-500)', size: 40 },
@@ -43,9 +36,13 @@ export function TreatShowcase({
 
   return (
     <>
-      {/* Hero: solid cherry, the words on the left and a fan of photo cards on the right, a wave at the top (the
-          header's) and the foot (the pink band's) */}
-      <section className="treat-hero" aria-labelledby="treat-hero-title">
+      {/* Hero: the category's own color, the words on the left and a fan of photo cards on the right, a wave at the
+          top (the header's) and the foot (the cards band's) */}
+      <section
+        className="treat-hero"
+        style={{ '--hero-bg': `var(--bbm-color-${showcase.tone})` } as CSSProperties}
+        aria-labelledby="treat-hero-title"
+      >
         <div className="treat-hero__inner">
           <div className="treat-hero__copy">
             <Breadcrumbs
@@ -67,14 +64,14 @@ export function TreatShowcase({
             </div>
             <p className="treat-hero__note">Photos for reference. Every box is baked to order.</p>
           </div>
-          <div className="treat-hero__fan">
-            {showcase.heroPhotos.slice(0, 3).map((shot, i) => (
+          <div className={`treat-hero__fan treat-hero__fan--${shots.length}`}>
+            {shots.map((shot, i) => (
               <img
                 key={shot.src}
-                className={`treat-hero__card treat-hero__card--${i + 1}`}
+                className={`treat-hero__card treat-hero__card--${places[i]}`}
                 src={shot.src}
                 alt={shot.alt}
-                fetchPriority={i === 1 ? 'high' : undefined}
+                fetchPriority={places[i] === 2 ? 'high' : undefined}
               />
             ))}
             <PriceTag
@@ -90,68 +87,9 @@ export function TreatShowcase({
         </div>
       </section>
 
-      {/* Only the good stuff, on the pink polka dots of the home page */}
-      <PatternSurface
-        as="section"
-        pattern="dots"
-        tone="pink"
-        ground="var(--bbm-color-bg-pink)"
-        className="site-section site-section--edged treat-good"
-      >
-        <SectionEdge color="var(--bbm-color-bg-pink)" shape="wave" />
-        <div className="site-container treat-good__inner">
-          <div className="treat-good__copy">
-            <h2 className="treat-good__title">{showcase.goodStuff.title}</h2>
-            <p className="treat-good__text">{showcase.goodStuff.text}</p>
-            <Button size="sm" variant="secondary" href="#menu">
-              See the {category.name.toLowerCase()}
-            </Button>
-          </div>
-          {goodPhoto && (
-            <div className="treat-good__art">
-              <Polaroid
-                frame="scallop"
-                tone="butter"
-                src={goodPhoto.src}
-                alt={goodPhoto.alt}
-                rotate={3}
-                aspect="4/5"
-                width="100%"
-              />
-              <PriceTag
-                className="treat-good__tag"
-                shape="burst"
-                tone="pink"
-                amount="fresh"
-                label="every tin"
-                size={96}
-                rotate={-10}
-              />
-            </div>
-          )}
-        </div>
-      </PatternSurface>
-
-      <div className="treat-ribbons">
-        <Marquee
-          tone="cherry"
-          size="sm"
-          label={`About our ${category.name.toLowerCase()}`}
-          items={showcase.ribbon[0]}
-          separator={<Doodle name="heart" size="1em" />}
-        />
-        <Marquee
-          tone="butter"
-          size="sm"
-          label={`More about our ${category.name.toLowerCase()}`}
-          items={showcase.ribbon[1]}
-          separator={<Doodle name="daisy" size="1em" />}
-          direction="reverse"
-        />
-      </div>
-
-      {/* The treats, as framed cards on the baby blue band (the Cakes band's color) */}
-      <section id="menu" className="site-section site-section--blue treat-sig">
+      {/* The treats, as framed cards on the baby blue band (the Cakes band's color), its wave rising into the hero */}
+      <section id="menu" className="site-section site-section--blue site-section--edged treat-sig">
+        <SectionEdge color="var(--bbm-color-bg-blue)" shape="wave" />
         {decorations.map((d) => (
           <Doodle
             key={d.className}

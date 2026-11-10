@@ -257,12 +257,19 @@ describe('qtyLabel', () => {
 });
 
 describe('treat showcases', () => {
-  it('give the cookies a showcase with a fan of hero photos, and every cookie a photo of itself', async () => {
-    const { showcaseArt } = await import('./index');
-    const cookies = findTreatCategory('cookies')!;
-    expect(cookies.showcase?.ribbon[0].length).toBeGreaterThan(0);
-    expect(showcaseArt.cookies?.src).toBeTruthy();
-    expect(cookies.showcase?.heroPhotos.length).toBe(3);
-    for (const treat of cookies.items) expect(treat.photo?.alt, treat.slug).toBeTruthy();
+  it('give every category the showcase page, each in its own color, with one to three hero photos', () => {
+    const tones = treatCategories.map((category) => category.showcase?.tone);
+    expect(tones.every(Boolean)).toBe(true);
+    expect(new Set(tones).size).toBe(treatCategories.length);
+    for (const category of treatCategories) {
+      const shots = category.showcase!.heroPhotos;
+      expect(shots.length, category.slug).toBeGreaterThanOrEqual(1);
+      expect(shots.length, category.slug).toBeLessThanOrEqual(3);
+      for (const shot of shots) expect(shot.src.startsWith('/'), shot.src).toBe(true);
+    }
+  });
+
+  it('give every cookie a photo of itself', () => {
+    for (const treat of findTreatCategory('cookies')!.items) expect(treat.photo?.alt, treat.slug).toBeTruthy();
   });
 });

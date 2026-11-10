@@ -112,7 +112,6 @@ export const footerColumns: FooterColumn[] = [
     links: [
       { label: 'Our story', href: '/about' },
       { label: 'How to order', href: '/#order' },
-      { label: 'FAQ', href: '/#faq' },
       { label: 'Link in bio', href: '/links' },
     ],
   },

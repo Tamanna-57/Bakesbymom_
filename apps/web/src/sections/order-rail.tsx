@@ -118,7 +118,12 @@ const shortcuts = [
     image: stock.gift.src,
     externalLink: true,
   },
-  { label: 'Questions?', href: '#faq', image: stock.cupcakes.src, externalLink: false },
+  {
+    label: 'Questions?',
+    href: whatsappLink('Hello Bakes by Mom! I have a question before I order 🙂'),
+    image: stock.cupcakes.src,
+    externalLink: true,
+  },
 ];
 
 /**

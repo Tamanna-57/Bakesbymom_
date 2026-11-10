@@ -12,20 +12,22 @@ export interface Treat {
 }
 
 /**
- * The showcase layout for a category's page (TreatShowcase.tsx): a photo hero, "only the good stuff", a double
- * ribbon, the treats as framed cards and a "we keep it simple" band. Categories without it keep the plain page.
+ * Every category's page (TreatShowcase.tsx): a hero in the category's own color, then its treats as framed cards.
+ * The template is the same for all of them; the color, the words and the photos tell them apart.
  */
 export interface TreatShowcase {
-  /** Hero headline: heavy words, then the words in script. */
+  /**
+   * The hero's color: a dark shade from the palette (a token name such as 'cherry-800'), so the cream headline, the
+   * pink script and the butter note all pass WCAG AA on it.
+   */
+  tone: string;
+  /** Hero headline: the words in Bodoni, then the words in script. */
   title: string;
   script: string;
-  /** The uppercase line under the headline. */
+  /** Mom's note under the headline. */
   tagline: string;
-  /** Up to three photos (paths in public/) fanned out as tilted cards beside the headline, the middle one largest. */
+  /** One to three photos (paths in public/) fanned out as tilted cards beside the headline, the middle one largest. */
   heroPhotos: Array<{ src: string; alt: string }>;
-  goodStuff: { title: string; text: string };
-  /** Words for the two ribbons. */
-  ribbon: [string[], string[]];
 }
 
 export interface TreatCategory {
@@ -54,6 +56,13 @@ export const treatCategories: TreatCategory[] = [
     blurb: 'Dense, fudgy and cut thick. Baked in trays through the week and boxed the morning they go out.',
     unit: 'pieces',
     minQty: 9,
+    showcase: {
+      tone: 'brown-800',
+      title: 'Brownies worth',
+      script: 'every square',
+      tagline: 'Fudgy, cut thick, boxed the morning they go out',
+      heroPhotos: [{ src: '/stock/treat-brownies.webp', alt: 'A stack of fudgy brownies' }],
+    },
     perBox: 9,
     extras: [
       'Extra walnuts',
@@ -153,6 +162,7 @@ export const treatCategories: TreatCategory[] = [
     choiceLabel: 'Flour',
     choices: ['Maida', 'Wheat flour', 'Ragi', 'Oats', 'Jowar'],
     showcase: {
+      tone: 'cherry-800',
       title: 'Cookies worth',
       script: 'every crumb',
       tagline: 'Your flour, your flavour, baked for your date',
@@ -160,14 +170,6 @@ export const treatCategories: TreatCategory[] = [
         { src: '/photos/cookies/berries.webp', alt: 'Raspberry and white chocolate cookies' },
         { src: '/photos/cookies/choco-chip.webp', alt: 'A stack of chocolate chip cookies' },
         { src: '/photos/cookies/double-chocolate.webp', alt: 'Double chocolate cookies with melted chocolate inside' },
-      ],
-      goodStuff: {
-        title: 'Only the good stuff goes in',
-        text: 'We bake fewer things and bake them properly. Your pick of maida, wheat, ragi, oats or jowar, no eggs, ever, and every tin baked for your date instead of taken off a shelf.',
-      },
-      ribbon: [
-        ['Baked to order', '100% eggless', 'Pick your flour', 'Chunks, not chips', 'Less sweet on request'],
-        ['Good with chai', 'Crisp edge, soft middle', 'Mixed boxes', 'Made in Mom’s kitchen'],
       ],
     },
     extras: [
@@ -289,6 +291,13 @@ export const treatCategories: TreatCategory[] = [
     blurb: 'Layered in a jar, spoon included. Every flavour we do, in the size that travels.',
     unit: 'jars',
     minQty: 1,
+    showcase: {
+      tone: 'blue-700',
+      title: 'Cake, layered',
+      script: 'in a jar',
+      tagline: 'Spoon included, in the size that travels',
+      heroPhotos: [{ src: '/stock/treat-jar-cakes.webp', alt: 'Chocolate cake layered with cream in glass jars' }],
+    },
     extras: [
       'Gift wrapping',
       'Gift box',
@@ -377,6 +386,13 @@ export const treatCategories: TreatCategory[] = [
     blurb: 'Tea cakes with no icing to melt — the loaf that sits on the counter all week.',
     unit: 'grams',
     minQty: 500,
+    showcase: {
+      tone: 'butter-800',
+      title: 'Tea cakes for',
+      script: 'every chai',
+      tagline: 'The loaf that sits on the counter all week',
+      heroPhotos: [{ src: '/stock/treat-dry-cakes.webp', alt: 'A sliced loaf tea cake' }],
+    },
     extras: ['Gift wrapping', 'Gift box', 'Greeting card note', 'Extra nuts', 'Less sweet', 'Sliced before packing'],
     items: [
       {
@@ -447,6 +463,16 @@ export const treatCategories: TreatCategory[] = [
     blurb: 'Six, twelve or twenty-four, piped the morning they go out.',
     unit: 'cupcakes',
     minQty: 6,
+    showcase: {
+      tone: 'pink-700',
+      title: 'Little cakes,',
+      script: 'big smiles',
+      tagline: 'Six, twelve or twenty-four, piped that morning',
+      heroPhotos: [
+        { src: '/stock/home-cupcakes.webp', alt: 'Cupcakes with pink frosting and a cherry on top' },
+        { src: '/stock/treat-cupcakes.webp', alt: 'A cupcake with pink frosting and a cherry' },
+      ],
+    },
     perBox: 6,
     extras: [
       'Piped message on the box',
@@ -515,6 +541,19 @@ export const treatCategories: TreatCategory[] = [
     blurb: 'The little one in a box — six inches of cake for two people and a message on top.',
     unit: 'bentos',
     minQty: 1,
+    showcase: {
+      tone: 'matcha-700',
+      title: 'A little cake,',
+      script: 'a big message',
+      tagline: 'Six inches of cake for two, a message on top',
+      heroPhotos: [
+        { src: '/stock/home-bento.webp', alt: 'A small white bento cake painted with cherries, in its box' },
+        {
+          src: '/stock/treat-bento-cakes.webp',
+          alt: 'A small bento cake that says happy birthday, in its box with a candle',
+        },
+      ],
+    },
     extras: [
       'Message piped on top',
       'Candles',
@@ -571,6 +610,15 @@ export const treatCategories: TreatCategory[] = [
     blurb: 'A cake and a set of cupcakes, iced to match, in one box.',
     unit: 'combos',
     minQty: 1,
+    showcase: {
+      tone: 'beige-700',
+      title: 'A cake and',
+      script: 'its cupcakes',
+      tagline: 'Iced to match, in one box',
+      heroPhotos: [
+        { src: '/stock/treat-combos.webp', alt: 'A pink rose-piped cake on a stand with matching cupcakes' },
+      ],
+    },
     extras: [
       'Message piped on the cake',
       'Candles',

@@ -70,11 +70,6 @@ export const treatArt: Record<string, StockPhoto> = {
   combos: photo('treat-combos', 'A pink rose-piped cake on a stand with matching cupcakes'),
 };
 
-/** The photo beside "only the good stuff" on a treat type's showcase page, by its /shop slug. */
-export const showcaseArt: Record<string, StockPhoto> = {
-  cookies: { src: '/photos/cookies/berries.webp', alt: 'A stack of raspberry and white chocolate cookies on a plate' },
-};
-
 /** A cut slice of each flavour from bakery.cakeFlavours, with what's inside it. */
 export const flavours: Record<string, StockPhoto & { inside: string }> = {
   'Chocolate truffle': {

@@ -271,3 +271,57 @@ body {
     animation: none;
   }
 }
+
+/* Phones and tablets: comfortable taps ------------------------------------------------------------------------ */
+
+@media (pointer: coarse) {
+  /* Filter, extra and pickup chips at the full 44px touch height */
+  .bbm-chips__chip {
+    min-height: var(--bbm-layout-touch-target);
+  }
+
+  /* Small round controls keep their look but take a 44px tap: an invisible ring round them catches the finger */
+  .site-icon-link,
+  .bbm-marquee__control,
+  .bbm-announcement__close {
+    isolation: isolate;
+  }
+
+  .site-icon-link {
+    position: relative;
+  }
+
+  .site-icon-link::after,
+  .bbm-marquee__control::after,
+  .bbm-announcement__close::after {
+    content: '';
+    position: absolute;
+    inset: -0.45rem;
+    border-radius: 50%;
+  }
+}
+
+/* Phones: the Back pill and the Ask Mom badge step aside while you scroll down the page, so they never sit on the
+   words you are reading, and come back as soon as you scroll up or stop near the end (motion.ts sets the class). */
+@media (max-width: 899.98px) {
+  .site-back,
+  .bbm-chat:not(.bbm-chat--inline):not(.bbm-chat--open) {
+    transition:
+      translate 0.35s var(--bbm-motion-easing-out),
+      opacity 0.35s var(--bbm-motion-easing-out);
+  }
+
+  html.is-reading-down .site-back,
+  html.is-reading-down .bbm-chat:not(.bbm-chat--inline):not(.bbm-chat--open) {
+    translate: 0 calc(100% + var(--bbm-space-8));
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-back,
+  .bbm-chat {
+    transition: none !important;
+  }
+}

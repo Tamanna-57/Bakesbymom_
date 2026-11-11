@@ -182,11 +182,33 @@ function useRailFx(root: RefObject<HTMLElement | null>) {
         anticipatePin: 1,
         invalidateOnRefresh: true,
       });
+      // Where each panel starts on the strip, as a share of the ride: on phones the ride settles on the next one in
+      // the direction of the swipe when it ends, so a panel never stops halfway off the screen
+      const stops = () => {
+        const d = distance();
+        return d ? [...track.children].map((panel) => Math.min(1, (panel as HTMLElement).offsetLeft / d)) : [0];
+      };
       // The strip slides left as the page scrolls down
       const ride = gsap.to(track, {
         x: () => -distance(),
         ease: 'none',
-        scrollTrigger: { trigger: section, start: 'top top', end: length, scrub: 0.8, invalidateOnRefresh: true },
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: length,
+          scrub: 0.8,
+          invalidateOnRefresh: true,
+          ...(narrow && {
+            snap: {
+              // The next panel in the direction of the swipe, like a carousel
+              snapTo: (progress: number, self?: ScrollTrigger) =>
+                ScrollTrigger.snapDirectional(stops())(progress, self?.direction ?? 1),
+              duration: { min: 0.25, max: 0.6 },
+              delay: 0.08,
+              ease: 'power2.out',
+            },
+          }),
+        },
       });
       /** A scroll trigger on something on the strip, measured as the strip slides past rather than up the page. */
       const along = (trigger: Element, start: string, end: string, scrub: boolean | number = 0.5) => ({

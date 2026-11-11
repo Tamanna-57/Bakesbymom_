@@ -40,6 +40,13 @@
   width: min(100%, 30rem, max(16rem, (100svh - 15rem) * 0.8));
 }
 
+/* Phones: a smaller arch, so the headline and the order button are on the first screen too */
+@media (max-width: 639.98px) {
+  .home-hero__art {
+    width: min(78%, 17rem, max(12rem, (100svh - 30rem) * 0.8));
+  }
+}
+
 /* The photo in an arched frame, like a shop window */
 .home-hero__photo {
   display: block;
@@ -735,8 +742,9 @@
     justify-content: center;
   }
 
-  .home-wheel__stage {
-    margin-top: var(--bbm-space-2);
+  /* Under the words on a phone, not over them (more specific than the stage's own rule further down) */
+  .home-wheel .home-wheel__stage {
+    margin-top: var(--bbm-space-3);
   }
 }
 

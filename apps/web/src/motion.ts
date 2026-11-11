@@ -193,3 +193,35 @@ export function useParallax(path: string) {
     };
   }, [path]);
 }
+
+/**
+ * Marks the page `is-reading-down` while the visitor scrolls down, and clears it as soon as they scroll back up, stop
+ * near the end of the page or change page. On phones site.css moves the floating Back pill and Ask Mom badge aside
+ * meanwhile, so they never cover what is being read.
+ */
+export function useReadingDirection(path: string) {
+  useEffect(() => {
+    const root = document.documentElement;
+    let last = window.scrollY;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const y = window.scrollY;
+      const nearEnd = y + window.innerHeight > document.documentElement.scrollHeight - 160;
+      if (y < 160 || nearEnd) root.classList.remove('is-reading-down');
+      else if (y > last + 12) root.classList.add('is-reading-down');
+      else if (y < last - 12) root.classList.remove('is-reading-down');
+      else return;
+      last = y;
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', onScroll);
+      root.classList.remove('is-reading-down');
+    };
+  }, [path]);
+}

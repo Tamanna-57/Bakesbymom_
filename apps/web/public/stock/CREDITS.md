@@ -27,3 +27,5 @@ From [Unsplash](https://unsplash.com), under the [Unsplash License](https://unsp
 | `home-cupcakes.webp`             | Sara Cervera         | [cupcake with white icing on top](https://unsplash.com/photos/cupcake-with-white-icing-on-top-Syv73NRZk7E)                                                         |
 | `home-occasions.webp`            | Ron James            | [round white cake on cake stand](https://unsplash.com/photos/round-white-cake-on-cake-stand-K9v6ACaGuvQ)                                                           |
 | `home-kitchen.webp`              | Karina Syrotiuk      | [Hand sifting yellow flour into a bowl](https://unsplash.com/photos/hand-sifting-yellow-flour-into-a-bowl-TRxdJIa0-BA)                                             |
+| `flavour-blueberry.webp` | Unsplash (photographer not recorded) | [blueberry cheesecake slice](https://images.unsplash.com/photo-1533134242443-d4fd215305ad), cropped square |
+| `flavour-biscoff.webp` | Unsplash (photographer not recorded) | [cream and spiced biscuit crumbs in a glass](https://images.unsplash.com/photo-1586040140378-b5634cb4c8fc), cropped square |

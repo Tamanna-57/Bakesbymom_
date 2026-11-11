@@ -39,6 +39,8 @@ export const cakeFlavours = [
   'Pineapple',
   'Fresh fruit',
   'Rasmalai',
+  'Blueberry',
+  'Biscoff',
 ];
 
 /** "Chocolate truffle" → "chocolate-truffle", for links like /catalog?flavour=chocolate-truffle. */

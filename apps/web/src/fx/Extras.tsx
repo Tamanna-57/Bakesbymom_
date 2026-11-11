@@ -60,7 +60,9 @@ export function Sprinkles() {
       }
       frame = sprinkles.length ? requestAnimationFrame(draw) : 0;
     };
-    const burst = (e: PointerEvent) => {
+    // A finger touching the screen is usually the start of a scroll: on touch screens the sprinkles wait for a real
+    // tap (a click), so scrolling never pays for them. A mouse throws them as soon as it presses.
+    const burst = (e: PointerEvent | MouseEvent) => {
       if (e.button !== 0) return;
       const target = e.target instanceof Element ? e.target : null;
       // Not while typing or choosing in a form
@@ -84,12 +86,29 @@ export function Sprinkles() {
       if (!frame) frame = requestAnimationFrame(draw);
     };
     size();
-    window.addEventListener('resize', size);
-    window.addEventListener('pointerdown', burst, { passive: true });
+    let lastPointer = 'mouse';
+    const down = (e: PointerEvent) => {
+      lastPointer = e.pointerType;
+      if (e.pointerType === 'mouse') burst(e);
+    };
+    const tap = (e: MouseEvent) => {
+      if (lastPointer !== 'mouse') burst(e);
+    };
+    // Only when the width changes: on phones the height changes with the address bar all the time
+    let width = window.innerWidth;
+    const resize = () => {
+      if (window.innerWidth === width && el.height >= window.innerHeight * ratio) return;
+      width = window.innerWidth;
+      size();
+    };
+    window.addEventListener('resize', resize);
+    window.addEventListener('pointerdown', down, { passive: true });
+    window.addEventListener('click', tap, { passive: true });
     return () => {
       cancelAnimationFrame(frame);
-      window.removeEventListener('resize', size);
-      window.removeEventListener('pointerdown', burst);
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('pointerdown', down);
+      window.removeEventListener('click', tap);
     };
   }, []);
   return <canvas ref={canvas} className="fx-sprinkles" aria-hidden="true" />;

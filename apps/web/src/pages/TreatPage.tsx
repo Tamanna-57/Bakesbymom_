@@ -50,7 +50,7 @@ export function TreatPage({ category, treat }: { category: TreatCategory; treat:
                 <img src={image.src} alt={image.alt} width={400} height={400} />
                 <p className="shop-photo-note">Photo for reference. Every box is baked to order.</p>
               </PatternSurface>
-              <p className="order-hint">An illustration for now; our own photo is coming soon.</p>
+              {!treat.photo && <p className="order-hint">A stock photo for now; our own photo is coming soon.</p>}
             </div>
 
             <div className="shop-item__info">

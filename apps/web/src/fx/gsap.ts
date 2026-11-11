@@ -9,6 +9,10 @@ import { SplitText } from 'gsap/SplitText';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
+// On phones the address bar slides in and out as you scroll, changing the screen's height. Recalculating every pinned
+// and scrubbed scene each time makes the page jump, so those height-only changes are ignored.
+ScrollTrigger.config({ ignoreMobileResize: true });
+
 export { gsap, ScrollTrigger, SplitText };
 
 /** False for visitors who ask for reduced motion, and where there is no browser (tests). */

@@ -1,5 +1,5 @@
-import { Button, Card, Doodle, ProductCard, SectionHeading } from '@bakesbymom/ui';
-import { stock, treatArt } from '../content';
+import { useRef } from 'react';
+import { Button, Card, Doodle, SectionHeading } from '@bakesbymom/ui';
 import { whatsappLink } from '../content/bakery';
 import { cakes } from '../content/catalog';
 import { orderLink } from '../content/site';
@@ -8,8 +8,6 @@ import { ComboCollage, ShopCollage, StepCollage } from '../collage/scenes';
 import { SectionEdge } from '../sections/blocks';
 import { Layout } from './Layout';
 import { Breadcrumbs, EgglessNote } from './order';
-
-const TONES = ['pink', 'blue', 'beige', 'butter'] as const;
 
 const customLink = whatsappLink("Hello Bakes by Mom! I'd like to plan a custom cake or box 🎂");
 
@@ -30,6 +28,113 @@ const STEPS = [
     body: 'Pick it up from the kitchen in Panipat, or choose delivery and Mom sorts out the details with you.',
   },
 ];
+
+interface ShelfItem {
+  name: string;
+  href: string;
+  meta: string;
+  /** One or two stickers (paths in public/collage); two stand side by side, as for the combos. */
+  stickers: string[];
+}
+
+/** Every category with its die-cut sticker, cakes first. */
+const shelf: ShelfItem[] = [
+  {
+    name: 'Cakes',
+    href: '/catalog',
+    meta: 'By occasion',
+    stickers: ['sticker-drip-cake'],
+  },
+  ...treatCategories.map((category) => ({
+    name: category.name,
+    href: `/shop/${category.slug}`,
+    meta: `From ${qtyLabel(category.minQty, category.unit)}`,
+    stickers: (
+      {
+        brownies: ['sticker-brownies'],
+        cookies: ['sticker-gift-box'],
+        'jar-cakes': ['sticker-jar-cakes'],
+        'dry-cakes': ['paint-teacake'],
+        cupcakes: ['paint-cupcake'],
+        'bento-cakes': ['sticker-bento'],
+        combos: ['sticker-cherry-cake', 'paint-cupcake'],
+      } as Record<string, string[]>
+    )[category.slug] ?? ['paint-cupcake'],
+  })),
+];
+
+/**
+ * The categories as a shelf of white cards on a caramel panel, each with its bake as a die-cut sticker standing up
+ * out of the top (after a dessert shop's "Explore our delicious taste" on Pinterest, in the site's palette and type).
+ * The row scrolls sideways under a finger or with the arrows; the page itself scrolls as usual.
+ */
+function ShopShelf() {
+  const row = useRef<HTMLUListElement>(null);
+  const step = (dir: 1 | -1) => {
+    const el = row.current;
+    const card = el?.firstElementChild as HTMLElement | null;
+    if (!el || !card) return;
+    const gap = parseFloat(getComputedStyle(el).columnGap) || 0;
+    const still = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    el.scrollBy({ left: dir * (card.offsetWidth + gap), behavior: still ? 'auto' : 'smooth' });
+  };
+  return (
+    <div className="shop-shelf">
+      <svg className="shop-shelf__swirl" viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M-20 150 C 180 40, 320 200, 520 110 S 860 20, 1000 120 S 1180 180, 1220 90" />
+      </svg>
+      <div className="shop-shelf__head">
+        <SectionHeading
+          level={2}
+          align="start"
+          title={
+            <>
+              Something for <em>every craving</em>
+            </>
+          }
+        />
+        <p className="shop-shelf__lead">
+          Open one to see the bakes, the sizes and what they cost, then send your order to Mom.
+        </p>
+      </div>
+      <div className="shop-shelf__stage">
+        <button type="button" className="shop-shelf__arrow" aria-label="Previous categories" onClick={() => step(-1)}>
+          ←
+        </button>
+        <ul ref={row} className="shop-shelf__row" aria-label="Cakes and treats">
+          {shelf.map((item) => (
+            <li key={item.href} className="shop-shelf__item">
+              <article className="shop-shelf__card">
+                <a className="shop-shelf__art" href={item.href} tabIndex={-1} aria-hidden="true">
+                  {item.stickers.map((src, i) => (
+                    <img
+                      key={src}
+                      className={`shop-shelf__sticker shop-shelf__sticker--${item.stickers.length > 1 ? i + 1 : 0}`}
+                      src={`/collage/${src}.webp`}
+                      alt=""
+                      loading="lazy"
+                      draggable={false}
+                    />
+                  ))}
+                </a>
+                <h3 className="shop-shelf__name">{item.name}</h3>
+                <p className="shop-shelf__meta">
+                  {item.href === '/catalog' && cakes.length ? `${cakes.length} cakes` : item.meta}
+                </p>
+                <Button size="sm" href={item.href} className="shop-shelf__cta">
+                  Order {item.name === 'Cakes' ? 'a cake' : 'now'}
+                </Button>
+              </article>
+            </li>
+          ))}
+        </ul>
+        <button type="button" className="shop-shelf__arrow" aria-label="Next categories" onClick={() => step(1)}>
+          →
+        </button>
+      </div>
+    </div>
+  );
+}
 
 /**
  * Cakes & Treats: the one place to order from. Every category, cakes first; each opens its own page (the cakes by
@@ -85,47 +190,8 @@ export function ShopPage() {
       <section id="menu" className="site-section site-section--edged site-section--beige">
         <SectionEdge color="var(--bbm-color-bg-beige)" shape="scallop" />
         <div className="site-container">
-          <SectionHeading
-            align="center"
-            eyebrow="pick a category"
-            title={
-              <>
-                Something for <em>every craving</em>
-              </>
-            }
-            description="Open one to see the bakes, the sizes and what they cost, then send your order to Mom."
-          />
+          <ShopShelf />
           <EgglessNote />
-          <ul className="site-menu__grid shop-grid">
-            <li>
-              <ProductCard
-                as="div"
-                variant="menu"
-                name="Cakes"
-                image={{ src: stock.occasions.src, alt: '' }}
-                description="Every cake, by occasion: birthdays, anniversaries, festivals and more."
-                price={cakes.length ? `${cakes.length} cakes` : 'By occasion'}
-                href="/catalog"
-                tone="pink"
-                headingLevel={3}
-              />
-            </li>
-            {treatCategories.map((category, i) => (
-              <li key={category.slug}>
-                <ProductCard
-                  as="div"
-                  variant="menu"
-                  name={category.name}
-                  image={{ src: treatArt[category.slug]?.src ?? stock.cupcakes.src, alt: '' }}
-                  description={category.blurb}
-                  price={`From ${qtyLabel(category.minQty, category.unit)}`}
-                  href={`/shop/${category.slug}`}
-                  tone={TONES[(i + 1) % TONES.length]}
-                  headingLevel={3}
-                />
-              </li>
-            ))}
-          </ul>
           <Card tone="beige" outline padding="md" className="shop-custom">
             <Doodle name="sparkle" size={40} color="var(--bbm-color-cherry-500)" />
             <div>

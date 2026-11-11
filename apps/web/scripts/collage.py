@@ -124,6 +124,19 @@ def sticker(cut: Image.Image, border=14) -> Image.Image:
     return white.crop(white.getbbox())
 
 
+def photo_sticker(src: str, box=(0, 0, 1, 1), radius=0.18, size=700) -> Image.Image:
+    """For a photo whose background can't be cut away: a rounded square of it, with the same white die-cut border."""
+    im = Image.open(ROOT / src).convert("RGB")
+    w, h = im.size
+    im = im.crop((int(box[0] * w), int(box[1] * h), int(box[2] * w), int(box[3] * h)))
+    im.thumbnail((size, size))
+    mask = Image.new("L", im.size, 0)
+    ImageDraw.Draw(mask).rounded_rectangle((0, 0, im.width - 1, im.height - 1), int(min(im.size) * radius), fill=255)
+    rgba = im.convert("RGBA")
+    rgba.putalpha(mask)
+    return rgba
+
+
 def halftone(img: Image.Image, cell=9, ink=CHERRY_INK, angle=45, gamma=0.9, floor=0.06) -> Image.Image:
     """A dot screen: each dot's size follows how dark the picture is there."""
     rgba = img.convert("RGBA")
@@ -219,6 +232,8 @@ def main():
         # White icing on a grey wall: only neutral greys are background, and gaps inside the cake are filled
         "drip-cake": cutout("stock/home-about.webp", crop=(0, 0, 1, 0.76), tol=22, min_share=0.2, neutral=8, fill=True),
         "jar-cakes": cutout("stock/treat-jar-cakes.webp", tol=26, min_share=0.2),
+        "brownies": cutout("stock/treat-brownies.webp", tol=40, min_share=0.2, fill=True),
+        "bento": photo_sticker("stock/home-bento.webp", box=(0.14, 0, 0.86, 1)),
     }
     for name, cut in cuts.items():
         save(sticker(cut), f"sticker-{name}")

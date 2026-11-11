@@ -51,6 +51,16 @@ const looks: Record<string, Omit<DeckCard, 'flavour'>> = {
   Pineapple: { color: 'var(--bbm-color-blue-200)', foot: { pattern: 'gingham', tone: 'blue' } },
   'Fresh fruit': { color: 'var(--bbm-color-pink-300)', foot: { pattern: 'checker', tone: 'cherry' } },
   Rasmalai: { color: 'var(--bbm-color-matcha-200)', foot: { pattern: 'dots', tone: 'matcha' } },
+  Blueberry: {
+    color: 'var(--bbm-color-blue-700)',
+    ink: 'var(--bbm-color-blue-100)',
+    foot: { pattern: 'gingham', tone: 'blue' },
+  },
+  Biscoff: {
+    color: 'var(--bbm-color-brown-500)',
+    ink: 'var(--bbm-color-paper)',
+    foot: { pattern: 'checker', tone: 'butter' },
+  },
 };
 
 const deck: DeckCard[] = cakeFlavours.map((flavour) => ({

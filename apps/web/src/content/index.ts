@@ -104,6 +104,14 @@ export const flavours: Record<string, StockPhoto & { inside: string }> = {
     ...photo('flavour-rasmalai', 'A slice of cake topped with pistachios and rose petals'),
     inside: 'Saffron sponge with rasmalai cream, pistachios and cardamom.',
   },
+  Blueberry: {
+    ...photo('flavour-blueberry', 'A slice of creamy cake topped with glossy blueberries'),
+    inside: 'Vanilla sponge with whipped cream and a blueberry compote.',
+  },
+  Biscoff: {
+    ...photo('flavour-biscoff', 'Cream layered with crumbled spiced biscuits in a glass'),
+    inside: 'Vanilla sponge with Biscoff cream, caramel spread and biscuit crumbs.',
+  },
 };
 
 export interface MenuItem {

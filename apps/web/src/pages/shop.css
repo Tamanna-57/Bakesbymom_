@@ -409,13 +409,6 @@
   position: relative;
 }
 
-/* The grid: Cakes leads, twice as wide on a wide screen */
-@media (min-width: 1100px) {
-  .shop-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
 /* How it works */
 .shop-steps__list {
   display: grid;
@@ -581,4 +574,233 @@
 .shop-custom p {
   margin: 0;
   color: var(--bbm-color-text-secondary);
+}
+
+/* The categories shelf (ShopShelf in Shop.tsx): white cards on a caramel panel, each bake a die-cut sticker standing
+   up out of the top of its card. ------------------------------------------------------------------------------ */
+
+.shop-shelf {
+  --card-w: clamp(13rem, 22vw, 16.5rem);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(var(--bbm-space-8), 5vw, var(--bbm-space-12)) 0 clamp(var(--bbm-space-8), 4vw, var(--bbm-space-10));
+  border-radius: var(--bbm-radius-2xl);
+  background-color: var(--bbm-color-brown-500);
+  box-shadow: 0 1.5rem 3rem -1.5rem rgb(50 24 11 / 0.55);
+  color: var(--bbm-color-paper);
+}
+
+/* A ribbon of cream swirling behind the cards */
+.shop-shelf__swirl {
+  position: absolute;
+  inset: auto 0 18% 0;
+  z-index: -1;
+  width: 100%;
+  height: 40%;
+  fill: none;
+  stroke: var(--bbm-color-brown-400);
+  stroke-width: 26;
+  stroke-linecap: round;
+}
+
+.shop-shelf__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--bbm-space-4) var(--bbm-space-10);
+  padding-inline: clamp(var(--bbm-space-5), 5vw, var(--bbm-space-12));
+}
+
+.shop-shelf__head .bbm-heading {
+  flex: 1 1 18rem;
+  max-width: 34rem;
+}
+
+.shop-shelf__head .bbm-heading__title {
+  color: var(--bbm-color-paper);
+}
+
+.shop-shelf__head .bbm-heading__title em {
+  color: var(--bbm-color-pink-300);
+}
+
+.shop-shelf__lead {
+  flex: 0 1 20rem;
+  margin: 0;
+  font-size: var(--bbm-text-body-sm-size);
+  line-height: 1.55;
+  color: var(--bbm-color-paper);
+}
+
+/* The arrows sit at either end of the row, half over the panel's edge like the reference */
+.shop-shelf__stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: clamp(var(--bbm-space-4), 2vw, var(--bbm-space-6));
+}
+
+.shop-shelf__arrow {
+  position: absolute;
+  top: 58%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: var(--bbm-layout-touch-target);
+  height: var(--bbm-layout-touch-target);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background-color: var(--bbm-color-paper);
+  box-shadow: 0 0.4rem 1rem rgb(50 24 11 / 0.35);
+  color: var(--bbm-color-brown-900);
+  font-size: 1.15rem;
+  cursor: pointer;
+  translate: 0 -50%;
+  transition: background-color var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard);
+}
+
+.shop-shelf__arrow:first-child {
+  left: var(--bbm-space-3);
+}
+
+.shop-shelf__arrow:last-child {
+  right: var(--bbm-space-3);
+}
+
+.shop-shelf__arrow:hover {
+  background-color: var(--bbm-color-butter-200);
+}
+
+.shop-shelf__arrow:focus-visible,
+.shop-shelf__card a:focus-visible {
+  outline: var(--bbm-focus-ring-width) solid var(--bbm-color-butter-300);
+  outline-offset: 3px;
+}
+
+/* The row: native sideways scrolling that snaps card by card. Room at the top for the stickers to stand up into. */
+.shop-shelf__row {
+  display: flex;
+  gap: clamp(var(--bbm-space-4), 2vw, var(--bbm-space-6));
+  width: 100%;
+  margin: 0;
+  padding: calc(var(--card-w) * 0.58) clamp(var(--bbm-space-12), 6vw, 4.5rem) var(--bbm-space-4);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: clamp(var(--bbm-space-12), 6vw, 4.5rem);
+  scrollbar-width: none;
+  list-style: none;
+}
+
+.shop-shelf__row::-webkit-scrollbar {
+  display: none;
+}
+
+.shop-shelf__item {
+  flex: none;
+  width: var(--card-w);
+  scroll-snap-align: start;
+}
+
+.shop-shelf__card {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: var(--bbm-space-2);
+  height: 100%;
+  box-sizing: border-box;
+  padding: calc(var(--card-w) * 0.34) var(--bbm-space-4) var(--bbm-space-5);
+  border-radius: calc(var(--bbm-radius-2xl) * 1.4);
+  background-color: var(--bbm-color-paper);
+  color: var(--bbm-color-brown-900);
+  text-align: center;
+  box-shadow: 0 0.75rem 1.5rem -0.75rem rgb(50 24 11 / 0.45);
+}
+
+/* The sticker stands half out of the top of the card */
+.shop-shelf__art {
+  position: absolute;
+  top: calc(var(--card-w) * -0.56);
+  left: 50%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 88%;
+  height: calc(var(--card-w) * 0.8);
+  translate: -50% 0;
+}
+
+.shop-shelf__sticker {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0.6rem 0.8rem rgb(50 24 11 / 0.35));
+  transition:
+    translate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce),
+    rotate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
+  user-select: none;
+}
+
+/* Two stickers (the combos): a cake and a cupcake leaning together */
+.shop-shelf__sticker--1 {
+  max-width: 62%;
+  rotate: -5deg;
+}
+
+.shop-shelf__sticker--2 {
+  max-width: 44%;
+  max-height: 70%;
+  margin-left: -10%;
+  rotate: 7deg;
+}
+
+.shop-shelf__card:hover .shop-shelf__sticker {
+  translate: 0 -0.6rem;
+}
+
+.shop-shelf__name {
+  margin: 0;
+  font-family: var(--bbm-text-heading-md-family);
+  font-size: var(--bbm-text-heading-md-size);
+  font-weight: var(--bbm-text-heading-md-weight);
+  line-height: 1.15;
+}
+
+.shop-shelf__meta {
+  margin: 0;
+  font-size: var(--bbm-text-body-sm-size);
+  color: var(--bbm-color-text-secondary);
+}
+
+.shop-shelf__cta {
+  align-self: end;
+  margin-top: var(--bbm-space-2);
+}
+
+/* Phones: a narrower panel edge to edge, a card and a peek of the next one */
+@media (max-width: 639.98px) {
+  .shop-shelf {
+    --card-w: 58vw;
+    margin-inline: calc(-1 * var(--bbm-layout-gutter));
+    border-radius: var(--bbm-radius-xl);
+  }
+
+  .shop-shelf__row {
+    padding-inline: var(--bbm-space-6);
+    scroll-padding-inline: var(--bbm-space-6);
+  }
+
+  .shop-shelf__arrow {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shop-shelf__sticker,
+  .shop-shelf__arrow {
+    transition: none;
+  }
 }

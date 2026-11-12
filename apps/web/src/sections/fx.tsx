@@ -177,7 +177,7 @@ export function FlavourDeck() {
                 </a>
               </h3>
               <span className="fx-deck__picture">
-                {photo && <img className="fx-deck__photo" src={photo.src} alt="" loading="lazy" draggable={false} />}
+                {photo && <img className="fx-deck__photo" src={photo.src} alt="" decoding="async" draggable={false} />}
               </span>
               <p>{photo?.inside}</p>
               <PatternSurface

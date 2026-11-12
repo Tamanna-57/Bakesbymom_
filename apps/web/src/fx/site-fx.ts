@@ -84,6 +84,10 @@ function scrollDrivenRibbons() {
   const tracks = [...document.querySelectorAll<HTMLElement>('.bbm-marquee__track, .site-reviews__track')];
   const rows = [...document.querySelectorAll<HTMLElement>('.bbm-marquee__row')];
   if (!tracks.length || typeof tracks[0]?.getAnimations !== 'function') return () => {};
+  // Looked up once (asking every frame was the heaviest thing on a phone), and again only if a ribbon restarts
+  let animations = tracks.flatMap((track) => track.getAnimations());
+  const lean_ = finePointer();
+  let lastRate = 1;
   let direction = 1;
   let boost = 0;
   let lean = 0;
@@ -100,9 +104,15 @@ function scrollDrivenRibbons() {
     boost *= 0.93;
     leanTarget *= 0.88;
     lean += (leanTarget - lean) * 0.2;
-    const rate = direction * (1 + boost);
-    for (const track of tracks) for (const animation of track.getAnimations()) animation.playbackRate = rate;
-    for (const row of rows) row.style.transform = Math.abs(lean) > 0.05 ? `skewX(${(-lean).toFixed(2)}deg)` : '';
+    const rate = Math.round(direction * (1 + boost) * 20) / 20;
+    if (rate !== lastRate) {
+      if (animations.some((a) => a.playState === 'idle')) animations = tracks.flatMap((track) => track.getAnimations());
+      for (const animation of animations) animation.playbackRate = rate;
+      lastRate = rate;
+    }
+    // The lean is for a mouse or trackpad: on a phone, skewing the rows every frame costs a repaint each time
+    if (lean_)
+      for (const row of rows) row.style.transform = Math.abs(lean) > 0.05 ? `skewX(${(-lean).toFixed(2)}deg)` : '';
     // Settled: keep running the way the visitor last scrolled, at the usual speed
     if (boost < 0.01 && Math.abs(lean) < 0.05) resting = true;
   };
@@ -110,7 +120,7 @@ function scrollDrivenRibbons() {
   return () => {
     off();
     gsap.ticker.remove(tick);
-    for (const track of tracks) for (const animation of track.getAnimations()) animation.playbackRate = 1;
+    for (const animation of animations) animation.playbackRate = 1;
     for (const row of rows) row.style.transform = '';
   };
 }

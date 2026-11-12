@@ -143,7 +143,6 @@ body {
 /* Decorations that drift against the scroll */
 [data-parallax] {
   translate: 0 var(--parallax-y, 0px);
-  will-change: translate;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -324,4 +323,10 @@ body {
   .bbm-chat {
     transition: none !important;
   }
+}
+
+/* Bands off the screen keep their looping decorations still (motion.ts usePauseOffscreen) */
+.is-offscreen,
+.is-offscreen * {
+  animation-play-state: paused !important;
 }

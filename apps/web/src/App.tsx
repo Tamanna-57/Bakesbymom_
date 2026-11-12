@@ -16,7 +16,15 @@ import { BackButton, hasBackButton } from './back-button';
 import { Intro, shouldPlayIntro } from './intro';
 import { CursorLabel, ScrollProgress, Sprinkles } from './fx/Extras';
 import { useSiteFx } from './fx/site-fx';
-import { jumpTo, useParallax, useReadingDirection, useReveal, useScrollRefresh, useSmoothScroll } from './motion';
+import {
+  jumpTo,
+  useParallax,
+  usePauseOffscreen,
+  useReadingDirection,
+  useReveal,
+  useScrollRefresh,
+  useSmoothScroll,
+} from './motion';
 import { matchPath, savedScroll, usePath, useLinkInterception } from './router';
 
 type Route = { title: string; page: ReactElement };
@@ -94,6 +102,7 @@ export function App() {
   useReveal(path);
   useParallax(path);
   useReadingDirection(path);
+  usePauseOffscreen(path);
   useSiteFx(path);
 
   // A new key per path resets each page's state (filters, order forms) when you move between items.

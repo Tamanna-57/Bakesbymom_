@@ -4,7 +4,7 @@ import { whatsappLink } from '../content/bakery';
 import { cakes } from '../content/catalog';
 import { orderLink } from '../content/site';
 import { qtyLabel, treatCategories } from '../content/treats';
-import { ComboCollage, ShopCollage, StepCollage } from '../collage/scenes';
+import { ShopCollage, StepCollage } from '../collage/scenes';
 import { SectionEdge } from '../sections/blocks';
 import { Layout } from './Layout';
 import { Breadcrumbs, EgglessNote } from './order';
@@ -139,8 +139,7 @@ function ShopShelf() {
 /**
  * Cakes & Treats: the one place to order from. Every category, cakes first; each opens its own page (the cakes by
  * occasion, or a treat type), where you pick a bake, make it yours and send the order on WhatsApp. For anything not
- * on the menu, a custom order goes straight to Mom. Around the menu: an illustrated hero, how an order works, and
- * the combo.
+ * on the menu, a custom order goes straight to Mom. Around the menu: an illustrated hero and how an order works.
  */
 export function ShopPage() {
   return (
@@ -239,31 +238,6 @@ export function ShopPage() {
               </li>
             ))}
           </ol>
-        </div>
-      </section>
-
-      <section className="site-section site-section--edged site-section--cocoa shop-combo">
-        <SectionEdge color="var(--bbm-color-bg-inverse)" shape="scallop" />
-        <div className="site-container">
-          <div className="shop-combo__art">
-            <ComboCollage />
-          </div>
-          <div className="shop-combo__copy">
-            <p className="shop-combo__kicker">can't pick one?</p>
-            <h2 className="shop-combo__title">
-              Make it a <em>combo</em>
-            </h2>
-            <p>
-              A cake and a set of cupcakes iced to match, in one box. Tell Mom the occasion and the colours, she'll do
-              the rest.
-            </p>
-            <div className="shop-hero__actions">
-              <Button href="/shop/combos">See the combos</Button>
-              <Button variant="ghost" href={orderLink} target="_blank" rel="noreferrer" className="shop-combo__ghost">
-                Ask Mom on WhatsApp
-              </Button>
-            </div>
-          </div>
         </div>
       </section>
     </Layout>

@@ -340,6 +340,17 @@
 
 .shop-hero {
   overflow: hidden;
+  /* Less room above the breadcrumb: the header's scallops are right there */
+  padding-top: clamp(var(--bbm-space-5), 4svh, var(--bbm-space-10));
+}
+
+/* The breadcrumb sits close to the hero instead of a full section gap above it */
+.shop-hero > .site-container {
+  gap: var(--bbm-space-2);
+}
+
+.shop-hero .shop-crumbs ol {
+  margin-bottom: 0;
 }
 
 .shop-hero__grid {
@@ -352,6 +363,12 @@
   .shop-hero__grid {
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
     gap: var(--bbm-space-10);
+    /* The words start at the top beside the collage, instead of being pushed down to its middle */
+    align-items: start;
+  }
+
+  .shop-hero__copy {
+    padding-top: var(--bbm-space-8);
   }
 }
 

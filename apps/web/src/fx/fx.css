@@ -132,7 +132,8 @@
   box-sizing: border-box;
   width: var(--deck-card);
   aspect-ratio: 0.776;
-  overflow: hidden;
+  /* No overflow clip and no will-change here: in Safari, a clipped, layered card that is turned and moved
+     can leave its photo unpainted. The foot rounds its own corners instead. */
   border: 1.5px solid var(--bbm-color-brown-900);
   border-radius: var(--bbm-radius-lg);
   background-color: var(--card);
@@ -141,7 +142,6 @@
   text-align: center;
   translate: calc(var(--o) * var(--spread)) var(--lift);
   rotate: calc(var(--o) * 1deg);
-  will-change: transform;
 }
 
 .fx-deck__card h3 {
@@ -179,15 +179,18 @@
   width: 100%;
   height: 12%;
   border-top: 1.5px solid var(--bbm-color-brown-900);
+  border-radius: 0 0 calc(var(--bbm-radius-lg) - 1.5px) calc(var(--bbm-radius-lg) - 1.5px);
 }
 
 /* The flavour's slice on a round plate, stuck on like a sticker */
+/* A fixed size worked out from the card's own width (not a percentage of the flexible space, which Safari
+   leaves at zero), small enough to fit under a two-line name */
 .fx-deck__photo {
   display: block;
   box-sizing: border-box;
-  height: 100%;
+  width: calc(var(--deck-card) * 0.56);
+  height: calc(var(--deck-card) * 0.56);
   max-width: 100%;
-  aspect-ratio: 1;
   object-fit: cover;
   border: calc(var(--deck-card) * 0.022) solid var(--bbm-color-paper);
   border-radius: 50%;

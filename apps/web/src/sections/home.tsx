@@ -377,20 +377,26 @@ function useWheel(count: number) {
   // As in the reference, the color behind the about us band and the wheel changes together with the scroll: pink
   // while the wheel is below the screen, a little redder with every step it rises, and solid cherry once its top
   // reaches the header. The two bands always share the color, so there is never a line between them on screen.
-  // --wheel-in goes on the page (home.css turns it into --home-blend for both bands).
+  // --wheel-in goes on just those two bands (home.css turns it into --home-blend), and only when it changes: writing
+  // it on the page itself restyled every element on every scroll step.
   useEffect(() => {
     const o = outer.current;
     if (!o) return;
     const root = document.documentElement;
+    const bands = [o, o.ownerDocument.querySelector<HTMLElement>('.home-intro')].filter(Boolean) as HTMLElement[];
+    const header = parseFloat(getComputedStyle(root).getPropertyValue('--site-header-h')) || 84;
     let frame = 0;
+    let last = '';
     const tick = () => {
       frame = 0;
       const top = o.getBoundingClientRect().top;
       const vh = window.innerHeight;
-      const header = parseFloat(getComputedStyle(root).getPropertyValue('--site-header-h')) || 84;
       const t = Math.min(1, Math.max(0, (vh - top) / Math.max(1, vh - header)));
       // Eased, so the change is gentle at the start and the end
-      root.style.setProperty('--wheel-in', (t * t * (3 - 2 * t)).toFixed(3));
+      const value = (t * t * (3 - 2 * t)).toFixed(2);
+      if (value === last) return;
+      last = value;
+      for (const band of bands) band.style.setProperty('--wheel-in', value);
     };
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(tick);
@@ -402,7 +408,7 @@ function useWheel(count: number) {
       cancelAnimationFrame(frame);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
-      root.style.removeProperty('--wheel-in');
+      for (const band of bands) band.style.removeProperty('--wheel-in');
     };
   }, []);
 

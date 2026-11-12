@@ -167,15 +167,22 @@ export function useParallax(path: string) {
     const els = [...document.querySelectorAll<HTMLElement>('[data-parallax]')];
     if (!els.length) return;
     let frame = 0;
+    // All the reads first, then all the writes: interleaving them made the browser lay the page out again for
+    // every decoration, every frame
     const update = () => {
       frame = 0;
-      const mid = window.innerHeight / 2;
+      const vh = window.innerHeight;
+      const mid = vh / 2;
+      const moves: Array<[HTMLElement, number]> = [];
       for (const el of els) {
-        const speed = Number(el.dataset.parallax) || 0;
         const current = Number(el.dataset.parallaxY) || 0;
         const rect = el.getBoundingClientRect();
-        if (rect.bottom < -200 || rect.top > window.innerHeight + 200) continue;
-        const y = Math.round((rect.top + rect.height / 2 - current - mid) * -speed * 10) / 10;
+        if (rect.bottom < -200 || rect.top > vh + 200) continue;
+        const speed = Number(el.dataset.parallax) || 0;
+        const y = Math.round((rect.top + rect.height / 2 - current - mid) * -speed);
+        if (y !== current) moves.push([el, y]);
+      }
+      for (const [el, y] of moves) {
         el.dataset.parallaxY = String(y);
         el.style.setProperty('--parallax-y', `${y}px`);
       }
@@ -222,6 +229,30 @@ export function useReadingDirection(path: string) {
       cancelAnimationFrame(frame);
       window.removeEventListener('scroll', onScroll);
       root.classList.remove('is-reading-down');
+    };
+  }, [path]);
+}
+
+/**
+ * Pauses the looping decorations (ribbons, wobbling stickers, spinning badges) in every band that is off the screen,
+ * so a phone only animates what it shows. The bands get `is-offscreen` (site.css pauses their animations).
+ */
+export function usePauseOffscreen(path: string) {
+  useEffect(() => {
+    if (!('IntersectionObserver' in window)) return;
+    const main = document.getElementById('main');
+    if (!main) return;
+    const bands = [...main.children, document.querySelector('footer')].filter(Boolean) as Element[];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) entry.target.classList.toggle('is-offscreen', !entry.isIntersecting);
+      },
+      { rootMargin: '200px 0px' },
+    );
+    for (const band of bands) observer.observe(band);
+    return () => {
+      observer.disconnect();
+      for (const band of bands) band.classList.remove('is-offscreen');
     };
   }, [path]);
 }

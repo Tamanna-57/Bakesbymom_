@@ -710,8 +710,10 @@
 
 /* The color behind the about us band and the wheel, shared so there is never a line between them on screen: baby
    pink turning cherry as the wheel scrolls up into place (--wheel-in, set on the page by home.tsx), as in the
-   reference. The about band's ground (HomeIntro) and the wheel both use it; the wheel stays cherry from there on. */
-:root {
+   reference. The about band's ground (HomeIntro) and the wheel both use it; the wheel stays cherry from there on.
+   Defined on the two bands (not the page), so a scroll step restyles only them. */
+.home-intro,
+.home-wheel {
   --home-blend: color-mix(
     in srgb,
     var(--bbm-color-cherry-800) calc(var(--wheel-in, 0) * 100%),
@@ -841,7 +843,6 @@
   opacity: var(--fade, 1);
   transform: rotate(var(--angle, 0deg));
   transform-origin: 50% var(--radius);
-  will-change: transform;
 }
 
 /* The wheel glides to each card; while a hand is turning it (drag, swipe, sideways scroll) it follows directly */
@@ -983,7 +984,6 @@
   z-index: 2;
   display: block;
   width: 30%;
-  will-change: transform;
 }
 
 .home-hero__sticker img {

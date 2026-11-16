@@ -11,7 +11,7 @@ import { Button, PatternSurface, type Pattern } from '@bakesbymom/ui';
 import { flavours } from '../content';
 import { bakery, cakeFlavours, flavourSlug } from '../content/bakery';
 import { orderLink } from '../content/site';
-import { gsap, narrowScreen, scatter, useFx } from '../fx/gsap';
+import { gsap, narrowScreen, scatter, SCRUB, useFx } from '../fx/gsap';
 import { splitTitle, writeIn } from '../fx/site-fx';
 import '../fx/fx.css';
 
@@ -99,7 +99,7 @@ export function FlavourDeck() {
         trigger: section,
         start: 'top top',
         end: () => `+=${cards.length * window.innerHeight * (narrowScreen() ? 0.42 : 0.55)}`,
-        scrub: 0.6,
+        scrub: SCRUB,
         pin: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,
@@ -204,7 +204,7 @@ export function CurvedSignOff() {
   const root = useRef<HTMLElement>(null);
 
   useFx(root, (section) => {
-    const scrub = { trigger: section, start: 'top bottom', end: 'bottom top', scrub: 0.5 };
+    const scrub = { trigger: section, start: 'top bottom', end: 'bottom top', scrub: SCRUB };
     gsap.fromTo(
       '.fx-signoff__path',
       { attr: { startOffset: '2%' } },
@@ -220,7 +220,7 @@ export function CurvedSignOff() {
       rotation: -14,
       scale: 0.7,
       ease: 'none',
-      scrollTrigger: { trigger: section, start: 'top bottom', end: 'center center', scrub: 0.5 },
+      scrollTrigger: { trigger: section, start: 'top bottom', end: 'center center', scrub: SCRUB },
     });
     gsap.from('.fx-signoff__cta > *', {
       scale: 0,
@@ -274,7 +274,7 @@ export function FooterWord() {
     const title = word.querySelector<HTMLElement>('.fx-bigword__text');
     if (!title) return;
     const { chars, scripts } = splitTitle(title);
-    const scrub = { trigger: word, start: 'top bottom', end: 'bottom bottom', scrub: 0.6 };
+    const scrub = { trigger: word, start: 'top bottom', end: 'bottom bottom', scrub: SCRUB };
     gsap.from(chars, {
       yPercent: 105,
       opacity: 0,

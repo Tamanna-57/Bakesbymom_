@@ -947,6 +947,35 @@
   }
 }
 
+/* The home page's shelf stays still: no lift, tip or zoom when pointed at, and no panel sliding up. The whole card
+   is still the link to the cake's page. */
+.site-cakes--still .site-cake__ticket,
+.site-cakes--still .site-cake__ticket img,
+.site-cakes--still .site-cake__popular {
+  transition: none;
+}
+
+.site-cakes--still .site-cake__inside,
+.site-cakes--still .site-cake__peek {
+  display: none;
+}
+
+@media (hover: hover) {
+  .site-cakes--still .site-cake:hover .site-cake__ticket {
+    translate: none;
+    rotate: none;
+    box-shadow: var(--bbm-shadow-sticker-md);
+  }
+
+  .site-cakes--still .site-cake:hover .site-cake__ticket img {
+    scale: none;
+  }
+
+  .site-cakes--still .site-cake:hover .site-cake__popular {
+    rotate: -4deg;
+  }
+}
+
 @media (max-width: 599.98px) {
   .site-cake__inside,
   .site-cake__peek {

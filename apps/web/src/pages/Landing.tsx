@@ -6,7 +6,7 @@ import { Layout } from './Layout';
 
 /**
  * The home page, after pin 16 (SugarLace) and pin 13 (Puzzle Pantry), with the big moves of Teh Tarik Nation:
- * striped hero, the shape ribbon, the cake shelf (ticket cards dealt in from the sides), the flavours as a pinned
+ * striped hero, the shape ribbon, the cake shelf (kept still: no motion on the cards), the flavours as a pinned
  * deck of cards, about us, the Cakes & Treats wheel (every category on an arc), how to order as a ride sideways
  * through a pinned strip of panels. The reviews and the FAQ are kept in sections/blocks.tsx (and Storybook), off
  * the page.

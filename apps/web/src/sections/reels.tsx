@@ -19,18 +19,22 @@ const external = { target: '_blank', rel: 'noreferrer' } as const;
 
 export function HeroReels() {
   const [current, setCurrent] = useState(0);
-  // Mount a reel the first time it is reached and keep it mounted, so going back is instant.
-  const [seen, setSeen] = useState<Set<number>>(() => new Set([0, 1]));
+  // Mount a reel the first time it is reached and keep it mounted, so going back is instant. The one after it is
+  // warmed up only once the visitor reaches for the reels: each embed is a whole Instagram page, and two of them on
+  // the way in made the home page heavy for everyone who never touches them.
+  const [seen, setSeen] = useState<Set<number>>(() => new Set([0]));
+  const [warm, setWarm] = useState(false);
   const active = reels[current];
 
   useEffect(() => {
     setSeen((old) => {
       const next = new Set(old);
       next.add(current);
-      next.add((current + 1) % reels.length); // keep the one after this warm
-      return next;
+      if (warm) next.add((current + 1) % reels.length); // keep the one after this warm
+      return next.size === old.size ? old : next;
     });
-  }, [current]);
+  }, [current, warm]);
+  const reach = () => setWarm(true);
 
   const go = (step: number) => setCurrent((i) => (i + step + reels.length) % reels.length);
 
@@ -38,7 +42,7 @@ export function HeroReels() {
   if (!active) return null;
 
   return (
-    <div className="home-reels">
+    <div className="home-reels" onPointerEnter={reach} onFocus={reach} onTouchStart={reach}>
       <div className="home-reels__head">
         <a className="home-reels__handle" href={bakery.instagram} {...external}>
           <span className="home-reels__mark" aria-hidden="true" />

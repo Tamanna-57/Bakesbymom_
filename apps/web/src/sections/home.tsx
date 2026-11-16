@@ -22,7 +22,8 @@ import { Badge, Collage } from '../collage/Collage';
 import { heroCake, stock, treatArt } from '../content';
 import { bakery } from '../content/bakery';
 import { orderLink } from '../content/site';
-import { gsap, scatter, useFx } from '../fx/gsap';
+import { gsap, scatter, SCRUB, useFx } from '../fx/gsap';
+import { currentScroll, onRemeasure, onScroll } from '../motion';
 import { splitTitle, writeIn } from '../fx/site-fx';
 import { SectionEdge } from './blocks';
 import { HeroReels } from './reels';
@@ -104,7 +105,7 @@ function useHeroFx(root: RefObject<HTMLDivElement | null>) {
     const stopWaiting = afterIntro(() => entrance.play());
 
     // Scroll away: the stickers fly off in all directions, the arch leans and the card lifts
-    const away = { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.5 };
+    const away = { trigger: hero, start: 'top top', end: 'bottom top', scrub: SCRUB };
     gsap.to(stickers, {
       xPercent: (i) => (i % 2 ? 1 : -1) * scatter(i, 60, 140, 9),
       yPercent: (i) => scatter(i, -180, -60, 10),
@@ -393,30 +394,34 @@ function useWheel(count: number) {
     if (!o) return;
     const root = document.documentElement;
     const bands = [o, o.ownerDocument.querySelector<HTMLElement>('.home-intro')].filter(Boolean) as HTMLElement[];
-    const header = parseFloat(getComputedStyle(root).getPropertyValue('--site-header-h')) || 84;
-    let frame = 0;
+    // Where the wheel sits on the page, measured only when the page is measured again, so a scroll step reads nothing
+    let wheelTop = 0;
+    let vh = window.innerHeight;
+    let header = 84;
     let last = '';
-    const tick = () => {
-      frame = 0;
-      const top = o.getBoundingClientRect().top;
-      const vh = window.innerHeight;
+    const update = (y: number) => {
+      const top = wheelTop - y;
       const t = Math.min(1, Math.max(0, (vh - top) / Math.max(1, vh - header)));
-      // Eased, so the change is gentle at the start and the end
-      const value = (t * t * (3 - 2 * t)).toFixed(2);
+      // Eased, so the change is gentle at the start and the end. In 40 steps: each step repaints both bands, and
+      // finer steps look no different
+      const value = (Math.round(t * t * (3 - 2 * t) * 40) / 40).toFixed(3);
       if (value === last) return;
       last = value;
       for (const band of bands) band.style.setProperty('--wheel-in', value);
     };
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(tick);
+    const measure = () => {
+      const y = currentScroll();
+      wheelTop = o.getBoundingClientRect().top + y;
+      vh = window.innerHeight;
+      header = parseFloat(getComputedStyle(root).getPropertyValue('--site-header-h')) || 84;
+      update(y);
     };
-    tick();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
+    measure();
+    const offScroll = onScroll(update);
+    const offMeasure = onRemeasure(measure);
     return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
+      offScroll();
+      offMeasure();
       for (const band of bands) band.style.removeProperty('--wheel-in');
     };
   }, []);
@@ -520,7 +525,7 @@ function useWheel(count: number) {
 function useWheelFx(outer: RefObject<HTMLElement | null>) {
   useFx(outer, (section) => {
     const title = section.querySelector<HTMLElement>('.home-wheel__title');
-    const scrub = { trigger: section, start: 'top bottom', end: 'top 12%', scrub: 0.7, invalidateOnRefresh: true };
+    const scrub = { trigger: section, start: 'top bottom', end: 'top 12%', scrub: SCRUB, invalidateOnRefresh: true };
     if (title) {
       const { chars, scripts } = splitTitle(title);
       gsap.from(chars, {
@@ -539,7 +544,7 @@ function useWheelFx(outer: RefObject<HTMLElement | null>) {
       opacity: 0,
       stagger: 0.04,
       ease: 'power2.out',
-      scrollTrigger: { trigger: section, start: 'top 75%', end: 'top 15%', scrub: 0.7 },
+      scrollTrigger: { trigger: section, start: 'top 75%', end: 'top 15%', scrub: SCRUB },
     });
   });
 }

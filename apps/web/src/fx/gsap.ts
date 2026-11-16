@@ -15,6 +15,12 @@ ScrollTrigger.config({ ignoreMobileResize: true });
 
 export { gsap, ScrollTrigger, SplitText };
 
+/**
+ * How far (in seconds) a scrubbed scene trails the scroll. Lenis already smooths the scroll itself, so a long trail on
+ * top of that made every scene lag behind the page; this short one only rounds off a finger's native scroll on phones.
+ */
+export const SCRUB = 0.3;
+
 /** False for visitors who ask for reduced motion, and where there is no browser (tests). */
 export function motionAllowed() {
   if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return false;

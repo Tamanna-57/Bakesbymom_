@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { onScrollVelocity } from '../motion';
+import { currentScroll, onRemeasure, onScroll, onScrollVelocity, scrollLimit } from '../motion';
 import { finePointer, gsap, motionAllowed } from './gsap';
 import './fx.css';
 
@@ -121,22 +121,25 @@ export function ScrollProgress() {
   useEffect(() => {
     const el = bar.current;
     if (!el) return;
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      el.style.transform = `scaleX(${max > 0 ? Math.min(1, window.scrollY / max).toFixed(4) : 0})`;
+    // The page's length is measured only when it changes, never on a scroll step
+    let limit = scrollLimit();
+    let last = '';
+    const update = (y: number) => {
+      const value = (limit > 0 ? Math.min(1, Math.max(0, y / limit)) : 0).toFixed(4);
+      if (value === last) return;
+      last = value;
+      el.style.transform = `scaleX(${value})`;
     };
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(update);
+    const measure = () => {
+      limit = scrollLimit();
+      update(currentScroll());
     };
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
+    measure();
+    const offScroll = onScroll(update);
+    const offMeasure = onRemeasure(measure);
     return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
+      offScroll();
+      offMeasure();
     };
   }, []);
   return <div ref={bar} className="fx-progress" aria-hidden="true" />;
@@ -149,6 +152,7 @@ const CURSOR_WORDS: Array<[string, string]> = [
   ['[data-cursor]', ''],
   ['.home-wheel__stage', 'Drag'],
   ['.bbm-gallery', 'Drag'],
+  ['.site-cakes--still', ''],
   ['.site-menu__grid a, .order-rail__tile, .fx-deck__card a, .site-tiles a, .treat-sig__grid a', 'Peek'],
 ];
 

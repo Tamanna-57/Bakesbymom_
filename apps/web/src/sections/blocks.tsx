@@ -34,7 +34,7 @@ import {
   type HeadingLevel,
 } from '@bakesbymom/ui';
 import { art, stock, treatArt } from '../content';
-import { gsap, narrowScreen, scatter, useFx } from '../fx/gsap';
+import { gsap, narrowScreen, scatter, SCRUB, useFx } from '../fx/gsap';
 import { answer, starterChips, type Answer } from '../content/assistant';
 import { bakery, chefsPicks, giftAddons, inr, kgLabel, mostOrdered, timeSlots, whatsappLink } from '../content/bakery';
 import { cakes, catalogStatus, findCake, occasions, type Cake } from '../content/catalog';
@@ -65,14 +65,21 @@ const Band = ({
   className,
   id,
   edge,
+  still,
 }: {
   children: ReactNode;
   className?: string;
   id?: string;
   /** The color of this band, to draw its top edge (see SectionEdge). */
   edge?: { color: string; shape?: EdgeShape };
+  /** No motion at all in this band: its title and blocks are left out of the shared effects (motion.ts, site-fx). */
+  still?: boolean;
 }) => (
-  <section id={id} className={['site-section', edge && 'site-section--edged', className].filter(Boolean).join(' ')}>
+  <section
+    id={id}
+    className={['site-section', edge && 'site-section--edged', className].filter(Boolean).join(' ')}
+    data-fx-own={still || undefined}
+  >
     {edge && <SectionEdge {...edge} />}
     <div className="site-container">{children}</div>
   </section>
@@ -162,25 +169,30 @@ export function CakeCard({
 /**
  * A shelf of cake tickets. Each row is dealt in across the table as it scrolls into view, from the left and the
  * right in turn, the cards arcing up and spinning into their places; then the columns drift against each other as
- * the page scrolls on (after Teh Tarik Nation's sideways-and-up moves). A new filter deals the shelf again.
+ * the page scrolls on (after Teh Tarik Nation's sideways-and-up moves). A new filter deals the shelf again. A `still`
+ * shelf (the home page's) skips all of that and stays put.
  */
 export function CakeGrid({
   cakes: list,
   headingLevel = 3,
   flavour,
   offset = 0,
+  still = false,
 }: {
   cakes: Cake[];
   headingLevel?: HeadingLevel;
   flavour?: string;
   /** Where this shelf starts in the page's run of ticket colors. */
   offset?: number;
+  /** A plain shelf: no deal, no drift, no tilt and no hover moves (the home page's shelf). */
+  still?: boolean;
 }) {
   const grid = useRef<HTMLUListElement>(null);
   const key = list.map((cake) => cake.slug).join();
   useFx(
     grid,
     (ul) => {
+      if (still) return;
       const slots = [...ul.children] as HTMLElement[];
       if (!slots.length) return;
       const cols = Math.max(1, getComputedStyle(ul).gridTemplateColumns.split(' ').length);
@@ -215,15 +227,19 @@ export function CakeGrid({
           {
             yPercent: lift,
             ease: 'none',
-            scrollTrigger: { trigger: ul, start: 'top bottom', end: 'bottom top', scrub: 0.6 },
+            scrollTrigger: { trigger: ul, start: 'top bottom', end: 'bottom top', scrub: SCRUB },
           },
         );
       });
     },
-    [key],
+    [key, still],
   );
   return (
-    <ul ref={grid} className="site-menu__grid site-cakes" data-fx-own>
+    <ul
+      ref={grid}
+      className={still ? 'site-menu__grid site-cakes site-cakes--still' : 'site-menu__grid site-cakes'}
+      data-fx-own
+    >
       {list.map((cake, i) => (
         <li key={cake.slug}>
           <CakeCard cake={cake} index={i + offset} headingLevel={headingLevel} flavour={flavour} />
@@ -258,7 +274,7 @@ export function MenuSection({ level = 2, limit }: { level?: 1 | 2; limit?: numbe
   const list = slug === 'all' ? featured() : cakes.filter((cake) => cake.occasion === slug);
   const shown = limit ? list.slice(0, limit) : list;
   return (
-    <Band id="cakes" className="site-section--blue site-menu">
+    <Band id="cakes" className="site-section--blue site-menu" still>
       <SectionHeading variant="ribbon" level={level} title="Cakes" ribbonText="baked to order" />
       <div className="site-menu__filters">
         <FilterChips label="Filter cakes by occasion" options={occasionOptions()} value={filter} onChange={setFilter} />
@@ -267,7 +283,7 @@ export function MenuSection({ level = 2, limit }: { level?: 1 | 2; limit?: numbe
         </p>
       </div>
       <CatalogNote />
-      <CakeGrid cakes={shown} headingLevel={level === 1 ? 2 : 3} />
+      <CakeGrid cakes={shown} headingLevel={level === 1 ? 2 : 3} still />
       {limit && list.length > shown.length && (
         <div className="site-center">
           <Button size="lg" variant="secondary" href={slug === 'all' ? '/catalog' : `/catalog?occasion=${slug}`}>

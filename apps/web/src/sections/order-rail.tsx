@@ -16,11 +16,15 @@ import { Button, Doodle, PatternSurface, type Pattern } from '@bakesbymom/ui';
 import { stock } from '../content';
 import { bakery, cakeFlavours, cakeSizes, whatsappLink } from '../content/bakery';
 import { howToOrder, orderLink } from '../content/site';
-import { gsap, narrowScreen, scatter, ScrollTrigger, SplitText, useFx } from '../fx/gsap';
+import { gsap, narrowScreen, scatter, SCRUB, ScrollTrigger, SplitText, useFx } from '../fx/gsap';
 import { splitTitle, writeIn } from '../fx/site-fx';
+import { holdScroll } from '../motion';
 import './order-rail.css';
 
 const external = { target: '_blank', rel: 'noreferrer' } as const;
+
+/** How long the page holds still at the end of the sideways ride before it scrolls on down. */
+const END_HOLD_MS = 1000;
 
 /** Where the panels ride sideways; matches order-rail.css. Shorter screens get the stacked panels. */
 const RAIL_QUERY = '(min-height: 520px)';
@@ -135,15 +139,28 @@ function typeOut(line: HTMLElement, caret: HTMLElement, vars: gsap.TimelineVars,
   const split = SplitText.create(line, { type: 'words,chars', aria });
   const chars = split.chars as HTMLElement[];
   const box = caret.offsetParent ?? line;
-  const placeCaret = (el: Element, before = false) => {
-    const r = el.getBoundingClientRect();
+  // Where every letter sits in the box, measured once when the typing starts: measuring at each letter, while the
+  // strip was sliding, made the browser lay the page out again for every letter typed
+  let spots: Array<{ left: number; right: number; top: number; height: number }> = [];
+  const measure = () => {
     const b = box.getBoundingClientRect();
-    gsap.set(caret, { x: (before ? r.left : r.right) - b.left + 2, y: r.top - b.top, height: r.height });
+    spots = chars.map((char) => {
+      const r = char.getBoundingClientRect();
+      return { left: r.left - b.left, right: r.right - b.left, top: r.top - b.top, height: r.height };
+    });
+  };
+  const placeCaret = (el: Element, before = false) => {
+    const spot = spots[chars.indexOf(el as HTMLElement)];
+    if (!spot) return;
+    gsap.set(caret, { x: (before ? spot.left : spot.right) + 2, y: spot.top, height: spot.height });
   };
   gsap.set(chars, { opacity: 0 });
   const tl = gsap.timeline(vars);
   if (!chars.length) return tl;
-  tl.call(() => placeCaret(chars[0]!, true)).set(caret, { opacity: 1 });
+  tl.call(() => {
+    measure();
+    placeCaret(chars[0]!, true);
+  }).set(caret, { opacity: 1 });
   tl.to(chars, {
     opacity: 1,
     duration: 0.01,
@@ -160,6 +177,7 @@ function typeOut(line: HTMLElement, caret: HTMLElement, vars: gsap.TimelineVars,
 
 function useRailFx(root: RefObject<HTMLElement | null>) {
   useFx(root, (section) => {
+    let releaseHold = () => {};
     const mm = gsap.matchMedia();
     mm.add(RAIL_QUERY, () => {
       const track = section.querySelector<HTMLElement>('.order-rail__track');
@@ -173,11 +191,12 @@ function useRailFx(root: RefObject<HTMLElement | null>) {
       // The sideways ride is a little longer than the strip, so each step gets a moment
       const length = () => `+=${distance() * 1.15}`;
 
-      // The section stays pinned a little past the end of the ride, so the shortcuts land before the page moves on
+      // The section stays pinned a touch past the end of the ride: the page stops there for a second (below), so the
+      // shortcuts land before it moves on
       ScrollTrigger.create({
         trigger: section,
         start: 'top top',
-        end: () => `+=${distance() * 1.15 + window.innerHeight * 0.45}`,
+        end: () => `+=${distance() * 1.15 + window.innerHeight * 0.15}`,
         pin: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,
@@ -188,7 +207,8 @@ function useRailFx(root: RefObject<HTMLElement | null>) {
         const d = distance();
         return d ? [...track.children].map((panel) => Math.min(1, (panel as HTMLElement).offsetLeft / d)) : [0];
       };
-      // The strip slides left as the page scrolls down
+      // The strip slides left as the page scrolls down. At the end of the ride, going down, the page holds still for
+      // a second with the shortcuts on screen, then scrolls on as usual
       const ride = gsap.to(track, {
         x: () => -distance(),
         ease: 'none',
@@ -196,8 +216,12 @@ function useRailFx(root: RefObject<HTMLElement | null>) {
           trigger: section,
           start: 'top top',
           end: length,
-          scrub: 0.8,
+          scrub: SCRUB,
           invalidateOnRefresh: true,
+          onLeave: () => {
+            releaseHold();
+            releaseHold = holdScroll(END_HOLD_MS);
+          },
           ...(narrow && {
             snap: {
               // The next panel in the direction of the swipe, like a carousel
@@ -211,7 +235,7 @@ function useRailFx(root: RefObject<HTMLElement | null>) {
         },
       });
       /** A scroll trigger on something on the strip, measured as the strip slides past rather than up the page. */
-      const along = (trigger: Element, start: string, end: string, scrub: boolean | number = 0.5) => ({
+      const along = (trigger: Element, start: string, end: string, scrub: boolean | number = SCRUB) => ({
         trigger,
         containerAnimation: ride,
         start,
@@ -351,7 +375,7 @@ function useRailFx(root: RefObject<HTMLElement | null>) {
       }
 
       // A gift box hops along the bottom the whole way, and the bar fills
-      const whole = { trigger: section, start: 'top top', end: length, scrub: 0.8, invalidateOnRefresh: true };
+      const whole = { trigger: section, start: 'top top', end: length, scrub: SCRUB, invalidateOnRefresh: true };
       const box = section.querySelector('.order-rail__traveller');
       if (box) {
         const hops = gsap.timeline({ scrollTrigger: whole });
@@ -378,7 +402,10 @@ function useRailFx(root: RefObject<HTMLElement | null>) {
       const bar = section.querySelector('.order-rail__progress span');
       if (bar) gsap.fromTo(bar, { scaleX: 0 }, { scaleX: 1, ease: 'none', scrollTrigger: whole });
     });
-    return () => mm.revert();
+    return () => {
+      releaseHold();
+      mm.revert();
+    };
   });
 }
 

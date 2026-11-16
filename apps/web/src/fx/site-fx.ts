@@ -127,7 +127,8 @@ function scrollDrivenRibbons() {
 
 const MAGNETS = '.bbm-button, .site-icon-link, .home-wheel__arrow, .order-rail__tile-arrow';
 const TILTS = [
-  '.site-menu__grid > li > *',
+  // Not the home page's still shelf of cakes
+  '.site-menu__grid:not(.site-cakes--still) > li > *',
   '.order-rail__tile',
   '.site-tiles > li > *',
   '.treat-sig__grid > li > *',

@@ -20,6 +20,60 @@ export function onScrollVelocity(listener: VelocityListener) {
   };
 }
 
+type ScrollListener = (y: number) => void;
+const scrollListeners = new Set<ScrollListener>();
+
+/**
+ * Calls `listener` with the page's scroll position at every scroll step, straight after the scroll scenes have moved.
+ * The position comes from the smooth scroll itself, so a listener never has to measure the page: reading the layout
+ * right after the scenes had moved made the browser lay the whole page out again, every frame, once per listener.
+ */
+export function onScroll(listener: ScrollListener) {
+  scrollListeners.add(listener);
+  return () => {
+    scrollListeners.delete(listener);
+  };
+}
+
+/** The page's scroll position now. */
+export function currentScroll() {
+  return lenis ? lenis.scroll : window.scrollY;
+}
+
+/** How far the page can scroll. */
+export function scrollLimit() {
+  return lenis ? lenis.limit : document.documentElement.scrollHeight - window.innerHeight;
+}
+
+function emitScroll(y: number) {
+  for (const listener of scrollListeners) listener(y);
+}
+
+/** Calls `measure` whenever the scroll scenes measure the page again (a resize, photos landing, a page change). */
+export function onRemeasure(measure: () => void) {
+  ScrollTrigger.addEventListener('refresh', measure);
+  window.addEventListener('resize', measure);
+  return () => {
+    ScrollTrigger.removeEventListener('refresh', measure);
+    window.removeEventListener('resize', measure);
+  };
+}
+
+/**
+ * Holds the page still for `ms` (a beat at the end of a sideways ride), then lets it scroll on. Whatever scroll was
+ * still to come when it stopped is dropped, so the page doesn't lurch on afterwards.
+ */
+export function holdScroll(ms: number) {
+  if (!lenis) return () => {};
+  const held = lenis;
+  held.stop();
+  const timer = window.setTimeout(() => held.start(), ms);
+  return () => {
+    window.clearTimeout(timer);
+    held.start();
+  };
+}
+
 /** Jumps to a scroll position without the smooth glide (for page changes). */
 export function jumpTo(top: number) {
   if (lenis) lenis.scrollTo(top, { immediate: true, force: true });
@@ -35,7 +89,22 @@ export function glideTo(top: number) {
 /** Smooth, weighted scrolling for the whole page (Lenis). Nested scrollers like the chat keep their own scroll. */
 export function useSmoothScroll() {
   useEffect(() => {
-    if (reducedMotion()) return;
+    if (reducedMotion()) {
+      // No smooth scroll: the page's own scroll feeds the listeners, once a frame
+      let frame = 0;
+      const tick = () => {
+        frame = 0;
+        emitScroll(window.scrollY);
+      };
+      const onNativeScroll = () => {
+        if (!frame) frame = requestAnimationFrame(tick);
+      };
+      window.addEventListener('scroll', onNativeScroll, { passive: true });
+      return () => {
+        cancelAnimationFrame(frame);
+        window.removeEventListener('scroll', onNativeScroll);
+      };
+    }
     lenis = new Lenis({
       lerp: 0.1,
       autoRaf: false,
@@ -48,6 +117,7 @@ export function useSmoothScroll() {
     gsap.ticker.lagSmoothing(0);
     const off = lenis.on('scroll', (instance: Lenis) => {
       ScrollTrigger.update();
+      emitScroll(instance.scroll);
       for (const listener of velocityListeners) listener(instance.velocity);
     });
     return () => {
@@ -164,39 +234,42 @@ export function useReveal(path: string) {
 export function useParallax(path: string) {
   useEffect(() => {
     if (reducedMotion()) return;
-    const els = [...document.querySelectorAll<HTMLElement>('[data-parallax]')];
+    const els = [...document.querySelectorAll<HTMLElement>('[data-parallax]')].map((el) => ({
+      el,
+      speed: Number(el.dataset.parallax) || 0,
+      /** Its middle on the page, without its own drift (measured, not read every frame). */
+      mid: 0,
+      half: 0,
+      y: 0,
+    }));
     if (!els.length) return;
-    let frame = 0;
-    // All the reads first, then all the writes: interleaving them made the browser lay the page out again for
-    // every decoration, every frame
-    const update = () => {
-      frame = 0;
-      const vh = window.innerHeight;
-      const mid = vh / 2;
-      const moves: Array<[HTMLElement, number]> = [];
-      for (const el of els) {
-        const current = Number(el.dataset.parallaxY) || 0;
-        const rect = el.getBoundingClientRect();
-        if (rect.bottom < -200 || rect.top > vh + 200) continue;
-        const speed = Number(el.dataset.parallax) || 0;
-        const y = Math.round((rect.top + rect.height / 2 - current - mid) * -speed);
-        if (y !== current) moves.push([el, y]);
+    let vh = window.innerHeight;
+    const measure = () => {
+      vh = window.innerHeight;
+      const top = currentScroll();
+      for (const p of els) {
+        const rect = p.el.getBoundingClientRect();
+        p.mid = rect.top + top + rect.height / 2 - p.y;
+        p.half = rect.height / 2;
       }
-      for (const [el, y] of moves) {
-        el.dataset.parallaxY = String(y);
-        el.style.setProperty('--parallax-y', `${y}px`);
+      update(top);
+    };
+    const update = (top: number) => {
+      for (const p of els) {
+        const onScreen = p.mid - top;
+        if (onScreen + p.half < -200 || onScreen - p.half > vh + 200) continue;
+        const y = Math.round((onScreen - vh / 2) * -p.speed);
+        if (y === p.y) continue;
+        p.y = y;
+        p.el.style.setProperty('--parallax-y', `${y}px`);
       }
     };
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
+    measure();
+    const offScroll = onScroll(update);
+    const offMeasure = onRemeasure(measure);
     return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
+      offScroll();
+      offMeasure();
     };
   }, [path]);
 }
@@ -209,25 +282,24 @@ export function useParallax(path: string) {
 export function useReadingDirection(path: string) {
   useEffect(() => {
     const root = document.documentElement;
-    let last = window.scrollY;
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const y = window.scrollY;
-      const nearEnd = y + window.innerHeight > document.documentElement.scrollHeight - 160;
+    let last = currentScroll();
+    let limit = scrollLimit();
+    const measure = () => {
+      limit = scrollLimit();
+    };
+    const update = (y: number) => {
+      const nearEnd = y > limit - 160;
       if (y < 160 || nearEnd) root.classList.remove('is-reading-down');
       else if (y > last + 12) root.classList.add('is-reading-down');
       else if (y < last - 12) root.classList.remove('is-reading-down');
       else return;
       last = y;
     };
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
+    const offScroll = onScroll(update);
+    const offMeasure = onRemeasure(measure);
     return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', onScroll);
+      offScroll();
+      offMeasure();
       root.classList.remove('is-reading-down');
     };
   }, [path]);

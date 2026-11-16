@@ -1,0 +1,207 @@
+/* The Instagram reels on the home hero (sections/reels.tsx). */
+
+.home-reels {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bbm-space-3);
+}
+
+.home-reels__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bbm-space-3);
+}
+
+.home-reels__handle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bbm-space-2);
+  color: var(--bbm-color-text-brand);
+  font-weight: var(--bbm-font-weight-bold);
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+
+.home-reels__handle:hover {
+  text-decoration: underline;
+}
+
+/* A little Instagram glyph drawn in the brand's ink rather than its own gradient. */
+.home-reels__mark {
+  width: 1.1em;
+  height: 1.1em;
+  border: 2px solid currentcolor;
+  border-radius: 32%;
+  position: relative;
+}
+
+.home-reels__mark::before,
+.home-reels__mark::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background-color: currentcolor;
+}
+
+.home-reels__mark::before {
+  inset: 26%;
+  border: 2px solid currentcolor;
+  background-color: transparent;
+}
+
+.home-reels__mark::after {
+  top: 11%;
+  right: 11%;
+  width: 2px;
+  height: 2px;
+}
+
+.home-reels__count {
+  color: var(--bbm-color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+ * One reel at a time. The stage keeps the height of a reel so swapping does not shift the page.
+ *
+ * Instagram lays its embed out at 326 x 616 and will not go narrower: given less width its header
+ * wraps and is cut off. So the frame is always built at that size and then scaled down as a whole,
+ * which keeps every part of it in proportion and nothing clipped, and lets the card stay a height
+ * that fits on the screen next to the words and the buttons.
+ */
+.home-reels__stage {
+  --reel-w: 326px;
+  --reel-h: 616px;
+  --reel-scale: 0.81;
+
+  position: relative;
+  width: calc(var(--reel-w) * var(--reel-scale));
+  height: calc(var(--reel-h) * var(--reel-scale));
+  max-width: 100%;
+  margin-inline: auto;
+  overflow: hidden;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-lg);
+  background-color: var(--bbm-color-bg-surface);
+  box-shadow: var(--bbm-shadow-sticker-sm);
+}
+
+.home-reels__frame {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--bbm-motion-duration-slow) var(--bbm-motion-easing-out),
+    visibility var(--bbm-motion-duration-slow);
+}
+
+.home-reels__frame[data-on] {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Built at Instagram's own size, then shrunk to the stage from its top-left corner. */
+.home-reels__frame iframe {
+  display: block;
+  width: var(--reel-w);
+  height: var(--reel-h);
+  border: 0;
+  transform: scale(var(--reel-scale));
+  transform-origin: top left;
+}
+
+/*
+ * The arch already gives up height on a short screen so the hero fits under the header; the reel
+ * does the same, stepping down as the window gets shorter rather than pushing the card off-screen.
+ */
+@media (max-height: 56.25rem) {
+  .home-reels__stage {
+    --reel-scale: 0.72;
+  }
+}
+
+@media (max-height: 51.25rem) {
+  .home-reels__stage {
+    --reel-scale: 0.64;
+  }
+}
+
+@media (max-height: 48.5rem) {
+  .home-reels__stage {
+    --reel-scale: 0.56;
+  }
+}
+
+/* On a narrow phone the full-size frame would not fit even scaled, so shrink it a little further. */
+@media (max-width: 23.75rem) {
+  .home-reels__stage {
+    --reel-scale: 0.7;
+  }
+}
+
+.home-reels__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bbm-space-3);
+}
+
+.home-reels__arrow {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
+  border-radius: var(--bbm-radius-pill);
+  background-color: var(--bbm-color-bg-surface);
+  color: var(--bbm-color-text-brand);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard);
+}
+
+.home-reels__arrow:hover {
+  background-color: var(--bbm-color-bg-pink);
+}
+
+.home-reels__dots {
+  display: flex;
+  align-items: center;
+  gap: var(--bbm-space-2);
+}
+
+.home-reels__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--bbm-radius-pill);
+  background-color: var(--bbm-color-pink-300);
+  cursor: pointer;
+  transition:
+    background-color var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard),
+    transform var(--bbm-motion-duration-fast) var(--bbm-motion-easing-bounce);
+}
+
+.home-reels__dot[aria-selected='true'] {
+  background-color: var(--bbm-color-cherry-700);
+  transform: scale(1.4);
+}
+
+.home-reels__fallback {
+  align-self: center;
+  color: var(--bbm-color-text-secondary);
+  font-size: 0.875rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-reels__frame,
+  .home-reels__dot,
+  .home-reels__arrow {
+    transition: none;
+  }
+}

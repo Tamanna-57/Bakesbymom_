@@ -19,12 +19,13 @@ import {
   SectionHeading,
 } from '@bakesbymom/ui';
 import { Badge, Collage } from '../collage/Collage';
-import { stock, treatArt } from '../content';
+import { heroCake, stock, treatArt } from '../content';
 import { bakery } from '../content/bakery';
 import { orderLink } from '../content/site';
 import { gsap, scatter, useFx } from '../fx/gsap';
 import { splitTitle, writeIn } from '../fx/site-fx';
 import { SectionEdge } from './blocks';
+import { HeroReels } from './reels';
 import { treatCategories } from '../content/treats';
 import './home.css';
 
@@ -33,12 +34,16 @@ const TILE_TONES = ['pink', 'blue', 'butter', 'beige'] as const;
 
 /* Hero (pin 16's stripes, with a cream label card) -------------------- */
 
-/** Painted stickers round the arch, each with how far it follows the mouse. */
+/**
+ * Stickers round the arch, each with how far it follows the mouse. The three cakes are ours, cut out
+ * of the catalog's own photos and given a die-cut border by scripts/cake-stickers.py; the cherries are
+ * the halftone print. Run that script again to put different cakes up here.
+ */
 const heroStickers = [
   { src: '/collage/halftone-cherries.webp', place: 'd', depth: 10 },
-  { src: '/collage/paint-cupcake.webp', place: 'a', depth: 30 },
-  { src: '/collage/paint-cherry-slice.webp', place: 'b', depth: 42 },
-  { src: '/collage/paint-shortcake.webp', place: 'c', depth: 24 },
+  { src: '/collage/sticker-cake-tiers.webp', place: 'a', depth: 30 },
+  { src: '/collage/sticker-cake-lotus.webp', place: 'b', depth: 42 },
+  { src: '/collage/sticker-cake-bride.webp', place: 'c', depth: 24 },
 ];
 
 /** Calls `start` once the home page's intro has uncovered the hero (at once when there is no intro). */
@@ -156,8 +161,8 @@ export function HomeHero() {
         <div className="home-hero__art">
           <img
             className="home-hero__photo"
-            src={stock.hero.src}
-            alt={stock.hero.alt}
+            src={heroCake.src}
+            alt={heroCake.alt}
             width={733}
             height={1100}
             data-parallax="-0.06"
@@ -176,23 +181,27 @@ export function HomeHero() {
           </div>
         </div>
         <div className="home-hero__card">
-          <p className="home-hero__eyebrow">Home bakery · {bakery.place}</p>
-          <h1 id="home-title" className="home-hero__title">
-            <span className="home-hero__heavy">Baked with love,</span>{' '}
-            <span className="home-hero__script">Bakes by Mom</span>
-          </h1>
-          <p className="home-hero__lead">
-            Cakes for every occasion, and brownies, cookies, cupcakes and bento cakes by the box. Baked to order in
-            Mom's kitchen, and every one of them eggless.
-          </p>
-          <div className="home-hero__actions">
-            <Button size="lg" href={orderLink} {...external}>
-              Order on WhatsApp
-            </Button>
-            <Button size="lg" variant="secondary" href="/shop">
-              Cakes & treats
-            </Button>
+          {/* The words and the buttons ride on one side of the card, the reels on the other, so the card
+              stays about as tall as a single reel instead of stacking to twice the height of the screen. */}
+          <div className="home-hero__copy">
+            <p className="home-hero__eyebrow">Home bakery · {bakery.place}</p>
+            <h1 id="home-title" className="home-hero__title">
+              <span className="home-hero__heavy">Baked with love,</span>{' '}
+              <span className="home-hero__script">Bakes by Mom</span>
+            </h1>
+            <div className="home-hero__actions">
+              <Button size="lg" href={orderLink} {...external}>
+                Order on WhatsApp
+              </Button>
+              <Button size="lg" variant="secondary" href={bakery.instagramDm} {...external}>
+                Order on Instagram
+              </Button>
+              <Button size="lg" variant="secondary" href="/shop">
+                Cakes & treats
+              </Button>
+            </div>
           </div>
+          <HeroReels />
         </div>
       </div>
     </PatternSurface>

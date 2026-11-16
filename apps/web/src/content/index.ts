@@ -45,6 +45,16 @@ export interface StockPhoto {
 const photo = (name: string, alt: string): StockPhoto => ({ src: `/stock/${name}.webp`, alt });
 
 /**
+ * The hero's cake is one of ours, not a stand-in: a cake from the catalog re-shot against a styled
+ * background (the same pictures in public/photos/restaged that the catalog shows in place of the
+ * R2 cut-outs). Swap the file here to put a different cake under the arch.
+ */
+export const heroCake: StockPhoto = {
+  src: '/photos/restaged/anniversary-maroon.jpg',
+  alt: 'Our anniversary cake in maroon and gold, finished with roses, gold pearls and a heart topper',
+};
+
+/**
  * Stock photos (Unsplash, see public/stock/CREDITS.md) that stand in where we have no photo of our own:
  * the treat types, the flavours and the home page. The cakes we sell keep their real photos in the catalog.
  */

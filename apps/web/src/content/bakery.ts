@@ -7,6 +7,8 @@ export const bakery = {
   whatsappDisplay: '+91 72065 52667',
   instagram: 'https://www.instagram.com/bakesbymom_/',
   instagramHandle: '@bakesbymom_',
+  /** Opens a direct message to the bakery on Instagram, the app itself where it is installed. */
+  instagramDm: 'https://ig.me/m/bakesbymom_',
   eggless: '100% eggless, like everything else that leaves this kitchen.',
   fssai:
     'Pure vegetarian. The green dot is the FSSAI mark for food with no egg or meat in it, and everything this kitchen bakes carries it.',

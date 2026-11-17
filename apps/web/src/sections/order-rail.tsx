@@ -3,7 +3,7 @@
  * panels slide past while everything on them moves up, down and across at its own speed.
  *
  * The section pins under the header and scrolling down carries the visitor along a strip of panels: the lockup
- * ("Crafted happiness, baked with love."), which breaks apart letter by letter as it slides away; one panel for each
+ * ("Crafted happiness, baked with love."), its words still as it slides away; one panel for each
  * step, its big number rising, its stickers flying past at their own depths and its title typed out on a tag; then
  * the end, where the shortcuts drop in with a bounce. A gift box hops along the bottom the whole way, and a striped
  * bar fills as the steps go by.
@@ -17,7 +17,6 @@ import { stock } from '../content';
 import { bakery, cakeFlavours, cakeSizes, whatsappLink } from '../content/bakery';
 import { howToOrder, orderLink } from '../content/site';
 import { gsap, narrowScreen, scatter, SCRUB, ScrollTrigger, SplitText, useFx } from '../fx/gsap';
-import { splitTitle, writeIn } from '../fx/site-fx';
 import { holdScroll } from '../motion';
 import './order-rail.css';
 
@@ -243,40 +242,9 @@ function useRailFx(root: RefObject<HTMLElement | null>) {
         scrub,
       });
 
-      // The lockup: letters rise in as the section arrives, then break apart in every direction as it slides away
+      // The lockup's words stay still, whole and readable, as the strip slides it away; only the cherries drift
       const intro = section.querySelector<HTMLElement>('.order-rail__intro');
-      const title = section.querySelector<HTMLElement>('.order-rail__title');
-      if (intro && title) {
-        const { chars, scripts } = splitTitle(title);
-        const arrive = gsap.timeline({ scrollTrigger: { trigger: section, start: 'top 70%', once: true } });
-        arrive.from(chars, {
-          yPercent: 120,
-          scale: 0.4,
-          opacity: 0,
-          duration: 0.8,
-          ease: 'back.out(2.2)',
-          stagger: 0.02,
-        });
-        if (scripts.length) arrive.add(writeIn(scripts, { duration: 1.2 }), '-=0.5');
-        gsap.to(chars, {
-          x: (i) => scatter(i, -0.3, 0.3, 5) * window.innerWidth,
-          y: (i) => scatter(i, -0.7, 0.7, 7) * window.innerHeight,
-          rotation: (i) => scatter(i, -200, 200, 9),
-          ease: 'power2.in',
-          scrollTrigger: along(intro, 'left left', 'center left'),
-        });
-        gsap.to(scripts, {
-          y: () => -window.innerHeight * 0.6,
-          scale: 1.6,
-          ease: 'power2.in',
-          scrollTrigger: along(intro, 'left left', 'center left'),
-        });
-        gsap.to(intro.querySelectorAll('.order-rail__lead, .order-rail__pill, .order-rail__hint'), {
-          y: (i) => (i % 2 ? -1 : 1) * window.innerHeight * 0.5,
-          rotation: (i) => (i % 2 ? -18 : 14),
-          ease: 'power2.in',
-          scrollTrigger: along(intro, 'left left', 'center left'),
-        });
+      if (intro) {
         gsap.to(intro.querySelectorAll('.order-rail__cherries'), {
           y: (i) => (i ? -1 : 1) * window.innerHeight * 0.45,
           x: (i) => (i ? 1 : -1) * window.innerWidth * 0.1,

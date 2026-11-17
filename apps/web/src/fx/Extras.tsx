@@ -152,7 +152,6 @@ const CURSOR_WORDS: Array<[string, string]> = [
   ['[data-cursor]', ''],
   ['.home-wheel__stage', 'Drag'],
   ['.bbm-gallery', 'Drag'],
-  ['.site-cakes--still', ''],
   ['.site-menu__grid a, .order-rail__tile, .fx-deck__card a, .site-tiles a, .treat-sig__grid a', 'Peek'],
 ];
 

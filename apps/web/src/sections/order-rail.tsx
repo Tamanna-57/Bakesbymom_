@@ -5,7 +5,7 @@
  * The section pins under the header and scrolling down carries the visitor along a strip of panels: the lockup
  * ("Crafted happiness, baked with love."), its words still as it slides away; one panel for each
  * step, its big number rising, its stickers flying past at their own depths and its title typed out on a tag; then
- * the end, where the shortcuts drop in with a bounce. A gift box hops along the bottom the whole way, and a striped
+ * the end, where the shortcuts drop in with a bounce. A donut hops along the bottom the whole way, and a striped
  * bar fills as the steps go by.
  *
  * Visitors who ask for reduced motion, and short screens (a phone on its side), get the panels stacked down the
@@ -342,7 +342,7 @@ function useRailFx(root: RefObject<HTMLElement | null>) {
         });
       }
 
-      // A gift box hops along the bottom the whole way, and the bar fills
+      // A donut hops along the bottom the whole way, and the bar fills
       const whole = { trigger: section, start: 'top top', end: length, scrub: SCRUB, invalidateOnRefresh: true };
       const box = section.querySelector('.order-rail__traveller');
       if (box) {
@@ -515,7 +515,7 @@ export function OrderRail() {
           </ul>
         </div>
       </div>
-      <img className="order-rail__traveller" src="/collage/sticker-gift-box.webp" alt="" aria-hidden="true" />
+      <img className="order-rail__traveller" src="/collage/sticker-donut.webp" alt="" aria-hidden="true" />
       <div className="order-rail__progress" aria-hidden="true">
         <span />
       </div>

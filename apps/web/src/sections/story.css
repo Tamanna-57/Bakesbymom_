@@ -16,11 +16,15 @@
   overflow: hidden;
   padding: clamp(3.5rem, 7vw, 6rem) var(--bbm-layout-gutter) clamp(4rem, 8vw, 7rem);
   background-color: #f5eee2;
+  /* The flyer's paper has strong horizontal ribs */
+  background-image:
+    repeating-linear-gradient(0deg, rgb(140 110 80 / 0.11) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgb(140 110 80 / 0.035) 0 1px, transparent 1px 5px);
 }
 
 .story-flourish {
   position: absolute;
-  width: clamp(6.5rem, 15vw, 12.5rem);
+  width: clamp(8rem, 21vw, 17rem);
   height: auto;
   overflow: visible;
   pointer-events: none;
@@ -99,6 +103,13 @@
   animation-delay: -2s;
 }
 
+.story-sparkle--d {
+  top: 27%;
+  left: 39%;
+  width: clamp(0.9rem, 1.5vw, 1.3rem);
+  animation-delay: -0.6s;
+}
+
 @keyframes story-twinkle {
   50% {
     scale: 0.7;
@@ -116,86 +127,174 @@
   text-align: center;
 }
 
+/* Square-cut photos with a red running-stitch edge, a little faded, like the flyer's */
 .story-photo {
   position: absolute;
+  z-index: 0;
+  box-sizing: border-box;
   aspect-ratio: 1;
   object-fit: cover;
-  border: 4px solid #fbf7ef;
-  outline: 2px dashed var(--bbm-color-cherry-400);
-  outline-offset: -1px;
+  padding: 3px;
+  background-color: var(--bbm-color-cherry-500);
+  outline: 2.5px dotted var(--bbm-color-cherry-500);
+  outline-offset: 3px;
+  filter: saturate(0.85) contrast(1.04) sepia(0.08);
   box-shadow: 0 10px 18px -10px rgb(50 24 11 / 0.45);
 }
 
 .story-photo--a {
-  top: 18%;
+  top: 26%;
   left: 0;
-  width: clamp(4.5rem, 12vw, 9.5rem);
-  aspect-ratio: 5 / 4;
-  rotate: -4deg;
+  width: clamp(5rem, 15vw, 11.5rem);
+  aspect-ratio: 4 / 3;
+  rotate: -2deg;
 }
 
 .story-photo--b {
-  top: -1.5rem;
-  left: 50%;
-  width: clamp(3.5rem, 7vw, 5.5rem);
-  translate: -50% 0;
-  rotate: 3deg;
+  top: -1.75rem;
+  left: 57%;
+  width: clamp(3.5rem, 7.5vw, 6rem);
+  rotate: 2deg;
 }
 
 .story-photo--c {
-  top: 46%;
+  top: 52%;
   right: 0;
-  width: clamp(4.5rem, 11vw, 8.5rem);
-  aspect-ratio: 4 / 5;
-  rotate: 5deg;
+  width: clamp(5rem, 14vw, 11rem);
+  aspect-ratio: 5 / 4;
+  rotate: 3deg;
 }
 
+/* The title on its paper cloud: the script in red thread, the second line in olive outlined capitals with
+   swashes, overlapping the cloud's bottom edge (the flyer's "Dawning Drift") */
 .story-letter__title {
+  position: relative;
+  z-index: 1;
   display: grid;
   justify-items: center;
-  margin: 0;
-  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 4vw, 3rem) 0;
+}
+
+.story-cloud {
+  position: absolute;
+  z-index: -1;
+  top: clamp(0.5rem, 1.5vw, 1.25rem);
+  left: -4%;
+  width: 108%;
+  height: 84%;
+  overflow: visible;
+  filter: drop-shadow(0 6px 10px rgb(50 24 11 / 0.18)) drop-shadow(0 1px 1px rgb(50 24 11 / 0.2));
+}
+
+.story-cloud path {
+  fill: #fffdf6;
+  stroke: rgb(140 110 80 / 0.35);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.story-cloud .story-cloud__stitch {
+  fill: none;
+  stroke: var(--bbm-color-pink-300);
+  stroke-dasharray: 5 4;
 }
 
 .story-letter__script {
+  padding: 0 0.15em;
   font-family: var(--bbm-font-family-script);
   font-size: clamp(4rem, 2.4rem + 7.5vw, 8.75rem);
   font-weight: 400;
-  line-height: 1;
-  color: var(--bbm-color-cherry-600);
-  text-shadow:
-    -1px -1px 0 #fffdf6,
-    3px 3px 0 var(--bbm-color-pink-300);
+  line-height: 1.05;
+  /* Satin stitches in two reds, like the flyer's embroidered letters */
+  background: repeating-linear-gradient(
+    -58deg,
+    var(--bbm-color-cherry-600) 0 2px,
+    var(--bbm-color-cherry-500) 2px 3.5px
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 0.6px var(--bbm-color-cherry-700);
+  filter: drop-shadow(2px 2px 0 var(--bbm-color-pink-300));
 }
 
 .story-letter__outline {
-  margin-top: -0.3em;
-  translate: 14% 0;
-  font-family: var(--bbm-font-family-script);
-  font-size: clamp(2.1rem, 1.3rem + 3.4vw, 4.1rem);
-  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 0.15em;
+  margin-top: -0.2em;
+  translate: 4% 0;
+  font-family: var(--bbm-font-family-display);
+  font-size: clamp(1.2rem, 0.8rem + 2.2vw, 2.75rem);
+  font-style: italic;
+  font-weight: 600;
   line-height: 1.1;
-  color: var(--bbm-color-pistachio-600);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--bbm-color-pistachio-200);
+  -webkit-text-stroke: 1.5px var(--bbm-color-pistachio-700);
+  filter: drop-shadow(1.5px 1.5px 0 #fffdf6);
 }
 
+.story-swash {
+  flex: none;
+  width: 1.9em;
+  height: auto;
+  overflow: visible;
+}
+
+.story-swash--flip,
+.story-curl--flip {
+  scale: -1 1;
+}
+
+.story-swash path,
+.story-curl path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.story-swash path {
+  stroke: var(--bbm-color-pistachio-500);
+  stroke-width: 2.4;
+}
+
+/* The place in red script between two curls, and a small line under it */
 .story-letter__place {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--bbm-space-3);
-  margin: var(--bbm-space-3) 0 0;
-  font-family: var(--bbm-font-family-hand);
-  font-size: 1.2rem;
-  font-style: italic;
+  gap: var(--bbm-space-2);
+  margin: var(--bbm-space-4) 0 0;
+  font-family: var(--bbm-font-family-script);
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2.1rem);
+  line-height: 1.1;
   color: var(--bbm-color-cherry-600);
 }
 
-.story-letter__place::before,
-.story-letter__place::after {
-  content: '';
-  width: 2.5rem;
-  height: 1px;
-  background: var(--bbm-color-cherry-300);
+.story-curl {
+  width: 2.2rem;
+  height: auto;
+  overflow: visible;
+}
+
+.story-curl path {
+  stroke: var(--bbm-color-cherry-400);
+  stroke-width: 1.6;
+}
+
+.story-letter__since {
+  margin: var(--bbm-space-1) 0 0;
+  font-family: var(--bbm-font-family-hand);
+  font-size: 0.95rem;
+  font-style: italic;
+  letter-spacing: 0.04em;
+  color: var(--bbm-color-cherry-500);
 }
 
 /* The letter in its red envelope */
@@ -407,7 +506,11 @@
   }
 
   .story-letter__outline {
-    translate: 6% 0;
+    translate: 0 0;
+  }
+
+  .story-swash {
+    width: 1.1em;
   }
 }
 

@@ -539,7 +539,7 @@ function useWheelFx(outer: RefObject<HTMLElement | null>) {
       gsap.from(scripts, { scale: 0, rotation: -140, ease: 'back.out(1.4)', scrollTrigger: scrub });
     }
     gsap.from('.home-wheel__pill', { scale: 0, rotation: 30, ease: 'back.out(2)', scrollTrigger: scrub });
-    gsap.from('.home-wheel__ticket', {
+    gsap.from('.home-wheel__frame', {
       yPercent: 70,
       opacity: 0,
       stagger: 0.04,
@@ -570,16 +570,18 @@ export function CakesTreatsWheel() {
               style={{ '--angle': `${i * WHEEL_STEP}deg`, '--fade': i < 3 ? 1 : 0 } as CSSProperties}
             >
               <a href={item.href} draggable={false}>
-                <span className="home-wheel__ticket">
-                  <img src={item.image.src} alt="" loading="lazy" draggable={false} />
-                  <span className="home-wheel__mark home-wheel__mark--b" aria-hidden="true">
-                    B
+                <span className="home-wheel__frame">
+                  <span className="home-wheel__ticket">
+                    <img src={item.image.src} alt="" loading="lazy" draggable={false} />
+                    <span className="home-wheel__mark home-wheel__mark--b" aria-hidden="true">
+                      B
+                    </span>
+                    <span className="home-wheel__mark home-wheel__mark--m" aria-hidden="true">
+                      M
+                    </span>
                   </span>
-                  <span className="home-wheel__mark home-wheel__mark--m" aria-hidden="true">
-                    M
-                  </span>
+                  <span className="home-wheel__name">{item.name}</span>
                 </span>
-                <span className="home-wheel__name">{item.name}</span>
               </a>
             </li>
           ))}

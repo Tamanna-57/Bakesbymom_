@@ -40,11 +40,43 @@ function Flourish({ className }: { className: string }) {
   );
 }
 
-/** The flyer's four-point sparkle. */
+/** The flyer's thin eight-point sparkle: four long rays and four short ones. */
 function Sparkle({ className }: { className: string }) {
   return (
     <svg className={`story-sparkle ${className}`} viewBox="0 0 40 40" aria-hidden="true">
-      <path d="M20 0c1.4 11 5 16.6 20 20-15 3.4-18.6 9-20 20-1.4-11-5-16.6-20-20C15 16.6 18.6 11 20 0z" />
+      <path d="M20 0l1.6 15.2L31 9l-6.2 9.4L40 20l-15.2 1.6L31 31l-9.4-6.2L20 40l-1.6-15.2L9 31l6.2-9.4L0 20l15.2-1.6L9 9l9.4 6.2z" />
+    </svg>
+  );
+}
+
+/** A puffy paper cloud, cut out like a sticker, for the title to sit on (the flyer's "Dawning"). */
+function Cloud() {
+  return (
+    <svg className="story-cloud" viewBox="0 0 600 230" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M70 152C18 150 12 92 58 86 46 40 108 18 142 46c22-36 92-40 114-6 30-34 104-34 124 4 30-30 100-26 110 20 56-10 98 36 64 78 34 30-10 72-56 58-22 30-90 30-110 6-30 26-98 26-118 2-30 24-96 24-116 0-36 22-96 8-88-46z" />
+      <path
+        className="story-cloud__stitch"
+        d="M84 146C42 144 38 100 72 96 62 58 112 40 142 62c22-30 84-32 106-2 28-28 94-28 114 4 28-24 88-20 98 18 48-6 82 30 54 64 28 24-8 56-46 44-20 24-80 24-98 4-28 22-88 22-106 2-28 20-86 20-104 0-32 18-84 6-76-40z"
+      />
+    </svg>
+  );
+}
+
+/** An olive swash either side of the outlined words. */
+function Swash({ flip = false }: { flip?: boolean }) {
+  return (
+    <svg className={`story-swash${flip ? ' story-swash--flip' : ''}`} viewBox="0 0 90 40" aria-hidden="true">
+      <path d="M88 22C70 22 58 30 44 30 30 30 26 18 34 13c8-5 16 3 10 9-6 6-20 4-28-2C10 15 6 9 2 4" />
+      <path d="M60 25c-4-8-12-10-16-6" />
+    </svg>
+  );
+}
+
+/** A little curl, for the line under the title. */
+function Curl({ flip = false }: { flip?: boolean }) {
+  return (
+    <svg className={`story-curl${flip ? ' story-curl--flip' : ''}`} viewBox="0 0 48 16" aria-hidden="true">
+      <path d="M47 8H22C14 8 8 4 10 1c2-2 6 0 5 3-1 4-7 6-11 4" />
     </svg>
   );
 }
@@ -61,16 +93,27 @@ export function StoryLetter() {
       <Sparkle className="story-sparkle--a" />
       <Sparkle className="story-sparkle--b" />
       <Sparkle className="story-sparkle--c" />
+      <Sparkle className="story-sparkle--d" />
 
       <div className="story-letter__head">
         <img className="story-photo story-photo--a" src="/photos/restaged/mom-flowerpot.jpg" alt="" />
         <img className="story-photo story-photo--b" src="/photos/restaged/bride-to-be.jpg" alt="" />
         <img className="story-photo story-photo--c" src="/photos/restaged/anniversary-maroon.jpg" alt="" />
         <h1 id="story-title" className="story-letter__title">
+          <Cloud />
           <span className="story-letter__script">Our Story</span>
-          <span className="story-letter__outline">from Mom&rsquo;s kitchen</span>
+          <span className="story-letter__outline">
+            <Swash />
+            from Mom&rsquo;s kitchen
+            <Swash flip />
+          </span>
         </h1>
-        <p className="story-letter__place">{bakery.place}</p>
+        <p className="story-letter__place">
+          <Curl />
+          {bakery.place}
+          <Curl flip />
+        </p>
+        <p className="story-letter__since">~ eggless &middot; baked to order ~</p>
       </div>
 
       <div className="story-letter__envelope">

@@ -16,24 +16,34 @@ The site was pretty but still: sections rose in and the ribbons scrolled, and li
 | Sprinkles, progress ribbon, cursor label  | `apps/web/src/fx/Extras.tsx`                | canvas, `gsap.quickTo`                  |
 | Deck, flavour wall, sign-off, footer word | `apps/web/src/sections/fx.tsx`, `fx/fx.css` | ScrollTrigger pin and scrub             |
 | Hero, wheel title, quote                  | `apps/web/src/sections/home.tsx`            | ScrollTrigger, SplitText                |
+| Cake shelf                                | `apps/web/src/sections/blocks.tsx`          | ScrollTrigger                           |
+| How to order, the sideways ride           | `apps/web/src/sections/order-rail.tsx`      | ScrollTrigger pin and container scrub   |
 
 ## Scenes
 
 | Scene                | Where                 | After                                    | What happens                                                                                                                                                               |
 | -------------------- | --------------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Hero                 | home, top             | Teh Tarik Nation hero collage            | Title letters burst in once the intro clears; painted stickers pop on round the arch, bob, follow the mouse at their own depths and scatter as the hero scrolls away       |
+| Cake shelf           | home, catalog         | Teh Tarik Nation sideways-and-up moves   | On the catalog and cake pages each row is dealt in from the sides and the columns drift as you scroll. On the home page the shelf just sits there; pointing at a card still lifts it and slides up what's inside |
 | Promise deck         | home, after the cakes | Teh Tarik Nation "5 generations later…"  | Pinned. Nine cards (the feature strip's promises) fly up one by one, slam into a fan and tilt; tape labels peel and sway round the edges                                   |
 | Flavour wall         | home, Flavours band   | Beca Tea "No Nasties"                    | Three rows of the flavour names, filled and outlined, slide in turn as you scroll, round a painted slice that turns and grows                                              |
 | Cakes and Treats     | home, the wheel       | Beca Tea "Real tea for a fake world"     | The title's letters start scattered and spinning across the band and fly together as it scrolls in; "and" spins in; the tickets rise into their arc                        |
 | Quote                | home, checker band    | Teh Tarik Nation typewriter tags         | The card tips in, the line types itself out behind a cherry caret, the script words and Mom's sign-off are written in; the checkers slide                                  |
 | Curved sign-off      | home, before footer   | Teh Tarik Nation "Malaysia in a cup"     | "Slow down · Cut the cake · This is your sign…" runs along an arc, an outlined line runs the other way, a cake rises, and an Order button pops                              |
 | Footer word          | every page            | Beca Tea's giant name                    | "Bakes by Mom", huge, rises letter by letter under the footer                                                                                                              |
+| How to order         | home, last band       | Teh Tarik Nation pinned horizontal strip | Pinned; the panels ride sideways as you scroll down. The opening card's words stay still while it slides away; numbers rise, stickers fly past, step titles type out; a donut hops along the bottom; the page holds for a second at the end, then scrolls on |
 | Section titles       | every page            | both                                     | Letters burst up with a tilt and an overshoot; script words are written in whole, so their joins stay intact                                                               |
 | Ribbons and reviews  | every page            | awwwards-style velocity marquees         | Speed up with the scroll, run backwards when you scroll up, and lean into the motion                                                                                       |
 | Lists                | every page            | dealing cards                            | Items rise in tipped and small, overshoot and settle                                                                                                                       |
 | Buttons and cards    | every page            | —                                        | Buttons pull toward the cursor; cake, flavour and tile cards tilt in 3D toward it; a cherry "Peek" (or "Drag" on the wheel) sticker follows the mouse over them            |
 | Sprinkles            | every page            | —                                        | A click or tap throws a pinch of sprinkles in the palette                                                                                                                  |
 | Progress             | every page            | —                                        | A candy-striped ribbon fills along the top of the screen                                                                                                                   |
+
+## Keeping it smooth
+
+- **One scroll feed.** Everything that follows the scroll outside GSAP (the progress ribbon, parallax, the wheel's colour blend, the floating buttons moving aside on phones) listens to `onScroll` in `motion.ts`, which hands over Lenis's own position. They measure the page only when it is measured again (`onRemeasure`: a resize or a ScrollTrigger refresh), never on a scroll step, so no frame lays the page out twice.
+- **Short scrub.** Scrubbed scenes trail the scroll by `SCRUB` (0.3s, `fx/gsap.ts`). Lenis already smooths the scroll, so a longer trail on top made the scenes lag behind the page.
+- **A real pause.** `holdScroll` (`motion.ts`) stops Lenis for a moment; the How to order ride uses it for its one-second beat at the end.
 
 ## Tokens used
 

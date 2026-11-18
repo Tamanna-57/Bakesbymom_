@@ -110,8 +110,8 @@ export function DoubleRibbon() {
 const TICKET_TONES = ['pink', 'butter', 'beige', 'cherry'] as const;
 
 /**
- * One cake as a ticket, like the cards on the home page's Cakes & Treats wheel: the photo on rounded corners with "B"
- * and "M" in its top corners, the weight and price under it. Pointing at it lifts the ticket and slides up what's in
+ * One cake as a ticket, like the cards on the home page's Cakes & Treats wheel: the photo on rounded corners, and
+ * under it the weight and price in one capsule with a little heart between them. Pointing at it lifts the ticket and slides up what's in
  * the cake. The whole card is the link (the name's link stretches over it).
  */
 export function CakeCard({
@@ -136,12 +136,6 @@ export function CakeCard({
     >
       <span className="site-cake__ticket">
         <img src={photo?.thumb ?? art.strawberryCake} alt="" loading="lazy" draggable={false} />
-        <span className="site-cake__mark site-cake__mark--b" aria-hidden="true">
-          B
-        </span>
-        <span className="site-cake__mark site-cake__mark--m" aria-hidden="true">
-          M
-        </span>
         <span className="site-cake__inside">{cake.description}</span>
         <span className="site-cake__peek" aria-hidden="true">
           ↗
@@ -152,8 +146,13 @@ export function CakeCard({
         <a href={flavour ? `/catalog/${cake.slug}?flavour=${flavour}` : `/catalog/${cake.slug}`}>{cake.name}</a>
       </Heading>
       <span className="site-cake__foot">
-        <span className="site-cake__weight">{kgLabel(cake.weightKg)}</span>
-        <span className="site-cake__price">{inr(cake.price)}</span>
+        <span className="site-cake__tag">
+          <span className="site-cake__weight">{kgLabel(cake.weightKg)}</span>
+          <svg className="site-cake__heart" viewBox="0 0 24 22" aria-hidden="true">
+            <path d="M12 21C5 16 1 12 1 7a5.5 5.5 0 0 1 11-1 5.5 5.5 0 0 1 11 1c0 5-4 9-11 14z" />
+          </svg>
+          <span className="site-cake__price">{inr(cake.price)}</span>
+        </span>
       </span>
     </article>
   );

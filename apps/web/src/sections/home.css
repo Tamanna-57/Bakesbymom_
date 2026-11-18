@@ -901,13 +901,38 @@
   border-radius: var(--bbm-radius-md);
 }
 
-/* The photo shows whole, on softly rounded corners */
+/* Each card a little paper frame with a scalloped edge, a dashed stitch sewn just inside it, the photo set in
+   and the name written on the paper under it, between two hearts */
+.home-wheel__frame {
+  --scallop: calc(var(--card-w) * 0.055);
+  position: relative;
+  display: block;
+  padding: calc(var(--scallop) * 1.5) calc(var(--scallop) * 1.5) calc(var(--scallop) * 1.1);
+  background-color: var(--bbm-color-paper);
+  -webkit-mask:
+    linear-gradient(#000 0 0) center / calc(100% - var(--scallop)) calc(100% - var(--scallop)) no-repeat,
+    radial-gradient(circle closest-side, #000 96%, #0000) 0 0 / var(--scallop) var(--scallop) round;
+  mask:
+    linear-gradient(#000 0 0) center / calc(100% - var(--scallop)) calc(100% - var(--scallop)) no-repeat,
+    radial-gradient(circle closest-side, #000 96%, #0000) 0 0 / var(--scallop) var(--scallop) round;
+}
+
+.home-wheel__frame::before {
+  content: '';
+  position: absolute;
+  inset: calc(var(--scallop) * 0.85);
+  border: 1.5px dashed var(--bbm-color-cherry-300);
+  border-radius: var(--bbm-radius-sm);
+  pointer-events: none;
+}
+
+/* The photo, set into the paper on softly rounded corners */
 .home-wheel__ticket {
   position: relative;
   display: block;
   overflow: hidden;
-  border-radius: var(--bbm-radius-lg);
-  aspect-ratio: 10 / 13;
+  border-radius: var(--bbm-radius-md);
+  aspect-ratio: 10 / 12;
   background-color: var(--bbm-color-pink-300);
 }
 
@@ -940,12 +965,25 @@
 }
 
 .home-wheel__name {
-  display: block;
-  margin-top: var(--bbm-space-3);
-  font-size: clamp(1rem, calc(var(--card-w) * 0.075), 1.3rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  margin-top: calc(var(--scallop) * 0.7);
+  font-family: var(--bbm-font-family-display);
+  font-size: clamp(0.85rem, calc(var(--card-w) * 0.075), 1.3rem);
   font-weight: var(--bbm-font-weight-bold);
+  line-height: 1.15;
   text-align: center;
-  color: var(--wheel-ink);
+  color: var(--bbm-color-cherry-700);
+}
+
+.home-wheel__name::before,
+.home-wheel__name::after {
+  content: '♥';
+  flex: none;
+  font-size: 0.7em;
+  color: var(--bbm-color-pink-400);
 }
 
 /* Right under the front card's name, as in the reference; the tilted cards either side hang lower */

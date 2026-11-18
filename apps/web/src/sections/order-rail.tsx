@@ -5,7 +5,7 @@
  * The section pins under the header and scrolling down carries the visitor along a strip of panels: the lockup
  * ("Crafted happiness, baked with love."), its words still as it slides away; one panel for each
  * step, its big number rising, its stickers flying past at their own depths and its title typed out on a tag; then
- * the end, where the shortcuts drop in with a bounce. A donut hops along the bottom the whole way, and a striped
+ * the end, where the shortcuts rise gently into place. A donut hops along the bottom the whole way, and a striped
  * bar fills as the steps go by.
  *
  * Visitors who ask for reduced motion, and short screens (a phone on its side), get the panels stacked down the
@@ -317,15 +317,16 @@ function useRailFx(root: RefObject<HTMLElement | null>) {
           );
       }
 
-      // The end: the shortcuts drop in from above and bounce, last one first
+      // The end: the shortcuts rise a little and fade in, one after another (no drop, no bounce)
       const end = section.querySelector<HTMLElement>('.order-rail__end');
       if (end) {
         gsap.from(end.querySelectorAll('.order-rail__tiles > li'), {
-          y: () => -window.innerHeight,
-          rotation: (k) => scatter(k, -30, 30, 4),
-          duration: 1.4,
-          ease: 'bounce.out',
-          stagger: -0.15,
+          y: 36,
+          scale: 0.97,
+          opacity: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          stagger: 0.1,
           scrollTrigger: {
             trigger: end,
             containerAnimation: ride,

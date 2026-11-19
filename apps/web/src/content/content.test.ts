@@ -2,8 +2,9 @@ import { beforeAll, describe, expect, it, vi } from 'vitest';
 import { matchPath, parentPath } from '../router';
 import { navLinksFor } from './site';
 import { answer, starterChips } from './assistant';
-import { inr, kgLabel, whatsappLink } from './bakery';
+import { cakeFlavours, inr, kgLabel, whatsappLink } from './bakery';
 import { cakes, catalogStatus, findCake, loadCatalog, occasions, type ApiCake, type ApiCategory } from './catalog';
+import { flavourCakes, flavours, isCutout } from './index';
 import { boxes, cakeOrderMessage, cakePrice, treatOrderMessage } from './order';
 import { findTreatCategory, qtyLabel, treatCategories } from './treats';
 
@@ -113,6 +114,32 @@ describe('catalog from the API', () => {
     const uploaded = 'https://bakesbymom.snehagupta.workers.dev/api/photos/cake-anniversary-50/new.webp';
     expect(findCake('cake-anniversary-50')!.photos).toEqual([{ src: uploaded, thumb: uploaded, backdrop: false }]);
     expect(findCake('a-new-cake')!.photos).toEqual([]);
+  });
+});
+
+describe('flavour cards', () => {
+  it('has a cake picked for every flavour on the menu', () => {
+    expect(Object.keys(flavours).sort()).toEqual([...cakeFlavours].sort());
+  });
+
+  it('shows each flavour on its own cake from the catalog, standing in another of ours when one is missing', () => {
+    const shown = flavourCakes();
+    // Picked in content and present in the catalog
+    expect(shown['Chocolate truffle']?.slug).toBe('cake-choco-drip');
+    expect(shown.Rasmalai?.slug).toBe('cake-anniversary-50');
+    // Pearl Heart isn't in this catalog: the first unused cut-out stands in, then any cake with a photo
+    expect(shown.Vanilla?.slug).toBe('cake-spiderman');
+    expect(shown['Black forest']?.slug).toBe('cake-anniversary-maroon');
+    // Never the same cake twice, never one without a photo, and none at all once they run out
+    const slugs = Object.values(shown).flatMap((cake) => (cake ? [cake.slug] : []));
+    expect(new Set(slugs).size).toBe(slugs.length);
+    expect(slugs).not.toContain('a-new-cake');
+    expect(shown['Red velvet']).toBeUndefined();
+  });
+
+  it('tells the cut-outs from the restaged photos', () => {
+    expect(isCutout(findCake('cake-spiderman')!)).toBe(true);
+    expect(isCutout(findCake('cake-anniversary-maroon')!)).toBe(false);
   });
 });
 

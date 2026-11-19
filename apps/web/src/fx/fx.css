@@ -204,6 +204,66 @@
   rotate: 5deg;
 }
 
+/* One of our cut-out cakes, standing on a cream plate and rising over its rim. Sized off the card's width like the
+   photo above (Safari), and no clipping anywhere, so the turned, moving card always paints it. The plate's top
+   margin is the room the cake rises into, so plate and cake together fit where the round photo did. */
+.fx-deck__plate {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  --plate: calc(var(--deck-card) * 0.46);
+  width: var(--plate);
+  height: var(--plate);
+  max-width: 100%;
+  margin-top: calc(var(--plate) * 0.3);
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      closest-side,
+      transparent 86%,
+      color-mix(in srgb, var(--bbm-color-brown-900) 8%, transparent) 87% 89%,
+      transparent 90%
+    ),
+    var(--bbm-color-paper);
+  outline: 1.5px solid var(--bbm-color-brown-900);
+  box-shadow: 4px 5px 0 color-mix(in srgb, var(--bbm-color-brown-900) 30%, transparent);
+  rotate: -4deg;
+}
+
+.fx-deck__card:nth-child(even) .fx-deck__plate {
+  rotate: 5deg;
+}
+
+/* Under a two-line name there's less room */
+.fx-deck__card--two-lines .fx-deck__plate {
+  --plate: calc(var(--deck-card) * 0.4);
+}
+
+.fx-deck__cake {
+  position: absolute;
+  bottom: 4%;
+  left: 50%;
+  width: 118%;
+  height: 130%;
+  max-width: none;
+  object-fit: contain;
+  object-position: 50% 100%;
+  translate: -50% 0;
+  /* Stood upright again on the tilted plate */
+  rotate: 4deg;
+  filter: drop-shadow(0 3px 2px color-mix(in srgb, var(--bbm-color-brown-900) 28%, transparent));
+  user-select: none;
+  transition: scale var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
+}
+
+.fx-deck__card:nth-child(even) .fx-deck__cake {
+  rotate: -5deg;
+}
+
+.fx-deck__card:hover .fx-deck__cake {
+  scale: 1.06;
+}
+
 /* The flavour's name is the card's link, stretched over the whole card */
 .fx-deck__card h3 a {
   color: inherit;

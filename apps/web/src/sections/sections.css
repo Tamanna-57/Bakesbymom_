@@ -50,6 +50,18 @@
   color: var(--bbm-color-text-inverse);
 }
 
+/* Deep wine: the maroon of the ribbon above it, carried down a shade darker. Wine-on-wine stripes as wide as the
+   hero's, so the band keeps the hero's rhythm in a quieter key, and it deepens a little towards the foot. */
+.site-section--wine {
+  --wine: color-mix(in srgb, var(--bbm-color-cherry-800) 70%, var(--bbm-color-cherry-900));
+  --wine-deep: color-mix(in srgb, var(--bbm-color-cherry-800) 40%, var(--bbm-color-cherry-900));
+  background-color: var(--wine);
+  background-image:
+    linear-gradient(transparent 35%, color-mix(in srgb, var(--bbm-color-cherry-900) 55%, transparent)),
+    repeating-linear-gradient(90deg, var(--wine) 0 4rem, var(--wine-deep) 4rem 8rem);
+  color: var(--bbm-color-beige-50);
+}
+
 /* A band whose scalloped top edge (SectionEdge) rises into the band above it */
 .site-section--edged {
   position: relative;
@@ -961,6 +973,281 @@
   .site-cake__inside,
   .site-cake__peek,
   .site-cake__popular {
+    transition: none;
+  }
+}
+
+/* The home page's shelf (MenuSection): a boutique product grid on the wine band --------------------------- */
+/* Square corners throughout, hairlines instead of sticker outlines, spaced capitals, cream and gold on wine. */
+
+.site-menu--shop {
+  --shop-cream: var(--bbm-color-beige-100);
+  --shop-line: color-mix(in srgb, var(--bbm-color-beige-100) 38%, transparent);
+  --shop-soft: color-mix(in srgb, var(--bbm-color-beige-100) 78%, transparent);
+  --shop-gold: var(--bbm-color-gold-200);
+  position: relative;
+  /* Room for the checker trim along the foot */
+  padding-bottom: calc(var(--bbm-layout-section-y) + 1.2rem);
+}
+
+/* A checker trim along the foot, cream and wine, like the checked tapes in the flavour deck below */
+.site-menu--shop::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 1.2rem;
+  border-top: var(--bbm-border-width-thin) solid var(--shop-gold);
+  background: conic-gradient(
+      var(--shop-cream) 0 25%,
+      var(--wine-deep) 0 50%,
+      var(--shop-cream) 0 75%,
+      var(--wine-deep) 0
+    )
+    0 0 / 1.2rem 1.2rem;
+}
+
+.site-menu__head {
+  display: grid;
+  justify-items: center;
+  gap: var(--bbm-space-3);
+}
+
+.site-menu--shop .bbm-heading {
+  --_accent-color: var(--shop-gold);
+  --_lead-color: var(--shop-soft);
+  max-width: 38rem;
+}
+
+.site-menu--shop .bbm-heading__title {
+  font-weight: var(--bbm-font-weight-regular);
+}
+
+/* The occasions as square tabs */
+.site-menu--shop .site-menu__filters .bbm-chips {
+  scrollbar-color: var(--bbm-color-gold-400) transparent;
+}
+
+.site-menu--shop .bbm-chips__chip {
+  border-color: var(--shop-line);
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--shop-cream);
+  font-size: 0.72rem;
+  font-weight: var(--bbm-font-weight-bold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.site-menu--shop .bbm-chips__chip:hover {
+  border-color: var(--shop-cream);
+  background-color: color-mix(in srgb, var(--bbm-color-beige-100) 10%, transparent);
+}
+
+.site-menu--shop .bbm-chips__chip[aria-pressed='true'] {
+  border-color: var(--shop-cream);
+  background-color: var(--shop-cream);
+  color: var(--bbm-color-cherry-900);
+}
+
+.site-menu--shop .site-cakes {
+  gap: var(--bbm-space-10) var(--bbm-space-5);
+}
+
+/* Focus rings in gold: the navy ring would disappear on wine */
+.site-menu--shop :focus-visible,
+.site-menu--shop .site-cake__name a:focus-visible::after {
+  outline-color: var(--shop-gold);
+}
+
+/* Solid cream, square, like the shop's "our products" button */
+.site-menu--shop .bbm-button {
+  --_bg: var(--shop-cream);
+  --_bg-hover: var(--bbm-color-paper);
+  --_bg-active: var(--bbm-color-beige-200);
+  --_fg: var(--bbm-color-cherry-900);
+  border-radius: 0;
+}
+
+.site-menu--shop .site-menu__note {
+  border-color: var(--shop-line);
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--shop-soft);
+}
+
+.site-cake--shop {
+  gap: 0;
+  color: var(--bbm-color-beige-50);
+}
+
+/* The photo: a square-cornered cream tile, no outline and no sticker shadow */
+.site-cake--shop .site-cake__ticket {
+  border: 0;
+  border-radius: 0;
+  background:
+    radial-gradient(
+      60% 12% at 50% 90%,
+      color-mix(in srgb, var(--bbm-color-brown-900) 14%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(90% 70% at 50% 30%, color-mix(in srgb, var(--bbm-color-paper) 70%, transparent), transparent 70%),
+    var(--bbm-color-beige-100);
+  box-shadow: none;
+}
+
+.site-cake--shop .site-cake__ticket img {
+  padding: 12% 7% 5%;
+}
+
+.site-cake--shop.site-cake--backdrop .site-cake__ticket img {
+  padding: 0;
+}
+
+/* "Most ordered" as a small wine tab in the photo's corner */
+.site-cake--shop .site-cake__popular {
+  top: 0;
+  left: 0;
+  padding: 0.45rem 0.7rem;
+  border: 0;
+  border-radius: 0;
+  background-color: var(--wine);
+  box-shadow: none;
+  color: var(--bbm-color-beige-50);
+  font-size: 0.62rem;
+  font-weight: var(--bbm-font-weight-bold);
+  letter-spacing: 0.16em;
+  translate: none;
+  rotate: none;
+  transition: none;
+}
+
+/* The name in spaced capitals over a hairline, held to two lines so the hairlines line up across a row */
+.site-cake--shop .site-cake__name {
+  display: flex;
+  align-items: flex-end;
+  min-height: calc(2 * 1.35em);
+  margin: var(--bbm-space-4) 0 0;
+  padding-bottom: var(--bbm-space-2);
+  border-bottom: var(--bbm-border-width-thin) solid var(--shop-line);
+  font-family: var(--bbm-font-family-body);
+  font-size: clamp(0.8rem, 0.75rem + 0.2vw, 0.92rem);
+  font-weight: var(--bbm-font-weight-bold);
+  letter-spacing: 0.08em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.site-cake--shop .site-cake__name a::after {
+  border-radius: 0;
+}
+
+.site-cake__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: var(--bbm-space-2) 0 0;
+}
+
+.site-cake--shop .site-cake__weight {
+  color: var(--shop-soft);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.site-cake--shop .site-cake__heart {
+  width: 0.7rem;
+  fill: var(--bbm-color-gold-300);
+}
+
+.site-cake--shop .site-cake__price {
+  color: var(--shop-gold);
+}
+
+/* What's in it, two lines at most */
+.site-cake__about {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: var(--bbm-space-2) 0 0;
+  color: var(--shop-soft);
+  font-size: var(--bbm-text-body-sm-size);
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+/* Looks like a button; the whole card is the link */
+.site-cake__order {
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 0.65rem 1.1rem;
+  border: var(--bbm-border-width-thin) solid var(--shop-cream);
+  color: var(--bbm-color-beige-50);
+  font-size: 0.7rem;
+  font-weight: var(--bbm-font-weight-bold);
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+  transition:
+    background-color var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard),
+    color var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard);
+}
+
+/* A gap above the button whether or not the cake has a description */
+.site-cake--shop > :nth-last-child(2) {
+  margin-bottom: var(--bbm-space-4);
+}
+
+/* Pointed at: no lift or tilt here, the cake leans in a touch and the button fills */
+@media (hover: hover) {
+  .site-cake--shop:hover .site-cake__ticket {
+    translate: none;
+    rotate: none;
+    box-shadow: none;
+  }
+
+  .site-cake--shop:hover .site-cake__ticket img {
+    scale: 1.04;
+  }
+
+  .site-cake--shop:hover .site-cake__popular {
+    rotate: none;
+  }
+
+  .site-cake--shop:hover .site-cake__order {
+    background-color: var(--shop-cream);
+    color: var(--bbm-color-cherry-900);
+  }
+}
+
+@media (max-width: 599.98px) {
+  .site-menu--shop .site-cakes {
+    gap: var(--bbm-space-8) var(--bbm-space-3);
+  }
+
+  .site-cake--shop .site-cake__name {
+    font-size: 0.74rem;
+    letter-spacing: 0.06em;
+  }
+
+  .site-cake--shop .site-cake__popular {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.55rem;
+  }
+
+  .site-cake__about {
+    font-size: 0.78rem;
+  }
+
+  .site-cake__order {
+    align-self: stretch;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-cake__order {
     transition: none;
   }
 }

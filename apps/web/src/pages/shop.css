@@ -553,6 +553,14 @@
   object-fit: cover;
 }
 
+/* A cut-out cake, whole on a cream plate */
+.catalog-flavour img.catalog-flavour__cutout {
+  box-sizing: border-box;
+  padding: 0.3rem;
+  background-color: var(--bbm-color-beige-100);
+  object-fit: contain;
+}
+
 .catalog-flavour p {
   margin: 0;
 }

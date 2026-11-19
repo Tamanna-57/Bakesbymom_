@@ -50,16 +50,17 @@
   color: var(--bbm-color-text-inverse);
 }
 
-/* Deep wine: the maroon of the ribbon above it, carried down a shade darker. Wine-on-wine stripes as wide as the
-   hero's, so the band keeps the hero's rhythm in a quieter key, and it deepens a little towards the foot. */
-.site-section--wine {
-  --wine: color-mix(in srgb, var(--bbm-color-cherry-800) 70%, var(--bbm-color-cherry-900));
-  --wine-deep: color-mix(in srgb, var(--bbm-color-cherry-800) 40%, var(--bbm-color-cherry-900));
-  background-color: var(--wine);
+/* Cherry gingham: the red of the cherry gingham tapes in the flavour deck, a shade deeper so cream text stays
+   readable on it (AA), woven red on red like a bistro tablecloth. */
+.site-section--gingham {
+  --red: color-mix(in srgb, var(--bbm-color-cherry-400) 60%, var(--bbm-color-cherry-700));
+  --red-deep: var(--bbm-color-cherry-700);
+  --weave: color-mix(in srgb, var(--bbm-color-cherry-800) 14%, transparent);
+  background-color: var(--red);
   background-image:
-    linear-gradient(transparent 35%, color-mix(in srgb, var(--bbm-color-cherry-900) 55%, transparent)),
-    repeating-linear-gradient(90deg, var(--wine) 0 4rem, var(--wine-deep) 4rem 8rem);
-  color: var(--bbm-color-beige-50);
+    linear-gradient(90deg, var(--weave) 50%, transparent 0), linear-gradient(var(--weave) 50%, transparent 0);
+  background-size: 3.5rem 3.5rem;
+  color: var(--bbm-color-paper);
 }
 
 /* A band whose scalloped top edge (SectionEdge) rises into the band above it */
@@ -977,32 +978,28 @@
   }
 }
 
-/* The home page's shelf (MenuSection): a boutique product grid on the wine band --------------------------- */
-/* Square corners throughout, hairlines instead of sticker outlines, spaced capitals, cream and gold on wine. */
+/* The home page's shelf (MenuSection): a boutique product grid on the cherry gingham band --------------------- */
+/* Square corners throughout, hairlines instead of sticker outlines, spaced capitals, cream on cherry. */
 
 .site-menu--shop {
   --shop-cream: var(--bbm-color-beige-100);
   --shop-line: color-mix(in srgb, var(--bbm-color-beige-100) 38%, transparent);
-  --shop-soft: color-mix(in srgb, var(--bbm-color-beige-100) 78%, transparent);
+  /* Small text: paper keeps AA (4.5:1) even on the lightest squares of the gingham */
+  --shop-soft: var(--bbm-color-paper);
   --shop-gold: var(--bbm-color-gold-200);
   position: relative;
   /* Room for the checker trim along the foot */
   padding-bottom: calc(var(--bbm-layout-section-y) + 1.2rem);
 }
 
-/* A checker trim along the foot, cream and wine, like the checked tapes in the flavour deck below */
+/* A checker trim along the foot, cream and deep cherry, like the checked tapes in the flavour deck below */
 .site-menu--shop::after {
   content: '';
   position: absolute;
   inset: auto 0 0;
   height: 1.2rem;
   border-top: var(--bbm-border-width-thin) solid var(--shop-gold);
-  background: conic-gradient(
-      var(--shop-cream) 0 25%,
-      var(--wine-deep) 0 50%,
-      var(--shop-cream) 0 75%,
-      var(--wine-deep) 0
-    )
+  background: conic-gradient(var(--shop-cream) 0 25%, var(--red-deep) 0 50%, var(--shop-cream) 0 75%, var(--red-deep) 0)
     0 0 / 1.2rem 1.2rem;
 }
 
@@ -1031,7 +1028,7 @@
   border-color: var(--shop-line);
   border-radius: 0;
   background-color: transparent;
-  color: var(--shop-cream);
+  color: var(--shop-soft);
   font-size: 0.72rem;
   font-weight: var(--bbm-font-weight-bold);
   letter-spacing: 0.1em;
@@ -1053,7 +1050,7 @@
   gap: var(--bbm-space-10) var(--bbm-space-5);
 }
 
-/* Focus rings in gold: the navy ring would disappear on wine */
+/* Focus rings in gold: the navy ring would get lost on the red */
 .site-menu--shop :focus-visible,
 .site-menu--shop .site-cake__name a:focus-visible::after {
   outline-color: var(--shop-gold);
@@ -1177,24 +1174,22 @@
   padding: 0;
 }
 
-/* "Most ordered": a gold seal stuck over the tile's top corner, tilted like a sticker */
-.site-cake__seal {
-  position: absolute;
-  top: -1.4rem;
-  right: -1rem;
-  z-index: 4;
-  pointer-events: none;
-  rotate: 12deg;
-  filter: drop-shadow(2px 3px 0 color-mix(in srgb, var(--bbm-color-cherry-900) 55%, transparent));
-  transition:
-    rotate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce),
-    scale var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
-}
-
-.site-cake__seal-heart {
-  width: 1.15rem;
-  height: auto;
-  fill: var(--bbm-color-cherry-700);
+/* "Most ordered" as a small deep-cherry tab in the photo's corner */
+.site-cake--shop .site-cake__popular {
+  top: 0;
+  left: 0;
+  padding: 0.45rem 0.7rem;
+  border: 0;
+  border-radius: 0;
+  background-color: var(--red-deep);
+  box-shadow: none;
+  color: var(--bbm-color-paper);
+  font-size: 0.62rem;
+  font-weight: var(--bbm-font-weight-bold);
+  letter-spacing: 0.16em;
+  translate: none;
+  rotate: none;
+  transition: none;
 }
 
 /* The name in spaced capitals over a hairline, held to two lines so the hairlines line up across a row */
@@ -1237,7 +1232,7 @@
 }
 
 .site-cake--shop .site-cake__price {
-  color: var(--shop-gold);
+  color: var(--bbm-color-paper);
 }
 
 /* Looks like a button; the whole card is the link. An arrow slides in when the card is pointed at. */
@@ -1272,7 +1267,7 @@
     translate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
 }
 
-/* Pointed at: the tile tips over a gold block shadow, the seal swings round, the heart beats, the button fills */
+/* Pointed at: the tile tips over a gold block shadow, the heart beats, the button fills */
 @media (hover: hover) {
   .site-cake--shop:hover .site-cake__ticket {
     translate: -5px -7px;
@@ -1288,9 +1283,8 @@
     scale: 1.06;
   }
 
-  .site-cake--shop:hover .site-cake__seal {
-    rotate: -10deg;
-    scale: 1.08;
+  .site-cake--shop:hover .site-cake__popular {
+    rotate: none;
   }
 
   .site-cake--shop:hover .site-cake__heart {
@@ -1329,11 +1323,9 @@
     letter-spacing: 0.06em;
   }
 
-  /* A smaller seal, kept inside the band's edge */
-  .site-cake__seal {
-    top: -1.6rem;
-    right: -1.3rem;
-    scale: 0.7;
+  .site-cake--shop .site-cake__popular {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.55rem;
   }
 
   .site-cake__order {
@@ -1350,8 +1342,7 @@
   }
 
   .site-cake__order,
-  .site-cake__arrow,
-  .site-cake__seal {
+  .site-cake__arrow {
     transition: none;
   }
 }

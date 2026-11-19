@@ -108,7 +108,7 @@ export function DoubleRibbon() {
 
 /** The ticket's ground behind a cut-out cake, by its place on the shelf. */
 const TICKET_TONES = ['pink', 'butter', 'beige', 'cherry'] as const;
-/** The home page's shelf: cream, blush and butter tiles in turn, soft against the wine. */
+/** The home page's shelf: cream, blush and butter tiles in turn, soft against the cherry gingham. */
 const SHOP_TONES = ['beige', 'pink', 'butter'] as const;
 
 /**
@@ -116,7 +116,7 @@ const SHOP_TONES = ['beige', 'pink', 'butter'] as const;
  * - `ticket`: like the cards on the home page's Cakes & Treats wheel, the photo on rounded corners and the weight and
  *   price in one capsule under it; pointing at it lifts the ticket and slides up what's in the cake.
  * - `shop`: the home page's shelf, after a boutique product grid. A square-cornered photo on a cream, blush or
- *   butter tile, a gold seal on the most ordered, the name in spaced capitals over a hairline, the weight and price,
+ *   butter tile with its label in the corner, the name in spaced capitals over a hairline, the weight and price,
  *   and an order button. Pointing at it tips the tile over a gold block shadow.
  */
 export type CakeCardLayout = 'ticket' | 'shop';
@@ -159,20 +159,10 @@ export function CakeCard({
   if (shop) {
     return (
       <article className={className} data-tone={SHOP_TONES[index % SHOP_TONES.length]}>
-        <span className="site-cake__ticket">{image}</span>
-        {/* A gold seal stuck over the tile's corner, its ring of words turning slowly */}
-        {popular && (
-          <Seal
-            className="site-cake__seal"
-            text="Most ordered • Most loved • "
-            label="Most ordered"
-            size={76}
-            tone="butter"
-            spin
-          >
-            <Heart className="site-cake__seal-heart" />
-          </Seal>
-        )}
+        <span className="site-cake__ticket">
+          {image}
+          {popular && <span className="site-cake__popular">Most ordered</span>}
+        </span>
         {name}
         <p className="site-cake__meta">
           <span className="site-cake__weight">{kgLabel(cake.weightKg)}</span>
@@ -342,9 +332,9 @@ function ShelfDoodles() {
 }
 
 /**
- * The cake shelf, filterable by occasion, on a deep wine band (the maroon of the ribbon above it, carried down): a
- * boutique product grid with square corners, after the luxury dessert-café boards the client picked. On the home
- * page it shows the first few with a link to the rest.
+ * The cake shelf, filterable by occasion, on a cherry gingham band (the red of the flavour deck's gingham tapes):
+ * a boutique product grid with square corners, after the dessert-café boards the client picked. On the home page it
+ * shows the first few with a link to the rest.
  */
 export function MenuSection({ level = 2, limit }: { level?: 1 | 2; limit?: number }) {
   const [filter, setFilter] = useState<string[]>(['all']);
@@ -352,7 +342,7 @@ export function MenuSection({ level = 2, limit }: { level?: 1 | 2; limit?: numbe
   const list = slug === 'all' ? featured() : cakes.filter((cake) => cake.occasion === slug);
   const shown = limit ? list.slice(0, limit) : list;
   return (
-    <Band id="cakes" className="site-section--wine site-menu site-menu--shop">
+    <Band id="cakes" className="site-section--gingham site-menu site-menu--shop">
       <ShelfDoodles />
       <div className="site-menu__head">
         {/* A gold heart between two twinkling sparkles */}
@@ -370,7 +360,6 @@ export function MenuSection({ level = 2, limit }: { level?: 1 | 2; limit?: numbe
               Cakes, <em>baked to order</em>
             </>
           }
-          description="Mixed, baked and finished by hand in Mom's kitchen, for the day it's for. Pick an occasion, open a cake and make it yours."
         />
       </div>
       <div className="site-menu__filters">

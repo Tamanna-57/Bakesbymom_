@@ -70,12 +70,13 @@
   min-height: 100svh;
   padding: calc(var(--site-header-h, 5rem) + var(--bbm-space-6)) var(--bbm-layout-gutter) var(--bbm-space-10);
   overflow: hidden;
-  border-block: var(--bbm-border-width-thin) solid var(--bbm-color-blue-400);
-  /* Pale blue with fine ruled lines, like the reference's ground */
+  border-block: var(--bbm-border-width-thin) solid color-mix(in srgb, var(--bbm-color-brown-900) 22%, transparent);
+  /* Pale blue with fine ruled lines, like the reference's ground. The colour turns to each flavour's as its card
+     flies in (FlavourDeck), so the lines are a soft cocoa that suits every one of them. */
   background-color: var(--bbm-color-blue-100);
   background-image: repeating-linear-gradient(
     0deg,
-    color-mix(in srgb, var(--bbm-color-blue-700) 9%, transparent) 0 1px,
+    color-mix(in srgb, var(--bbm-color-brown-900) 7%, transparent) 0 1px,
     transparent 1px 7px
   );
   color: var(--bbm-color-brown-900);

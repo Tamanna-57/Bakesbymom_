@@ -25,39 +25,70 @@ interface DeckCard {
   /** Card colour and ink, from the palette. */
   color: string;
   ink?: string;
+  /** The colour the section turns to as this card flies in: the flavour itself, light enough for the deck on it. */
+  ground: string;
   /** The patterned strip along the card's foot. */
   foot: { pattern: Pattern; tone: 'pink' | 'blue' | 'cherry' | 'butter' | 'matcha' | 'brown' | 'beige' };
 }
 
-/** Each flavour's card, in its own colour. */
+/**
+ * Each flavour's card, in its own colour, and the ground it brings with it: cocoa for chocolate truffle, vanilla
+ * cream, dusky cherry for black forest, rose for red velvet, caramel, pineapple, strawberries and cream, pistachio,
+ * blueberry and spiced biscuit.
+ */
 const looks: Record<string, Omit<DeckCard, 'flavour'>> = {
   'Chocolate truffle': {
     color: 'var(--bbm-color-brown-700)',
+    ground: 'var(--bbm-color-brown-300)',
     ink: 'var(--bbm-color-pink-200)',
     foot: { pattern: 'checker', tone: 'pink' },
   },
-  Vanilla: { color: 'var(--bbm-color-butter-200)', foot: { pattern: 'gingham', tone: 'butter' } },
+  Vanilla: {
+    color: 'var(--bbm-color-butter-200)',
+    ground: 'var(--bbm-color-butter-100)',
+    foot: { pattern: 'gingham', tone: 'butter' },
+  },
   'Black forest': {
     color: 'var(--bbm-color-cherry-700)',
+    ground: 'var(--bbm-color-pink-400)',
     ink: 'var(--bbm-color-pink-200)',
     foot: { pattern: 'checker', tone: 'brown' },
   },
   'Red velvet': {
     color: 'var(--bbm-color-cherry-500)',
+    ground: 'var(--bbm-color-cherry-200)',
     ink: 'var(--bbm-color-paper)',
     foot: { pattern: 'dots', tone: 'pink' },
   },
-  Butterscotch: { color: 'var(--bbm-color-butter-300)', foot: { pattern: 'stripes', tone: 'cherry' } },
-  Pineapple: { color: 'var(--bbm-color-blue-200)', foot: { pattern: 'gingham', tone: 'blue' } },
-  'Fresh fruit': { color: 'var(--bbm-color-pink-300)', foot: { pattern: 'checker', tone: 'cherry' } },
-  Rasmalai: { color: 'var(--bbm-color-matcha-200)', foot: { pattern: 'dots', tone: 'matcha' } },
+  Butterscotch: {
+    color: 'var(--bbm-color-butter-300)',
+    ground: 'var(--bbm-color-gold-300)',
+    foot: { pattern: 'stripes', tone: 'cherry' },
+  },
+  Pineapple: {
+    color: 'var(--bbm-color-blue-200)',
+    ground: 'var(--bbm-color-butter-200)',
+    foot: { pattern: 'gingham', tone: 'blue' },
+  },
+  'Fresh fruit': {
+    color: 'var(--bbm-color-pink-300)',
+    ground: 'var(--bbm-color-pink-200)',
+    foot: { pattern: 'checker', tone: 'cherry' },
+  },
+  Rasmalai: {
+    color: 'var(--bbm-color-matcha-200)',
+    ground: 'var(--bbm-color-pistachio-100)',
+    foot: { pattern: 'dots', tone: 'matcha' },
+  },
   Blueberry: {
     color: 'var(--bbm-color-blue-700)',
+    ground: 'var(--bbm-color-blue-300)',
     ink: 'var(--bbm-color-blue-100)',
     foot: { pattern: 'gingham', tone: 'blue' },
   },
   Biscoff: {
     color: 'var(--bbm-color-brown-500)',
+    ground: 'var(--bbm-color-brown-200)',
     ink: 'var(--bbm-color-paper)',
     foot: { pattern: 'checker', tone: 'butter' },
   },
@@ -65,7 +96,11 @@ const looks: Record<string, Omit<DeckCard, 'flavour'>> = {
 
 const deck: DeckCard[] = cakeFlavours.map((flavour) => ({
   flavour,
-  ...(looks[flavour] ?? { color: 'var(--bbm-color-beige-200)', foot: { pattern: 'stripes', tone: 'pink' } }),
+  ...(looks[flavour] ?? {
+    color: 'var(--bbm-color-beige-200)',
+    ground: 'var(--bbm-color-beige-100)',
+    foot: { pattern: 'stripes', tone: 'pink' },
+  }),
 }));
 
 /** The tape labels round the edges: a word on paper, then a strip of pattern (decoration only). */
@@ -80,8 +115,9 @@ const tapes = [
 
 /**
  * The flavours, dealt as a deck (Teh Tarik Nation's "we're also…"): the section pins, and the flavours fly up one card
- * at a time and land in a fan, with tilted tape labels round the edges. Each card shows one of our own cakes from the
- * catalog (content `flavours`) and opens every cake in that flavour.
+ * at a time and land in a fan, with tilted tape labels round the edges, and the ground behind turns to each flavour's
+ * colour as its card arrives. Each card shows one of our own cakes from the catalog (content `flavours`) and opens
+ * every cake in that flavour.
  */
 export function FlavourDeck() {
   const root = useRef<HTMLElement>(null);
@@ -118,6 +154,25 @@ export function FlavourDeck() {
         },
         i * 0.7,
       );
+    });
+    // The ground turns to each flavour's colour as its card comes in to land, and back again scrolling up. GSAP
+    // tweens between plain colours, so each token is read as the colour it stands for.
+    const tokens = getComputedStyle(document.documentElement);
+    const resolve = (value: string) => {
+      const name = /var\((--[\w-]+)/.exec(value)?.[1];
+      return name ? tokens.getPropertyValue(name).trim() : value;
+    };
+    let ground = getComputedStyle(section).backgroundColor;
+    deck.forEach((card, i) => {
+      const next = resolve(card.ground);
+      if (!next) return;
+      tl.fromTo(
+        section,
+        { backgroundColor: ground },
+        { backgroundColor: next, duration: 0.5, ease: 'none', immediateRender: false },
+        i * 0.7 + 0.5,
+      );
+      ground = next;
     });
     // A beat to look at the full fan before the page moves on
     tl.to({}, { duration: 0.6 });

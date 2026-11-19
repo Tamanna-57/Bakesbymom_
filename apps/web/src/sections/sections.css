@@ -1075,12 +1075,86 @@
   color: var(--shop-soft);
 }
 
+/* Gold doodles drifting down the margins beside the shelf (ShelfDoodles) */
+.site-menu__doodles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.site-menu__doodle {
+  position: absolute;
+  opacity: 0.7;
+  animation: site-doodle-drift 6s ease-in-out infinite alternate;
+}
+
+.site-menu__doodle:nth-child(odd) {
+  animation-duration: 7.5s;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes site-doodle-drift {
+  from {
+    translate: 0 -6px;
+    rotate: -10deg;
+  }
+
+  to {
+    translate: 0 6px;
+    rotate: 10deg;
+  }
+}
+
+/* Only where the margins beside the shelf are wide enough to hold them */
+@media (max-width: 1339.98px) {
+  .site-menu__doodles {
+    display: none;
+  }
+}
+
+/* Over the heading: the heart beats now and then, the sparkles twinkle either side */
+.site-menu__mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.site-menu__mark > :nth-child(2) {
+  animation: site-heart-beat 2.4s var(--bbm-motion-easing-bounce) infinite;
+}
+
+.site-menu__mark > :nth-child(odd) {
+  animation: site-twinkle 2.4s ease-in-out infinite;
+}
+
+.site-menu__mark > :last-child {
+  animation-delay: -1.2s;
+}
+
+@keyframes site-twinkle {
+  50% {
+    scale: 0.55;
+    rotate: 45deg;
+    opacity: 0.55;
+  }
+}
+
 .site-cake--shop {
+  --tile: var(--bbm-color-beige-100);
   gap: 0;
   color: var(--bbm-color-beige-50);
 }
 
-/* The photo: a square-cornered cream tile, no outline and no sticker shadow */
+.site-cake--shop[data-tone='pink'] {
+  --tile: var(--bbm-color-pink-200);
+}
+
+.site-cake--shop[data-tone='butter'] {
+  --tile: var(--bbm-color-butter-200);
+}
+
+/* The photo: a square-cornered tile in cream, blush or butter, no outline and no sticker shadow */
 .site-cake--shop .site-cake__ticket {
   border: 0;
   border-radius: 0;
@@ -1091,8 +1165,8 @@
       transparent 70%
     ),
     radial-gradient(90% 70% at 50% 30%, color-mix(in srgb, var(--bbm-color-paper) 70%, transparent), transparent 70%),
-    var(--bbm-color-beige-100);
-  box-shadow: none;
+    var(--tile);
+  box-shadow: 0 0 0 var(--bbm-color-gold-300);
 }
 
 .site-cake--shop .site-cake__ticket img {
@@ -1103,22 +1177,24 @@
   padding: 0;
 }
 
-/* "Most ordered" as a small wine tab in the photo's corner */
-.site-cake--shop .site-cake__popular {
-  top: 0;
-  left: 0;
-  padding: 0.45rem 0.7rem;
-  border: 0;
-  border-radius: 0;
-  background-color: var(--wine);
-  box-shadow: none;
-  color: var(--bbm-color-beige-50);
-  font-size: 0.62rem;
-  font-weight: var(--bbm-font-weight-bold);
-  letter-spacing: 0.16em;
-  translate: none;
-  rotate: none;
-  transition: none;
+/* "Most ordered": a gold seal stuck over the tile's top corner, tilted like a sticker */
+.site-cake__seal {
+  position: absolute;
+  top: -1.4rem;
+  right: -1rem;
+  z-index: 4;
+  pointer-events: none;
+  rotate: 12deg;
+  filter: drop-shadow(2px 3px 0 color-mix(in srgb, var(--bbm-color-cherry-900) 55%, transparent));
+  transition:
+    rotate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce),
+    scale var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
+}
+
+.site-cake__seal-heart {
+  width: 1.15rem;
+  height: auto;
+  fill: var(--bbm-color-cherry-700);
 }
 
 /* The name in spaced capitals over a hairline, held to two lines so the hairlines line up across a row */
@@ -1145,7 +1221,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin: var(--bbm-space-2) 0 0;
+  margin: var(--bbm-space-2) 0 var(--bbm-space-4);
 }
 
 .site-cake--shop .site-cake__weight {
@@ -1164,21 +1240,10 @@
   color: var(--shop-gold);
 }
 
-/* What's in it, two lines at most */
-.site-cake__about {
-  display: -webkit-box;
-  overflow: hidden;
-  margin: var(--bbm-space-2) 0 0;
-  color: var(--shop-soft);
-  font-size: var(--bbm-text-body-sm-size);
-  line-height: 1.45;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-}
-
-/* Looks like a button; the whole card is the link */
+/* Looks like a button; the whole card is the link. An arrow slides in when the card is pointed at. */
 .site-cake__order {
+  display: inline-flex;
+  align-items: center;
   align-self: flex-start;
   margin-top: auto;
   padding: 0.65rem 1.1rem;
@@ -1194,30 +1259,63 @@
     color var(--bbm-motion-duration-fast) var(--bbm-motion-easing-standard);
 }
 
-/* A gap above the button whether or not the cake has a description */
-.site-cake--shop > :nth-last-child(2) {
-  margin-bottom: var(--bbm-space-4);
+.site-cake__arrow {
+  display: inline-block;
+  overflow: hidden;
+  width: 0;
+  opacity: 0;
+  letter-spacing: 0;
+  translate: -0.4em 0;
+  transition:
+    width var(--bbm-motion-duration-slow) var(--bbm-motion-easing-out),
+    opacity var(--bbm-motion-duration-slow) var(--bbm-motion-easing-out),
+    translate var(--bbm-motion-duration-slow) var(--bbm-motion-easing-bounce);
 }
 
-/* Pointed at: no lift or tilt here, the cake leans in a touch and the button fills */
+/* Pointed at: the tile tips over a gold block shadow, the seal swings round, the heart beats, the button fills */
 @media (hover: hover) {
   .site-cake--shop:hover .site-cake__ticket {
-    translate: none;
-    rotate: none;
-    box-shadow: none;
+    translate: -5px -7px;
+    rotate: -1.5deg;
+    box-shadow: 9px 9px 0 var(--bbm-color-gold-300);
+  }
+
+  .site-menu--shop li:nth-child(even) .site-cake--shop:hover .site-cake__ticket {
+    rotate: 1.5deg;
   }
 
   .site-cake--shop:hover .site-cake__ticket img {
-    scale: 1.04;
+    scale: 1.06;
   }
 
-  .site-cake--shop:hover .site-cake__popular {
-    rotate: none;
+  .site-cake--shop:hover .site-cake__seal {
+    rotate: -10deg;
+    scale: 1.08;
+  }
+
+  .site-cake--shop:hover .site-cake__heart {
+    animation: site-heart-beat 0.7s var(--bbm-motion-easing-bounce);
   }
 
   .site-cake--shop:hover .site-cake__order {
     background-color: var(--shop-cream);
     color: var(--bbm-color-cherry-900);
+  }
+
+  .site-cake--shop:hover .site-cake__arrow {
+    width: 1.4em;
+    opacity: 1;
+    translate: 0.4em 0;
+  }
+}
+
+@keyframes site-heart-beat {
+  30% {
+    scale: 1.45;
+  }
+
+  60% {
+    scale: 0.9;
   }
 }
 
@@ -1231,23 +1329,29 @@
     letter-spacing: 0.06em;
   }
 
-  .site-cake--shop .site-cake__popular {
-    padding: 0.35rem 0.5rem;
-    font-size: 0.55rem;
-  }
-
-  .site-cake__about {
-    font-size: 0.78rem;
+  /* A smaller seal, kept inside the band's edge */
+  .site-cake__seal {
+    top: -1.6rem;
+    right: -1.3rem;
+    scale: 0.7;
   }
 
   .site-cake__order {
+    justify-content: center;
     align-self: stretch;
-    text-align: center;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-cake__order {
+  .site-menu__doodle,
+  .site-menu__mark > *,
+  .site-cake--shop .site-cake__heart {
+    animation: none;
+  }
+
+  .site-cake__order,
+  .site-cake__arrow,
+  .site-cake__seal {
     transition: none;
   }
 }

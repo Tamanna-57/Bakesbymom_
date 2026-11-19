@@ -8,7 +8,7 @@
  */
 import { useRef, type CSSProperties } from 'react';
 import { Button, PatternSurface, type Pattern } from '@bakesbymom/ui';
-import { flavours } from '../content';
+import { flavourCakes, flavours, isCutout } from '../content';
 import { bakery, cakeFlavours, flavourSlug } from '../content/bakery';
 import { orderLink } from '../content/site';
 import { gsap, narrowScreen, scatter, SCRUB, useFx } from '../fx/gsap';
@@ -20,7 +20,7 @@ const external = { target: '_blank', rel: 'noreferrer' } as const;
 /* The deck: every flavour on the menu, one card each ---------------------------------------------------------- */
 
 interface DeckCard {
-  /** One of bakery.cakeFlavours; its photo and what's inside come from content `flavours`. */
+  /** One of bakery.cakeFlavours; what's inside and the cake it's shown on come from content `flavours`. */
   flavour: string;
   /** Card colour and ink, from the palette. */
   color: string;
@@ -80,12 +80,14 @@ const tapes = [
 
 /**
  * The flavours, dealt as a deck (Teh Tarik Nation's "we're also…"): the section pins, and the flavours fly up one card
- * at a time and land in a fan, with tilted tape labels round the edges. Each card opens every cake in that flavour.
+ * at a time and land in a fan, with tilted tape labels round the edges. Each card shows one of our own cakes from the
+ * catalog (content `flavours`) and opens every cake in that flavour.
  */
 export function FlavourDeck() {
   const root = useRef<HTMLElement>(null);
   // The fan's middle, so an even deck spreads evenly either side
   const middle = (deck.length - 1) / 2;
+  const shownOn = flavourCakes();
 
   useFx(root, (section) => {
     const cards = gsap.utils.toArray<HTMLElement>('.fx-deck__card', section);
@@ -154,11 +156,17 @@ export function FlavourDeck() {
       </h2>
       <ul className="fx-deck__stage">
         {deck.map((card, i) => {
-          const photo = flavours[card.flavour];
+          // One of our own cakes from the catalog, shown in this flavour (content `flavours`)
+          const cake = shownOn[card.flavour];
+          const photo = cake?.photos[0];
+          const cutout = !!cake && isCutout(cake);
+          // The name's size follows the card's width, so whether it wraps doesn't change with the screen: a long
+          // two-word name ("Chocolate truffle", "Black forest") takes two lines and leaves less room for the cake.
+          const twoLines = card.flavour.includes(' ') && card.flavour.length > 11;
           return (
             <li
               key={card.flavour}
-              className="fx-deck__card"
+              className={twoLines ? 'fx-deck__card fx-deck__card--two-lines' : 'fx-deck__card'}
               style={
                 {
                   '--o': i - middle,
@@ -177,9 +185,17 @@ export function FlavourDeck() {
                 </a>
               </h3>
               <span className="fx-deck__picture">
-                {photo && <img className="fx-deck__photo" src={photo.src} alt="" decoding="async" draggable={false} />}
+                {photo &&
+                  (cutout ? (
+                    // A cut-out stands on a cream plate and rises over its rim, like a sticker
+                    <span className="fx-deck__plate">
+                      <img className="fx-deck__cake" src={photo.thumb} alt="" decoding="async" draggable={false} />
+                    </span>
+                  ) : (
+                    <img className="fx-deck__photo" src={photo.thumb} alt="" decoding="async" draggable={false} />
+                  ))}
               </span>
-              <p>{photo?.inside}</p>
+              <p>{flavours[card.flavour]?.inside}</p>
               <PatternSurface
                 pattern={card.foot.pattern}
                 tone={card.foot.tone}

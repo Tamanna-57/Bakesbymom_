@@ -3,8 +3,9 @@
  * shape ribbon, shop by the box with filter pills, the split about). The feature strip and the starburst come from
  * other bakery sites on Pinterest (Sweet Crumbs, joe & dough). The flavours are a deck now (sections/fx.tsx) and
  * how to order rides sideways (sections/order-rail.tsx).
- * Photos here are stock (content/index.ts `stock`, `treatArt`); the photos of the cakes we sell are kept for the
- * catalog.
+ * The hero, the about card and the wheel's cakes card show our own cakes, and the wheel's cookies card our own
+ * cookies (content/index.ts `heroCake`, `aboutCake`, `occasionsCake`, `categoryPhoto`); the other treat types have
+ * stock photos for now (`treatArt`).
  */
 import { useEffect, useRef, useState, type CSSProperties, type FocusEvent, type RefObject } from 'react';
 import {
@@ -19,7 +20,7 @@ import {
   SectionHeading,
 } from '@bakesbymom/ui';
 import { Badge, Collage } from '../collage/Collage';
-import { heroCake, stock, treatArt } from '../content';
+import { aboutCake, categoryPhoto, heroCake, occasionsCake, stock, treatArt } from '../content';
 import { bakery } from '../content/bakery';
 import { orderLink } from '../content/site';
 import { gsap, scatter, SCRUB, useFx } from '../fx/gsap';
@@ -312,7 +313,7 @@ export function AboutUsCard() {
             </Button>
           </div>
           <div className="home-about__art">
-            <img className="home-about__cake" src={stock.custom.src} alt={stock.custom.alt} loading="lazy" />
+            <img className="home-about__cake" src={aboutCake.src} alt={aboutCake.alt} loading="lazy" />
             <PriceTag
               className="home-about__tag"
               shape="burst"
@@ -339,13 +340,16 @@ interface WheelItem {
   image: { src: string; alt: string };
 }
 
-/** Every kind of bake, with the photos the shop uses for them; each card opens its page. */
+/**
+ * Every kind of bake, each card opening its page: one of our own cakes for the cakes, and our own photo of each
+ * treat type where the bakery has one (content `categoryPhoto`), else the stock photo the shop uses for it.
+ */
 const wheelItems: WheelItem[] = [
-  { name: 'Cakes by occasion', href: '/catalog', image: stock.occasions },
+  { name: 'Cakes by occasion', href: '/catalog', image: occasionsCake },
   ...treatCategories.map((category) => ({
     name: category.name,
     href: `/shop/${category.slug}`,
-    image: treatArt[category.slug] ?? stock.cupcakes,
+    image: categoryPhoto(category.slug),
   })),
 ];
 

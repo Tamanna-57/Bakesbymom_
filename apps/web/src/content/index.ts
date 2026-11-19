@@ -55,6 +55,20 @@ export const heroCake: StockPhoto = {
 };
 
 /**
+ * More of our own cakes for the home page, re-shot like the hero's: the about card's, and the Cakes & Treats
+ * wheel's "Cakes by occasion" card (its small cover from public/photos/thumbs, as the wheel's cards are small).
+ */
+export const aboutCake: StockPhoto = {
+  src: '/photos/restaged/mom-butterfly.jpg',
+  alt: 'Our butterfly and macaron cake: pearl-studded ivory buttercream with fresh roses, macarons and wafer butterflies',
+};
+
+export const occasionsCake: StockPhoto = {
+  src: '/photos/thumbs/IMG-20251130-WA0019.webp',
+  alt: 'Our engagement cake: clasped hands with the ring, pearls, roses and a diamond-ring topper',
+};
+
+/**
  * Stock photos (Unsplash, see public/stock/CREDITS.md) that stand in where we have no photo of our own:
  * the treat types and the home page. The cakes we sell keep their real photos in the catalog, and the flavours are
  * shown on those cakes (see `flavours`).
@@ -80,6 +94,14 @@ export const treatArt: Record<string, StockPhoto> = {
   'bento-cakes': photo('treat-bento-cakes', 'A small bento cake that says happy birthday, in its box with a candle'),
   combos: photo('treat-combos', 'A pink rose-piped cake on a stand with matching cupcakes'),
 };
+
+/** Our own photo of a treat type, where the bakery has one (public/photos). The rest have only treatArt's stock. */
+const ownTreatPhotos: Record<string, StockPhoto> = {
+  cookies: { src: '/photos/cookies/choco-chip.webp', alt: 'A stack of our chocolate chip cookies' },
+};
+
+/** A treat type's photo: our own where there is one, else the stock one. */
+export const categoryPhoto = (slug: string): StockPhoto => ownTreatPhotos[slug] ?? treatArt[slug] ?? stock.cupcakes;
 
 /**
  * Each flavour from bakery.cakeFlavours, with what's inside it and one of our own cakes to show it on: any cake

@@ -4,14 +4,6 @@ From [Unsplash](https://unsplash.com), under the [Unsplash License](https://unsp
 
 | File                             | Photographer         | Source                                                                                                                                                             |
 | -------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `flavour-chocolate-truffle.webp` | Olga Petnyunene      | [a piece of chocolate cake sitting on top of a white plate](https://unsplash.com/photos/a-piece-of-chocolate-cake-sitting-on-top-of-a-white-plate-lNs4gxo2pMw)     |
-| `flavour-vanilla.webp`           | Giorgio Trovato      | [a piece of cake on a plate with a fork](https://unsplash.com/photos/a-piece-of-cake-on-a-plate-with-a-fork-uED-uHereeE)                                           |
-| `flavour-black-forest.webp`      | montatip lilitsanong | [white and brown cake with red ribbon on top](https://unsplash.com/photos/white-and-brown-cake-with-red-ribbon-on-top-LcfX-wo4RkY)                                 |
-| `flavour-red-velvet.webp`        | monserrat nunez      | [a slice of red velvet cake with strawberries on top](https://unsplash.com/photos/a-slice-of-red-velvet-cake-with-strawberries-on-top-cwggT0-5iF4)                 |
-| `flavour-butterscotch.webp`      | Shuvro Mojumder      | [A slice of sponge cake with caramel glaze on a patterned turquoise plate](https://unsplash.com/photos/sponge-cake-slice-with-caramel-glaze-h6LXtukQ_GM)           |
-| `flavour-pineapple.webp`         | Rakesh Sitnoor       | [yellow and white cake on black surface](https://unsplash.com/photos/yellow-and-white-cake-on-black-surface-nIFmcMvnxbI)                                           |
-| `flavour-fresh-fruit.webp`       | Léo Roza             | [a piece of cake with white frosting and strawberries on top](https://unsplash.com/photos/a-piece-of-cake-with-white-frosting-and-strawberries-on-top-n6IUwF9XeXo) |
-| `flavour-rasmalai.webp`          | K8                   | [selective focus photo of white icing-covered cake slice](https://unsplash.com/photos/selective-focus-photo-of-white-icing-covered-cake-slice-snIGbFjsjP8)         |
 | `treat-brownies.webp`            | Anna Przepiorka      | [a pile of brownies sitting on top of a white plate](https://unsplash.com/photos/a-pile-of-brownies-sitting-on-top-of-a-white-plate-LjtviHokbr4)                   |
 | `treat-cookies.webp`             | James Trenda         | [a group of cookies](https://unsplash.com/photos/a-group-of-cookies-7QGrloNqx6w)                                                                                   |
 | `treat-jar-cakes.webp`           | Rakesh Sitnoor       | [brown and black chocolate cake](https://unsplash.com/photos/brown-and-black-chocolate-cake-qWBZqurT950)                                                           |
@@ -27,5 +19,3 @@ From [Unsplash](https://unsplash.com), under the [Unsplash License](https://unsp
 | `home-cupcakes.webp`             | Sara Cervera         | [cupcake with white icing on top](https://unsplash.com/photos/cupcake-with-white-icing-on-top-Syv73NRZk7E)                                                         |
 | `home-occasions.webp`            | Ron James            | [round white cake on cake stand](https://unsplash.com/photos/round-white-cake-on-cake-stand-K9v6ACaGuvQ)                                                           |
 | `home-kitchen.webp`              | Karina Syrotiuk      | [Hand sifting yellow flour into a bowl](https://unsplash.com/photos/hand-sifting-yellow-flour-into-a-bowl-TRxdJIa0-BA)                                             |
-| `flavour-blueberry.webp` | Unsplash (photographer not recorded) | [blueberry cheesecake slice](https://images.unsplash.com/photo-1533134242443-d4fd215305ad), cropped square |
-| `flavour-biscoff.webp` | Unsplash (photographer not recorded) | [cream and spiced biscuit crumbs in a glass](https://images.unsplash.com/photo-1586040140378-b5634cb4c8fc), cropped square |

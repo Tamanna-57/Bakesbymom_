@@ -16,7 +16,7 @@ import sourdough from './sourdough.svg';
 import strawberryCake from './strawberry-cake.svg';
 import teaCake from './tea-cake.svg';
 import { inr, kgLabel, mostOrdered } from './bakery';
-import { cakes, findOccasion } from './catalog';
+import { cakes, findCake, findOccasion, type Cake } from './catalog';
 
 export const art = {
   bento,
@@ -56,7 +56,8 @@ export const heroCake: StockPhoto = {
 
 /**
  * Stock photos (Unsplash, see public/stock/CREDITS.md) that stand in where we have no photo of our own:
- * the treat types, the flavours and the home page. The cakes we sell keep their real photos in the catalog.
+ * the treat types and the home page. The cakes we sell keep their real photos in the catalog, and the flavours are
+ * shown on those cakes (see `flavours`).
  */
 export const stock = {
   hero: photo('home-hero', 'A tall pink cake topped with cherries on a white cake stand'),
@@ -80,49 +81,71 @@ export const treatArt: Record<string, StockPhoto> = {
   combos: photo('treat-combos', 'A pink rose-piped cake on a stand with matching cupcakes'),
 };
 
-/** A cut slice of each flavour from bakery.cakeFlavours, with what's inside it. */
-export const flavours: Record<string, StockPhoto & { inside: string }> = {
+/**
+ * Each flavour from bakery.cakeFlavours, with what's inside it and one of our own cakes to show it on: any cake
+ * can be baked in any flavour, so each card shows a real cake from the catalog that looks the part (a chocolate drip
+ * for chocolate truffle, red roses for red velvet). `cake` is its slug in the catalog database. The cut-outs
+ * (photos on a clear background) suit the flavour cards best, so these are all cut-outs.
+ */
+export const flavours: Record<string, { inside: string; cake: string }> = {
   'Chocolate truffle': {
-    ...photo('flavour-chocolate-truffle', 'A slice of layered chocolate truffle cake'),
     inside: 'Chocolate sponge, layered and covered in dark chocolate ganache.',
+    cake: 'cake-choco-drip',
   },
-  Vanilla: {
-    ...photo('flavour-vanilla', 'A slice of vanilla layer cake'),
-    inside: 'Soft vanilla sponge with whipped vanilla cream.',
-  },
+  Vanilla: { inside: 'Soft vanilla sponge with whipped vanilla cream.', cake: 'cake-heart-pearl' },
   'Black forest': {
-    ...photo('flavour-black-forest', 'A slice of black forest cake with a cherry on top'),
     inside: 'Chocolate sponge, whipped cream, cherries and chocolate shavings.',
+    cake: 'cake-every-smile',
   },
-  'Red velvet': {
-    ...photo('flavour-red-velvet', 'A slice of red velvet cake with cream cheese layers'),
-    inside: 'Cocoa-red sponge with a cream cheese frosting.',
-  },
-  Butterscotch: {
-    ...photo('flavour-butterscotch', 'A slice of butterscotch cake with a caramel drizzle'),
-    inside: 'Vanilla sponge with butterscotch cream and crunchy praline.',
-  },
-  Pineapple: {
-    ...photo('flavour-pineapple', 'A cream cake decorated with pineapple pieces'),
-    inside: 'Vanilla sponge with whipped cream and pineapple pieces.',
-  },
-  'Fresh fruit': {
-    ...photo('flavour-fresh-fruit', 'A slice of cream cake layered with strawberries'),
-    inside: 'Vanilla sponge with whipped cream and the season’s fruit.',
-  },
+  'Red velvet': { inside: 'Cocoa-red sponge with a cream cheese frosting.', cake: 'cake-hbd-wifey' },
+  Butterscotch: { inside: 'Vanilla sponge with butterscotch cream and crunchy praline.', cake: 'cake-teachers-day' },
+  Pineapple: { inside: 'Vanilla sponge with whipped cream and pineapple pieces.', cake: 'cake-first-birthday' },
+  'Fresh fruit': { inside: 'Vanilla sponge with whipped cream and the season’s fruit.', cake: 'cake-maa-wings' },
   Rasmalai: {
-    ...photo('flavour-rasmalai', 'A slice of cake topped with pistachios and rose petals'),
     inside: 'Saffron sponge with rasmalai cream, pistachios and cardamom.',
+    cake: 'cake-anniversary-50',
   },
-  Blueberry: {
-    ...photo('flavour-blueberry', 'A slice of creamy cake topped with glossy blueberries'),
-    inside: 'Vanilla sponge with whipped cream and a blueberry compote.',
-  },
+  Blueberry: { inside: 'Vanilla sponge with whipped cream and a blueberry compote.', cake: 'cake-janmashtami' },
   Biscoff: {
-    ...photo('flavour-biscoff', 'Cream layered with crumbled spiced biscuits in a glass'),
     inside: 'Vanilla sponge with Biscoff cream, caramel spread and biscuit crumbs.',
+    cake: 'cake-super-dad',
   },
 };
+
+/** A cut-out from the R2 bucket (a PNG on a clear background), not a restaged or full photo. */
+export const isCutout = (cake: Cake) => {
+  const photo = cake.photos[0];
+  return !!photo && !photo.backdrop && /\.png$/i.test(photo.src);
+};
+
+/**
+ * The cake each flavour is shown on: the one picked in `flavours`, or, if that cake has left the catalog, another
+ * of ours that no other flavour is using (a cut-out where there is one). Undefined until the catalog arrives.
+ */
+export function flavourCakes(): Record<string, Cake | undefined> {
+  const picked: Record<string, Cake | undefined> = {};
+  const used = new Set<string>();
+  for (const [name, { cake: slug }] of Object.entries(flavours)) {
+    const cake = findCake(slug);
+    if (cake?.photos.length) {
+      picked[name] = cake;
+      used.add(cake.slug);
+    }
+  }
+  const spare = [...cakes.filter(isCutout), ...cakes.filter((cake) => cake.photos.length && !isCutout(cake))];
+  for (const name of Object.keys(flavours)) {
+    if (picked[name]) continue;
+    const next = spare.find((cake) => !used.has(cake.slug));
+    if (next) {
+      picked[name] = next;
+      used.add(next.slug);
+    }
+  }
+  return picked;
+}
+
+/** The cake one flavour is shown on (see flavourCakes). */
+export const flavourCake = (flavour: string) => flavourCakes()[flavour];
 
 export interface MenuItem {
   name: string;

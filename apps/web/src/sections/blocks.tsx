@@ -110,47 +110,86 @@ export function DoubleRibbon() {
 const TICKET_TONES = ['pink', 'butter', 'beige', 'cherry'] as const;
 
 /**
- * One cake as a ticket, like the cards on the home page's Cakes & Treats wheel: the photo on rounded corners, and
- * under it the weight and price in one capsule with a little heart between them. Pointing at it lifts the ticket and slides up what's in
- * the cake. The whole card is the link (the name's link stretches over it).
+ * How a cake card is cut:
+ * - `ticket`: like the cards on the home page's Cakes & Treats wheel, the photo on rounded corners and the weight and
+ *   price in one capsule under it; pointing at it lifts the ticket and slides up what's in the cake.
+ * - `shop`: the home page's shelf, after a boutique product grid. A square-cornered photo with its label in the
+ *   corner, the name in spaced capitals over a hairline, the weight and price, what's in it, and an order button.
  */
+export type CakeCardLayout = 'ticket' | 'shop';
+
+const Heart = ({ className }: { className: string }) => (
+  <svg className={className} viewBox="0 0 24 22" aria-hidden="true">
+    <path d="M12 21C5 16 1 12 1 7a5.5 5.5 0 0 1 11-1 5.5 5.5 0 0 1 11 1c0 5-4 9-11 14z" />
+  </svg>
+);
+
+/** One cake on a shelf. The whole card is the link (the name's link stretches over it). */
 export function CakeCard({
   cake,
   index = 0,
   headingLevel = 3,
   flavour,
+  layout = 'ticket',
 }: {
   cake: Cake;
   index?: number;
   headingLevel?: HeadingLevel;
   /** A flavour slug: the cake's page opens with that flavour picked. */
   flavour?: string;
+  layout?: CakeCardLayout;
 }) {
   const Heading = `h${headingLevel}` as const;
   const photo = cake.photos[0];
   const popular = mostOrdered.includes(cake.slug);
+  const shop = layout === 'shop';
+  const className = ['site-cake', shop && 'site-cake--shop', photo?.backdrop && 'site-cake--backdrop']
+    .filter(Boolean)
+    .join(' ');
+  const name = (
+    <Heading className="site-cake__name">
+      <a href={flavour ? `/catalog/${cake.slug}?flavour=${flavour}` : `/catalog/${cake.slug}`}>{cake.name}</a>
+    </Heading>
+  );
+  const image = <img src={photo?.thumb ?? art.strawberryCake} alt="" loading="lazy" draggable={false} />;
+
+  if (shop) {
+    return (
+      <article className={className}>
+        <span className="site-cake__ticket">
+          {image}
+          {popular && <span className="site-cake__popular">Most ordered</span>}
+        </span>
+        {name}
+        <p className="site-cake__meta">
+          <span className="site-cake__weight">{kgLabel(cake.weightKg)}</span>
+          <Heart className="site-cake__heart" />
+          <span className="site-cake__price">{inr(cake.price)}</span>
+        </p>
+        {cake.description && <p className="site-cake__about">{cake.description}</p>}
+        {/* The card is already the link; this only looks like a button */}
+        <span className="site-cake__order" aria-hidden="true">
+          Order now
+        </span>
+      </article>
+    );
+  }
+
   return (
-    <article
-      className={photo?.backdrop ? 'site-cake site-cake--backdrop' : 'site-cake'}
-      data-tone={TICKET_TONES[index % TICKET_TONES.length]}
-    >
+    <article className={className} data-tone={TICKET_TONES[index % TICKET_TONES.length]}>
       <span className="site-cake__ticket">
-        <img src={photo?.thumb ?? art.strawberryCake} alt="" loading="lazy" draggable={false} />
+        {image}
         <span className="site-cake__inside">{cake.description}</span>
         <span className="site-cake__peek" aria-hidden="true">
           ↗
         </span>
       </span>
       {popular && <span className="site-cake__popular">Most ordered</span>}
-      <Heading className="site-cake__name">
-        <a href={flavour ? `/catalog/${cake.slug}?flavour=${flavour}` : `/catalog/${cake.slug}`}>{cake.name}</a>
-      </Heading>
+      {name}
       <span className="site-cake__foot">
         <span className="site-cake__tag">
           <span className="site-cake__weight">{kgLabel(cake.weightKg)}</span>
-          <svg className="site-cake__heart" viewBox="0 0 24 22" aria-hidden="true">
-            <path d="M12 21C5 16 1 12 1 7a5.5 5.5 0 0 1 11-1 5.5 5.5 0 0 1 11 1c0 5-4 9-11 14z" />
-          </svg>
+          <Heart className="site-cake__heart" />
           <span className="site-cake__price">{inr(cake.price)}</span>
         </span>
       </span>
@@ -170,6 +209,7 @@ export function CakeGrid({
   flavour,
   offset = 0,
   still = false,
+  layout = 'ticket',
 }: {
   cakes: Cake[];
   headingLevel?: HeadingLevel;
@@ -178,6 +218,7 @@ export function CakeGrid({
   offset?: number;
   /** No deal from the sides and no drift as the page scrolls (the home page's shelf). Hover effects stay. */
   still?: boolean;
+  layout?: CakeCardLayout;
 }) {
   const grid = useRef<HTMLUListElement>(null);
   const key = list.map((cake) => cake.slug).join();
@@ -230,7 +271,7 @@ export function CakeGrid({
     <ul ref={grid} className="site-menu__grid site-cakes" data-fx-own>
       {list.map((cake, i) => (
         <li key={cake.slug}>
-          <CakeCard cake={cake} index={i + offset} headingLevel={headingLevel} flavour={flavour} />
+          <CakeCard cake={cake} index={i + offset} headingLevel={headingLevel} flavour={flavour} layout={layout} />
         </li>
       ))}
     </ul>
@@ -255,15 +296,32 @@ export function CatalogNote() {
   );
 }
 
-/** The cake shelf, filterable by occasion. On the home page it shows the first few with a link to the rest. */
+/**
+ * The cake shelf, filterable by occasion, on a deep wine band (the maroon of the ribbon above it, carried down): a
+ * boutique product grid with square corners, after the luxury dessert-café boards the client picked. On the home
+ * page it shows the first few with a link to the rest.
+ */
 export function MenuSection({ level = 2, limit }: { level?: 1 | 2; limit?: number }) {
   const [filter, setFilter] = useState<string[]>(['all']);
   const slug = filter[0] ?? 'all';
   const list = slug === 'all' ? featured() : cakes.filter((cake) => cake.occasion === slug);
   const shown = limit ? list.slice(0, limit) : list;
   return (
-    <Band id="cakes" className="site-section--blue site-menu">
-      <SectionHeading variant="ribbon" level={level} title="Cakes" ribbonText="baked to order" />
+    <Band id="cakes" className="site-section--wine site-menu site-menu--shop">
+      <div className="site-menu__head">
+        <Doodle name="heart" size={22} color="var(--bbm-color-gold-300)" />
+        <SectionHeading
+          align="center"
+          tone="inverse"
+          level={level}
+          title={
+            <>
+              Cakes, <em>baked to order</em>
+            </>
+          }
+          description="Mixed, baked and finished by hand in Mom's kitchen, for the day it's for. Pick an occasion, open a cake and make it yours."
+        />
+      </div>
       <div className="site-menu__filters">
         <FilterChips label="Filter cakes by occasion" options={occasionOptions()} value={filter} onChange={setFilter} />
         <p className="bbm-visually-hidden" aria-live="polite">
@@ -271,10 +329,10 @@ export function MenuSection({ level = 2, limit }: { level?: 1 | 2; limit?: numbe
         </p>
       </div>
       <CatalogNote />
-      <CakeGrid cakes={shown} headingLevel={level === 1 ? 2 : 3} still />
+      <CakeGrid cakes={shown} headingLevel={level === 1 ? 2 : 3} still layout="shop" />
       {limit && list.length > shown.length && (
         <div className="site-center">
-          <Button size="lg" variant="secondary" href={slug === 'all' ? '/catalog' : `/catalog?occasion=${slug}`}>
+          <Button size="lg" href={slug === 'all' ? '/catalog' : `/catalog?occasion=${slug}`}>
             See all {list.length} cakes
           </Button>
         </div>

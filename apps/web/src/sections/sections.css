@@ -782,30 +782,6 @@
   object-fit: cover;
 }
 
-/* "B" and "M", for Bakes by Mom, in the top corners like the wheel's tickets */
-.site-cake__mark {
-  position: absolute;
-  top: 0.55rem;
-  font-family: var(--bbm-font-family-display);
-  font-size: clamp(1.1rem, 0.8rem + 0.9vw, 1.6rem);
-  font-weight: var(--bbm-font-weight-bold);
-  line-height: 1;
-  color: var(--bbm-color-cherry-700);
-}
-
-.site-cake__mark--b {
-  left: 0.8rem;
-}
-
-.site-cake__mark--m {
-  right: 0.8rem;
-}
-
-.site-cake--backdrop .site-cake__mark {
-  color: var(--bbm-color-paper);
-  text-shadow: 0 1px 6px rgb(30 4 10 / 0.55);
-}
-
 /* What's in the cake, slid up over the photo when the card is pointed at */
 .site-cake__inside {
   position: absolute;
@@ -875,29 +851,41 @@
 
 .site-cake__foot {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--bbm-space-2);
+  justify-content: center;
   margin-top: auto;
 }
 
-.site-cake__weight {
-  padding: 0.15rem 0.6rem;
+/* The weight and the price in one capsule, centred under the card, a soft grey heart between them */
+.site-cake__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.3rem 0.95rem;
   border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
   border-radius: var(--bbm-radius-pill);
   background-color: var(--bbm-color-paper);
+  box-shadow: var(--bbm-shadow-sticker-sm);
+  white-space: nowrap;
+}
+
+.site-cake__weight {
   font-size: var(--bbm-text-body-sm-size);
   font-weight: var(--bbm-font-weight-bold);
+  color: var(--bbm-color-brown-800);
+}
+
+.site-cake__heart {
+  flex: none;
+  width: 0.8rem;
+  height: auto;
+  fill: rgb(50 24 11 / 0.22);
 }
 
 .site-cake__price {
-  padding: 0.2rem 0.75rem;
-  border-radius: var(--bbm-radius-pill);
-  background-color: var(--bbm-color-cherry-700);
-  color: var(--bbm-color-paper);
   font-family: var(--bbm-font-family-display);
   font-size: clamp(1rem, 0.9rem + 0.3vw, 1.15rem);
   font-weight: var(--bbm-font-weight-bold);
+  color: var(--bbm-color-cherry-700);
 }
 
 /* "Most ordered": a tilted sticker stuck over the ticket's top edge */
@@ -953,8 +941,13 @@
     display: none;
   }
 
-  .site-cake__foot {
-    flex-wrap: wrap;
+  .site-cake__tag {
+    gap: 0.4rem;
+    padding: 0.25rem 0.7rem;
+  }
+
+  .site-cake__price {
+    font-size: 0.95rem;
   }
 
   .site-cake__popular {

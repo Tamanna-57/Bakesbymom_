@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, FilterChips, SectionHeading } from '@bakesbymom/ui';
-import { flavours } from '../content';
+import { flavourCake, flavours } from '../content';
 import { findFlavour, flavourSlug } from '../content/bakery';
 import { cakes, occasions } from '../content/catalog';
 import { CakeGrid, CatalogNote, occasionOptions } from '../sections/blocks';
@@ -29,7 +29,9 @@ const catalogUrl = (occasion: string, flavour: string | undefined) => {
 export function CatalogPage() {
   const [filter, setFilter] = useState<string[]>(() => [param('occasion') ?? 'all']);
   const [flavour, setFlavour] = useState(() => findFlavour(param('flavour')));
-  const photo = flavour ? flavours[flavour] : undefined;
+  // The same cake the flavour's card shows on the home page
+  const shownOn = flavour ? flavourCake(flavour) : undefined;
+  const photo = shownOn?.photos[0];
   // Checked on every render: the catalog may still be on its way when the page opens.
   const slug = occasions.some((occasion) => occasion.slug === filter[0]) ? filter[0]! : 'all';
   const shown = slug === 'all' ? occasions : occasions.filter((occasion) => occasion.slug === slug);
@@ -99,10 +101,18 @@ export function CatalogPage() {
           </div>
           {flavour && (
             <div className="catalog-flavour">
-              {photo && <img src={photo.src} alt={photo.alt} width={96} height={96} />}
+              {shownOn && photo && (
+                <img
+                  className={photo.backdrop ? undefined : 'catalog-flavour__cutout'}
+                  src={photo.thumb}
+                  alt={shownOn.name}
+                  width={96}
+                  height={96}
+                />
+              )}
               <p>
-                <strong>Every cake below can be baked in {flavour.toLowerCase()}.</strong> {photo?.inside} Open one and
-                it's already picked for you.
+                <strong>Every cake below can be baked in {flavour.toLowerCase()}.</strong> {flavours[flavour]?.inside}{' '}
+                Open one and it's already picked for you.
               </p>
               <Button size="sm" variant="secondary" onClick={clearFlavour}>
                 Show all flavours

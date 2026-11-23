@@ -450,15 +450,34 @@
   padding: var(--bbm-space-4) var(--bbm-space-5) var(--bbm-space-6);
   border: var(--bbm-border-width-thin) solid var(--bbm-color-border-default);
   border-radius: var(--bbm-radius-xl);
-  background: var(--bbm-color-bg-surface);
+  /* Each card in its own soft pastel from the palette (blush, butter, sage), so the three don't read as plain
+     white boxes on the blue band; the picture sits on a deeper glow of the same colour */
+  --step-ground: var(--bbm-color-pink-100);
+  --step-glow: var(--bbm-color-pink-200);
+  --step-dots: var(--bbm-color-pink-300);
+  background: var(--step-ground);
   box-shadow: var(--bbm-shadow-sticker-md);
+}
+
+.shop-step:nth-child(3n + 2) {
+  --step-ground: var(--bbm-color-butter-100);
+  --step-glow: var(--bbm-color-butter-200);
+  --step-dots: var(--bbm-color-butter-300);
+}
+
+.shop-step:nth-child(3n + 3) {
+  --step-ground: var(--bbm-color-matcha-100);
+  --step-glow: var(--bbm-color-matcha-200);
+  --step-dots: var(--bbm-color-matcha-300);
 }
 
 .shop-step__art {
   grid-column: 1 / -1;
   margin: calc(var(--bbm-space-2) * -1) calc(var(--bbm-space-3) * -1) var(--bbm-space-2);
   border-radius: var(--bbm-radius-lg);
-  background: radial-gradient(ellipse at 50% 40%, var(--bbm-color-blue-50), transparent 70%);
+  background:
+    radial-gradient(ellipse at 50% 42%, var(--step-glow), transparent 68%),
+    radial-gradient(circle, var(--step-dots) 1.2px, transparent 1.6px) 0 0 / 18px 18px;
 }
 
 .shop-step__num {
